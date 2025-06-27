@@ -42,7 +42,7 @@ condominium_management/
 bench get-app https://github.com/[tu-usuario]/condominium_management
 bench install-app condominium_management --site [tu-sitio]
 bench migrate
-
+```
 
 📄 Licenciamiento
 
