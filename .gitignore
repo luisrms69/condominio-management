@@ -1,6 +1,54 @@
+# Frappe/ERPNext specific
 *.pyc
 __pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.DS_Store
+Thumbs.db
+
+# IDE específico
 .vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# Logs
 *.log
+logs/
+
+# Frappe specific
+*.compiled
+sites/*/private/backups/*
+sites/*/private/files/*
+sites/*/error.log
+sites/*/request.log
+
+# Node modules (si usamos)
+node_modules/
+package-lock.json
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Environment variables
 .env
+.env.local
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+test_reports/
+
+# Temporary files
 *.tmp
+*.temp
+*~
