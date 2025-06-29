@@ -92,8 +92,9 @@ jobs:
           bench get-app condominium_management $GITHUB_WORKSPACE
           bench setup requirements --dev
           bench new-site --db-root-password root --admin-password admin test_site
-          bench --site test_site install-app condominium_management
-          bench build
+          bench --site test_site install-app condominium_management --force
+          bench --site test_site migrate
+          bench build --force
         env:
           CI: 'Yes'
 
@@ -102,9 +103,7 @@ jobs:
         run: |
           bench --site test_site set-config allow_tests true
           bench --site test_site set-config developer_mode 1
-          bench --site test_site migrate --skip-failing
-          bench --site test_site execute "frappe.get_all('DocType', filters={'module': 'Companies'})"
           bench --site test_site clear-cache
-          bench --site test_site run-tests --app condominium_management
+          bench --site test_site run-tests --app condominium_management --coverage
         env:
           TYPE: server
