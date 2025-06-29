@@ -96,14 +96,20 @@ jobs:
           bench --site test_site install-app erpnext
           bench --site test_site install-app condominium_management --force
           bench --site test_site migrate
+          bench --site test_site sync-doctypes --app condominium_management
           bench build --force
         env:
           CI: 'Yes'
 
       - name: Debug DocTypes
-        working-directory: /home/runner/work/condominio-management/condominio-management
+        working-directory: /home/runner/frappe-bench
         run: |
-          python debug_doctypes.py
+          echo "=== VERIFICACION DE DOCTYPES ==="
+          bench --site test_site list-apps
+          echo "=== VERIFICACION DE MODULOS ==="
+          find apps/condominium_management -name "*.json" -path "*/doctype/*" | wc -l
+          echo "=== INTENTAR FORZAR SYNC DE DOCTYPES ==="
+          bench --site test_site reinstall-app condominium_management --yes || true
         env:
           TYPE: debug
 
