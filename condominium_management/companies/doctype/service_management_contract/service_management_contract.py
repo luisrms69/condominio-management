@@ -67,7 +67,7 @@ class ServiceManagementContract(Document):
 				frappe.throw(_("La fecha de fin del contrato debe ser posterior a la fecha de inicio."))
 
 		if self.contract_start and getdate(self.contract_start) < getdate(today()):
-			frappe.msgprint("La fecha de inicio del contrato está en el pasado.", indicator="orange")
+			frappe.msgprint(_("La fecha de inicio del contrato está en el pasado."), indicator="orange")
 
 	def validate_companies(self):
 		"""

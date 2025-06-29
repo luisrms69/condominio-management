@@ -64,6 +64,6 @@ class ServiceInformation(Document):
 
 		if self.is_free and self.service_cost:
 			frappe.msgprint(
-				"El costo del servicio será ignorado para servicios gratuitos.", indicator="orange"
+				_("El costo del servicio será ignorado para servicios gratuitos."), indicator="orange"
 			)
 			self.service_cost = 0

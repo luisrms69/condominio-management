@@ -64,7 +64,7 @@ class CondominiumInformation(Document):
 			calculated_total = (self.common_area or 0) + (self.private_area or 0)
 			if abs(self.total_area - calculated_total) > 0.01:  # Permite pequeñas diferencias de redondeo
 				frappe.msgprint(
-					"Advertencia: El área total no coincide con la suma de áreas común y privada.",
+					_("Advertencia: El área total no coincide con la suma de áreas común y privada."),
 					indicator="orange",
 				)
 

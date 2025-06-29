@@ -72,4 +72,4 @@ class ContactInformation(Document):
 		que es el mínimo estándar para números telefónicos mexicanos.
 		"""
 		if self.phone_number and len(self.phone_number) < 10:
-			frappe.msgprint("El número telefónico debe tener al menos 10 dígitos.", indicator="orange")
+			frappe.msgprint(_("El número telefónico debe tener al menos 10 dígitos."), indicator="orange")
