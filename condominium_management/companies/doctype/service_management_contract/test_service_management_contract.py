@@ -194,7 +194,18 @@ class TestServiceManagementContract(FrappeTestCase):
 		meta = frappe.get_meta("Service Management Contract")
 
 		# Check DocType label
-		self.assertEqual(meta.label, "Contrato de Gestión de Servicios")
+		# Check DocType label using document_type property or JSON config
+		expected_label = "Contrato de Gestión de Servicios"
+		# Try multiple ways to get the label
+		if hasattr(meta, "label"):
+			actual_label = meta.label
+		elif hasattr(meta, "document_type"):
+			actual_label = meta.document_type
+		else:
+			# Fallback: get from DocType document directly
+			doctype_doc = frappe.get_doc("DocType", "Service Management Contract")
+			actual_label = doctype_doc.label if doctype_doc.label else doctype_doc.name
+		self.assertEqual(actual_label, expected_label)
 
 		# Check key field labels
 		contract_name_field = meta.get_field("contract_name")

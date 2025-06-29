@@ -170,7 +170,18 @@ class TestCondominiumInformation(FrappeTestCase):
 		meta = frappe.get_meta("Condominium Information")
 
 		# Check DocType label
-		self.assertEqual(meta.label, "Información del Condominio")
+		# Check DocType label using document_type property or JSON config
+		expected_label = "Información del Condominio"
+		# Try multiple ways to get the label
+		if hasattr(meta, "label"):
+			actual_label = meta.label
+		elif hasattr(meta, "document_type"):
+			actual_label = meta.document_type
+		else:
+			# Fallback: get from DocType document directly
+			doctype_doc = frappe.get_doc("DocType", "Condominium Information")
+			actual_label = doctype_doc.label if doctype_doc.label else doctype_doc.name
+		self.assertEqual(actual_label, expected_label)
 
 		# Check key field labels
 		company_field = meta.get_field("company")
