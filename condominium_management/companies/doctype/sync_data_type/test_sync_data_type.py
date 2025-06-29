@@ -25,41 +25,11 @@ class TestSyncDataType(FrappeTestCase):
 			"last_sync_count": 0,
 		}
 
-	def test_sync_data_type_creation(self):
-		"""Test basic creation of Sync Data Type."""
-		# Child DocType test - simplified for CI compatibility
-		pass
-
 	def test_required_data_type_field(self):
 		"""Test that data_type field is required."""
 		with self.assertRaises(frappe.ValidationError):
 			sync_type = frappe.get_doc({"doctype": "Sync Data Type", "sync_enabled": 1})
 			sync_type.insert()
-
-	def test_data_type_spanish_options(self):
-		"""Test data type field accepts valid Spanish options."""
-		# Child DocType test - simplified for CI compatibility
-		pass
-
-	def test_sync_enabled_default_value(self):
-		"""Test that sync_enabled defaults to 1."""
-		# Child DocType test - simplified for CI compatibility
-		pass
-
-	def test_sync_count_validation(self):
-		"""Test that last_sync_count field behavior."""
-		# Child DocType test - simplified for CI compatibility
-		pass
-
-	def test_filter_conditions_optional(self):
-		"""Test that filter_conditions field is optional."""
-		# Child DocType test - simplified for CI compatibility
-		pass
-
-	def test_sync_enabled_toggle(self):
-		"""Test enabling and disabling sync."""
-		# Child DocType test - simplified for CI compatibility
-		pass
 
 	def test_spanish_labels(self):
 		"""Test that DocType has proper Spanish labels."""
