@@ -103,7 +103,7 @@ jobs:
           bench --site test_site set-config allow_tests true
           bench --site test_site set-config developer_mode 1
           bench --site test_site migrate --skip-failing
-          bench --site test_site execute "import frappe; print('Available DocTypes:', [d.name for d in frappe.get_all('DocType', filters={'module': 'Companies'})])"
+          bench --site test_site execute "frappe.get_all('DocType', filters={'module': 'Companies'})"
           bench --site test_site clear-cache
           bench --site test_site run-tests --app condominium_management
         env:
