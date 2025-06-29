@@ -170,7 +170,7 @@ class TestCondominiumInformation(FrappeTestCase):
 		meta = frappe.get_meta("Condominium Information")
 
 		# Check DocType label
-		self.assertEqual(meta.label, "Información del Condominio")
+		self.assertEqual(meta.get_label(), "Información del Condominio")
 
 		# Check key field labels
 		company_field = meta.get_field("company")
@@ -244,9 +244,9 @@ class TestCondominiumInformation(FrappeTestCase):
 		private_area_field = meta.get_field("private_area")
 
 		# All area fields should have precision 2
-		self.assertEqual(total_area_field.precision, 2)
-		self.assertEqual(common_area_field.precision, 2)
-		self.assertEqual(private_area_field.precision, 2)
+		self.assertEqual(int(total_area_field.precision), 2)
+		self.assertEqual(int(common_area_field.precision), 2)
+		self.assertEqual(int(private_area_field.precision), 2)
 
 	def tearDown(self):
 		"""Clean up test data after each test method."""
