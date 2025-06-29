@@ -8,7 +8,7 @@ app_license = "gpl-3.0"
 # Apps
 # ------------------
 
-# required_apps = []
+required_apps = ["erpnext"]
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
@@ -31,6 +31,10 @@ app_license = "gpl-3.0"
 # include js, css files in header of web template
 # web_include_css = "/assets/condominium_management/css/condominium_management.css"
 # web_include_js = "/assets/condominium_management/js/condominium_management.js"
+
+# Translations
+# ------------------
+app_include_locale = "translations"
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "condominium_management/public/scss/website"
