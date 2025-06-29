@@ -8,7 +8,24 @@ app_license = "gpl-3.0"
 # Apps
 # ------------------
 
-# required_apps = []
+required_apps = ["frappe", "erpnext"]
+
+# Modules
+# ------------------
+
+modules = {
+	"companies": {
+		"color": "blue",
+		"icon": "octicon octicon-organization",
+		"type": "module",
+		"label": "Companies",
+	}
+}
+
+# Translations
+# ------------
+# translations are available in the app
+app_include_locale = "translations"
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
@@ -241,4 +258,3 @@ app_license = "gpl-3.0"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-
