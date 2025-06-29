@@ -188,7 +188,7 @@ class TestServiceManagementContract(FrappeTestCase):
 		meta = frappe.get_meta("Service Management Contract")
 
 		# Check DocType label
-		self.assertEqual(meta.get("label"), "Contrato de Gestión de Servicios")
+		self.assertEqual(meta.label, "Contrato de Gestión de Servicios")
 
 		# Check key field labels
 		contract_name_field = meta.get_field("contract_name")
@@ -237,6 +237,7 @@ class TestServiceManagementContract(FrappeTestCase):
 		doc = frappe.get_doc(
 			{
 				"doctype": "Service Management Contract",
+				"naming_series": "SMC-.YYYY.-",
 				"contract_name": "Test Naming Series",
 				"service_provider": "Provider Co",
 				"client_condominium": "Client Co",
