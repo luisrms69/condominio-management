@@ -29,6 +29,7 @@ class TestCondominiumInformation(FrappeTestCase):
 					"company_name": "Test Condominium",
 					"abbr": "TC",
 					"default_currency": "MXN",
+					"country": "Mexico",
 				}
 			)
 			company.insert(ignore_permissions=True)

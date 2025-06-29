@@ -31,6 +31,7 @@ class TestServiceManagementContract(FrappeTestCase):
 						"company_name": company_name,
 						"abbr": abbr,
 						"default_currency": "MXN",
+						"country": "Mexico",
 					}
 				)
 				company.insert(ignore_permissions=True)
