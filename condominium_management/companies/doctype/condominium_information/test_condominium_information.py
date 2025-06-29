@@ -170,7 +170,7 @@ class TestCondominiumInformation(FrappeTestCase):
 		meta = frappe.get_meta("Condominium Information")
 
 		# Check DocType label
-		self.assertEqual(meta.get("label"), "Información del Condominio")
+		self.assertEqual(meta.label, "Información del Condominio")
 
 		# Check key field labels
 		company_field = meta.get_field("company")

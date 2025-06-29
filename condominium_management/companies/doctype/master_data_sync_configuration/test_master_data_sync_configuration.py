@@ -35,7 +35,7 @@ class TestMasterDataSyncConfiguration(FrappeTestCase):
 				"source_company": "Test Source",
 				"sync_frequency": "Diario",
 				"target_companies": [{"target_company": "Test Target", "sync_enabled": 1}],
-				"data_types": [{"data_type": "Supplier", "sync_enabled": 1}],
+				"data_types": [{"data_type": "Proveedor", "sync_enabled": 1}],
 			}
 		)
 		doc.insert(ignore_permissions=True)
@@ -54,7 +54,7 @@ class TestMasterDataSyncConfiguration(FrappeTestCase):
 						"sync_enabled": 1,
 					}
 				],
-				"data_types": [{"data_type": "Supplier", "sync_enabled": 1}],
+				"data_types": [{"data_type": "Proveedor", "sync_enabled": 1}],
 			}
 		)
 		with self.assertRaises(frappe.ValidationError):
