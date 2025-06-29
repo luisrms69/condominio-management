@@ -8,7 +8,24 @@ app_license = "gpl-3.0"
 # Apps
 # ------------------
 
-required_apps = ["erpnext"]
+required_apps = ["frappe", "erpnext"]
+
+# Modules
+# ------------------
+
+modules = {
+	"companies": {
+		"color": "blue",
+		"icon": "octicon octicon-organization",
+		"type": "module",
+		"label": "Companies",
+	}
+}
+
+# Translations
+# ------------
+# translations are available in the app
+app_include_locale = "translations"
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
@@ -31,10 +48,6 @@ required_apps = ["erpnext"]
 # include js, css files in header of web template
 # web_include_css = "/assets/condominium_management/css/condominium_management.css"
 # web_include_js = "/assets/condominium_management/js/condominium_management.js"
-
-# Translations
-# ------------------
-app_include_locale = "translations"
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "condominium_management/public/scss/website"
