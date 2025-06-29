@@ -101,16 +101,7 @@ jobs:
       - name: Ensure Transit Warehouse Type
         working-directory: /home/runner/frappe-bench
         run: |
-          bench --site test_site execute "
-          import frappe
-          if not frappe.db.exists('Warehouse Type', 'Transit'):
-              doc = frappe.get_doc({'doctype': 'Warehouse Type', 'name': 'Transit'})
-              doc.insert(ignore_permissions=True)
-              print('Created Transit warehouse type')
-          else:
-              print('Transit warehouse type already exists')
-          frappe.db.commit()
-          "
+          bench --site test_site execute "import frappe; doc = frappe.get_doc({'doctype': 'Warehouse Type', 'name': 'Transit'}) if not frappe.db.exists('Warehouse Type', 'Transit') else None; doc.insert(ignore_permissions=True) if doc else None; frappe.db.commit(); print('Transit warehouse type ensured')"
 
       - name: Run Tests
         working-directory: /home/runner/frappe-bench
