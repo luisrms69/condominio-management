@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 
@@ -66,7 +67,7 @@ class AccessPointDetail(Document):
 			closing = get_time(self.closing_time)
 
 			if closing <= opening:
-				frappe.throw("La hora de cierre debe ser posterior a la hora de apertura.")
+				frappe.throw(_("La hora de cierre debe ser posterior a la hora de apertura."))
 
 	def validate_access_configuration(self):
 		"""
@@ -77,5 +78,7 @@ class AccessPointDetail(Document):
 		"""
 		if self.security_level == "Restringido" and not self.access_control_method:
 			frappe.throw(
-				"Los puntos de acceso con nivel de seguridad 'Restringido' deben especificar un método de control de acceso."
+				_(
+					"Los puntos de acceso con nivel de seguridad 'Restringido' deben especificar un método de control de acceso."
+				)
 			)

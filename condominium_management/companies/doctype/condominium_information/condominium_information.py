@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 
@@ -75,7 +76,7 @@ class CondominiumInformation(Document):
 		    ValidationError: Si el total de unidades es cero o negativo
 		"""
 		if self.total_units and self.total_units <= 0:
-			frappe.throw("El total de unidades debe ser mayor que cero.")
+			frappe.throw(_("El total de unidades debe ser mayor que cero."))
 
 	def before_save(self):
 		"""

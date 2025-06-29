@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 from frappe.utils import time_diff_in_hours
 
@@ -58,4 +59,4 @@ class OperatingHours(Document):
 		"""
 		if self.open_time and self.close_time:
 			if self.close_time <= self.open_time:
-				frappe.throw("La hora de cierre debe ser posterior a la hora de apertura.")
+				frappe.throw(_("La hora de cierre debe ser posterior a la hora de apertura."))

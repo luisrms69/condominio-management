@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 
@@ -57,4 +58,4 @@ class NearbyReference(Document):
 		    ValidationError: Si la distancia es negativa
 		"""
 		if self.distance and self.distance < 0:
-			frappe.throw("La distancia no puede ser negativa.")
+			frappe.throw(_("La distancia no puede ser negativa."))

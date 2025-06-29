@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 from frappe.utils import getdate, today
 
@@ -63,7 +64,7 @@ class ServiceManagementContract(Document):
 		"""
 		if self.contract_start and self.contract_end:
 			if getdate(self.contract_end) <= getdate(self.contract_start):
-				frappe.throw("La fecha de fin del contrato debe ser posterior a la fecha de inicio.")
+				frappe.throw(_("La fecha de fin del contrato debe ser posterior a la fecha de inicio."))
 
 		if self.contract_start and getdate(self.contract_start) < getdate(today()):
 			frappe.msgprint("La fecha de inicio del contrato está en el pasado.", indicator="orange")
@@ -76,7 +77,9 @@ class ServiceManagementContract(Document):
 		    ValidationError: Si proveedor y cliente son la misma empresa
 		"""
 		if self.service_provider == self.client_condominium:
-			frappe.throw("La empresa administradora y el condominio cliente no pueden ser la misma entidad.")
+			frappe.throw(
+				_("La empresa administradora y el condominio cliente no pueden ser la misma entidad.")
+			)
 
 	def validate_financial_terms(self):
 		"""
@@ -86,7 +89,7 @@ class ServiceManagementContract(Document):
 		    ValidationError: Si la tarifa mensual es negativa
 		"""
 		if self.monthly_fee and self.monthly_fee < 0:
-			frappe.throw("La tarifa mensual no puede ser negativa.")
+			frappe.throw(_("La tarifa mensual no puede ser negativa."))
 
 	def before_save(self):
 		"""
@@ -105,6 +108,7 @@ class ServiceManagementContract(Document):
 		Cambia el estado del contrato a 'Activo' automáticamente.
 		"""
 		self.contract_status = "Activo"
+		self.save()
 
 	def on_cancel(self):
 		"""
@@ -113,3 +117,4 @@ class ServiceManagementContract(Document):
 		Cambia el estado del contrato a 'Terminado' automáticamente.
 		"""
 		self.contract_status = "Terminado"
+		self.save()

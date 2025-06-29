@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 
@@ -59,7 +60,7 @@ class ServiceInformation(Document):
 		    ValidationError: Si servicio de pago no tiene costo especificado
 		"""
 		if not self.is_free and not self.service_cost:
-			frappe.throw("El costo del servicio es requerido para servicios de pago.")
+			frappe.throw(_("El costo del servicio es requerido para servicios de pago."))
 
 		if self.is_free and self.service_cost:
 			frappe.msgprint(

@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 
@@ -57,4 +58,4 @@ class ContractServiceItem(Document):
 		    ValidationError: Si la tarifa mensual es negativa
 		"""
 		if self.monthly_rate and self.monthly_rate < 0:
-			frappe.throw("La tarifa mensual no puede ser negativa.")
+			frappe.throw(_("La tarifa mensual no puede ser negativa."))

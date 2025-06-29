@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 from frappe.utils import now
 
@@ -64,13 +65,13 @@ class MasterDataSyncConfiguration(Document):
 		    ValidationError: Si empresa origen coincide con alguna empresa destino
 		"""
 		if not self.source_company:
-			frappe.throw("La empresa origen es requerida.")
+			frappe.throw(_("La empresa origen es requerida."))
 
 		# Verificar que empresa origen no aparece en empresas destino
 		if hasattr(self, "target_companies"):
 			for target in self.target_companies:
 				if target.target_company == self.source_company:
-					frappe.throw("La empresa origen no puede ser la misma que una empresa destino.")
+					frappe.throw(_("La empresa origen no puede ser la misma que una empresa destino."))
 
 	def validate_target_companies(self):
 		"""
@@ -84,12 +85,12 @@ class MasterDataSyncConfiguration(Document):
 		    ValidationError: Si hay empresas destino duplicadas
 		"""
 		if not self.target_companies:
-			frappe.throw("Debe especificarse al menos una empresa destino.")
+			frappe.throw(_("Debe especificarse al menos una empresa destino."))
 
 		# Verificar empresas destino duplicadas
 		company_list = [target.target_company for target in self.target_companies]
 		if len(company_list) != len(set(company_list)):
-			frappe.throw("No se permiten empresas destino duplicadas.")
+			frappe.throw(_("No se permiten empresas destino duplicadas."))
 
 	def before_save(self):
 		"""
@@ -107,6 +108,7 @@ class MasterDataSyncConfiguration(Document):
 		Activa automáticamente la configuración al ser sometida.
 		"""
 		self.is_active = 1
+		self.save()
 
 	def execute_sync(self):
 		"""
@@ -119,7 +121,7 @@ class MasterDataSyncConfiguration(Document):
 		    ValidationError: Si la configuración no está activa
 		"""
 		if not self.is_active:
-			frappe.throw("La configuración de sincronización no está activa.")
+			frappe.throw(_("La configuración de sincronización no está activa."))
 
 		self.sync_status = "En Progreso"
 		self.save()

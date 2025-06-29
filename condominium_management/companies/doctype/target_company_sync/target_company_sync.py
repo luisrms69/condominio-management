@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 
@@ -57,4 +58,4 @@ class TargetCompanySync(Document):
 		    ValidationError: Si el contador de errores de sincronización es negativo
 		"""
 		if self.sync_errors and self.sync_errors < 0:
-			frappe.throw("El contador de errores de sincronización no puede ser negativo.")
+			frappe.throw(_("El contador de errores de sincronización no puede ser negativo."))

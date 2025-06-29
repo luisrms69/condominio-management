@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 
@@ -58,4 +59,4 @@ class PublicTransportOption(Document):
 		    ValidationError: Si la distancia caminando es negativa
 		"""
 		if self.walking_distance and self.walking_distance < 0:
-			frappe.throw("La distancia caminando no puede ser negativa.")
+			frappe.throw(_("La distancia caminando no puede ser negativa."))

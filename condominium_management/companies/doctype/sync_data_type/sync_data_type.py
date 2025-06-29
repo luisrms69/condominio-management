@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 
@@ -57,4 +58,4 @@ class SyncDataType(Document):
 		    ValidationError: Si el contador de última sincronización es negativo
 		"""
 		if self.last_sync_count and self.last_sync_count < 0:
-			frappe.throw("El contador de última sincronización no puede ser negativo.")
+			frappe.throw(_("El contador de última sincronización no puede ser negativo."))

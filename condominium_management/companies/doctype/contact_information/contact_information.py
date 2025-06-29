@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 from frappe.utils import validate_email_address
 
@@ -61,7 +62,7 @@ class ContactInformation(Document):
 		"""
 		if self.email:
 			if not validate_email_address(self.email):
-				frappe.throw(f"Formato de email inválido: {self.email}")
+				frappe.throw(_("Formato de email inválido: {0}").format(self.email))
 
 	def validate_phone(self):
 		"""
