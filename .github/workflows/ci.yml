@@ -102,6 +102,9 @@ jobs:
         run: |
           bench --site test_site set-config allow_tests true
           bench --site test_site migrate
+          bench --site test_site --force reinstall-app condominium_management
+          bench --site test_site doctor
+          bench --site test_site clear-cache
           bench --site test_site run-tests --app condominium_management
         env:
           TYPE: server
