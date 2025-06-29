@@ -36,7 +36,7 @@ class TestSyncDataType(FrappeTestCase):
 		meta = frappe.get_meta("Sync Data Type")
 
 		# Check DocType label
-		self.assertEqual(meta.get_label(), "Tipo de Dato de Sincronización")
+		self.assertEqual(meta.label, "Tipo de Dato de Sincronización")
 
 		# Check field labels
 		data_type_field = meta.get_field("data_type")
