@@ -98,6 +98,30 @@ jobs:
           bench --site test_site migrate
           bench build
 
+      - name: TEMPORARY FIX - Setup Missing Warehouse Types
+        working-directory: /home/runner/frappe-bench
+        run: |
+          echo "🚨 TEMPORARY WORKAROUND: Checking and creating missing Warehouse Types"
+          echo "⚠️  This should NOT be needed - ERPNext should install these by default"
+          bench --site test_site console <<EOF
+          import frappe
+          print("=== WAREHOUSE TYPES DIAGNOSTIC ===")
+          existing = frappe.db.get_all('Warehouse Type', fields=['name'])
+          print(f"Found {len(existing)} warehouse types: {[w.name for w in existing]}")
+          
+          if not frappe.db.exists('Warehouse Type', 'Transit'):
+              print("❌ Transit warehouse type NOT FOUND - creating as temporary fix")
+              doc = frappe.get_doc({'doctype': 'Warehouse Type', 'name': 'Transit'})
+              doc.insert()
+              frappe.db.commit()
+              print("✅ Transit warehouse type created temporarily")
+          else:
+              print("✅ Transit warehouse type already exists")
+          
+          print("🔧 TODO: Investigate why ERPNext doesn't create Transit by default")
+          exit()
+          EOF
+
       - name: Run Tests
         working-directory: /home/runner/frappe-bench
         run: |
