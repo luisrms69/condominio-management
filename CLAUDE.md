@@ -233,6 +233,24 @@ grep -r "class.*FrappeTestCase" */doctype/*/test_*.py  # Verificar herencia corr
 grep -r "setUpClass" */doctype/*/test_*.py             # Verificar setUpClass
 
 # ========================================
+# COMANDOS HOOKS CRÍTICOS (REGLA #11)
+# ========================================
+
+# Verificar hooks obligatorios están habilitados
+grep "after_install.*=" condominium_management/hooks.py
+grep "before_tests.*=" condominium_management/hooks.py
+
+# Verificar archivos de hooks existen
+ls condominium_management/install.py condominium_management/utils.py
+
+# Test completo con hooks (debe funcionar sin errores)
+bench --site test_site set-config allow_tests true
+bench --site test_site run-tests --app condominium_management
+
+# Verificar CI sin workarounds temporales
+grep -i "temporary\|workaround" .github/workflows/ci.yml || echo "✅ CI limpio"
+
+# ========================================
 # COMANDOS DE TRADUCCIONES
 # ========================================
 
@@ -475,6 +493,84 @@ cat DEVELOPMENT_POLICIES.md
 ```
 
 **TODAS estas herramientas y políticas están ahora integradas y deben ser utilizadas en TODO momento durante el desarrollo.**
+
+---
+
+## 🔧 **REGLA #11: HOOKS OBLIGATORIOS Y RESOLUCIÓN DE PROBLEMAS CI**
+
+### **⚡ HOOKS CRÍTICOS IMPLEMENTADOS (Commits afdd594, 48aad1c, 8d3cc46)**
+
+**PROBLEMA RESUELTO DEFINITIVAMENTE:** Transit warehouse type error en CI
+
+#### **🎯 Hooks Obligatorios para Apps Frappe:**
+```python
+# En hooks.py (AMBOS OBLIGATORIOS)
+after_install = "condominium_management.install.after_install"
+before_tests = "condominium_management.utils.before_tests"
+```
+
+#### **📋 Funciones Requeridas:**
+
+**1. install.py - after_install function:**
+```python
+def after_install():
+    """Configuración post-instalación del módulo."""
+    print("🔧 Condominium Management: Ejecutando configuración post-instalación...")
+    # Verificar que ERPNext esté correctamente instalado
+    # Limpiar cache para asegurar configuración fresca
+    frappe.clear_cache()
+```
+
+**2. utils.py - before_tests function (CRÍTICO):**
+```python
+def before_tests():
+    frappe.clear_cache()
+    from frappe.desk.page.setup_wizard.setup_wizard import setup_complete
+    
+    year = now_datetime().year
+    if not frappe.get_list("Company"):
+        setup_complete({
+            "currency": "MXN",
+            "company_name": "Condominio Test LLC",
+            "timezone": "America/Mexico_City",
+            # ... configuración completa
+        })
+    
+    enable_all_roles_and_domains()
+    frappe.db.commit()
+```
+
+#### **✅ RESULTADO VERIFICADO:**
+- ✅ CI ejecuta `bench run-tests --app condominium_management` exitosamente
+- ✅ 0 workarounds temporales en CI workflow
+- ✅ Warehouse types (incluido Transit) se crean automáticamente
+- ✅ Patrón oficial de Frappe Framework aplicado
+
+### **🧠 METODOLOGÍA DE RESOLUCIÓN DE PROBLEMAS CI**
+
+#### **📊 Patrón Probado Exitoso:**
+1. **Análisis Comparativo:** Clonar app oficial exitosa (lending app)
+2. **Comparación Sistemática:** hooks.py, install.py, utils.py, workflows
+3. **Identificar Diferencias Críticas:** Hooks missing vs hooks implementados
+4. **Implementación Incremental:** Un hook a la vez, validar en CI
+5. **Verificación Completa:** 0 fixes temporales, funcionalidad completa
+
+#### **🚨 Errores Críticos Evitados:**
+- ❌ NUNCA crear workarounds temporales complejos en CI
+- ❌ NUNCA especificar DocTypes individuales vs usar `--app` flag
+- ❌ NUNCA inventar soluciones custom sin revisar apps oficiales
+- ✅ SIEMPRE replicar patrones de apps oficiales exitosas
+
+#### **📍 Apps de Referencia Oficiales:**
+- `/home/erpnext/lending-comparison/lending/` - Patrón de hooks implementado
+- Frappe official apps en GitHub - Para consulta de patrones
+
+### **🔍 COMMITS DE SOLUCIÓN DOCUMENTADOS:**
+- **afdd594:** after_install hook implementado
+- **48aad1c:** Eliminar TEMPORARY FIX y resolver conflictos
+- **8d3cc46:** before_tests hook implementado (SOLUCIÓN DEFINITIVA)
+
+**IMPORTANTE:** Esta metodología debe aplicarse a TODOS los problemas CI futuros en los 12 módulos restantes.
 
 ---
 

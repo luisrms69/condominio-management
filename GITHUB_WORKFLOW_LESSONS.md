@@ -349,20 +349,52 @@ grep -r "def test_" condominium_management/*/doctype/*/test_*.py | wc -l
 
 #### **Mantenibilidad:**
 - **Antes:** Código temporal acumulándose
-- **Después:** CI funcional pero con WORKAROUND TEMPORAL activo
-- **ISSUE CRÍTICO:** Solución temporal requiere mantenimiento manual
+- **Después:** CI completamente limpio, 0 workarounds temporales
+- **LOGRO CRÍTICO:** Solución definitiva sin mantenimiento manual
 
-### **⚠️ PROBLEMA TÉCNICO PENDIENTE DE RESOLUCIÓN**
+### **✅ PROBLEMA TÉCNICO RESUELTO DEFINITIVAMENTE**
 
-#### **Transit Warehouse Type Error - Root Cause Sin Identificar:**
-- **Síntoma:** `bench run-tests --app condominium_management` falla con "Transit warehouse type not found"
-- **Workaround Actual:** Especificar DocTypes individuales `--doctype "X" --doctype "Y"`
-- **Problema de Escalabilidad:** Lista manual debe actualizarse con cada nuevo DocType
-- **Investigación Realizada:** Proyectos oficiales Frappe/ERPNext SÍ usan `--app` flag exitosamente
-  - ERPNext: `bench run-parallel-tests --app erpnext`
-  - Frappe: `bench run-parallel-tests --app "${{ github.event.repository.name }}"`
-- **Conclusión:** Problema específico de configuración en nuestro app
-- **TODO CRÍTICO:** Investigar qué configuración específica causa auto-discovery problems
+#### **Transit Warehouse Type Error - SOLUCIÓN IMPLEMENTADA:**
+- **Root Cause Identificado:** Missing `before_tests` hook que ejecuta `setup_complete()`
+- **Solución Aplicada:** Implementar hooks siguiendo patrón oficial de Frappe Lending app
+- **Commits de Solución:** 
+  - `afdd594/48aad1c`: after_install hook implementado
+  - `8d3cc46`: before_tests hook implementado
+- **Resultado:** `bench run-tests --app condominium_management` funciona exitosamente
+- **Verificación:** CI pipeline limpio, 0 workarounds temporales
+- **Patrón Aplicado:** Análisis comparativo con lending app oficial de Frappe
+
+#### **Análisis Comparativo - Lending App vs Condominium Management:**
+**DIFERENCIAS CRÍTICAS IDENTIFICADAS:**
+1. **✅ after_install hook:** 
+   - Lending: `after_install = "lending.install.after_install"`
+   - Nosotros: era comentado, ahora habilitado
+2. **✅ before_tests hook:**
+   - Lending: `before_tests = "lending.utils.before_tests"`  
+   - Nosotros: era comentado con ruta incorrecta, ahora implementado
+3. **✅ setup_complete() function:**
+   - Lending: ejecuta setup wizard que crea warehouse types automáticamente
+   - Nosotros: ahora implementado en `condominium_management.utils.before_tests()`
+
+#### **METODOLOGÍA DE RESOLUCIÓN APLICADA:**
+**1. Análisis Comparativo Sistemático:**
+- Clonar app oficial trabajando (lending) en `/home/erpnext/lending-comparison/`
+- Comparar archivo por archivo: hooks.py, install.py, utils.py, ci workflows
+- Identificar diferencias específicas en configuración de testing
+
+**2. Implementación Incremental:**
+- Aplicar cambio más crítico primero (after_install hook)
+- Validar resultado en CI antes de continuar
+- Aplicar segundo cambio crítico (before_tests hook)
+- Verificar solución completa
+
+**3. Validación de Solución:**
+- ✅ CI pipeline ejecuta sin workarounds temporales
+- ✅ `bench run-tests --app condominium_management` funciona
+- ✅ Todos los tests mantienen su funcionalidad original
+- ✅ Patrón oficial de Frappe Framework aplicado correctamente
+
+**CLAVE DEL ÉXITO:** No inventar soluciones custom, sino **replicar exactamente** patrones de apps oficiales exitosas.
 
 ---
 
@@ -416,6 +448,7 @@ La inversión en estas herramientas y procesos se amortizará exponencialmente e
 ---
 
 **Documento generado:** `GITHUB_WORKFLOW_LESSONS.md`
-**Fecha:** 29 de junio de 2025
-**Commits relacionados:** `e6a578a`, `a7588da`
-**Estado:** ✅ Validado con Act y aplicado exitosamente
+**Fecha:** 30 de junio de 2025
+**Commits relacionados:** `e6a578a`, `afdd594`, `48aad1c`, `8d3cc46`
+**Estado:** ✅ RESUELTO DEFINITIVAMENTE - Lending app pattern aplicado exitosamente
+**Solución Final:** Hooks after_install + before_tests implementados según patrón oficial Frappe
