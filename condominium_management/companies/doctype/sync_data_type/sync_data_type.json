@@ -1,0 +1,48 @@
+{
+ "doctype": "DocType",
+ "name": "Sync Data Type",
+ "label": "Tipo de Dato de Sincronización",
+ "module": "Companies",
+    "permissions": [
+        {
+            "role": "System Manager",
+            "permlevel": 0,
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        }
+    ],
+ "app": "condominium_management",
+ "istable": 1,
+ "fields": [
+  {
+   "fieldname": "data_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Dato",
+   "options": "Proveedor\nArtículo\nPlantilla de Email\nFormato de Impresión\nFlujo de Trabajo\nRol de Usuario\nCampo Personalizado",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sync_enabled",
+   "fieldtype": "Check",
+   "label": "Habilitado",
+   "default": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "filter_conditions",
+   "fieldtype": "Small Text",
+   "label": "Condiciones de Filtro"
+  },
+  {
+   "fieldname": "last_sync_count",
+   "fieldtype": "Int",
+   "label": "Registros Última Sync",
+   "read_only": 1,
+   "default": 0,
+   "in_list_view": 1
+  }
+ ]
+}

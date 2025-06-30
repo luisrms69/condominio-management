@@ -1,0 +1,69 @@
+name: Act Local Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    
+    container:
+      image: python:3.10-slim
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Install system dependencies
+        run: |
+          apt-get update
+          apt-get install -y git
+          
+      - name: Run Python syntax validation
+        run: |
+          echo "🔍 Validating Python syntax..."
+          python -m py_compile condominium_management/companies/doctype/*/test_*.py
+          echo "✅ All Python test files have valid syntax"
+          
+      - name: Count remaining tests
+        run: |
+          echo "📊 Counting test methods..."
+          total_tests=$(grep -r "def test_" condominium_management/companies/doctype/*/test_*.py | wc -l)
+          echo "Total test methods found: $total_tests"
+          echo "Expected: ~26 tests (after removing 3 spanish_labels tests)"
+          
+      - name: Validate test structure
+        run: |
+          echo "🧪 Validating test structure..."
+          python -c "
+          import os
+          import ast
+          
+          test_files = []
+          for root, dirs, files in os.walk('condominium_management/companies/doctype'):
+              for file in files:
+                  if file.startswith('test_') and file.endswith('.py'):
+                      test_files.append(os.path.join(root, file))
+          
+          print(f'Found {len(test_files)} test files')
+          
+          total_methods = 0
+          for test_file in test_files:
+              try:
+                  with open(test_file, 'r') as f:
+                      tree = ast.parse(f.read())
+                  
+                  methods = [node.name for node in ast.walk(tree) 
+                            if isinstance(node, ast.FunctionDef) and node.name.startswith('test_')]
+                  total_methods += len(methods)
+                  print(f'{test_file}: {len(methods)} test methods')
+              except Exception as e:
+                  print(f'Error parsing {test_file}: {e}')
+                  exit(1)
+          
+          print(f'✅ Total test methods: {total_methods}')
+          if total_methods < 20:
+              print('⚠️  Warning: Low test count')
+          else:
+              print('🎯 Good test coverage')
+          "

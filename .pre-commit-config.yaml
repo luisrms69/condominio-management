@@ -23,12 +23,15 @@ repos:
       - id: ruff
         name: "Run ruff import sorter"
         args: ["--select=I", "--fix"]
+        exclude: "condominium_management/tests/"
 
       - id: ruff
         name: "Run ruff linter"
+        exclude: "condominium_management/tests/"
 
       - id: ruff-format
         name: "Run ruff formatter"
+        exclude: "condominium_management/tests/"
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.7.1

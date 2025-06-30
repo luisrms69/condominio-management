@@ -1,0 +1,131 @@
+{
+ "doctype": "DocType",
+ "name": "Master Data Sync Configuration",
+ "label": "Configuración de Sincronización de Master Data",
+ "istable": 0,
+ "module": "Companies",
+ "is_published_field": "",
+ "app": "condominium_management",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "sync_name",
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie",
+   "options": "MDSC-.YYYY.-",
+   "default": "MDSC-.YYYY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sync_name",
+   "fieldtype": "Data",
+   "label": "Nombre de la Configuración",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Origen"
+  },
+  {
+   "fieldname": "source_company",
+   "fieldtype": "Link",
+   "label": "Empresa Origen",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sync_frequency",
+   "fieldtype": "Select",
+   "label": "Frecuencia de Sincronización",
+   "options": "Tiempo Real\nDiario\nSemanal\nManual",
+   "default": "Diario"
+  },
+  {
+   "fieldname": "conflict_resolution",
+   "fieldtype": "Select",
+   "label": "Resolución de Conflictos",
+   "options": "Fuente Gana\nDestino Gana\nRevisión Manual",
+   "default": "Fuente Gana"
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Empresas Destino"
+  },
+  {
+   "fieldname": "target_companies",
+   "fieldtype": "Table",
+   "label": "Empresas Destino",
+   "options": "Target Company Sync"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "Tipos de Datos a Sincronizar"
+  },
+  {
+   "fieldname": "data_types",
+   "fieldtype": "Table",
+   "label": "Tipos de Datos",
+   "options": "Sync Data Type"
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break",
+   "label": "Estado y Control"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Activo",
+   "default": 1
+  },
+  {
+   "fieldname": "last_sync",
+   "fieldtype": "Datetime",
+   "label": "Última Sincronización",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sync_status",
+   "fieldtype": "Select",
+   "label": "Estado de Sincronización",
+   "options": "Pendiente\nEn Progreso\nCompletado\nError",
+   "default": "Pendiente",
+   "read_only": 1
+  },
+  {
+   "fieldname": "error_log",
+   "fieldtype": "Long Text",
+   "label": "Log de Errores",
+   "read_only": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "permlevel": 0,
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Company Administrator",
+   "permlevel": 0,
+   "read": 1,
+   "write": 1,
+   "create": 1
+  }
+ ]
+}

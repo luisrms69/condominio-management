@@ -52,3 +52,9 @@ test_reports/
 *.tmp
 *.temp
 *~
+
+# Act Local CI (NO SUBIR)
+.actrc
+docker-compose.act.yml
+.act/
+act-cache/

@@ -1,0 +1,167 @@
+{
+ "doctype": "DocType",
+ "name": "Service Management Contract",
+ "label": "Contrato de Gestión de Servicios",
+ "istable": 0,
+ "module": "Companies",
+ "is_published_field": "",
+ "app": "condominium_management",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "contract_name",
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie",
+   "options": "SMC-.YYYY.-",
+   "default": "SMC-.YYYY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "contract_name",
+   "fieldtype": "Data",
+   "label": "Nombre del Contrato",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Información de las Empresas"
+  },
+  {
+   "fieldname": "service_provider",
+   "fieldtype": "Link",
+   "label": "Empresa Administradora",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "client_condominium",
+   "fieldtype": "Link",
+   "label": "Condominio Cliente",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contract_start",
+   "fieldtype": "Date",
+   "label": "Inicio del Contrato",
+   "reqd": 1
+  },
+  {
+   "fieldname": "contract_end",
+   "fieldtype": "Date",
+   "label": "Fin del Contrato"
+  },
+  {
+   "fieldname": "contract_status",
+   "fieldtype": "Select",
+   "label": "Estado del Contrato",
+   "options": "Activo\nSuspendido\nTerminado",
+   "default": "Activo"
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Términos Financieros"
+  },
+  {
+   "fieldname": "monthly_fee",
+   "fieldtype": "Currency",
+   "label": "Tarifa Mensual"
+  },
+  {
+   "fieldname": "billing_cycle",
+   "fieldtype": "Select",
+   "label": "Ciclo de Facturación",
+   "options": "Mensual\nTrimestral\nSemestral\nAnual",
+   "default": "Mensual"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Moneda",
+   "options": "Currency",
+   "default": "MXN"
+  },
+  {
+   "fieldname": "payment_terms",
+   "fieldtype": "Link",
+   "label": "Términos de Pago",
+   "options": "Payment Term"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "Servicios y Configuración"
+  },
+  {
+   "fieldname": "services_provided",
+   "fieldtype": "Table",
+   "label": "Servicios Proporcionados",
+   "options": "Contract Service Item"
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Datos"
+  },
+  {
+   "fieldname": "data_sharing_level",
+   "fieldtype": "Select",
+   "label": "Nivel de Compartición de Datos",
+   "options": "Completo\nLimitado\nSolo Lectura",
+   "default": "Limitado"
+  },
+  {
+   "fieldname": "master_data_sync",
+   "fieldtype": "Check",
+   "label": "Sincronización de Master Data",
+   "default": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sync_frequency",
+   "fieldtype": "Select",
+   "label": "Frecuencia de Sincronización",
+   "options": "Tiempo Real\nDiario\nSemanal\nManual",
+   "default": "Diario",
+   "depends_on": "master_data_sync"
+  },
+  {
+   "fieldname": "last_sync_date",
+   "fieldtype": "Datetime",
+   "label": "Última Sincronización",
+   "read_only": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "permlevel": 0,
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Company Administrator",
+   "permlevel": 0,
+   "read": 1,
+   "write": 1,
+   "create": 1
+  }
+ ]
+}

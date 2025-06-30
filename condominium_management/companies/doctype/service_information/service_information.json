@@ -1,0 +1,53 @@
+{
+ "doctype": "DocType",
+ "name": "Service Information",
+ "label": "Información del Servicio",
+ "module": "Companies",
+ "app": "condominium_management",
+ "istable": 1,
+ "permissions": [
+  {
+   "role": "System Manager",
+   "permlevel": 0,
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  }
+ ],
+ "fields": [
+  {
+   "fieldname": "service_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Servicio",
+   "options": "Administración\nMantenimiento\nSeguridad\nLimpieza\nJardinería\nGimnasio\nLavandería\nEstacionamiento\nOtro",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "service_name",
+   "fieldtype": "Data",
+   "label": "Nombre del Servicio",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "service_description",
+   "fieldtype": "Small Text",
+   "label": "Descripción del Servicio"
+  },
+  {
+   "fieldname": "is_free",
+   "fieldtype": "Check",
+   "label": "Servicio Gratuito",
+   "default": 0,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "service_cost",
+   "fieldtype": "Currency",
+   "label": "Costo del Servicio",
+   "depends_on": "eval:!doc.is_free"
+  }
+ ]
+}

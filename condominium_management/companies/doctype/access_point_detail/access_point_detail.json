@@ -1,0 +1,77 @@
+{
+ "doctype": "DocType",
+ "name": "Access Point Detail",
+ "label": "Detalle de Punto de Acceso",
+ "module": "Companies",
+    "permissions": [
+        {
+            "role": "System Manager",
+            "permlevel": 0,
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        }
+    ],
+ "app": "condominium_management",
+ "istable": 1,
+ "fields": [
+  {
+   "fieldname": "access_point_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Punto de Acceso",
+   "options": "Entrada Principal\nEntrada de Servicio\nEstacionamiento\nAcceso Peatonal\nAcceso de Emergencia\nOtro",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "access_point_name",
+   "fieldtype": "Data",
+   "label": "Nombre del Punto de Acceso",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "security_level",
+   "fieldtype": "Select",
+   "label": "Nivel de Seguridad",
+   "options": "Bajo\nMedio\nAlto\nRestringido",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "access_control_method",
+   "fieldtype": "Select",
+   "label": "Método de Control de Acceso",
+   "options": "Tarjeta\nCódigo\nHuella\nReconocimiento Facial\nQR\nOtro"
+  },
+  {
+   "fieldname": "who_can_access",
+   "fieldtype": "MultiSelectPills",
+   "label": "Quiénes Pueden Acceder",
+   "options": "Residentes y Condóminos\nVisitas\nProveedores\nPersonal de Servicio"
+  },
+  {
+   "fieldname": "access_vehicle_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Acceso",
+   "options": "Solo Peatonal\nSolo Vehículos\nVehículos y Peatones",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "opening_time",
+   "fieldtype": "Time",
+   "label": "Hora de Apertura"
+  },
+  {
+   "fieldname": "closing_time",
+   "fieldtype": "Time",
+   "label": "Hora de Cierre"
+  },
+  {
+   "fieldname": "operating_days",
+   "fieldtype": "MultiSelectPills",
+   "label": "Días de Operación",
+   "options": "Lunes\nMartes\nMiércoles\nJueves\nViernes\nSábado\nDomingo"
+  }
+ ]
+}
