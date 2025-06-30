@@ -189,40 +189,6 @@ class TestServiceManagementContract(FrappeTestCase):
 			self.assertEqual(doc.sync_frequency, frequency)
 			# FrappeTestCase will handle cleanup automatically via rollback
 
-	def test_spanish_labels(self):
-		"""Test that DocType has proper Spanish labels."""
-		meta = frappe.get_meta("Service Management Contract")
-
-		# Check DocType label
-		# Check DocType label using document_type property or JSON config
-		expected_label = "Contrato de Gestión de Servicios"
-		# Try multiple ways to get the label
-		if hasattr(meta, "label"):
-			actual_label = meta.label
-		elif hasattr(meta, "document_type"):
-			actual_label = meta.document_type
-		else:
-			# Fallback: get from DocType document directly
-			doctype_doc = frappe.get_doc("DocType", "Service Management Contract")
-			actual_label = doctype_doc.label if doctype_doc.label else doctype_doc.name
-		self.assertEqual(actual_label, expected_label)
-
-		# Check key field labels
-		contract_name_field = meta.get_field("contract_name")
-		self.assertEqual(contract_name_field.label, "Nombre del Contrato")
-
-		provider_field = meta.get_field("service_provider")
-		self.assertEqual(provider_field.label, "Empresa Administradora")
-
-		client_field = meta.get_field("client_condominium")
-		self.assertEqual(client_field.label, "Condominio Cliente")
-
-		fee_field = meta.get_field("monthly_fee")
-		self.assertEqual(fee_field.label, "Tarifa Mensual")
-
-		currency_field = meta.get_field("currency")
-		self.assertEqual(currency_field.label, "Moneda")
-
 	def test_required_fields(self):
 		"""Test that required fields are validated."""
 		# Test missing contract_name

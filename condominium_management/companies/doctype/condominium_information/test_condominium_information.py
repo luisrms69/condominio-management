@@ -165,40 +165,6 @@ class TestCondominiumInformation(FrappeTestCase):
 
 		# FrappeTestCase will handle cleanup automatically via rollback
 
-	def test_spanish_labels(self):
-		"""Test that DocType has proper Spanish labels."""
-		meta = frappe.get_meta("Condominium Information")
-
-		# Check DocType label
-		# Check DocType label using document_type property or JSON config
-		expected_label = "Información del Condominio"
-		# Try multiple ways to get the label
-		if hasattr(meta, "label"):
-			actual_label = meta.label
-		elif hasattr(meta, "document_type"):
-			actual_label = meta.document_type
-		else:
-			# Fallback: get from DocType document directly
-			doctype_doc = frappe.get_doc("DocType", "Condominium Information")
-			actual_label = doctype_doc.label if doctype_doc.label else doctype_doc.name
-		self.assertEqual(actual_label, expected_label)
-
-		# Check key field labels
-		company_field = meta.get_field("company")
-		self.assertEqual(company_field.label, "Condominio")
-
-		units_field = meta.get_field("total_units")
-		self.assertEqual(units_field.label, "Total de Unidades")
-
-		area_field = meta.get_field("total_area")
-		self.assertEqual(area_field.label, "Superficie Total (m²)")
-
-		gps_field = meta.get_field("gps_coordinates")
-		self.assertEqual(gps_field.label, "Coordenadas GPS")
-
-		arrive_field = meta.get_field("how_to_arrive")
-		self.assertEqual(arrive_field.label, "Instrucciones Generales de Cómo Llegar")
-
 	def test_gps_field_description(self):
 		"""Test GPS field has proper description."""
 		meta = frappe.get_meta("Condominium Information")

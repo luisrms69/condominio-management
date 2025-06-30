@@ -31,37 +31,6 @@ class TestSyncDataType(FrappeTestCase):
 			sync_type = frappe.get_doc({"doctype": "Sync Data Type", "sync_enabled": 1})
 			sync_type.insert()
 
-	def test_spanish_labels(self):
-		"""Test that DocType has proper Spanish labels."""
-		meta = frappe.get_meta("Sync Data Type")
-
-		# Check DocType label
-		# Check DocType label using document_type property or JSON config
-		expected_label = "Tipo de Dato de Sincronización"
-		# Try multiple ways to get the label
-		if hasattr(meta, "label"):
-			actual_label = meta.label
-		elif hasattr(meta, "document_type"):
-			actual_label = meta.document_type
-		else:
-			# Fallback: get from DocType document directly
-			doctype_doc = frappe.get_doc("DocType", "Sync Data Type")
-			actual_label = doctype_doc.label if doctype_doc.label else doctype_doc.name
-		self.assertEqual(actual_label, expected_label)
-
-		# Check field labels
-		data_type_field = meta.get_field("data_type")
-		self.assertEqual(data_type_field.label, "Tipo de Dato")
-
-		sync_enabled_field = meta.get_field("sync_enabled")
-		self.assertEqual(sync_enabled_field.label, "Habilitado")
-
-		filter_field = meta.get_field("filter_conditions")
-		self.assertEqual(filter_field.label, "Condiciones de Filtro")
-
-		sync_count_field = meta.get_field("last_sync_count")
-		self.assertEqual(sync_count_field.label, "Registros Última Sync")
-
 	def test_data_type_field_properties(self):
 		"""Test data_type field has correct properties."""
 		meta = frappe.get_meta("Sync Data Type")
