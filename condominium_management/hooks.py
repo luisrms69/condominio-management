@@ -186,7 +186,7 @@ after_install = "condominium_management.install.after_install"
 # Testing
 # -------
 
-before_tests = "condominium_management.tests.test_utils.before_tests"
+before_tests = "condominium_management.utils.before_tests"
 
 # Overriding Methods
 # ------------------------------
