@@ -8,7 +8,7 @@ app_license = "gpl-3.0"
 # Apps
 # ------------------
 
-required_apps = ["frappe", "erpnext"]
+required_apps = ["erpnext"]
 
 # Modules
 # ------------------
@@ -100,7 +100,7 @@ app_include_locale = "translations"
 # ------------
 
 # before_install = "condominium_management.install.before_install"
-# after_install = "condominium_management.install.after_install"
+after_install = "condominium_management.install.after_install"
 
 # Uninstallation
 # ------------
@@ -186,7 +186,7 @@ app_include_locale = "translations"
 # Testing
 # -------
 
-# before_tests = "condominium_management.install.before_tests"
+before_tests = "condominium_management.utils.before_tests"
 
 # Overriding Methods
 # ------------------------------

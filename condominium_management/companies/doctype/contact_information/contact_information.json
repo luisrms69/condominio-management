@@ -1,0 +1,52 @@
+{
+ "doctype": "DocType",
+ "name": "Contact Information",
+ "label": "Información de Contacto",
+ "module": "Companies",
+    "permissions": [
+        {
+            "role": "System Manager",
+            "permlevel": 0,
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        }
+    ],
+ "app": "condominium_management",
+ "istable": 1,
+ "fields": [
+  {
+   "fieldname": "contact_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Contacto",
+   "options": "Administración\nMantenimiento\nSeguridad\nRecepción\nConserjería\nOtro",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "contact_name",
+   "fieldtype": "Data",
+   "label": "Nombre de Contacto",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "phone_number",
+   "fieldtype": "Data",
+   "label": "Número de Teléfono",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Correo Electrónico",
+   "options": "Email"
+  },
+  {
+   "fieldname": "extension",
+   "fieldtype": "Data",
+   "label": "Extensión"
+  }
+ ]
+}
