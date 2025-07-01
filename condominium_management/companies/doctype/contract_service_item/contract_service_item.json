@@ -1,0 +1,53 @@
+{
+ "doctype": "DocType",
+ "name": "Contract Service Item",
+ "label": "Elemento de Servicio del Contrato",
+ "module": "Companies",
+    "permissions": [
+        {
+            "role": "System Manager",
+            "permlevel": 0,
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        }
+    ],
+ "app": "condominium_management",
+ "istable": 1,
+ "fields": [
+  {
+   "fieldname": "service_name",
+   "fieldtype": "Data",
+   "label": "Nombre del Servicio",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "service_description",
+   "fieldtype": "Small Text",
+   "label": "Descripción del Servicio",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "service_category",
+   "fieldtype": "Select",
+   "label": "Categoría del Servicio",
+   "options": "Administración General\nMantenimiento\nSeguridad\nLimpieza\nJardinería\nConsultoría\nOtro",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "monthly_rate",
+   "fieldtype": "Currency",
+   "label": "Tarifa Mensual",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "is_included",
+   "fieldtype": "Check",
+   "label": "Incluido en Tarifa Base",
+   "default": 1,
+   "in_list_view": 1
+  }
+ ]
+}
