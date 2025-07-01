@@ -1,0 +1,47 @@
+{
+ "doctype": "DocType",
+ "name": "Public Transport Option",
+ "label": "Opción de Transporte Público",
+ "module": "Companies",
+    "permissions": [
+        {
+            "role": "System Manager",
+            "permlevel": 0,
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        }
+    ],
+ "app": "condominium_management",
+ "istable": 1,
+ "fields": [
+  {
+   "fieldname": "transport_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Transporte",
+   "options": "Metro\nMetrobús\nAutobús\nTren\nTranvía\nTaxi\nOtro",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "route_name",
+   "fieldtype": "Data",
+   "label": "Nombre de Ruta",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "nearest_station",
+   "fieldtype": "Data",
+   "label": "Estación Más Cercana",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "walking_distance",
+   "fieldtype": "Float",
+   "label": "Distancia a Pie (m)",
+   "precision": 2
+  }
+ ]
+}

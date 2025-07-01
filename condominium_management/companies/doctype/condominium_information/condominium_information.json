@@ -1,0 +1,155 @@
+{
+ "doctype": "DocType",
+ "name": "Condominium Information",
+ "label": "Información del Condominio",
+ "istable": 0,
+ "module": "Companies",
+ "is_published_field": "",
+ "app": "condominium_management",
+ "title_field": "company_name",
+ "fields": [
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "label": "Nombre",
+   "fetch_from": "company.company_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tab_break_1",
+   "fieldtype": "Tab Break",
+   "label": "Información General"
+  },
+  {
+   "fieldname": "section_break_general",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "commercial_name",
+   "fieldtype": "Data",
+   "label": "Nombre Comercial"
+  },
+  {
+   "fieldname": "construction_year",
+   "fieldtype": "Int",
+   "label": "Año de Construcción"
+  },
+  {
+   "fieldname": "total_units",
+   "fieldtype": "Int",
+   "label": "Total de Unidades"
+  },
+  {
+   "fieldname": "column_break_general",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_area",
+   "fieldtype": "Float",
+   "label": "Superficie Total (m²)",
+   "precision": 2
+  },
+  {
+   "fieldname": "common_area",
+   "fieldtype": "Float",
+   "label": "Área Común (m²)",
+   "precision": 2
+  },
+  {
+   "fieldname": "private_area",
+   "fieldtype": "Float",
+   "label": "Área Privada (m²)",
+   "precision": 2
+  },
+  {
+   "fieldname": "tab_break_2",
+   "fieldtype": "Tab Break",
+   "label": "Cómo Llegar"
+  },
+  {
+   "fieldname": "section_break_location",
+   "fieldtype": "Section Break",
+   "label": "Instrucciones de Llegada"
+  },
+  {
+   "fieldname": "how_to_arrive",
+   "fieldtype": "Text",
+   "label": "Instrucciones Generales de Cómo Llegar",
+   "description": "Coloca direcciones generales de como llegar al sitio, particularmente si se tienen que tomar caminos no claramente definidos, puedes además indicar las principales vías de acceso y demás información que consideres ayude a alguien sin conocimiento del área a llegar"
+  },
+  {
+   "fieldname": "gps_coordinates",
+   "fieldtype": "Data",
+   "label": "Coordenadas GPS",
+   "description": "Coordenadas GPS del condominio para navegación (formato: latitud, longitud). Ejemplo: 19.432608, -99.133209"
+  },
+  {
+   "fieldname": "parking_information",
+   "fieldtype": "Text",
+   "label": "Información de Estacionamiento"
+  },
+  {
+   "fieldname": "section_break_transport",
+   "fieldtype": "Section Break",
+   "label": "Transporte Público"
+  },
+  {
+   "fieldname": "public_transport",
+   "fieldtype": "Table",
+   "label": "Opciones de Transporte Público",
+   "options": "Public Transport Option"
+  },
+  {
+   "fieldname": "section_break_references",
+   "fieldtype": "Section Break",
+   "label": "Referencias Cercanas"
+  },
+  {
+   "fieldname": "nearby_references",
+   "fieldtype": "Table",
+   "label": "Referencias Cercanas",
+   "options": "Nearby Reference"
+  },
+  {
+   "fieldname": "tab_break_3",
+   "fieldtype": "Tab Break",
+   "label": "Accesos"
+  },
+  {
+   "fieldname": "section_break_access",
+   "fieldtype": "Section Break",
+   "label": "Puntos de Acceso"
+  },
+  {
+   "fieldname": "access_points",
+   "fieldtype": "Table",
+   "label": "Puntos de Acceso",
+   "options": "Access Point Detail"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "permlevel": 0,
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Company Administrator",
+   "permlevel": 0,
+   "read": 1,
+   "write": 1,
+   "create": 1
+  }
+ ]
+}
