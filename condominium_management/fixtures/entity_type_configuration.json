@@ -3,13 +3,17 @@
         "doctype": "Entity Type Configuration",
         "name": "Service Contract Configuration",
         "entity_doctype": "Service Management Contract",
-        "entity_description": "Configuración para contratos de servicios",
+        "entity_name": "Contrato de Gestión de Servicios",
+        "entity_name_plural": "Contratos de Gestión de Servicios",
+        "owning_module": "Companies",
+        "is_active": 1,
         "requires_configuration": 1,
         "auto_detect_on_create": 1,
-        "auto_detect_on_update": 0,
-        "priority": 3,
-        "is_active": 1,
-        "conflict_detection_fields": [
+        "applies_to_estatuto": 1,
+        "applies_to_manual": 1,
+        "applies_to_reglamento": 1,
+        "conflict_detection_enabled": 1,
+        "conflict_fields": [
             {
                 "field_name": "contract_period",
                 "field_label": "Período del Contrato",
@@ -30,12 +34,16 @@
         "doctype": "Entity Type Configuration", 
         "name": "Document Configuration",
         "entity_doctype": "File",
-        "entity_description": "Configuración para documentos del sistema",
+        "entity_name": "Documento del Sistema",
+        "entity_name_plural": "Documentos del Sistema",
+        "owning_module": "Document Generation",
+        "is_active": 1,
         "requires_configuration": 0,
         "auto_detect_on_create": 0,
-        "auto_detect_on_update": 0,
-        "priority": 2,
-        "is_active": 1,
-        "conflict_detection_fields": []
+        "applies_to_estatuto": 0,
+        "applies_to_manual": 0,
+        "applies_to_reglamento": 0,
+        "conflict_detection_enabled": 0,
+        "conflict_fields": []
     }
 ]
