@@ -31,8 +31,10 @@ jobs:
 
       - name: Run Semgrep rules
         run: |
-          pip install semgrep
+          pip install --upgrade pip setuptools wheel
+          pip install --timeout=60 --retries=3 semgrep
           semgrep ci --config ./frappe-semgrep-rules/rules --config r/python.lang.correctness
+        continue-on-error: false
 
   deps-vulnerable-check:
     name: 'Vulnerable Dependency Check'
