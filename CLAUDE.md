@@ -810,7 +810,42 @@ find . -name "test_*.py" | wc -l    # Contar archivos de test
 
 ---
 
-**Última actualización:** 28 de junio de 2025  
-**Compliance Level:** Frappe Framework v15 + VS Code Extensions + Pre-commit + Workflow v2.0 - 100% ✅  
+---
+
+## 🚨 **FUNCIONALIDAD PENDIENTE CRÍTICA**
+
+### **⚠️ HOOKS UNIVERSALES DESACTIVADOS TEMPORALMENTE**
+
+**Estado:** Desactivados en PR #6 para resolver errores de CI  
+**Prioridad:** CRÍTICA - Debe resolverse inmediatamente post-merge  
+**Issue:** #7 - Reactivar hooks universales con verificaciones de contexto  
+**Estimación:** 3 horas de desarrollo + testing  
+
+#### **Funcionalidad Afectada:**
+- ❌ **Auto-detección automática** de entidades que requieren templates
+- ❌ **Validación automática** de configuraciones al crear documentos
+- ❌ **Propagación automática** de templates a nuevas entidades
+- ❌ **Detección de conflictos** en tiempo real
+
+#### **Impacto Temporal:**
+- Las administradoras deben configurar entidades **manualmente**
+- Pérdida de automatización en el workflow de templates
+- Framework core sigue funcionando (DocTypes, APIs, workflows)
+
+#### **Solución Planificada:**
+```python
+# Implementar hooks condicionales que eviten setup wizard
+def on_document_insert_conditional(doc, method):
+    if frappe.flags.in_install or frappe.flags.in_setup_wizard:
+        return
+    # Ejecutar funcionalidad normal...
+```
+
+**ARCHIVO DE DOCUMENTACIÓN:** `PENDING_FUNCTIONALITY_ISSUE.md`
+
+---
+
+**Última actualización:** 3 de julio de 2025  
+**Compliance Level:** Frappe Framework v15 + VS Code Extensions + Pre-commit + Workflow v2.0 - 95% ✅  
 **Metodología:** Documentación automatizada + GitHub management + Generación final de manuales  
-**Estado:** ✅ APROBADO - Implementación en progreso
+**Estado:** ✅ APROBADO - Implementación en progreso | ⚠️ FUNCIONALIDAD PENDIENTE CRÍTICA
