@@ -845,7 +845,83 @@ def on_document_insert_conditional(doc, method):
 
 ---
 
+---
+
+## 🔒 **REGLA CRÍTICA DE WORKFLOW**
+
+### **⚠️ POLÍTICA DE PUSH A REPOSITORIO REMOTO**
+
+**NUEVA REGLA ESTABLECIDA:** Los push al repositorio remoto DEBEN ser revisados por el usuario antes del envío.
+
+**PROCESO OBLIGATORIO:**
+1. ✅ Preparar commits localmente
+2. ✅ Mostrar cambios al usuario para revisión
+3. ⚠️ **ESPERAR APROBACIÓN** antes de hacer push
+4. ✅ Solo hacer push después de confirmación explícita del usuario
+
+**EXCEPCIONES:**
+- Solo si el usuario indica explícitamente en la conversación que puede hacer push automáticamente
+- En caso de urgencia crítica con autorización previa
+
+**APLICABLE A:**
+- Todos los commits y push a repositorio remoto
+- Especialmente cambios que afectan CI/CD
+- Modificaciones a archivos de configuración críticos
+
+---
+
 **Última actualización:** 3 de julio de 2025  
 **Compliance Level:** Frappe Framework v15 + VS Code Extensions + Pre-commit + Workflow v2.0 - 95% ✅  
 **Metodología:** Documentación automatizada + GitHub management + Generación final de manuales  
 **Estado:** ✅ APROBADO - Implementación en progreso | ⚠️ FUNCIONALIDAD PENDIENTE CRÍTICA
+
+---
+
+## 🔒 **REGLA CRÍTICA: PREFERENCIA FRAPPE vs ERPNEXT**
+
+### **⚖️ POLÍTICA DE DEPENDENCIAS ESTABLECIDA**
+
+**REGLA FUNDAMENTAL:** Las funciones de Frappe Framework tienen **PREFERENCIA ABSOLUTA** sobre funciones de ERPNext.
+
+#### **📋 CRITERIOS DE DECISIÓN:**
+
+1. **✅ USAR FRAPPE:** Si existe función equivalente en Frappe Framework
+2. **⚠️ EVALUAR ERPNEXT:** Solo si es funcionalidad crítica no disponible en Frappe
+3. **❌ EVITAR ERPNEXT:** Si requiere recrear funcionalidad existente de Frappe
+
+#### **🎯 IMPLEMENTACIÓN:**
+
+- **Preferencia 1:** Funciones nativas de `frappe.*`
+- **Preferencia 2:** DocTypes de Frappe Core (`User`, `Role`, `File`, etc.)
+- **Preferencia 3:** DocTypes de ERPNext solo si son críticos (`Company`, `Currency`)
+- **Último recurso:** Funciones específicas de ERPNext (con documentación de riesgo)
+
+#### **📊 EJEMPLOS APLICADOS:**
+
+```python
+# ✅ CORRECTO - Frappe Framework
+from frappe.utils import now_datetime
+user = frappe.get_doc("User", "Administrator")
+
+# ❌ EVITAR - ERPNext específico  
+from erpnext.setup.utils import enable_all_roles_and_domains
+
+# ⚠️ JUSTIFICADO - ERPNext crítico documentado
+company = frappe.get_doc("Company", company_name)  # Company DocType es crítico
+```
+
+#### **🚨 RIESGOS DOCUMENTADOS DE FUNCIONES ERPNEXT:**
+
+- **Dependencias frágiles:** Pueden cambiar entre versiones
+- **Portabilidad limitada:** No funcionan en instalaciones solo-Frappe  
+- **Mantenimiento complejo:** Requiere seguimiento de cambios de ERPNext
+- **Testing complicado:** Pueden fallar en ambientes CI minimalistas
+
+#### **✅ BENEFICIOS DE PREFERENCIA FRAPPE:**
+
+- **Estabilidad garantizada:** APIs estables del framework core
+- **Portabilidad máxima:** Funciona en cualquier instalación Frappe
+- **Mantenimiento simplificado:** Menos dependencias externas
+- **Testing robusto:** Compatible con todos los ambientes CI
+
+**APLICABLE A:** Todo el desarrollo futuro del proyecto y revisión de código existente.
