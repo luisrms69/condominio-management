@@ -1,0 +1,71 @@
+{
+    "actions": [],
+    "creation": "2025-07-03 15:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "field_name",
+        "field_label",
+        "conflict_type",
+        "column_break_1",
+        "severity",
+        "validation_rule",
+        "is_active"
+    ],
+    "fields": [
+        {
+            "fieldname": "field_name",
+            "fieldtype": "Data",
+            "label": "Nombre del Campo",
+            "reqd": 1
+        },
+        {
+            "fieldname": "field_label",
+            "fieldtype": "Data",
+            "label": "Etiqueta del Campo"
+        },
+        {
+            "fieldname": "conflict_type",
+            "fieldtype": "Select",
+            "label": "Tipo de Conflicto",
+            "options": "Duplicación\nHorario\nCapacidad\nUbicación\nRecurso\nPersonalizado",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "severity",
+            "fieldtype": "Select",
+            "label": "Severidad",
+            "options": "Baja\nMedia\nAlta",
+            "default": "Media"
+        },
+        {
+            "fieldname": "validation_rule",
+            "fieldtype": "Text",
+            "label": "Regla de Validación",
+            "description": "Regla personalizada para detección de conflictos"
+        },
+        {
+            "fieldname": "is_active",
+            "fieldtype": "Check",
+            "label": "Activo",
+            "default": 1
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "istable": 1,
+    "links": [],
+    "modified": "2025-07-03 15:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Document Generation",
+    "name": "Conflict Detection Field",
+    "owner": "Administrator",
+    "permissions": [],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1
+}

@@ -1,0 +1,106 @@
+{
+    "actions": [],
+    "creation": "2025-07-03 12:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "template_code",
+        "template_name",
+        "infrastructure_type",
+        "infrastructure_subtype",
+        "column_break_1",
+        "target_document",
+        "target_section",
+        "is_active",
+        "section_break_1",
+        "template_content",
+        "section_break_2",
+        "template_fields"
+    ],
+    "fields": [
+        {
+            "fieldname": "template_code",
+            "fieldtype": "Data",
+            "label": "Código de Template",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "fieldname": "template_name",
+            "fieldtype": "Data",
+            "label": "Nombre del Template",
+            "reqd": 1
+        },
+        {
+            "fieldname": "infrastructure_type",
+            "fieldtype": "Select",
+            "label": "Tipo de Infraestructura",
+            "options": "Amenity\\nEquipment\\nCommon Area\\nSecurity\\nParking",
+            "reqd": 1
+        },
+        {
+            "fieldname": "infrastructure_subtype",
+            "fieldtype": "Data",
+            "label": "Subtipo Específico",
+            "description": "Ej: piscina, gimnasio, elevador"
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "target_document",
+            "fieldtype": "Select",
+            "label": "Documento Destino",
+            "options": "Estatuto\\nManual Operativo\\nReglamento",
+            "reqd": 1
+        },
+        {
+            "fieldname": "target_section",
+            "fieldtype": "Data",
+            "label": "Sección Destino",
+            "description": "Número o identificador de sección"
+        },
+        {
+            "fieldname": "is_active",
+            "fieldtype": "Check",
+            "label": "Activo",
+            "default": 1
+        },
+        {
+            "fieldname": "section_break_1",
+            "fieldtype": "Section Break",
+            "label": "Contenido del Template"
+        },
+        {
+            "fieldname": "template_content",
+            "fieldtype": "Long Text",
+            "label": "Contenido del Template",
+            "description": "Contenido usando sintaxis Jinja2"
+        },
+        {
+            "fieldname": "section_break_2",
+            "fieldtype": "Section Break",
+            "label": "Campos Variables"
+        },
+        {
+            "fieldname": "template_fields",
+            "fieldtype": "Table",
+            "label": "Campos del Template",
+            "options": "Template Field Definition"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "istable": 1,
+    "links": [],
+    "modified": "2025-07-03 12:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Document Generation",
+    "name": "Infrastructure Template Definition",
+    "owner": "Administrator",
+    "permissions": [],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1
+}
