@@ -289,8 +289,6 @@ class EntityConfiguration(Document):
 		if not self.has_value_changed("configuration_status"):
 			return
 
-		old_status = self.get_doc_before_save().configuration_status if self.get_doc_before_save() else None
-
 		# Notificar cambios importantes
 		if self.configuration_status == "Pendiente Aprobación":
 			self.notify_pending_approval()
@@ -378,7 +376,7 @@ class EntityConfiguration(Document):
 			source_doc = frappe.get_doc(self.source_doctype, self.source_docname)
 			context["doc"] = source_doc
 			context["source"] = source_doc.as_dict()
-		except:
+		except Exception:
 			context["doc"] = {}
 			context["source"] = {}
 

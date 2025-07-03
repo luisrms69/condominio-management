@@ -90,7 +90,7 @@ def propagate_template_changes(registry_name, template_version, affected_stats):
 			registry = frappe.get_single("Master Template Registry")
 			registry.db_set("update_propagation_status", "Fallido", update_modified=False)
 			frappe.db.commit()
-		except:
+		except Exception:
 			pass
 
 		raise
@@ -317,7 +317,7 @@ def get_propagation_status(registry_name=None):
 		if last_result:
 			try:
 				stats["last_propagation"] = frappe.parse_json(last_result)
-			except:
+			except Exception:
 				pass
 
 		# Configuraciones pendientes de sincronización

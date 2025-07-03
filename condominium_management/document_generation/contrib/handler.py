@@ -1,7 +1,7 @@
 # Copyright (c) 2025, Buzola and contributors
 # For license information, please see license.txt
 
-from typing import Any, Dict, List
+from typing import Any
 
 import frappe
 

@@ -122,7 +122,7 @@ class ConfigurationField(Document):
 			else:
 				return str(self.field_value)
 
-		except:
+		except Exception:
 			return str(self.field_value)
 
 	def get_typed_value(self):
@@ -149,5 +149,5 @@ class ConfigurationField(Document):
 			else:
 				return str(self.field_value)
 
-		except:
+		except Exception:
 			return self.field_value
