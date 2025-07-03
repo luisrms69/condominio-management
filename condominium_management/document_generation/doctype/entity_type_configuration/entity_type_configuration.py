@@ -99,7 +99,7 @@ class EntityTypeConfiguration(Document):
 		if not self.conflict_detection_enabled or not self.conflict_fields:
 			return
 
-		doctype_fields = frappe.get_meta(self.entity_doctype).get_fieldnames()
+		doctype_fields = [field.fieldname for field in frappe.get_meta(self.entity_doctype).fields]
 
 		for conflict_field in self.conflict_fields:
 			if conflict_field.field_name not in doctype_fields:
