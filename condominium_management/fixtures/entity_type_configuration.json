@@ -15,15 +15,15 @@
         "conflict_detection_enabled": 1,
         "conflict_fields": [
             {
-                "field_name": "contract_period",
-                "field_label": "Período del Contrato",
+                "field_name": "contract_start",
+                "field_label": "Inicio del Contrato",
                 "conflict_type": "Horario",
                 "severity": "Alta",
                 "is_active": 1
             },
             {
-                "field_name": "service_scope",
-                "field_label": "Alcance del Servicio",
+                "field_name": "data_sharing_level",
+                "field_label": "Nivel de Compartición de Datos",
                 "conflict_type": "Recurso",
                 "severity": "Media",
                 "is_active": 1

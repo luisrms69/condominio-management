@@ -35,7 +35,7 @@
             "fieldname": "infrastructure_type",
             "fieldtype": "Select",
             "label": "Tipo de Infraestructura",
-            "options": "Amenity\\nEquipment\\nCommon Area\\nSecurity\\nParking",
+            "options": "Amenity\nEquipment\nCommon Area\nSecurity\nParking",
             "reqd": 1
         },
         {
