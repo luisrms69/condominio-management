@@ -5,19 +5,22 @@ from frappe.utils.user import is_website_user
 
 def before_tests():
 	"""
-	Configuración pre-tests usando setup de ERPNext básico.
+	Configuración pre-tests minimalista para evitar errores de setup complejo.
 
-	Utiliza setup_complete cuando no hay Company existente para asegurar
-	que todos los DocTypes y registros básicos estén creados.
+	Solo crea registros básicos necesarios para tests, evitando setup_complete.
 	"""
 	frappe.clear_cache()
 
-	if not frappe.get_list("Company"):
-		# Ejecutar setup completo de ERPNext para CI
-		_setup_erpnext_for_tests()
+	# Solo crear Company básica sin setup complejo
+	_create_minimal_company()
+	_create_basic_erpnext_records()
 
 	# Reemplazar enable_all_roles_and_domains con función Frappe pura
 	_setup_basic_roles_frappe_only()
+
+	# Force migrate DocTypes to ensure they exist in CI
+	_reload_custom_doctypes()
+
 	frappe.db.commit()  # nosemgrep
 
 
@@ -48,9 +51,10 @@ def _setup_erpnext_for_tests():
 			}
 		)
 	except Exception as e:
-		frappe.log_error(f"Error en setup_complete: {e}")
+		print(f"Warning: setup_complete failed: {e}")
 		# Fallback: crear solo Company si setup_complete falla
 		_create_minimal_company()
+		_create_basic_erpnext_records()
 
 
 def _create_minimal_company():
@@ -111,6 +115,67 @@ def _setup_basic_roles_frappe_only():
 				user.append("roles", {"role": role})
 
 		user.save(ignore_permissions=True)
+
+
+def _create_basic_erpnext_records():
+	"""
+	Crear registros básicos de ERPNext necesarios para tests.
+
+	Fallback cuando setup_complete falla.
+	"""
+	# Item Group
+	if not frappe.db.exists("Item Group", "All Item Groups"):
+		frappe.get_doc(
+			{
+				"doctype": "Item Group",
+				"item_group_name": "All Item Groups",
+				"is_group": 1,
+			}
+		).insert(ignore_permissions=True)
+
+	# UOM
+	if not frappe.db.exists("UOM", "Nos"):
+		frappe.get_doc(
+			{
+				"doctype": "UOM",
+				"uom_name": "Nos",
+			}
+		).insert(ignore_permissions=True)
+
+	# Department
+	if not frappe.db.exists("Department", "All Departments"):
+		frappe.get_doc(
+			{
+				"doctype": "Department",
+				"department_name": "All Departments",
+				"is_group": 1,
+			}
+		).insert(ignore_permissions=True)
+
+
+def _reload_custom_doctypes():
+	"""
+	Force reload de DocTypes personalizados para asegurar que existan en CI.
+
+	Previene errores de 'DocType not found' durante ejecución de tests.
+	"""
+	custom_doctypes = [
+		("document_generation", "master_template_registry"),
+		("document_generation", "entity_type_configuration"),
+		("document_generation", "entity_configuration"),
+		("document_generation", "infrastructure_template_definition"),
+		("document_generation", "template_auto_assignment_rule"),
+		("document_generation", "configuration_field"),
+		("document_generation", "conflict_detection_field"),
+		("community_contributions", "contribution_category"),
+		("community_contributions", "contribution_request"),
+	]
+
+	for module, doctype in custom_doctypes:
+		try:
+			frappe.reload_doc(module, "doctype", doctype)
+		except Exception as e:
+			print(f"Warning: Could not reload {module}.{doctype}: {e}")
 
 
 def check_app_permission():

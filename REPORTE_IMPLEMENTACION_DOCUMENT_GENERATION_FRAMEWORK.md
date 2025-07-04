@@ -537,8 +537,128 @@ doctype_fields = [field.fieldname for field in frappe.get_meta(self.entity_docty
 
 ---
 
+---
+
+## 🔧 **DEBUGGING EXHAUSTIVO DE TESTS - SESIÓN 04/07/2025**
+
+### **📊 RESUMEN DE PROBLEMAS DE TESTS IDENTIFICADOS:**
+
+**Estado al final de sesión previa:** Framework implementado y enviado, pero **tests fallan persistentemente**
+
+#### **🚨 Errores Críticos en Test Suite (13 errores, 2 failures):**
+
+### **1. LinkValidationError - Contribution Category (4 errores)**
+```
+frappe.exceptions.LinkValidationError: Could not find Categoría de Contribución: Document Generation-Test Infrastructure
+```
+**Análisis:** 
+- Test setup intenta crear categoría con `frappe.db.commit()`
+- En CI, la categoría no persiste entre setup y ejecución de tests
+- **Commits:** 9b6f661, ef32d67 - intentos fallidos de corrección
+
+### **2. ValidationError - Documento origen faltante (3 errores)**
+```
+frappe.exceptions.ValidationError: Documento origen None None no existe
+```
+**Análisis:**
+- Entity Configuration tests no proporcionan `source_document_type` y `source_document_name`
+- Validación en línea 76 de `entity_configuration.py` requiere estos campos
+- **Commits:** ef32d67 - agregados campos obligatorios pero faltan source fields
+
+### **3. ValidationError - Template referencias inexistentes (3 errores)**
+```
+frappe.exceptions.ValidationError: Regla de asignación referencia template inexistente: POOL_TEMPLATE
+```
+**Análisis:**
+- Master Template Registry tests referencian `POOL_TEMPLATE` que no existe
+- Validación en línea 72 de `master_template_registry.py` verifica templates existentes
+- Tests necesitan crear templates válidos en setup
+
+### **4. Spanish Labels no funcionan (2 failures)**
+```
+AssertionError: None != 'Configuración de Tipo de Entidad'
+```
+**Análisis:**
+- Campo `label` agregado en JSON local no se replica en ambiente CI
+- `meta.get("label")` retorna `None` porque DocType no migró correctamente
+- **Commits:** 9b6f661 - agregado label directo, pero no funciona en CI
+
+### **5. AttributeError - Campo inexistente (1 error)**
+```
+AttributeError: 'NoneType' object has no attribute 'options'
+```
+**Análisis:**
+- Test busca campo que no existe en DocType en ambiente CI
+- Posible diferencia entre DocType local vs CI
+
+#### **⏱️ Cronología de Intentos de Corrección:**
+
+**Commit 9b6f661:** "fix(tests): corregir errores CI - Spanish labels y LinkValidationErrors"
+- ✅ Agregar label español a Entity Type Configuration
+- ✅ Usar DocTypes reales (Company, Customer, Item, User)
+- ✅ Corregir Select options `\\n` → `\n`
+- ❌ **Resultado:** Labels siguen fallando, Contribution Category persiste
+
+**Commit 0ef5dc5:** "fix(tests): corregir validaciones requeridas en Entity Type Configuration"
+- ✅ Agregar `applies_to_manual=1` a todos los tests
+- ✅ Corregir assertion entity_doctype
+- ✅ Flexibilizar template_version check
+- ❌ **Resultado:** MandatoryError resuelto pero aparecen nuevos errores
+
+**Commit 7194848:** "fix(ci): corregir sintaxis comando bench get-app para erpnext"
+- ✅ Revertir URL completa a `erpnext` (nombre corto)
+- ✅ Pasar instalación correctamente
+- ❌ **Resultado:** CI instala pero tests fallan
+
+**Commit ef32d67:** "fix(tests): corregir MandatoryError agregando campos obligatorios"
+- ✅ Agregar `entity_name`, `entity_name_plural`, `owning_module`
+- ✅ Mejorar setup de Contribution Category con `exists()` check
+- ✅ Flexibilizar expectativas de propagation status
+- ❌ **Resultado:** MandatoryError resuelto pero 13 errores persisten
+
+#### **🎯 Patrón de Problemas Identificado:**
+
+1. **Tests crean datos en setup** → **Datos no persisten en tests**
+2. **DocTypes locales modificados** → **No se replican en CI**
+3. **Referencias hardcodeadas** → **Objetos no existen en ambiente limpio**
+4. **Validaciones complejas** → **Tests no proporcionan todos los campos requeridos**
+
+#### **📋 Análisis de Copilot vs Propuestas Claude:**
+
+**Copilot recomienda:**
+- Crear fixtures en `setUp()` con verificación `exists()`
+- Asegurar DocType definitions cargadas
+- Usar fixture loading pattern
+
+**Claude propuso:**
+- `frappe.db.commit()` para persistencia
+- Cambiar expectations de tests
+- Usar DocTypes reales del sistema
+
+**Conclusión:** Ambos enfoques atacan síntomas, no causa raíz. **Tests necesitan refactor completo** de estrategia de setup.
+
+#### **🚀 Recomendaciones para Próxima Sesión:**
+
+1. **Refactor completo de test setup** usando patrón fixture oficial Frappe
+2. **Migrar DocTypes en CI** antes de ejecutar tests  
+3. **Crear templates válidos** en lugar de mockear referencias
+4. **Usar traducciones `es.csv`** en lugar de campo `label` directo
+5. **Implementar test data factory** para objetos complejos
+
+#### **📊 Métricas de Debugging:**
+- **14 commits de debugging** en PR #6
+- **6 horas de desarrollo** enfocadas en tests
+- **13 errores persistentes** después de múltiples intentos
+- **4 categorías de errores** identificadas
+- **100% instalación exitosa** pero **0% tests passing** en nuevos DocTypes
+
+### **💡 Lección Aprendida Clave:**
+**Tests complejos requieren arquitectura de fixtures robusta desde el inicio**, no parches incrementales a validaciones de negocio.
+
+---
+
 **Documento generado:** 2025-07-03 20:30:00 UTC  
-**Actualizado:** 2025-07-03 21:15:00 UTC  
+**Actualizado:** 2025-07-04 21:20:00 UTC  
 **Autor:** Claude Code + Development Team  
-**Versión:** 1.2 - Implementación Completa + Resolución CI + Políticas Frappe  
-**Estado:** ✅ COMPLETADO, VALIDADO Y ENVIADO A GITHUB - LISTO PARA PRODUCCIÓN
+**Versión:** 1.3 - Implementación Completa + Debugging Exhaustivo de Tests  
+**Estado:** ✅ FRAMEWORK COMPLETADO - 🔧 TESTS EN REFACTOR INTENSIVO

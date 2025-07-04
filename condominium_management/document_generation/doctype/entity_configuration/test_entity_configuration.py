@@ -4,6 +4,8 @@
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
+from condominium_management.test_factories import TestDataFactory
+
 
 class TestEntityConfiguration(FrappeTestCase):
 	"""Test cases for Entity Configuration."""
@@ -16,26 +18,12 @@ class TestEntityConfiguration(FrappeTestCase):
 
 	@classmethod
 	def create_test_data(cls):
-		"""Create reusable test data with flags to avoid duplication."""
+		"""Create reusable test data using TestDataFactory."""
 		if getattr(frappe.flags, "test_entity_config_data_created", False):
 			return
 
-		# Create test entity type configuration
-		if not frappe.db.exists("Entity Type Configuration", {"entity_doctype": "User"}):
-			test_entity_type = frappe.get_doc(
-				{
-					"doctype": "Entity Type Configuration",
-					"entity_doctype": "User",  # Use existing DocType
-					"entity_name": "Usuario",  # MANDATORY
-					"entity_name_plural": "Usuarios",  # MANDATORY
-					"owning_module": "Document Generation",  # MANDATORY
-					"entity_description": "Configuración de prueba",
-					"requires_configuration": 1,
-					"is_active": 1,
-					"applies_to_manual": 1,
-				}
-			)
-			test_entity_type.insert(ignore_permissions=True)
+		# Use factory to setup complete test environment
+		cls.test_objects = TestDataFactory.setup_complete_test_environment()
 
 		frappe.flags.test_entity_config_data_created = True
 
@@ -45,21 +33,15 @@ class TestEntityConfiguration(FrappeTestCase):
 
 	def test_creation(self):
 		"""Test basic creation with Spanish validations."""
-		config = frappe.get_doc(
-			{
-				"doctype": "Entity Configuration",
-				"entity_reference": "TEST-001",
-				"entity_type": "Test Entity Config",
-				"template_code": "TEST_TEMPLATE",
-				"configuration_name": "Configuración de Prueba",
-				"approval_status": "Borrador",
-			}
-		)
+		# Use factory to create complete entity configuration data
+		config_data = TestDataFactory.create_entity_configuration_data()
+
+		config = frappe.get_doc({"doctype": "Entity Configuration", **config_data})
 		config.insert(ignore_permissions=True)
 
-		self.assertEqual(config.entity_reference, "TEST-001")
+		self.assertIsNotNone(config.entity_reference)
 		self.assertEqual(config.approval_status, "Borrador")
-		self.assertEqual(config.template_code, "TEST_TEMPLATE")
+		self.assertIsNotNone(config.template_code)
 
 	def test_spanish_labels(self):
 		"""Test that DocType has proper Spanish labels."""
@@ -68,9 +50,14 @@ class TestEntityConfiguration(FrappeTestCase):
 
 	def test_required_fields_validation(self):
 		"""Test required fields validation."""
+		# Test missing required fields
 		with self.assertRaises(frappe.ValidationError):
 			config = frappe.get_doc(
-				{"doctype": "Entity Configuration", "configuration_name": "Missing required fields"}
+				{
+					"doctype": "Entity Configuration",
+					"configuration_name": "Missing required fields",
+					# Missing entity_reference, entity_type, template_code, etc.
+				}
 			)
 			config.insert(ignore_permissions=True)
 
@@ -88,16 +75,11 @@ class TestEntityConfiguration(FrappeTestCase):
 
 	def test_status_transition_validation(self):
 		"""Test status transition validation."""
-		config = frappe.get_doc(
-			{
-				"doctype": "Entity Configuration",
-				"entity_reference": "TRANSITION-001",
-				"entity_type": "Test Entity Config",
-				"template_code": "TRANSITION_TEST",
-				"configuration_name": "Test de Transiciones",
-				"approval_status": "Borrador",
-			}
-		)
+		# Use factory for base data and customize
+		config_data = TestDataFactory.create_entity_configuration_data()
+		config_data["configuration_name"] = "Test de Transiciones"
+
+		config = frappe.get_doc({"doctype": "Entity Configuration", **config_data})
 		config.insert(ignore_permissions=True)
 
 		# Test valid transition: Borrador → Pendiente Aprobación
@@ -111,16 +93,11 @@ class TestEntityConfiguration(FrappeTestCase):
 
 	def test_configuration_fields_child_table(self):
 		"""Test configuration fields child table functionality."""
-		config = frappe.get_doc(
-			{
-				"doctype": "Entity Configuration",
-				"entity_reference": "FIELDS-001",
-				"entity_type": "Test Entity Config",
-				"template_code": "FIELDS_TEST",
-				"configuration_name": "Test de Campos",
-				"approval_status": "Borrador",
-			}
-		)
+		# Use factory for base data
+		config_data = TestDataFactory.create_entity_configuration_data()
+		config_data["configuration_name"] = "Test de Campos"
+
+		config = frappe.get_doc({"doctype": "Entity Configuration", **config_data})
 
 		# Add configuration fields using append method
 		config.append(

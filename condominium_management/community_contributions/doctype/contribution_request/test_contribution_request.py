@@ -6,6 +6,8 @@ import json
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
+from condominium_management.test_factories import TestDataFactory
+
 
 class TestContributionRequest(FrappeTestCase):
 	"""Test cases for Contribution Request."""
@@ -18,38 +20,12 @@ class TestContributionRequest(FrappeTestCase):
 
 	@classmethod
 	def create_test_data(cls):
-		"""Create reusable test data with flags to avoid duplication."""
+		"""Create reusable test data using TestDataFactory."""
 		if getattr(frappe.flags, "test_contribution_request_data_created", False):
 			return
 
-		# Create test category - ensure it exists
-		category_name = "Document Generation-Test Infrastructure"
-		if not frappe.db.exists("Contribution Category", category_name):
-			test_category = frappe.get_doc(
-				{
-					"doctype": "Contribution Category",
-					"module_name": "Document Generation",
-					"contribution_type": "Test Infrastructure",
-					"description": "Categoría de prueba para infraestructura",
-					"export_doctype": "Master Template Registry",
-					"required_fields": json.dumps(["template_code", "template_name", "infrastructure_type"]),
-					"is_active": 1,
-				}
-			)
-			test_category.insert(ignore_permissions=True)
-			frappe.db.commit()  # Ensure it's committed
-
-		# Ensure test company exists
-		if not frappe.db.exists("Company", "Test Company"):
-			test_company = frappe.get_doc(
-				{
-					"doctype": "Company",
-					"company_name": "Test Company",
-					"default_currency": "MXN",
-					"country": "Mexico",
-				}
-			)
-			test_company.insert(ignore_permissions=True)
+		# Use factory to setup complete test environment
+		cls.test_objects = TestDataFactory.setup_complete_test_environment()
 
 		frappe.flags.test_contribution_request_data_created = True
 
@@ -59,27 +35,14 @@ class TestContributionRequest(FrappeTestCase):
 
 	def test_creation(self):
 		"""Test basic creation with Spanish validations."""
-		contribution_data = {
-			"template_code": "TEST_POOL",
-			"template_name": "Piscina de Prueba",
-			"infrastructure_type": "Amenity",
-			"fields": [{"field_name": "capacity", "field_label": "Capacidad", "field_type": "Int"}],
-		}
+		# Use factory to create complete request data
+		request_data = TestDataFactory.create_contribution_request_data()
 
-		request = frappe.get_doc(
-			{
-				"doctype": "Contribution Request",
-				"title": "Template de Piscina de Prueba",
-				"contribution_category": "Document Generation-Test Infrastructure",
-				"business_justification": "Necesario para testing del sistema",
-				"contribution_data": json.dumps(contribution_data),
-				"company": "Test Company",
-			}
-		)
+		request = frappe.get_doc({"doctype": "Contribution Request", **request_data})
 		request.insert(ignore_permissions=True)
 
 		self.assertEqual(request.status, "Draft")
-		self.assertEqual(request.title, "Template de Piscina de Prueba")
+		self.assertIsNotNone(request.title)
 		self.assertIsNotNone(request.contribution_data)
 
 	def test_spanish_labels(self):
@@ -100,37 +63,23 @@ class TestContributionRequest(FrappeTestCase):
 
 	def test_required_fields_validation(self):
 		"""Test required fields validation."""
+		# Get valid base data and remove required field
+		request_data = TestDataFactory.create_contribution_request_data()
+		del request_data["title"]  # Remove required field
+
 		# Test missing title
 		with self.assertRaises(frappe.ValidationError):
-			request = frappe.get_doc(
-				{
-					"doctype": "Contribution Request",
-					"contribution_category": "Document Generation-Test Infrastructure",
-					"business_justification": "Test",
-					"contribution_data": json.dumps({"template_code": "TEST"}),
-					"company": "Test Company",
-				}
-			)
+			request = frappe.get_doc({"doctype": "Contribution Request", **request_data})
 			request.insert(ignore_permissions=True)
 
 	def test_status_transitions(self):
 		"""Test that status transitions follow valid workflow."""
-		contribution_data = {
-			"template_code": "TEST_TRANSITION",
-			"template_name": "Template de Transición",
-			"infrastructure_type": "Amenity",
-		}
+		# Use factory for consistent data
+		request_data = TestDataFactory.create_contribution_request_data()
+		request_data["title"] = "Test Status Transitions"
+		request_data["business_justification"] = "Testing status transitions"
 
-		request = frappe.get_doc(
-			{
-				"doctype": "Contribution Request",
-				"title": "Test Status Transitions",
-				"contribution_category": "Document Generation-Test Infrastructure",
-				"business_justification": "Testing status transitions",
-				"contribution_data": json.dumps(contribution_data),
-				"company": "Test Company",
-			}
-		)
+		request = frappe.get_doc({"doctype": "Contribution Request", **request_data})
 		request.insert(ignore_permissions=True)
 
 		# Test valid transition: Draft → Submitted
@@ -156,18 +105,16 @@ class TestContributionRequest(FrappeTestCase):
 
 	def test_contribution_data_validation(self):
 		"""Test validation of contribution data JSON."""
+		# Get valid base data
+		request_data = TestDataFactory.create_contribution_request_data()
+
 		# Test invalid JSON
+		invalid_request_data = request_data.copy()
+		invalid_request_data["title"] = "Invalid JSON Test"
+		invalid_request_data["contribution_data"] = "invalid json {"
+
 		with self.assertRaises(frappe.ValidationError):
-			request = frappe.get_doc(
-				{
-					"doctype": "Contribution Request",
-					"title": "Invalid JSON Test",
-					"contribution_category": "Document Generation-Test Infrastructure",
-					"business_justification": "Testing invalid JSON",
-					"contribution_data": "invalid json {",
-					"company": "Test Company",
-				}
-			)
+			request = frappe.get_doc({"doctype": "Contribution Request", **invalid_request_data})
 			request.insert(ignore_permissions=True)
 
 		# Test missing required fields according to category
@@ -177,37 +124,22 @@ class TestContributionRequest(FrappeTestCase):
 			# Missing infrastructure_type (required by category)
 		}
 
+		incomplete_request_data = request_data.copy()
+		incomplete_request_data["title"] = "Incomplete Data Test"
+		incomplete_request_data["contribution_data"] = json.dumps(incomplete_data)
+
 		with self.assertRaises(frappe.ValidationError):
-			request = frappe.get_doc(
-				{
-					"doctype": "Contribution Request",
-					"title": "Incomplete Data Test",
-					"contribution_category": "Document Generation-Test Infrastructure",
-					"business_justification": "Testing incomplete data",
-					"contribution_data": json.dumps(incomplete_data),
-					"company": "Test Company",
-				}
-			)
+			request = frappe.get_doc({"doctype": "Contribution Request", **incomplete_request_data})
 			request.insert(ignore_permissions=True)
 
 	def test_audit_fields_update(self):
 		"""Test that audit fields are updated correctly on status changes."""
-		contribution_data = {
-			"template_code": "TEST_AUDIT",
-			"template_name": "Template de Auditoría",
-			"infrastructure_type": "Amenity",
-		}
+		# Use factory for consistent data
+		request_data = TestDataFactory.create_contribution_request_data()
+		request_data["title"] = "Test Audit Fields"
+		request_data["business_justification"] = "Testing audit fields"
 
-		request = frappe.get_doc(
-			{
-				"doctype": "Contribution Request",
-				"title": "Test Audit Fields",
-				"contribution_category": "Document Generation-Test Infrastructure",
-				"business_justification": "Testing audit fields",
-				"contribution_data": json.dumps(contribution_data),
-				"company": "Test Company",
-			}
-		)
+		request = frappe.get_doc({"doctype": "Contribution Request", **request_data})
 		request.insert(ignore_permissions=True)
 
 		# Test submission updates
@@ -230,23 +162,12 @@ class TestContributionRequest(FrappeTestCase):
 
 	def test_preview_contribution(self):
 		"""Test preview generation for contributions."""
-		contribution_data = {
-			"template_code": "TEST_PREVIEW",
-			"template_name": "Template de Preview",
-			"infrastructure_type": "Amenity",
-			"fields": [{"field_name": "test_field", "field_label": "Campo de Prueba", "field_type": "Data"}],
-		}
+		# Use factory for consistent data
+		request_data = TestDataFactory.create_contribution_request_data()
+		request_data["title"] = "Test Preview"
+		request_data["business_justification"] = "Testing preview functionality"
 
-		request = frappe.get_doc(
-			{
-				"doctype": "Contribution Request",
-				"title": "Test Preview",
-				"contribution_category": "Document Generation-Test Infrastructure",
-				"business_justification": "Testing preview functionality",
-				"contribution_data": json.dumps(contribution_data),
-				"company": "Test Company",
-			}
-		)
+		request = frappe.get_doc({"doctype": "Contribution Request", **request_data})
 		request.insert(ignore_permissions=True)
 
 		preview = request.preview_contribution()

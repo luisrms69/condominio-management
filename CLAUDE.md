@@ -378,13 +378,22 @@ bench --site domika.dev build
 ```
 
 ### **🔄 Pre-commit Hooks Activos:**
-- ✅ **Ruff** - Import sorting y linting de Python
-- ✅ **Ruff Format** - Formato automático de código Python
-- ✅ **Prettier** - Formato de archivos JavaScript/CSS/HTML
-- ✅ **ESLint** - Linting de JavaScript
-- ✅ **Trailing whitespace** - Eliminación de espacios en blanco
+- ✅ **Ruff Import Sorter** - Sorting de imports (--select=I --fix)
+- ✅ **Ruff Linter** - Linting completo de Python
+- ✅ **Ruff Format** - Formato automático de código Python (reformatea líneas largas)
+- ✅ **Prettier** - Formato de archivos JavaScript/Vue/SCSS
+- ✅ **ESLint** - Linting de JavaScript (modo --quiet)
+- ✅ **Trailing whitespace** - Eliminación de espacios en blanco (excluye json/txt/csv/md/svg)
 - ✅ **Check merge conflicts** - Detección de conflictos de merge
-- ✅ **Check JSON/YAML** - Validación de sintaxis
+- ✅ **Check JSON/YAML/TOML** - Validación de sintaxis
+- ✅ **Check AST** - Validación de sintaxis Python
+- ✅ **Debug statements** - Detección de declaraciones debug
+
+### **📋 Exclusiones y Configuraciones:**
+- **Tests excluidos:** `condominium_management/tests/` de ruff checks
+- **Archivos excluidos:** `node_modules`, `dist`, `boilerplate`, `lib` de prettier/eslint
+- **Formato ruff:** Reformatea automáticamente líneas largas en múltiples líneas
+- **Auto-update:** Hooks se actualizan semanalmente
 
 ### **📋 REGLA #6: CONVENTIONAL COMMITS OBLIGATORIOS**
 

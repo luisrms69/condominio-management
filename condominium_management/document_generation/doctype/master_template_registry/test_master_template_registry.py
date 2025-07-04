@@ -13,6 +13,8 @@ import unittest
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
+from condominium_management.test_factories import TestDataFactory
+
 
 class TestMasterTemplateRegistry(FrappeTestCase):
 	"""Test cases para Master Template Registry DocType."""
@@ -25,23 +27,15 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 
 	@classmethod
 	def create_test_dependencies(cls):
-		"""Crear dependencias de test si no existen."""
+		"""Crear dependencias usando TestDataFactory."""
 		# Usar flags para evitar duplicación de test data
 		if getattr(frappe.flags, "test_master_template_registry_dependencies_created", False):
 			return
 
-		# Crear empresa de prueba si no existe
-		if not frappe.db.exists("Company", "Test Admin Company"):
-			frappe.get_doc(
-				{
-					"doctype": "Company",
-					"company_name": "Test Admin Company",
-					"abbr": "TAC",
-					"default_currency": "MXN",
-					"country": "Mexico",
-					"is_group": 1,
-				}
-			).insert(ignore_permissions=True)
+		# Use factory to setup complete test environment
+		cls.test_objects = TestDataFactory.setup_complete_test_environment()
+		# Specific company for this test
+		cls.test_company = TestDataFactory.create_test_company("Test Admin Company", "TAC")
 
 		frappe.flags.test_master_template_registry_dependencies_created = True
 
@@ -58,7 +52,7 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		"""Test creación básica del Master Template Registry."""
 		# Obtener el Single DocType
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = "Test Admin Company"
+		registry.company = self.test_company.company_name
 		registry.template_version = "1.0.0"
 		registry.update_propagation_status = "Completado"
 
@@ -99,7 +93,7 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 	def test_template_code_uniqueness(self):
 		"""Test que códigos de templates sean únicos."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = "Test Admin Company"
+		registry.company = self.test_company.company_name
 
 		# Limpiar templates existentes
 		registry.infrastructure_templates = []
@@ -108,9 +102,8 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		registry.append(
 			"infrastructure_templates",
 			{
-				"template_code": "POOL_AREA",
-				"template_name": "Área de Piscina",
-				"infrastructure_type": "Amenity",
+				**TestDataFactory.create_master_template_data(),
+				"template_code": "POOL_AREA",  # Override for uniqueness
 			},
 		)
 
@@ -131,7 +124,7 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 	def test_version_increment(self):
 		"""Test incremento automático de versión."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = "Test Admin Company"
+		registry.company = self.test_company.company_name
 		registry.template_version = "1.0.5"
 		registry.infrastructure_templates = []
 		registry.save()
@@ -140,9 +133,9 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		registry.append(
 			"infrastructure_templates",
 			{
-				"template_code": "GYM_AREA",
+				**TestDataFactory.create_master_template_data(),
+				"template_code": "GYM_AREA",  # Override for uniqueness
 				"template_name": "Área de Gimnasio",
-				"infrastructure_type": "Amenity",
 			},
 		)
 
@@ -155,17 +148,16 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 	def test_get_template_by_code(self):
 		"""Test obtener template por código."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = "Test Admin Company"
+		registry.company = self.test_company.company_name
 		registry.infrastructure_templates = []
 
 		# Agregar template de prueba
 		registry.append(
 			"infrastructure_templates",
 			{
-				"template_code": "TEST_POOL",
+				**TestDataFactory.create_master_template_data(),
+				"template_code": "TEST_POOL",  # Override for uniqueness
 				"template_name": "Piscina de Prueba",
-				"infrastructure_type": "Amenity",
-				"template_content": "Template content here",
 			},
 		)
 		registry.save()
@@ -182,7 +174,7 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 	def test_assignment_rule_validation(self):
 		"""Test validación de reglas de asignación."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = "Test Admin Company"
+		registry.company = self.test_company.company_name
 		registry.auto_assignment_rules = []
 
 		# Agregar regla que referencia template inexistente
@@ -202,7 +194,7 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 	def test_get_assignment_rule_for_entity(self):
 		"""Test obtener regla de asignación para entidad."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = "Test Admin Company"
+		registry.company = self.test_company.company_name
 		registry.infrastructure_templates = []
 		registry.auto_assignment_rules = []
 
@@ -210,9 +202,9 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		registry.append(
 			"infrastructure_templates",
 			{
-				"template_code": "POOL_TEMPLATE",
+				**TestDataFactory.create_master_template_data(),
+				"template_code": "POOL_TEMPLATE",  # Override for uniqueness
 				"template_name": "Template Piscina",
-				"infrastructure_type": "Amenity",
 			},
 		)
 
@@ -246,12 +238,12 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		registry1.save()
 
 		registry2.reload()
-		self.assertEqual(registry2.company, "Test Admin Company")
+		self.assertEqual(registry2.company, self.test_company.company_name)
 
 	def test_propagation_status_update(self):
 		"""Test actualización de estado de propagación."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = "Test Admin Company"
+		registry.company = self.test_company.company_name
 		registry.infrastructure_templates = []
 		registry.update_propagation_status = "Completado"
 		registry.save()
@@ -260,7 +252,8 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		registry.append(
 			"infrastructure_templates",
 			{
-				"template_code": "NEW_TEMPLATE",
+				**TestDataFactory.create_master_template_data(),
+				"template_code": "NEW_TEMPLATE",  # Override for uniqueness
 				"template_name": "Nuevo Template",
 				"infrastructure_type": "Equipment",
 			},
