@@ -1,0 +1,144 @@
+[
+    {
+        "doctype": "Master Template Registry",
+        "name": "Master Template Registry",
+        "company": "Condominio Test LLC",
+        "last_update": "2025-07-03 17:00:00",
+        "template_version": "1.0",
+        "infrastructure_templates": [
+            {
+                "template_code": "SWIMMING_POOL",
+                "template_name": "Piscina",
+                "infrastructure_type": "Amenity",
+                "infrastructure_subtype": "Pool",
+                "target_document": "Manual Operativo",
+                "target_section": "Amenidades",
+                "is_active": 1,
+                "template_content": "Template para configuración de áreas de piscina en condominios",
+                "template_fields": [
+                    {
+                        "field_name": "pool_capacity",
+                        "field_label": "Capacidad de la Piscina",
+                        "field_type": "Int",
+                        "is_required": 1,
+                        "source_field": "max_capacity"
+                    },
+                    {
+                        "field_name": "pool_type",
+                        "field_label": "Tipo de Piscina",
+                        "field_type": "Select",
+                        "is_required": 1
+                    },
+                    {
+                        "field_name": "heating_available",
+                        "field_label": "Calentamiento Disponible",
+                        "field_type": "Check",
+                        "default_value": "0"
+                    },
+                    {
+                        "field_name": "operating_hours",
+                        "field_label": "Horario de Operación",
+                        "field_type": "Data",
+                        "is_required": 1
+                    }
+                ]
+            },
+            {
+                "template_code": "GYM_AREA",
+                "template_name": "Gimnasio",
+                "infrastructure_type": "Amenity",
+                "infrastructure_subtype": "Gym",
+                "target_document": "Manual Operativo",
+                "target_section": "Amenidades",
+                "is_active": 1,
+                "template_content": "Template para configuración de áreas de gimnasio",
+                "template_fields": [
+                    {
+                        "field_name": "max_occupancy",
+                        "field_label": "Ocupación Máxima",
+                        "field_type": "Int",
+                        "is_required": 1,
+                        "source_field": "max_capacity"
+                    },
+                    {
+                        "field_name": "equipment_list",
+                        "field_label": "Lista de Equipos",
+                        "field_type": "Text",
+                        "source_field": "equipment_inventory"
+                    },
+                    {
+                        "field_name": "requires_reservation",
+                        "field_label": "Requiere Reservación",
+                        "field_type": "Check",
+                        "default_value": "1"
+                    },
+                    {
+                        "field_name": "operating_hours",
+                        "field_label": "Horario de Operación",
+                        "field_type": "Data",
+                        "is_required": 1
+                    }
+                ]
+            },
+            {
+                "template_code": "PARKING_SPACE",
+                "template_name": "Espacio de Estacionamiento",
+                "infrastructure_type": "Parking",
+                "infrastructure_subtype": "Standard",
+                "target_document": "Reglamento",
+                "target_section": "Estacionamiento",
+                "is_active": 1,
+                "template_content": "Template para configuración de espacios de estacionamiento",
+                "template_fields": [
+                    {
+                        "field_name": "space_number",
+                        "field_label": "Número de Espacio",
+                        "field_type": "Data",
+                        "is_required": 1
+                    },
+                    {
+                        "field_name": "space_type",
+                        "field_label": "Tipo de Espacio",
+                        "field_type": "Select",
+                        "is_required": 1
+                    },
+                    {
+                        "field_name": "covered",
+                        "field_label": "Techado",
+                        "field_type": "Check",
+                        "default_value": "0"
+                    },
+                    {
+                        "field_name": "assigned_unit",
+                        "field_label": "Unidad Asignada",
+                        "field_type": "Data",
+                        "source_field": "assigned_unit"
+                    }
+                ]
+            }
+        ],
+        "auto_assignment_rules": [
+            {
+                "entity_type": "Physical Space",
+                "entity_subtype": "Pool Area",
+                "target_template": "SWIMMING_POOL",
+                "priority": 5,
+                "is_active": 1
+            },
+            {
+                "entity_type": "Physical Space",
+                "entity_subtype": "Gym",
+                "target_template": "GYM_AREA",
+                "priority": 5,
+                "is_active": 1
+            },
+            {
+                "entity_type": "Physical Space",
+                "entity_subtype": "Parking",
+                "target_template": "PARKING_SPACE",
+                "priority": 5,
+                "is_active": 1
+            }
+        ]
+    }
+]

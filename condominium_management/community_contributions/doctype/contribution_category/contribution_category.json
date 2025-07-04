@@ -1,0 +1,112 @@
+{
+    "actions": [],
+    "creation": "2025-07-03 16:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "module_name",
+        "contribution_type",
+        "column_break_1",
+        "approval_workflow",
+        "export_doctype",
+        "section_break_1",
+        "required_fields",
+        "validation_rules",
+        "section_break_2",
+        "description",
+        "is_active"
+    ],
+    "fields": [
+        {
+            "fieldname": "module_name",
+            "fieldtype": "Select",
+            "label": "Módulo",
+            "options": "Document Generation\nMaintenance\nContracts\nPhysical Spaces\nFinancial Management\nSecurity",
+            "reqd": 1
+        },
+        {
+            "fieldname": "contribution_type",
+            "fieldtype": "Data",
+            "label": "Tipo de Contribución",
+            "reqd": 1,
+            "description": "Ej: Infrastructure Template, Maintenance Routine, Contract Template"
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "approval_workflow",
+            "fieldtype": "Link",
+            "label": "Workflow de Aprobación",
+            "options": "Workflow"
+        },
+        {
+            "fieldname": "export_doctype",
+            "fieldtype": "Data",
+            "label": "DocType Destino",
+            "description": "DocType donde se exportará la contribución aprobada"
+        },
+        {
+            "fieldname": "section_break_1",
+            "fieldtype": "Section Break",
+            "label": "Configuración de Validación"
+        },
+        {
+            "fieldname": "required_fields",
+            "fieldtype": "JSON",
+            "label": "Campos Obligatorios",
+            "description": "JSON con campos obligatorios para este tipo de contribución"
+        },
+        {
+            "fieldname": "validation_rules",
+            "fieldtype": "Text",
+            "label": "Reglas de Validación",
+            "description": "Reglas específicas de validación para este tipo de contribución"
+        },
+        {
+            "fieldname": "section_break_2",
+            "fieldtype": "Section Break",
+            "label": "Información General"
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Text",
+            "label": "Descripción",
+            "description": "Descripción del tipo de contribución y criterios de aceptación"
+        },
+        {
+            "fieldname": "is_active",
+            "fieldtype": "Check",
+            "label": "Activo",
+            "default": 1
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2025-07-03 16:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Community Contributions",
+    "name": "Contribution Category",
+    "naming_rule": "By fieldname",
+    "naming_pattern": "{module_name}-{contribution_type}",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1
+}
