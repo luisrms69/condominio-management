@@ -144,6 +144,9 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 
 		registry.save()
 
+		# Recargar para obtener estado final después de todos los hooks
+		registry.reload()
+
 		# Versión debe incrementarse a 1.0.6
 		self.assertEqual(registry.template_version, "1.0.6")
 		self.assertEqual(registry.update_propagation_status, "Pendiente")
@@ -256,5 +259,9 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		)
 
 		registry.save()
+
+		# Recargar para obtener estado final después de todos los hooks
+		registry.reload()
+
 		self.assertEqual(registry.update_propagation_status, "Pendiente")
 		self.assertIsNotNone(registry.last_update)
