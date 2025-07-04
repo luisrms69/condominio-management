@@ -185,28 +185,26 @@ doc_events = {
 		"validate": "condominium_management.document_generation.hooks_handlers.auto_detection.validate_entity_configuration",
 		"on_update": "condominium_management.document_generation.hooks_handlers.auto_detection.check_configuration_conflicts",
 	},
+	# Companies Module - Hooks específicos implementados
+	"Company": {
+		"after_insert": "condominium_management.companies.hooks_handlers.company_detection.after_insert",
+		"on_update": "condominium_management.companies.hooks_handlers.company_detection.on_update",
+	},
+	"Service Management Contract": {
+		"validate": "condominium_management.companies.hooks_handlers.contract_detection.validate",
+		"on_update": "condominium_management.companies.hooks_handlers.contract_detection.on_update",
+	},
+	"Company Account": {
+		"after_insert": "condominium_management.companies.hooks_handlers.account_detection.after_insert",
+	},
 }
 
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"condominium_management.tasks.all"
-# 	],
-# 	"daily": [
-# 		"condominium_management.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"condominium_management.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"condominium_management.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"condominium_management.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	"monthly": ["condominium_management.document_generation.scheduled.performance_monitoring"],
+}
 
 # Testing
 # -------

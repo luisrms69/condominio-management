@@ -305,6 +305,11 @@ grep "app_include_locale" condominium_management/hooks.py
 
 ## 📚 **RECURSOS Y TEMPLATES**
 
+### **🔧 Workflow Permanente de Módulos:**
+- **`TEMPLATE_MODULE_HOOKS.py`** - **CRÍTICO:** Template obligatorio para hooks específicos
+- **`CHECKLIST_NEW_MODULE.md`** - **CRÍTICO:** Checklist obligatorio para nuevos módulos
+- **`/document_generation/scheduled.py`** - Monitoreo automático mensual de performance
+
 ### **Templates para Desarrollo:**
 - **`TEMPLATE_DOCTYPE_TEST.py`** - Plantilla obligatoria para unit tests de nuevos DocTypes
 - **`CHECKLIST_COMPLIANCE_TESTS.md`** - Checklist obligatorio antes de completar cualquier DocType
@@ -313,6 +318,7 @@ grep "app_include_locale" condominium_management/hooks.py
 - **`DOCUMENTACION_UNIT_TESTS.md`** - Documentación completa de tests implementados
 - **`MEJORAS_UNIT_TESTS_FRAPPE.md`** - Análisis y mejoras aplicadas según Frappe Framework
 - **`DOCUMENTACION_CAMPOS_DOCTYPES.md`** - Referencia técnica de todos los campos modificados
+- **`REPORTE_HOOKS_UNIVERSALES_Y_OPTIMIZACION.md`** - Análisis completo y decisiones de arquitectura
 
 ### **Reportes de Implementación:**
 - **`REPORTE_MODIFICACIONES_IDIOMA_ES.md`** - Reporte completo de sistema de traducciones
@@ -320,34 +326,47 @@ grep "app_include_locale" condominium_management/hooks.py
 
 ### **Archivos de Configuración:**
 - **`/translations/es.csv`** - Traducciones al español para la interfaz
-- **`hooks.py`** - Configuración de traducciones y módulos
+- **`hooks.py`** - Configuración de traducciones, módulos y hooks específicos
 
 ---
 
-## 🔄 **PROCESO PARA NUEVOS DOCTYPES**
+## 🔄 **PROCESO PARA NUEVOS DOCTYPES Y MÓDULOS**
 
-### **Pasos Obligatorios:**
-1. **Crear DocType** con labels en español
-2. **Copiar `TEMPLATE_DOCTYPE_TEST.py`** y adaptarlo
-3. **Implementar todos los tests** según template
-4. **Ejecutar `CHECKLIST_COMPLIANCE_TESTS.md`** completo
-5. **Agregar traducciones** a `es.csv` si necesario
-6. **Verificar ejecución** con `bench run-tests`
-7. **Documentar modificaciones** específicas
+### **📋 Workflow Documentado Permanentemente:**
 
-### **Validación Final:**
+**ARCHIVO CRÍTICO:** `CHECKLIST_NEW_MODULE.md` - **OBLIGATORIO para todos los módulos nuevos**
+
+### **⚡ Hooks Específicos - Estrategia Permanente:**
+- **❌ Hooks universales NO FACTIBLES** (conflictos setup wizard ERPNext)
+- **✅ Template disponible:** `TEMPLATE_MODULE_HOOKS.py`
+- **✅ Workflow automatizado implementado**
+
+### **🔧 Comando de Implementación Automática:**
 ```bash
-# Ejecutar tests específicos
-bench --site domika.dev run-tests --doctype "Nuevo DocType"
-
-# Verificar compliance
-python run_tests.py --doctype "Nuevo DocType" --verbose
-
-# Confirmar traducciones
-bench --site domika.dev build
+# Generar hooks para módulo nuevo
+bench console
+>>> from TEMPLATE_MODULE_HOOKS import generate_hooks_for_module
+>>> generate_hooks_for_module("nombre_modulo")
 ```
 
-**IMPORTANTE:** Ningún DocType se considera COMPLETO sin pasar el checklist de compliance al 100%.
+### **Pasos Obligatorios (DocTypes):**
+1. **Seguir `CHECKLIST_NEW_MODULE.md`** completo
+2. **Crear DocType** con labels en español
+3. **Implementar hooks específicos** usando template
+4. **Copiar `TEMPLATE_DOCTYPE_TEST.py`** y adaptarlo
+5. **Ejecutar validaciones** según checklist
+6. **Agregar traducciones** a `es.csv` si necesario
+7. **Verificar ejecución** con `bench run-tests`
+
+### **✅ Validación Final Automatizada:**
+```bash
+# Validar implementación completa
+from TEMPLATE_MODULE_HOOKS import validate_module_hooks
+result = validate_module_hooks("nombre_modulo")
+assert result["valid"] == True
+```
+
+**IMPORTANTE:** Ver `CHECKLIST_NEW_MODULE.md` para workflow completo documentado permanentemente.
 
 ---
 
@@ -1284,3 +1303,202 @@ bench --site fresh_site run-tests --app condominium_management
 ```
 
 **ESTA REGLA ES CRÍTICA:** Cualquier modificación a archivos sensibles **DEBE** seguir este protocolo sin excepciones.
+
+---
+
+## 🏢 **REGLA #14: ARQUITECTURA DE SITIOS Y AMBIENTES**
+
+### **🚨 SITIOS DE PRODUCCIÓN Y DESARROLLO - USO CRÍTICO**
+
+**PROBLEMA:** `domika.dev` es el sitio de desarrollo principal y control de templates para TODA la producción. Usarlo para pruebas es **EXTREMADAMENTE RIESGOSO**.
+
+#### **📋 ESQUEMA DE SITIOS ESTABLECIDO:**
+
+| Sitio | Propósito | Uso | Riesgo |
+|-------|-----------|-----|--------|
+| `domika.dev` | **DESARROLLO PRINCIPAL** + Control de Templates Producción | ⚠️ **SOLO DESARROLLO** | 🚨 **CRÍTICO** - NO usar para pruebas |
+| `admin1.dev` | **Sitio Administradora** - Testing | ✅ Pruebas de administradoras | 🟡 Seguro para pruebas |
+| `condo1.dev` | **Sitio Condominio 1** - Testing | ✅ Pruebas de condominios | 🟡 Seguro para pruebas |
+| `condo2.dev` | **Sitio Condominio 2** - Testing | ✅ Pruebas de condominios | 🟡 Seguro para pruebas |
+
+#### **🚨 PROTOCOLO OBLIGATORIO DE SITIOS:**
+
+##### **PROHIBIDO ABSOLUTAMENTE:**
+```bash
+# ❌ NUNCA hacer esto - RIESGO CRÍTICO
+bench --site domika.dev reinstall  # DESTRUYE DATA DE PRODUCCIÓN
+bench --site domika.dev restore --with-public-files  # SOBRESCRIBE TEMPLATES
+bench --site domika.dev console  # RIESGO DE MODIFICACIÓN ACCIDENTAL
+
+# ❌ NUNCA para testing destructivo
+bench --site domika.dev run-tests --force  # PUEDE CORROMPER DATA
+```
+
+##### **✅ USO CORRECTO POR SITIO:**
+
+**domika.dev (DESARROLLO PRINCIPAL):**
+```bash
+# ✅ SOLO para desarrollo controlado
+bench --site domika.dev migrate  # Solo migraciones planificadas
+bench --site domika.dev build    # Solo builds de desarrollo
+bench --site domika.dev run-tests --app condominium_management  # Solo tests unitarios NO destructivos
+
+# ✅ ÚNICAMENTE con backup previo
+bench --site domika.dev backup    # OBLIGATORIO antes de cualquier cambio
+```
+
+**admin1.dev, condo1.dev, condo2.dev (TESTING):**
+```bash
+# ✅ Libre para pruebas destructivas
+bench --site admin1.dev reinstall --admin-password admin123
+bench --site condo1.dev restore any_backup.sql.gz
+bench --site condo2.dev console  # Seguro para experimentación
+
+# ✅ Testing completo permitido
+bench --site admin1.dev run-tests --app condominium_management --force
+```
+
+#### **🔍 VERIFICACIÓN DE SITIO ANTES DE COMANDOS:**
+
+**COMANDO OBLIGATORIO antes de cualquier operación:**
+```bash
+# Verificar sitio activo
+echo "SITIO ACTUAL: $(pwd | grep -o '[^/]*\.dev')"
+read -p "¿Confirmas que NO es domika.dev? (y/N): " confirm
+
+# Solo continuar si confirmas explícitamente
+if [[ $confirm != "y" ]]; then
+    echo "❌ Operación cancelada por seguridad"
+    exit 1
+fi
+```
+
+#### **🛡️ RESPALDO Y PROTECCIÓN:**
+
+```bash
+# OBLIGATORIO antes de trabajar en domika.dev
+alias domika-backup='bench --site domika.dev backup && echo "✅ Backup domika.dev completado"'
+alias verify-site='echo "SITIO: $(pwd | grep -o "[^/]*\.dev")" && read -p "¿Continuar? (y/N): " confirm && [[ $confirm == "y" ]]'
+
+# Usar siempre antes de comandos críticos
+verify-site && bench --site domika.dev migrate
+```
+
+---
+
+## 📋 **REGLA #15: GESTIÓN DE ISSUES Y DOCUMENTACIÓN DE PENDIENTES**
+
+### **🎯 WORKFLOW GITHUB ISSUES PARA PENDIENTES**
+
+**PROBLEMA:** Los pendientes identificados (como revisión de crecimiento, hooks universales, etc.) necesitan ser documentados como GitHub Issues para seguimiento.
+
+#### **📊 LABELS EXISTENTES EN GITHUB:**
+
+**TIPOS DE ISSUE:**
+- `bug` - Something isn't working
+- `enhancement` - New feature or request  
+- `documentation` - Improvements or additions to documentation
+- `question` - Further information is requested
+
+**PRIORIDADES:**
+- `critical` - Problema crítico que requiere atención inmediata
+- `high` - Alta prioridad, resolver en el sprint actual
+- `medium` - Prioridad media, planificar para próximo sprint
+- `low` - Baja prioridad, backlog
+
+**ESTADOS:**
+- `needs-review` - Requiere revisión técnica o de negocio
+- `in-progress` - En desarrollo activo
+- `blocked` - Bloqueado, no se puede continuar
+- `ready-to-test` - Listo para testing/QA
+
+**MÓDULOS:**
+- `document-generation` - Módulo de generación de documentos
+- `companies` - Módulo de empresas y contratos
+- `physical-spaces` - Módulo de espacios físicos
+- `residents` - Módulo de residentes
+- `access-control` - Módulo de control de accesos
+- `maintenance-professional` - Módulo de mantenimiento profesional
+- `committee-management` - Módulo de gestión de comités
+- `compliance-legal` - Módulo de cumplimiento legal
+- `communication-system` - Módulo de sistema de comunicación
+- `package-correspondence` - Módulo de correspondencia y paquetes
+
+#### **📋 TEMPLATES EXISTENTES:**
+- `bug-report.md` - Reporte de errores
+- `feature-request---solicitud-de-funcionalidad.md` - Solicitudes de funcionalidad
+
+#### **🔧 TEMPLATE PARA ISSUES DE MANTENIMIENTO:**
+
+```markdown
+## 📊 Revisión de Crecimiento: Master Template Registry
+
+### Contexto
+- **Documento base:** REPORTE_HOOKS_UNIVERSALES_Y_OPTIMIZACION.md
+- **Última revisión:** 2025-07-04
+- **Estado actual:** 3.4 KB, <50ms performance
+
+### Criterios de Revisión
+- [ ] Verificar tamaño JSON actual vs 1 MB threshold
+- [ ] Medir performance con carga actual
+- [ ] Evaluar número de templates vs 300 threshold
+- [ ] Documentar resultados en reporte
+
+### Trigger Conditions
+- [ ] 6 meses desde última revisión (enero 2026)
+- [ ] 100+ templates totales
+- [ ] Performance degradation detectado
+
+### Acceptance Criteria
+- [ ] Performance mantenido <100ms
+- [ ] JSON size documentado
+- [ ] Decisión architecture documented (mantener vs migrar)
+```
+
+#### **🔧 TEMPLATE PARA FEATURES BLOQUEADAS:**
+
+```markdown
+## 🚨 Reactivar Hooks Universales - Setup Wizard Conflicts
+
+### Problema
+Los hooks universales están desactivados por conflictos con ERPNext setup wizard
+
+### Root Cause
+- **Error específico:** "Could not find Parent Department: All Departments"
+- **Archivo:** hooks.py líneas 177-180 (comentado)
+- **Impacto:** Auto-detección no funciona automáticamente
+
+### Alternativas Implementadas
+- [x] Hooks específicos por DocType (master_template_registry, entity_configuration)
+- [x] APIs de detección manual disponibles
+- [ ] Scheduled jobs para detección periódica
+
+### Bloqueadores
+- [ ] Resolver setup wizard department links
+- [ ] Verificar hooks no interfieren con CI
+- [ ] Testing en sitio limpio (admin1.dev)
+
+### Definition of Done
+- [ ] Hooks universales ("*") activados en hooks.py
+- [ ] Tests pasan sin setup wizard errors
+- [ ] Auto-detección funciona en nuevos DocTypes
+```
+
+#### **📅 MILESTONES Y PLANNING:**
+
+```bash
+# Crear issues desde CLI
+gh issue create --title "📊 Revisión Semestral: Performance Master Template Registry" \
+  --label "documentation,document-generation,medium" \
+  --body "Ver: REPORTE_HOOKS_UNIVERSALES_Y_OPTIMIZACION.md - Revisar crecimiento y performance"
+
+gh issue create --title "🚨 Reactivar Hooks Universales" \
+  --label "enhancement,document-generation,blocked,high" \
+  --body "Setup wizard conflicts impiden activar hooks universales. Ver análisis en reporte."
+```
+
+#### **📅 WORKFLOW RECOMENDADO:**
+1. **Usar templates existentes** cuando sea posible
+2. **Combinar labels apropiados** (tipo + módulo + prioridad + estado)  
+3. **Referenciar documentos** específicos en el body del issue
+
