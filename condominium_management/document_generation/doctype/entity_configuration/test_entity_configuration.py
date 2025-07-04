@@ -39,9 +39,12 @@ class TestEntityConfiguration(FrappeTestCase):
 		config = frappe.get_doc({"doctype": "Entity Configuration", **config_data})
 		config.insert(ignore_permissions=True)
 
-		self.assertIsNotNone(config.entity_reference)
-		self.assertEqual(config.approval_status, "Borrador")
-		self.assertIsNotNone(config.template_code)
+		# ✅ Use REAL field names from JSON
+		self.assertIsNotNone(config.configuration_name)
+		self.assertEqual(config.configuration_status, "Borrador")
+		self.assertIsNotNone(config.applied_template)
+		self.assertEqual(config.source_doctype, "User")
+		self.assertEqual(config.source_docname, "Administrator")
 
 	def test_spanish_labels(self):
 		"""Test that DocType has proper Spanish labels."""
@@ -64,7 +67,8 @@ class TestEntityConfiguration(FrappeTestCase):
 	def test_spanish_options(self):
 		"""Test that Select field options are in Spanish."""
 		meta = frappe.get_meta("Entity Configuration")
-		status_field = meta.get_field("approval_status")
+		# ✅ Use REAL field name from JSON
+		status_field = meta.get_field("configuration_status")
 
 		# Check if field exists and has options
 		if status_field and status_field.options:
@@ -75,7 +79,7 @@ class TestEntityConfiguration(FrappeTestCase):
 			for status in spanish_statuses:
 				self.assertIn(status, options)
 		else:
-			self.skipTest("approval_status field not found or has no options")
+			self.skipTest("configuration_status field not found or has no options")
 
 	def test_status_transition_validation(self):
 		"""Test status transition validation."""
@@ -87,13 +91,14 @@ class TestEntityConfiguration(FrappeTestCase):
 		config.insert(ignore_permissions=True)
 
 		# Test valid transition: Borrador → Pendiente Aprobación
-		old_status = config.approval_status
-		config.approval_status = "Pendiente Aprobación"
-		config.validate_status_transition(old_status, config.approval_status)
+		# ✅ Use REAL field name from JSON
+		old_status = config.configuration_status
+		config.configuration_status = "Pendiente Aprobación"
+		config.validate_status_transition(old_status, config.configuration_status)
 
 		# This should not raise an exception
 		config.save()
-		self.assertEqual(config.approval_status, "Pendiente Aprobación")
+		self.assertEqual(config.configuration_status, "Pendiente Aprobación")
 
 	def test_configuration_fields_child_table(self):
 		"""Test configuration fields child table functionality."""

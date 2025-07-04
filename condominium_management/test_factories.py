@@ -91,7 +91,6 @@ class TestDataFactory:
 		Returns:
 		    frappe.Document: Documento Contribution Category creado o existente
 		"""
-		from frappe.utils import now_datetime
 
 		# Usar timestamp para evitar duplicación en tests paralelos
 		timestamp = now_datetime().strftime("%Y%m%d%H%M%S%f")[:17]  # 17 chars precision
@@ -201,7 +200,7 @@ class TestDataFactory:
 	@staticmethod
 	def create_template_with_assignment_rules(registry):
 		"""
-		Crear template completo con reglas de asignación para evitar errores de referencia.
+		Crear template completo con reglas de asignación PERSISTIENDO CORRECTAMENTE.
 
 		Args:
 		    registry: Instancia de Master Template Registry
@@ -209,7 +208,11 @@ class TestDataFactory:
 		Returns:
 		    dict: Template data con reglas válidas
 		"""
-		# Primero agregar el template
+		# ✅ STEP 1: Limpiar templates/rules existentes para evitar duplicados
+		registry.infrastructure_templates = []
+		registry.auto_assignment_rules = []
+
+		# ✅ STEP 2: Agregar template PRIMERO
 		registry.append(
 			"infrastructure_templates",
 			{
@@ -227,7 +230,13 @@ class TestDataFactory:
 			},
 		)
 
-		# Luego agregar regla que referencia template existente
+		# ✅ STEP 3: GUARDAR TEMPLATE ANTES de agregar reglas
+		registry.save()
+
+		# ✅ STEP 4: Reload para asegurar persistencia
+		registry.reload()
+
+		# ✅ STEP 5: Agregar regla QUE YA REFERENCIA TEMPLATE EXISTENTE
 		registry.append(
 			"auto_assignment_rules",
 			{"entity_type": "Amenity", "entity_subtype": "piscina", "target_template": "POOL_TEMPLATE"},
@@ -273,7 +282,7 @@ class TestDataFactory:
 	@staticmethod
 	def create_entity_configuration_data():
 		"""
-		Crear datos completos para Entity Configuration.
+		Crear datos completos para Entity Configuration usando CAMPOS REALES del JSON.
 
 		Returns:
 		    dict: Datos completos para crear Entity Configuration
@@ -291,14 +300,19 @@ class TestDataFactory:
 			)
 			admin_user.insert(ignore_permissions=True)
 
+		# ✅ USAR CAMPOS EXACTOS DEL JSON DocType
 		return {
-			"entity_reference": f"TEST-CONFIG-{now_datetime().strftime('%Y%m%d%H%M%S')}",
-			"entity_type": "Test Entity Config",
-			"template_code": "TEST_TEMPLATE_CONFIG",
+			"naming_series": "EC-.YYYY.-",
 			"configuration_name": "Configuración de Prueba Completa",
-			"approval_status": "Borrador",
-			"source_document_type": "User",  # Campo obligatorio
-			"source_document_name": "Administrator",  # Campo obligatorio
+			"configuration_status": "Borrador",  # ✅ Campo real del JSON
+			"source_doctype": "User",  # ✅ Campo real del JSON
+			"source_docname": "Administrator",  # ✅ Campo real del JSON
+			"entity_subtype": "Test Entity Config",
+			"applied_template": "TEST_TEMPLATE_CONFIG",  # ✅ Campo real del JSON
+			"target_document_type": "Estatuto",
+			"target_section": "Configuración General",
+			"approval_required": 1,
+			"auto_assigned": 0,
 		}
 
 	@staticmethod

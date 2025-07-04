@@ -197,9 +197,9 @@ def _create_basic_erpnext_records():
 
 def _reload_custom_doctypes():
 	"""
-	Force reload de DocTypes personalizados para asegurar que existan en CI.
+	Force reload de DocTypes personalizados Y MIGRATE para asegurar labels en español.
 
-	Previene errores de 'DocType not found' durante ejecución de tests.
+	Previene errores de 'DocType not found' y problemas de labels missing durante tests.
 	"""
 	custom_doctypes = [
 		("document_generation", "master_template_registry"),
@@ -215,9 +215,39 @@ def _reload_custom_doctypes():
 
 	for module, doctype in custom_doctypes:
 		try:
+			# ✅ STEP 1: Reload DocType
 			frappe.reload_doc(module, "doctype", doctype)
 		except Exception as e:
 			print(f"Warning: Could not reload {module}.{doctype}: {e}")
+
+	# ✅ STEP 2: Force migrate para aplicar labels en español
+	try:
+		frappe.db.commit()  # Commit antes de migrate
+		print("🔄 Running migrate to apply Spanish labels...")
+
+		# Ejecutar migrate específico para Document Generation
+		from frappe.migrate import migrate
+
+		migrate()
+
+		# Clear cache después de migrate para asegurar labels frescas
+		frappe.clear_cache()
+
+		print("✅ Migrate completed - Spanish labels should be applied")
+
+	except Exception as e:
+		print(f"Warning: Could not run migrate: {e}")
+
+	# ✅ STEP 3: Verificar que labels se aplicaron correctamente
+	try:
+		entity_config_meta = frappe.get_meta("Entity Configuration")
+		entity_type_config_meta = frappe.get_meta("Entity Type Configuration")
+
+		print(f"Entity Configuration label: {entity_config_meta.get('label')}")
+		print(f"Entity Type Configuration label: {entity_type_config_meta.get('label')}")
+
+	except Exception as e:
+		print(f"Warning: Could not verify labels: {e}")
 
 
 def check_app_permission():
