@@ -1,0 +1,171 @@
+{
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "field:entity_doctype",
+    "creation": "2025-07-03 15:00:00.000000",
+    "default_view": "List",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "label": "Configuración de Tipo de Entidad",
+    "field_order": [
+        "entity_doctype",
+        "entity_name",
+        "entity_name_plural",
+        "column_break_1",
+        "owning_module",
+        "is_active",
+        "section_break_1",
+        "requires_configuration",
+        "auto_detect_on_create",
+        "detection_field",
+        "section_break_2",
+        "applies_to_estatuto",
+        "applies_to_manual",
+        "applies_to_reglamento",
+        "section_break_3",
+        "conflict_detection_enabled",
+        "conflict_fields"
+    ],
+    "fields": [
+        {
+            "fieldname": "entity_doctype",
+            "fieldtype": "Link",
+            "label": "DocType de Entidad",
+            "options": "DocType",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "fieldname": "entity_name",
+            "fieldtype": "Data",
+            "label": "Nombre de Entidad",
+            "reqd": 1
+        },
+        {
+            "fieldname": "entity_name_plural",
+            "fieldtype": "Data",
+            "label": "Nombre Plural",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "owning_module",
+            "fieldtype": "Data",
+            "label": "Módulo Propietario",
+            "reqd": 1
+        },
+        {
+            "fieldname": "is_active",
+            "fieldtype": "Check",
+            "label": "Activo",
+            "default": 1
+        },
+        {
+            "fieldname": "section_break_1",
+            "fieldtype": "Section Break",
+            "label": "Configuración de Detección"
+        },
+        {
+            "fieldname": "requires_configuration",
+            "fieldtype": "Check",
+            "label": "Requiere Configuración",
+            "default": 1
+        },
+        {
+            "fieldname": "auto_detect_on_create",
+            "fieldtype": "Check",
+            "label": "Auto-detectar al Crear",
+            "default": 1
+        },
+        {
+            "fieldname": "detection_field",
+            "fieldtype": "Data",
+            "label": "Campo de Detección de Tipo",
+            "description": "Campo que determina el subtipo (ej: amenity_type, equipment_type)"
+        },
+        {
+            "fieldname": "section_break_2",
+            "fieldtype": "Section Break",
+            "label": "Configuración de Documentos"
+        },
+        {
+            "fieldname": "applies_to_estatuto",
+            "fieldtype": "Check",
+            "label": "Aplica a Estatuto"
+        },
+        {
+            "fieldname": "applies_to_manual",
+            "fieldtype": "Check",
+            "label": "Aplica a Manual"
+        },
+        {
+            "fieldname": "applies_to_reglamento",
+            "fieldtype": "Check",
+            "label": "Aplica a Reglamento"
+        },
+        {
+            "fieldname": "section_break_3",
+            "fieldtype": "Section Break",
+            "label": "Configuración de Conflictos"
+        },
+        {
+            "fieldname": "conflict_detection_enabled",
+            "fieldtype": "Check",
+            "label": "Habilitar Detección de Conflictos"
+        },
+        {
+            "fieldname": "conflict_fields",
+            "fieldtype": "Table",
+            "label": "Campos de Conflicto",
+            "options": "Conflict Detection Field"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2025-07-03 15:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Document Generation",
+    "name": "Entity Type Configuration",
+    "naming_rule": "By fieldname",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Configuration Manager",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "quick_entry": 1,
+    "restrict_to_domain": "",
+    "show_name_in_global_search": 1,
+    "show_preview_popup": 1,
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "title_field": "entity_name",
+    "track_changes": 1,
+    "track_seen": 0,
+    "track_views": 0
+}

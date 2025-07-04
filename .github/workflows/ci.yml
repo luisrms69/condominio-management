@@ -11,6 +11,11 @@ concurrency:
   group: develop-condominium_management-${{ github.event.number }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  actions: read
+  checks: read
+
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -88,6 +93,8 @@ jobs:
 
       - name: Install
         working-directory: /home/runner/frappe-bench
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bench get-app --branch version-15 erpnext
           bench get-app condominium_management $GITHUB_WORKSPACE

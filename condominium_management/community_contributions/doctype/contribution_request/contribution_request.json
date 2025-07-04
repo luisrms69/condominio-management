@@ -1,0 +1,203 @@
+{
+    "actions": [],
+    "creation": "2025-07-03 16:30:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "title",
+        "contribution_category",
+        "status",
+        "column_break_1",
+        "company",
+        "submitted_by",
+        "submission_date",
+        "section_break_1",
+        "business_justification",
+        "contribution_data",
+        "section_break_2",
+        "review_notes",
+        "reviewed_by",
+        "review_date",
+        "column_break_2",
+        "approved_by",
+        "approval_date",
+        "integration_date",
+        "section_break_3",
+        "exported_json",
+        "fixture_path"
+    ],
+    "fields": [
+        {
+            "fieldname": "title",
+            "fieldtype": "Data",
+            "label": "Título de la Contribución",
+            "reqd": 1,
+            "description": "Nombre descriptivo de la contribución"
+        },
+        {
+            "fieldname": "contribution_category",
+            "fieldtype": "Link",
+            "label": "Categoría de Contribución",
+            "options": "Contribution Category",
+            "reqd": 1
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Estado",
+            "options": "Draft\nSubmitted\nUnder Review\nApproved\nRejected\nIntegrated",
+            "default": "Draft",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "company",
+            "fieldtype": "Link",
+            "label": "Empresa Contribuyente",
+            "options": "Company",
+            "default": "",
+            "reqd": 1
+        },
+        {
+            "fieldname": "submitted_by",
+            "fieldtype": "Link",
+            "label": "Enviado por",
+            "options": "User",
+            "default": "",
+            "read_only": 1
+        },
+        {
+            "fieldname": "submission_date",
+            "fieldtype": "Datetime",
+            "label": "Fecha de Envío",
+            "read_only": 1
+        },
+        {
+            "fieldname": "section_break_1",
+            "fieldtype": "Section Break",
+            "label": "Detalles de la Contribución"
+        },
+        {
+            "fieldname": "business_justification",
+            "fieldtype": "Text",
+            "label": "Justificación de Negocio",
+            "reqd": 1,
+            "description": "Explique por qué esta contribución es valiosa para el sistema"
+        },
+        {
+            "fieldname": "contribution_data",
+            "fieldtype": "JSON",
+            "label": "Datos de la Contribución",
+            "reqd": 1,
+            "description": "Datos específicos de la contribución en formato JSON"
+        },
+        {
+            "fieldname": "section_break_2",
+            "fieldtype": "Section Break",
+            "label": "Proceso de Review"
+        },
+        {
+            "fieldname": "review_notes",
+            "fieldtype": "Text",
+            "label": "Notas de Revisión",
+            "description": "Comentarios del equipo de desarrollo"
+        },
+        {
+            "fieldname": "reviewed_by",
+            "fieldtype": "Link",
+            "label": "Revisado por",
+            "options": "User",
+            "read_only": 1
+        },
+        {
+            "fieldname": "review_date",
+            "fieldtype": "Datetime",
+            "label": "Fecha de Revisión",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_2",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "approved_by",
+            "fieldtype": "Link",
+            "label": "Aprobado por",
+            "options": "User",
+            "read_only": 1
+        },
+        {
+            "fieldname": "approval_date",
+            "fieldtype": "Datetime",
+            "label": "Fecha de Aprobación",
+            "read_only": 1
+        },
+        {
+            "fieldname": "integration_date",
+            "fieldtype": "Datetime",
+            "label": "Fecha de Integración",
+            "read_only": 1
+        },
+        {
+            "fieldname": "section_break_3",
+            "fieldtype": "Section Break",
+            "label": "Export y Fixtures"
+        },
+        {
+            "fieldname": "exported_json",
+            "fieldtype": "JSON",
+            "label": "JSON Exportado",
+            "read_only": 1,
+            "description": "JSON listo para integración como fixture"
+        },
+        {
+            "fieldname": "fixture_path",
+            "fieldtype": "Data",
+            "label": "Ruta del Fixture",
+            "read_only": 1,
+            "description": "Ruta donde se integró el fixture"
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2025-07-03 16:30:00.000000",
+    "modified_by": "Administrator",
+    "module": "Community Contributions",
+    "name": "Contribution Request",
+    "naming_rule": "By fieldname",
+    "naming_pattern": "CONTRIB-.YYYY.-.MM.-.#####",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Condominium Manager",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1,
+    "is_submittable": 1
+}

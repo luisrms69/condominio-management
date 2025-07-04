@@ -1,0 +1,218 @@
+{
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "naming_series:",
+    "creation": "2025-07-03 15:00:00.000000",
+    "default_view": "List",
+    "doctype": "DocType",
+    "label": "Configuración de Entidad",
+    "engine": "InnoDB",
+    "field_order": [
+        "naming_series",
+        "configuration_name",
+        "column_break_1",
+        "configuration_status",
+        "auto_assigned",
+        "section_break_1",
+        "source_doctype",
+        "source_docname",
+        "entity_subtype",
+        "section_break_2",
+        "applied_template",
+        "target_document_type",
+        "target_section",
+        "section_break_3",
+        "configuration_fields",
+        "section_break_4",
+        "approval_required",
+        "approved_by",
+        "approved_on",
+        "column_break_2",
+        "rejection_reason",
+        "last_template_sync"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Serie de Nomenclatura",
+            "options": "EC-.YYYY.-\nCONF-.####.-",
+            "reqd": 1
+        },
+        {
+            "fieldname": "configuration_name",
+            "fieldtype": "Data",
+            "label": "Nombre de Configuración",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "configuration_status",
+            "fieldtype": "Select",
+            "label": "Estado de Configuración",
+            "options": "Borrador\nPendiente Aprobación\nAprobado\nRechazado\nObsoleto\nRequiere Revisión",
+            "default": "Borrador"
+        },
+        {
+            "fieldname": "auto_assigned",
+            "fieldtype": "Check",
+            "label": "Asignado Automáticamente",
+            "read_only": 1
+        },
+        {
+            "fieldname": "section_break_1",
+            "fieldtype": "Section Break",
+            "label": "Información de Origen"
+        },
+        {
+            "fieldname": "source_doctype",
+            "fieldtype": "Link",
+            "label": "DocType Origen",
+            "options": "DocType",
+            "reqd": 1
+        },
+        {
+            "fieldname": "source_docname",
+            "fieldtype": "Dynamic Link",
+            "label": "Documento Origen",
+            "options": "source_doctype",
+            "reqd": 1
+        },
+        {
+            "fieldname": "entity_subtype",
+            "fieldtype": "Data",
+            "label": "Subtipo de Entidad",
+            "description": "Tipo específico detectado automáticamente"
+        },
+        {
+            "fieldname": "section_break_2",
+            "fieldtype": "Section Break",
+            "label": "Configuración de Template"
+        },
+        {
+            "fieldname": "applied_template",
+            "fieldtype": "Data",
+            "label": "Template Aplicado",
+            "description": "Código del template asignado"
+        },
+        {
+            "fieldname": "target_document_type",
+            "fieldtype": "Select",
+            "label": "Tipo de Documento Destino",
+            "options": "Estatuto\nManual Operativo\nReglamento"
+        },
+        {
+            "fieldname": "target_section",
+            "fieldtype": "Data",
+            "label": "Sección Destino",
+            "description": "Sección específica donde se insertará el contenido"
+        },
+        {
+            "fieldname": "section_break_3",
+            "fieldtype": "Section Break",
+            "label": "Campos de Configuración"
+        },
+        {
+            "fieldname": "configuration_fields",
+            "fieldtype": "Table",
+            "label": "Campos de Configuración",
+            "options": "Configuration Field"
+        },
+        {
+            "fieldname": "section_break_4",
+            "fieldtype": "Section Break",
+            "label": "Control de Aprobación"
+        },
+        {
+            "fieldname": "approval_required",
+            "fieldtype": "Check",
+            "label": "Requiere Aprobación",
+            "default": 1
+        },
+        {
+            "fieldname": "approved_by",
+            "fieldtype": "Link",
+            "label": "Aprobado Por",
+            "options": "User",
+            "read_only": 1
+        },
+        {
+            "fieldname": "approved_on",
+            "fieldtype": "Datetime",
+            "label": "Fecha de Aprobación",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_2",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "rejection_reason",
+            "fieldtype": "Small Text",
+            "label": "Razón de Rechazo"
+        },
+        {
+            "fieldname": "last_template_sync",
+            "fieldtype": "Datetime",
+            "label": "Última Sincronización de Template",
+            "read_only": 1
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2025-07-03 15:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Document Generation",
+    "name": "Entity Configuration",
+    "naming_rule": "By \"Naming Series\" field",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Configuration Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Configuration Approver",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "quick_entry": 0,
+    "restrict_to_domain": "",
+    "show_name_in_global_search": 1,
+    "show_preview_popup": 1,
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "title_field": "configuration_name",
+    "track_changes": 1,
+    "track_seen": 0,
+    "track_views": 0
+}

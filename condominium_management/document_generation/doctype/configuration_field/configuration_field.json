@@ -1,0 +1,98 @@
+{
+    "actions": [],
+    "creation": "2025-07-03 15:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "field_name",
+        "field_label",
+        "field_type",
+        "column_break_1",
+        "field_value",
+        "is_required",
+        "is_active",
+        "section_break_1",
+        "created_by",
+        "last_updated",
+        "updated_by"
+    ],
+    "fields": [
+        {
+            "fieldname": "field_name",
+            "fieldtype": "Data",
+            "label": "Nombre del Campo",
+            "reqd": 1
+        },
+        {
+            "fieldname": "field_label",
+            "fieldtype": "Data",
+            "label": "Etiqueta del Campo",
+            "reqd": 1
+        },
+        {
+            "fieldname": "field_type",
+            "fieldtype": "Select",
+            "label": "Tipo de Campo",
+            "options": "Data\nText\nSelect\nInt\nFloat\nDate\nDatetime\nCheck\nLong Text",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "field_value",
+            "fieldtype": "Long Text",
+            "label": "Valor del Campo"
+        },
+        {
+            "fieldname": "is_required",
+            "fieldtype": "Check",
+            "label": "Requerido"
+        },
+        {
+            "fieldname": "is_active",
+            "fieldtype": "Check",
+            "label": "Activo",
+            "default": 1
+        },
+        {
+            "fieldname": "section_break_1",
+            "fieldtype": "Section Break",
+            "label": "Información de Auditoría"
+        },
+        {
+            "fieldname": "created_by",
+            "fieldtype": "Link",
+            "label": "Creado Por",
+            "options": "User",
+            "read_only": 1
+        },
+        {
+            "fieldname": "last_updated",
+            "fieldtype": "Datetime",
+            "label": "Última Actualización",
+            "read_only": 1
+        },
+        {
+            "fieldname": "updated_by",
+            "fieldtype": "Link",
+            "label": "Actualizado Por",
+            "options": "User",
+            "read_only": 1
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "istable": 1,
+    "links": [],
+    "modified": "2025-07-03 15:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Document Generation",
+    "name": "Configuration Field",
+    "owner": "Administrator",
+    "permissions": [],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1
+}

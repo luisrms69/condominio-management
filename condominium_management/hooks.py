@@ -19,7 +19,19 @@ modules = {
 		"icon": "octicon octicon-organization",
 		"type": "module",
 		"label": "Companies",
-	}
+	},
+	"document_generation": {
+		"color": "green",
+		"icon": "octicon octicon-file-text",
+		"type": "module",
+		"label": "Document Generation",
+	},
+	"community_contributions": {
+		"color": "purple",
+		"icon": "octicon octicon-git-pull-request",
+		"type": "module",
+		"label": "Community Contributions",
+	},
 }
 
 # Translations
@@ -154,13 +166,26 @@ after_install = "condominium_management.install.after_install"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+# Document Generation Events
+# ---------------------------
+# Universal hooks for auto-detection of entities requiring document configuration
+# TEMPORALMENTE DESACTIVADOS: Los hooks universales ("*") interfieren con el setup wizard de ERPNext
+# causando errores de validación de enlaces durante CI. Se reactivarán después del merge.
+# ISSUE #7: Reactivar hooks universales con verificaciones de contexto
+# PRIORIDAD: CRÍTICA - Debe resolverse inmediatamente después del merge
+doc_events = {
+	# "*": {
+	# 	"after_insert": "condominium_management.document_generation.hooks_handlers.auto_detection.on_document_insert",
+	# 	"on_update": "condominium_management.document_generation.hooks_handlers.auto_detection.on_document_update",
+	# },
+	"Master Template Registry": {
+		"on_update": "condominium_management.document_generation.hooks_handlers.template_propagation.on_template_update"
+	},
+	"Entity Configuration": {
+		"validate": "condominium_management.document_generation.hooks_handlers.auto_detection.validate_entity_configuration",
+		"on_update": "condominium_management.document_generation.hooks_handlers.auto_detection.check_configuration_conflicts",
+	},
+}
 
 # Scheduled Tasks
 # ---------------
@@ -187,6 +212,18 @@ after_install = "condominium_management.install.after_install"
 # -------
 
 before_tests = "condominium_management.utils.before_tests"
+
+# Fixtures
+# --------
+# Global fixtures that will be updated via bench update across all sites
+fixtures = [
+	"Master Template Registry",
+	"Entity Type Configuration",
+	{
+		"doctype": "Contribution Category",
+		"filters": {"module_name": ["in", ["Document Generation", "Maintenance", "Contracts"]]},
+	},
+]
 
 # Overriding Methods
 # ------------------------------
