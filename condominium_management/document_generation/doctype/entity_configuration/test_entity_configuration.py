@@ -29,6 +29,7 @@ class TestEntityConfiguration(FrappeTestCase):
 					"entity_description": "Configuración de prueba",
 					"requires_configuration": 1,
 					"is_active": 1,
+					"applies_to_manual": 1,  # Required for validation
 				}
 			)
 			test_entity_type.insert(ignore_permissions=True)

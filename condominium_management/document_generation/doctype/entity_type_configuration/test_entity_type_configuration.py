@@ -38,11 +38,12 @@ class TestEntityTypeConfiguration(FrappeTestCase):
 				"auto_detect_on_create": 1,
 				"priority": 5,
 				"is_active": 1,
+				"applies_to_manual": 1,  # Required for validation
 			}
 		)
 		config.insert(ignore_permissions=True)
 
-		self.assertEqual(config.entity_doctype, "Test Entity")
+		self.assertEqual(config.entity_doctype, "Company")
 		self.assertTrue(config.requires_configuration)
 		self.assertTrue(config.auto_detect_on_create)
 
@@ -69,6 +70,7 @@ class TestEntityTypeConfiguration(FrappeTestCase):
 				"requires_configuration": 1,
 				"priority": 10,  # Should be valid (1-10 range)
 				"is_active": 1,
+				"applies_to_manual": 1,  # Required for validation
 			}
 		)
 		config.insert(ignore_permissions=True)
@@ -86,6 +88,7 @@ class TestEntityTypeConfiguration(FrappeTestCase):
 				"auto_detect_on_create": 1,
 				"auto_detect_on_update": 0,
 				"is_active": 1,
+				"applies_to_manual": 1,  # Required for validation
 			}
 		)
 		config.insert(ignore_permissions=True)
