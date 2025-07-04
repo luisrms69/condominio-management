@@ -26,10 +26,13 @@ class TestEntityConfiguration(FrappeTestCase):
 				{
 					"doctype": "Entity Type Configuration",
 					"entity_doctype": "User",  # Use existing DocType
+					"entity_name": "Usuario",  # MANDATORY
+					"entity_name_plural": "Usuarios",  # MANDATORY
+					"owning_module": "Document Generation",  # MANDATORY
 					"entity_description": "Configuración de prueba",
 					"requires_configuration": 1,
 					"is_active": 1,
-					"applies_to_manual": 1,  # Required for validation
+					"applies_to_manual": 1,
 				}
 			)
 			test_entity_type.insert(ignore_permissions=True)

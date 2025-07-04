@@ -33,12 +33,15 @@ class TestEntityTypeConfiguration(FrappeTestCase):
 			{
 				"doctype": "Entity Type Configuration",
 				"entity_doctype": "Company",  # Use existing DocType
+				"entity_name": "Empresa",  # MANDATORY
+				"entity_name_plural": "Empresas",  # MANDATORY
+				"owning_module": "Document Generation",  # MANDATORY
 				"entity_description": "Configuración de entidad de prueba",
 				"requires_configuration": 1,
 				"auto_detect_on_create": 1,
 				"priority": 5,
 				"is_active": 1,
-				"applies_to_manual": 1,  # Required for validation
+				"applies_to_manual": 1,
 			}
 		)
 		config.insert(ignore_permissions=True)
@@ -66,11 +69,14 @@ class TestEntityTypeConfiguration(FrappeTestCase):
 			{
 				"doctype": "Entity Type Configuration",
 				"entity_doctype": "Customer",  # Use existing DocType
+				"entity_name": "Cliente",  # MANDATORY
+				"entity_name_plural": "Clientes",  # MANDATORY
+				"owning_module": "Document Generation",  # MANDATORY
 				"entity_description": "Testing priority validation",
 				"requires_configuration": 1,
 				"priority": 10,  # Should be valid (1-10 range)
 				"is_active": 1,
-				"applies_to_manual": 1,  # Required for validation
+				"applies_to_manual": 1,
 			}
 		)
 		config.insert(ignore_permissions=True)
@@ -83,12 +89,15 @@ class TestEntityTypeConfiguration(FrappeTestCase):
 			{
 				"doctype": "Entity Type Configuration",
 				"entity_doctype": "Item",  # Use existing DocType
+				"entity_name": "Artículo",  # MANDATORY
+				"entity_name_plural": "Artículos",  # MANDATORY
+				"owning_module": "Document Generation",  # MANDATORY
 				"entity_description": "Testing auto-detection flags",
 				"requires_configuration": 1,
 				"auto_detect_on_create": 1,
 				"auto_detect_on_update": 0,
 				"is_active": 1,
-				"applies_to_manual": 1,  # Required for validation
+				"applies_to_manual": 1,
 			}
 		)
 		config.insert(ignore_permissions=True)
