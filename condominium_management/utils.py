@@ -5,20 +5,48 @@ from frappe.utils.user import is_website_user
 
 def before_tests():
 	"""
-	Configuración pre-tests minimalista para evitar errores de setup complejo.
+	Configuración pre-tests compatible con módulo Companies existente.
 
-	Solo crea registros básicos necesarios para tests, evitando setup_complete.
+	Mantiene funcionalidad original para Companies y agrega extensions para Document Generation.
 	"""
 	frappe.clear_cache()
 
-	# Solo crear Company básica sin setup complejo
-	_create_minimal_company()
-	_create_basic_erpnext_records()
+	# Setup original compatible con Companies
+	from frappe.desk.page.setup_wizard.setup_wizard import setup_complete
 
-	# Reemplazar enable_all_roles_and_domains con función Frappe pura
-	_setup_basic_roles_frappe_only()
+	year = now_datetime().year
 
-	# Force migrate DocTypes to ensure they exist in CI
+	if not frappe.get_list("Company"):
+		try:
+			setup_complete(
+				{
+					"currency": "MXN",
+					"full_name": "Administrator",
+					"company_name": "Condominio Test LLC",
+					"timezone": "America/Mexico_City",
+					"company_abbr": "CT",
+					"industry": "Real Estate",
+					"country": "Mexico",
+					"fy_start_date": f"{year}-01-01",
+					"fy_end_date": f"{year}-12-31",
+					"company_tagline": "Testing Company",
+					"chart_of_accounts": "Standard",
+				}
+			)
+		except Exception as e:
+			print(f"Warning: setup_complete failed: {e}")
+			_create_minimal_company()
+
+	# Setup roles - usar ERPNext si disponible, fallback a Frappe
+	try:
+		from erpnext.setup.utils import enable_all_roles_and_domains
+
+		enable_all_roles_and_domains()
+	except ImportError:
+		print("Warning: ERPNext not available, using Frappe-only setup")
+		_setup_basic_roles_frappe_only()
+
+	# Extensions para Document Generation module solamente
 	_reload_custom_doctypes()
 
 	frappe.db.commit()  # nosemgrep
@@ -142,13 +170,27 @@ def _create_basic_erpnext_records():
 			}
 		).insert(ignore_permissions=True)
 
-	# Department
+	# Department - crear como grupo principal primero
 	if not frappe.db.exists("Department", "All Departments"):
+		# Crear departamento raíz sin parent_department
 		frappe.get_doc(
 			{
 				"doctype": "Department",
 				"department_name": "All Departments",
 				"is_group": 1,
+			}
+		).insert(ignore_permissions=True)
+
+	# Company default department
+	company_name = "Condominio Test LLC"
+	if not frappe.db.exists("Department", company_name) and frappe.db.exists("Company", company_name):
+		frappe.get_doc(
+			{
+				"doctype": "Department",
+				"department_name": company_name,
+				"parent_department": "All Departments",
+				"company": company_name,
+				"is_group": 0,
 			}
 		).insert(ignore_permissions=True)
 

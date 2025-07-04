@@ -199,6 +199,43 @@ class TestDataFactory:
 		}
 
 	@staticmethod
+	def create_template_with_assignment_rules(registry):
+		"""
+		Crear template completo con reglas de asignación para evitar errores de referencia.
+
+		Args:
+		    registry: Instancia de Master Template Registry
+
+		Returns:
+		    dict: Template data con reglas válidas
+		"""
+		# Primero agregar el template
+		registry.append(
+			"infrastructure_templates",
+			{
+				"template_code": "POOL_TEMPLATE",
+				"template_name": "Template Piscina Completo",
+				"infrastructure_type": "Amenity",
+				"template_content": json.dumps(
+					{
+						"fields": [
+							{"name": "capacity", "label": "Capacidad", "type": "Int"},
+							{"name": "pool_type", "label": "Tipo de Piscina", "type": "Select"},
+						]
+					}
+				),
+			},
+		)
+
+		# Luego agregar regla que referencia template existente
+		registry.append(
+			"auto_assignment_rules",
+			{"entity_type": "Amenity", "entity_subtype": "piscina", "target_template": "POOL_TEMPLATE"},
+		)
+
+		return {"template_code": "POOL_TEMPLATE", "template_name": "Template Piscina Completo"}
+
+	@staticmethod
 	def create_contribution_request_data(category_name=None, company_name=None):
 		"""
 		Crear datos completos para Contribution Request.
@@ -241,6 +278,19 @@ class TestDataFactory:
 		Returns:
 		    dict: Datos completos para crear Entity Configuration
 		"""
+		# Asegurar que existe el documento origen
+		if not frappe.db.exists("User", "Administrator"):
+			admin_user = frappe.get_doc(
+				{
+					"doctype": "User",
+					"email": "administrator@test.com",
+					"first_name": "Administrator",
+					"enabled": 1,
+					"user_type": "System User",
+				}
+			)
+			admin_user.insert(ignore_permissions=True)
+
 		return {
 			"entity_reference": f"TEST-CONFIG-{now_datetime().strftime('%Y%m%d%H%M%S')}",
 			"entity_type": "Test Entity Config",

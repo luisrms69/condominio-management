@@ -175,9 +175,10 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		"""Test validación de reglas de asignación."""
 		registry = frappe.get_single("Master Template Registry")
 		registry.company = self.test_company.company_name
+		registry.infrastructure_templates = []  # Limpiar templates
 		registry.auto_assignment_rules = []
 
-		# Agregar regla que referencia template inexistente
+		# Agregar regla que referencia template inexistente (sin crear template primero)
 		registry.append(
 			"auto_assignment_rules",
 			{
@@ -198,21 +199,8 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		registry.infrastructure_templates = []
 		registry.auto_assignment_rules = []
 
-		# Agregar template
-		registry.append(
-			"infrastructure_templates",
-			{
-				**TestDataFactory.create_master_template_data(),
-				"template_code": "POOL_TEMPLATE",  # Override for uniqueness
-				"template_name": "Template Piscina",
-			},
-		)
-
-		# Agregar regla
-		registry.append(
-			"auto_assignment_rules",
-			{"entity_type": "Amenity", "entity_subtype": "piscina", "target_template": "POOL_TEMPLATE"},
-		)
+		# Usar factory para crear template con reglas válidas
+		TestDataFactory.create_template_with_assignment_rules(registry)
 		registry.save()
 
 		# Test obtener regla

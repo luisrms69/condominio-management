@@ -5,6 +5,7 @@
     "creation": "2025-07-03 15:00:00.000000",
     "default_view": "List",
     "doctype": "DocType",
+    "label": "Configuración de Entidad",
     "engine": "InnoDB",
     "field_order": [
         "naming_series",
