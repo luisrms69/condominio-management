@@ -97,6 +97,7 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 
 		# Limpiar templates existentes
 		registry.infrastructure_templates = []
+		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados
 
 		# Agregar primer template
 		registry.append(
@@ -127,6 +128,8 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		registry.company = self.test_company.company_name
 		registry.template_version = "1.0.5"
 		registry.infrastructure_templates = []
+		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados
+		registry.update_propagation_status = "Completado"  # ✅ Estado inicial explícito
 		registry.save()
 
 		# Simular cambio en templates
@@ -150,6 +153,8 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		registry = frappe.get_single("Master Template Registry")
 		registry.company = self.test_company.company_name
 		registry.infrastructure_templates = []
+		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados
+		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados
 
 		# Agregar template de prueba
 		registry.append(
@@ -175,7 +180,8 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		"""Test validación de reglas de asignación."""
 		registry = frappe.get_single("Master Template Registry")
 		registry.company = self.test_company.company_name
-		registry.infrastructure_templates = []  # Limpiar templates
+		registry.infrastructure_templates = []
+		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados  # Limpiar templates
 		registry.auto_assignment_rules = []
 
 		# Agregar regla que referencia template inexistente (sin crear template primero)
@@ -197,6 +203,7 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		registry = frappe.get_single("Master Template Registry")
 		registry.company = self.test_company.company_name
 		registry.infrastructure_templates = []
+		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados
 		registry.auto_assignment_rules = []
 
 		# Usar factory para crear template con reglas válidas
@@ -233,6 +240,7 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		registry = frappe.get_single("Master Template Registry")
 		registry.company = self.test_company.company_name
 		registry.infrastructure_templates = []
+		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados
 		registry.update_propagation_status = "Completado"
 		registry.save()
 
