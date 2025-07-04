@@ -32,7 +32,7 @@ class TestEntityTypeConfiguration(FrappeTestCase):
 		config = frappe.get_doc(
 			{
 				"doctype": "Entity Type Configuration",
-				"entity_doctype": "Test Entity",
+				"entity_doctype": "Company",  # Use existing DocType
 				"entity_description": "Configuración de entidad de prueba",
 				"requires_configuration": 1,
 				"auto_detect_on_create": 1,
@@ -64,7 +64,7 @@ class TestEntityTypeConfiguration(FrappeTestCase):
 		config = frappe.get_doc(
 			{
 				"doctype": "Entity Type Configuration",
-				"entity_doctype": "Priority Test Entity",
+				"entity_doctype": "Customer",  # Use existing DocType
 				"entity_description": "Testing priority validation",
 				"requires_configuration": 1,
 				"priority": 10,  # Should be valid (1-10 range)
@@ -80,7 +80,7 @@ class TestEntityTypeConfiguration(FrappeTestCase):
 		config = frappe.get_doc(
 			{
 				"doctype": "Entity Type Configuration",
-				"entity_doctype": "Auto Detection Test",
+				"entity_doctype": "Item",  # Use existing DocType
 				"entity_description": "Testing auto-detection flags",
 				"requires_configuration": 1,
 				"auto_detect_on_create": 1,

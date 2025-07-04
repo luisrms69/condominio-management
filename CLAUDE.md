@@ -32,6 +32,33 @@ Condominium Information,Información del Condominio
 
 **IMPORTANTE:** Para agregar nuevos DocTypes, SIEMPRE agregar la traducción correspondiente al archivo `es.csv`
 
+#### **🎯 FILOSOFÍA HÍBRIDA DE LABELS CONFIRMADA:**
+
+**Patrón Oficial del Proyecto (validado en módulo Companies):**
+
+1. **Campo "label" DIRECTO en DocTypes principales:**
+   ```json
+   {
+     "doctype": "DocType", 
+     "name": "Entity Type Configuration",
+     "label": "Configuración de Tipo de Entidad",  // ✅ DIRECTO en JSON
+     // ...
+   }
+   ```
+
+2. **es.csv como COMPLEMENTO:**
+   ```csv
+   Entity Type Configuration,Configuración de Tipo de Entidad
+   ```
+
+3. **Todos los campos internos en español:**
+   ```json
+   {"fieldname": "entity_doctype", "label": "Tipo de Entidad DocType"}
+   {"options": "Activo\nSuspendido\nTerminado"}
+   ```
+
+**REGLA:** Usar AMBOS métodos - campo "label" directo + entrada en es.csv
+
 #### Ejemplos Correctos:
 ```json
 // DocType con label en español
@@ -571,6 +598,19 @@ def before_tests():
 - **8d3cc46:** before_tests hook implementado (SOLUCIÓN DEFINITIVA)
 
 **IMPORTANTE:** Esta metodología debe aplicarse a TODOS los problemas CI futuros en los 12 módulos restantes.
+
+#### **📝 SOLUCIÓN TRANSIT WAREHOUSE TYPE DOCUMENTADA:**
+
+**Error común:** `LinkValidationError: Could not find Warehouse Type: Transit`
+
+**Solución definitiva (basada en módulo Companies exitoso):**
+1. **Hooks obligatorios implementados:** `after_install` y `before_tests`
+2. **Función `before_tests()` usa `setup_complete()`** para configuración completa ERPNext
+3. **Fallback robusto:** `_create_basic_warehouse_types()` si falla setup_complete
+4. **Warehouse types creados:** Stores, Work In Progress, Finished Goods, Transit
+5. **Patrón oficial Frappe Framework** - validado en lending app
+
+**NO usar workarounds temporales** - siempre aplicar solución completa.
 
 ---
 

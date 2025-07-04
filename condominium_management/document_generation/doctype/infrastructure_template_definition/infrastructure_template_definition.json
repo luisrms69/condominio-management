@@ -52,7 +52,7 @@
             "fieldname": "target_document",
             "fieldtype": "Select",
             "label": "Documento Destino",
-            "options": "Estatuto\\nManual Operativo\\nReglamento",
+            "options": "Estatuto\nManual Operativo\nReglamento",
             "reqd": 1
         },
         {

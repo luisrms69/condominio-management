@@ -6,6 +6,7 @@
     "default_view": "List",
     "doctype": "DocType",
     "engine": "InnoDB",
+    "label": "Configuración de Tipo de Entidad",
     "field_order": [
         "entity_doctype",
         "entity_name",

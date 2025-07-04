@@ -21,11 +21,11 @@ class TestEntityConfiguration(FrappeTestCase):
 			return
 
 		# Create test entity type configuration
-		if not frappe.db.exists("Entity Type Configuration", {"entity_doctype": "Test Entity Config"}):
+		if not frappe.db.exists("Entity Type Configuration", {"entity_doctype": "User"}):
 			test_entity_type = frappe.get_doc(
 				{
 					"doctype": "Entity Type Configuration",
-					"entity_doctype": "Test Entity Config",
+					"entity_doctype": "User",  # Use existing DocType
 					"entity_description": "Configuración de prueba",
 					"requires_configuration": 1,
 					"is_active": 1,

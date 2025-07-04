@@ -23,19 +23,19 @@ class TestContributionRequest(FrappeTestCase):
 			return
 
 		# Create test category
-		if not frappe.db.exists("Contribution Category", "Document Generation-Test Infrastructure"):
-			test_category = frappe.get_doc(
-				{
-					"doctype": "Contribution Category",
-					"module_name": "Document Generation",
-					"contribution_type": "Test Infrastructure",
-					"description": "Categoría de prueba para infraestructura",
-					"export_doctype": "Master Template Registry",
-					"required_fields": json.dumps(["template_code", "template_name", "infrastructure_type"]),
-					"is_active": 1,
-				}
-			)
-			test_category.insert(ignore_permissions=True)
+		# Note: name will be auto-generated as "Document Generation-Test Infrastructure"
+		test_category = frappe.get_doc(
+			{
+				"doctype": "Contribution Category",
+				"module_name": "Document Generation",
+				"contribution_type": "Test Infrastructure",
+				"description": "Categoría de prueba para infraestructura",
+				"export_doctype": "Master Template Registry",
+				"required_fields": json.dumps(["template_code", "template_name", "infrastructure_type"]),
+				"is_active": 1,
+			}
+		)
+		test_category.insert(ignore_permissions=True)
 
 		# Ensure test company exists
 		if not frappe.db.exists("Company", "Test Company"):
