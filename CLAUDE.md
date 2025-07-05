@@ -5,12 +5,13 @@
 ## 📋 **REGLAS CRÍTICAS INMUTABLES**
 👉 **[CONFIGURACIÓN COMPLETA](docs/core/CLAUDE_CONFIG.md)**
 
-### **TOP 5 REGLAS MÁS CRÍTICAS:**
+### **TOP 6 REGLAS MÁS CRÍTICAS:**
 1. **🇪🇸 Etiquetas en español** - TODAS las labels de DocTypes en español SIEMPRE
 2. **🧪 Tests obligatorios** - Cada DocType DEBE tener tests con FrappeTestCase
 3. **🔧 Hooks específicos** - NO universales (bloqueados por setup wizard)
 4. **🌿 Branch strategy** - Nunca trabajar en main, siempre feature/ branches
 5. **✅ Verificación OBLIGATORIA** - Tests después de modificar hooks.py (REGLA #13)
+6. **⚖️ PREFERENCIA FRAPPE** - Funciones Frappe Framework > ERPNext SIEMPRE
 
 ### **SISTEMA DE TRADUCCIONES:**
 - **Archivo:** `condominium_management/translations/es.csv`
@@ -113,10 +114,36 @@ Se rechaza código que:
 - ❌ Modifica hooks.py sin verificar tests de TODOS los módulos
 - ❌ Mensajes de error en inglés
 - ❌ No sigue branch naming convention
+- ❌ Usa funciones ERPNext cuando existe equivalente Frappe
 
 ---
 
 ## 📚 **ARQUITECTURA Y DECISIONES**
+
+### **⚖️ PREFERENCIA FRAPPE vs ERPNEXT:**
+**REGLA FUNDAMENTAL:** Funciones Frappe Framework tienen **PREFERENCIA ABSOLUTA** sobre ERPNext.
+
+#### **🎯 CRITERIOS DE DECISIÓN:**
+1. **✅ USAR FRAPPE:** Si existe función equivalente en Frappe Framework
+2. **⚠️ EVALUAR ERPNEXT:** Solo si es funcionalidad crítica no disponible en Frappe
+3. **❌ EVITAR ERPNEXT:** Si requiere recrear funcionalidad existente de Frappe
+
+#### **📊 EJEMPLOS:**
+```python
+# ✅ CORRECTO - Frappe Framework
+from frappe.utils import now_datetime
+user = frappe.get_doc("User", "Administrator")
+
+# ❌ EVITAR - ERPNext específico  
+from erpnext.setup.utils import enable_all_roles_and_domains
+
+# ⚠️ JUSTIFICADO - ERPNext crítico documentado
+company = frappe.get_doc("Company", company_name)  # Company DocType es crítico
+```
+
+#### **✅ BENEFICIOS FRAPPE:**
+- Estabilidad garantizada, portabilidad máxima, testing robusto
+- Mantenimiento simplificado, compatible con todos ambientes CI
 
 ### **Single Site Confirmado:**
 - ✅ Viable hasta 50+ condominios
