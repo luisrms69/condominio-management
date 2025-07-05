@@ -58,3 +58,11 @@ test_reports/
 docker-compose.act.yml
 .act/
 act-cache/
+
+# Archivos de arquitectura externa (NO COMMITEAR)
+*_architecture*.md
+*_requirements*.md  
+*_design*.md
+*_specifications*.md
+module_*.md
+CLAUDE_OLD.md
