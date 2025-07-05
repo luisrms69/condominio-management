@@ -5,13 +5,12 @@
 ## 📋 **REGLAS CRÍTICAS INMUTABLES**
 👉 **[CONFIGURACIÓN COMPLETA](docs/core/CLAUDE_CONFIG.md)**
 
-### **TOP 6 REGLAS MÁS CRÍTICAS:**
+### **TOP 5 REGLAS MÁS CRÍTICAS:**
 1. **🇪🇸 Etiquetas en español** - TODAS las labels de DocTypes en español SIEMPRE
 2. **🧪 Tests obligatorios** - Cada DocType DEBE tener tests con FrappeTestCase
 3. **🔧 Hooks específicos** - NO universales (bloqueados por setup wizard)
 4. **🌿 Branch strategy** - Nunca trabajar en main, siempre feature/ branches
 5. **✅ Verificación OBLIGATORIA** - Tests después de modificar hooks.py (REGLA #13)
-6. **⚖️ PREFERENCIA FRAPPE** - Funciones Frappe Framework > ERPNext SIEMPRE
 
 ### **SISTEMA DE TRADUCCIONES:**
 - **Archivo:** `condominium_management/translations/es.csv`
@@ -56,20 +55,7 @@ Physical Spaces, Residents, Access Control, Maintenance, Committee, Compliance, 
 3. Configurar hooks en `hooks.py`
 4. Implementar tests obligatorios
 5. **Verificar tests funcionan** (CRÍTICO)
-6. **Ejecutar y corregir linting** (OBLIGATORIO)
-7. Commit limpio + PR
-
-### **🚨 WORKFLOW ANTI-LINTING FAILURES:**
-```bash
-# ANTES de cualquier commit
-pre-commit run --all-files
-if [ $? -ne 0 ]; then
-  ruff --fix .
-  git add .
-  echo "✅ Linting corregido automáticamente"
-fi
-git commit -m "mensaje"
-```
+6. Commit limpio + PR
 
 ### **Template Automático:**
 ```bash
@@ -89,10 +75,8 @@ bench --site domika.dev run-tests --app condominium_management
 # Test específico por DocType  
 bench --site domika.dev run-tests --doctype "DocType Name"
 
-# Verificar pre-commit Y corregir linting ANTES de commit
+# Verificar pre-commit
 pre-commit run --all-files
-ruff --fix .  # Si hay errores de linting, aplicar fix automático
-git add .     # Agregar correcciones aplicadas
 ```
 
 ### **Desarrollo:**
@@ -129,37 +113,10 @@ Se rechaza código que:
 - ❌ Modifica hooks.py sin verificar tests de TODOS los módulos
 - ❌ Mensajes de error en inglés
 - ❌ No sigue branch naming convention
-- ❌ Usa funciones ERPNext cuando existe equivalente Frappe
-- ❌ Hace commit sin verificar y corregir errores de linting
 
 ---
 
 ## 📚 **ARQUITECTURA Y DECISIONES**
-
-### **⚖️ PREFERENCIA FRAPPE vs ERPNEXT:**
-**REGLA FUNDAMENTAL:** Funciones Frappe Framework tienen **PREFERENCIA ABSOLUTA** sobre ERPNext.
-
-#### **🎯 CRITERIOS DE DECISIÓN:**
-1. **✅ USAR FRAPPE:** Si existe función equivalente en Frappe Framework
-2. **⚠️ EVALUAR ERPNEXT:** Solo si es funcionalidad crítica no disponible en Frappe
-3. **❌ EVITAR ERPNEXT:** Si requiere recrear funcionalidad existente de Frappe
-
-#### **📊 EJEMPLOS:**
-```python
-# ✅ CORRECTO - Frappe Framework
-from frappe.utils import now_datetime
-user = frappe.get_doc("User", "Administrator")
-
-# ❌ EVITAR - ERPNext específico  
-from erpnext.setup.utils import enable_all_roles_and_domains
-
-# ⚠️ JUSTIFICADO - ERPNext crítico documentado
-company = frappe.get_doc("Company", company_name)  # Company DocType es crítico
-```
-
-#### **✅ BENEFICIOS FRAPPE:**
-- Estabilidad garantizada, portabilidad máxima, testing robusto
-- Mantenimiento simplificado, compatible con todos ambientes CI
 
 ### **Single Site Confirmado:**
 - ✅ Viable hasta 50+ condominios
@@ -186,47 +143,10 @@ company = frappe.get_doc("Company", company_name)  # Company DocType es crítico
 
 ---
 
-## 🚀 **CLAUDE FRAMEWORK TEMPLATE REUTILIZABLE**
-
-### **✅ TEMPLATE COMPLETO DISPONIBLE:**
-👉 **[TEMPLATE REUTILIZABLE](claude_framework_template/)**
-
-**Características:**
-- ✅ **Setup automático** en 5 minutos para cualquier app Frappe
-- ✅ **Configuración personalizable** por idioma y dependencias
-- ✅ **Scripts de generación** automática de hooks y documentación
-- ✅ **Validación completa** de instalación
-- ✅ **Basado en experiencia real** de 6+ meses de desarrollo
-
-### **🔧 USO PARA NUEVAS APPS:**
-```bash
-# Setup completo para nueva app Frappe
-cd /path/to/your/frappe/app
-python claude_framework_template/setup_claude_framework.py \
-  --app-name "your_app" \
-  --app-title "Your App Title" \
-  --publisher "Your Company" \
-  --language "es"
-
-# Validar instalación
-python claude_framework_template/validate_setup.py --full-check
-```
-
-### **📚 DOCUMENTACIÓN TEMPLATE:**
-- 📖 **[README.md](claude_framework_template/README.md)** - Overview completo
-- 🚀 **[INSTALLATION_GUIDE.md](claude_framework_template/INSTALLATION_GUIDE.md)** - Guía detallada
-- ⚙️ **Scripts automatizados** - setup, validación, configuración
-
-**PERMITE CRECIMIENTO:** Este CLAUDE.md seguirá creciendo con mejoras que beneficiarán futuras implementaciones del template.
-
----
-
 **📁 Documentación Detallada:** `/docs` folder  
 **🔧 Configuración Permanente:** `docs/core/CLAUDE_CONFIG.md`  
 **📊 Estado Actual:** `docs/operational/MODULE_STATUS.md`  
-**🔄 Procesos:** `docs/workflows/NEW_MODULE_PROCESS.md`  
-**🚀 Template Reutilizable:** `claude_framework_template/`
+**🔄 Procesos:** `docs/workflows/NEW_MODULE_PROCESS.md`
 
-**Última actualización:** 2025-07-05  
-**Líneas totales:** <350 (template completo incluido)  
-**Template status:** ✅ PROBADO Y FUNCIONAL
+**Última actualización:** 2025-07-04  
+**Líneas totales:** <300 (cumple límite establecido)
