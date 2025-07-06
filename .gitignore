@@ -59,6 +59,18 @@ docker-compose.act.yml
 .act/
 act-cache/
 
+# Documentación sensible (movida a repo privado)
+*_INTERNO.md
+*_CONFIDENCIAL.md
+CLAUDE.md
+REPORTE_*.md
+DOCUMENTACION_*.md
+ARCHITECTURE_*.md
+TECHNICAL_*.md
+COMPANIES_MODULE_*.md
+docs/
+docs.backup/
+
 # Archivos de arquitectura externa (NO COMMITEAR)
 *_architecture*.md
 *_requirements*.md  
@@ -66,3 +78,6 @@ act-cache/
 *_specifications*.md
 module_*.md
 CLAUDE_OLD.md
+
+# Local private repo clone
+buzola-internal/
