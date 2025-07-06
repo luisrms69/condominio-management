@@ -77,37 +77,43 @@ def create_contribution_categories():
 
 
 def create_test_sites():
-	"""Crear sites de prueba para testing cross-site."""
-	print("🧪 Creando sites de prueba...")
+	"""Registrar sites reales del ambiente Buzola para cross-site."""
+	print("🏢 Registrando sites reales del ambiente...")
 
-	test_sites = [
+	real_sites = [
 		{
-			"site_url": "https://admin1.test.com",
-			"company_name": "Test Administradora #1",
-			"contact_email": "admin1@test.com",
-			"business_justification": "Site de prueba para testing cross-site #1",
+			"site_url": "https://admin1.dev",
+			"company_name": "Administradora Buzola #1",
+			"contact_email": "admin1@buzola.mx",
+			"business_justification": "Site administradora real para cross-site contributions",
 		},
 		{
-			"site_url": "https://admin2.test.com",
-			"company_name": "Test Administradora #2",
-			"contact_email": "admin2@test.com",
-			"business_justification": "Site de prueba para testing cross-site #2",
+			"site_url": "https://condo1.dev",
+			"company_name": "Condominio Torre Azul",
+			"contact_email": "admin@torreazul.mx",
+			"business_justification": "Site condominio para testing cross-site contributions",
+		},
+		{
+			"site_url": "https://condo2.dev",
+			"company_name": "Condominio Vista Verde",
+			"contact_email": "admin@vistaverde.mx",
+			"business_justification": "Site condominio adicional para testing cross-site contributions",
 		},
 	]
 
-	for site_data in test_sites:
+	for site_data in real_sites:
 		site_url = site_data["site_url"]
 		if not frappe.db.exists("Registered Contributor Site", site_url):
-			test_site = frappe.new_doc("Registered Contributor Site")
-			test_site.update(site_data)
-			test_site.is_active = 1
-			test_site.insert(ignore_permissions=True)
-			print(f"✅ Site de prueba creado: {site_url}")
-			print(f"   API Key: {test_site.get_masked_api_key()}")
+			real_site = frappe.new_doc("Registered Contributor Site")
+			real_site.update(site_data)
+			real_site.is_active = 1
+			real_site.insert(ignore_permissions=True)
+			print(f"✅ Site real registrado: {site_url}")
+			print(f"   API Key: {real_site.get_masked_api_key()}")
 		else:
-			test_site = frappe.get_doc("Registered Contributor Site", site_url)
-			print(f"ℹ️ Site de prueba ya existe: {site_url}")
-			print(f"   API Key: {test_site.get_masked_api_key()}")
+			real_site = frappe.get_doc("Registered Contributor Site", site_url)
+			print(f"ℹ️ Site real ya existe: {site_url}")
+			print(f"   API Key: {real_site.get_masked_api_key()}")
 
 
 def setup_permissions():

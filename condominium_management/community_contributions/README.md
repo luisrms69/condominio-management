@@ -16,7 +16,7 @@ El **Community Contributions Module** permite la colaboración entre múltiples 
   - Centraliza pool de templates universales
   - Maneja review, aprobación e integración
 
-- **🏘️ admin1.dev, admin2.dev, ...**: SITES CONTRIBUYENTES
+- **🏘️ admin1.dev, condo1.dev, condo2.dev**: SITES CONTRIBUYENTES
   - Envían contribuciones a domika.dev
   - Autenticación con API keys únicos
   - Seguimiento de estadísticas
@@ -136,10 +136,11 @@ def test_cross_site_connection(
 - **`configure_central.py`**: Configuración básica de domika.dev como receptor
 - **`setup_domika_central.py`**: Setup completo con categorías y sites de prueba
 
-### Sites de Testing Configurados
-- **admin1.test.com**: Site administradora real registrado
-- **admin2.test.com**: Site adicional para testing
-- **Estado**: Activo y funcional para testing
+### Sites Reales Configurados
+- **admin1.dev**: Site administradora Buzola registrado
+- **condo1.dev**: Site condominio Torre Azul 
+- **condo2.dev**: Site condominio Vista Verde
+- **Estado**: Activos y funcionales para testing cross-site
 
 ### Comandos de Validación
 ```bash

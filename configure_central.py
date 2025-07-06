@@ -32,68 +32,73 @@ if not frappe.db.exists("Contribution Category", "document_generation-template")
 else:
 	print("ℹ️ Categoría document_generation-template ya existe")
 
-# 2. Crear site de prueba admin1.test.com para simular admin1.dev
-if not frappe.db.exists("Registered Contributor Site", "https://admin1.test.com"):
-	test_site = frappe.new_doc("Registered Contributor Site")
-	test_site.update(
+# 2. Registrar admin1.dev como site contribuyente real
+if not frappe.db.exists("Registered Contributor Site", "https://admin1.dev"):
+	admin_site = frappe.new_doc("Registered Contributor Site")
+	admin_site.update(
 		{
-			"site_url": "https://admin1.test.com",
-			"company_name": "Test Administradora #1",
-			"contact_email": "admin1@test.com",
-			"business_justification": "Site de prueba para testing cross-site representando admin1.dev",
+			"site_url": "https://admin1.dev",
+			"company_name": "Administradora Buzola #1",
+			"contact_email": "admin1@buzola.mx",
+			"business_justification": "Site administradora real para testing cross-site contributions",
 			"is_active": 1,
 		}
 	)
-	test_site.insert(ignore_permissions=True)
-	print(f"✅ Site de prueba creado: https://admin1.test.com")
-	print(f"   Representa: admin1.dev (administradora real)")
-	print(f"   API Key: {test_site.get_masked_api_key()}")
-	print(f"   API Key completo (para testing): {test_site.api_key}")
+	admin_site.insert(ignore_permissions=True)
+	print("✅ Site administradora registrado: https://admin1.dev")
+	print("   Site real de administradora Buzola")
+	print(f"   API Key: {admin_site.get_masked_api_key()}")
+	print(f"   API Key completo (para testing): {admin_site.api_key}")
 else:
-	test_site = frappe.get_doc("Registered Contributor Site", "https://admin1.test.com")
-	print(f"ℹ️ Site de prueba ya existe: https://admin1.test.com")
-	print(f"   API Key: {test_site.get_masked_api_key()}")
+	admin_site = frappe.get_doc("Registered Contributor Site", "https://admin1.dev")
+	print("ℹ️ Site administradora ya existe: https://admin1.dev")
+	print(f"   API Key: {admin_site.get_masked_api_key()}")
 
-# 3. Crear site adicional para admin2 si es necesario
-if not frappe.db.exists("Registered Contributor Site", "https://admin2.test.com"):
-	test_site2 = frappe.new_doc("Registered Contributor Site")
-	test_site2.update(
+# 3. Registrar condo1.dev como site condominio para testing adicional
+if not frappe.db.exists("Registered Contributor Site", "https://condo1.dev"):
+	condo_site = frappe.new_doc("Registered Contributor Site")
+	condo_site.update(
 		{
-			"site_url": "https://admin2.test.com",
-			"company_name": "Test Administradora #2",
-			"contact_email": "admin2@test.com",
-			"business_justification": "Site de prueba adicional para testing cross-site",
+			"site_url": "https://condo1.dev",
+			"company_name": "Condominio Torre Azul",
+			"contact_email": "admin@torreazul.mx",
+			"business_justification": "Site condominio para testing cross-site contributions",
 			"is_active": 1,
 		}
 	)
-	test_site2.insert(ignore_permissions=True)
-	print(f"✅ Site de prueba #2 creado: https://admin2.test.com")
-	print(f"   API Key: {test_site2.get_masked_api_key()}")
+	condo_site.insert(ignore_permissions=True)
+	print("✅ Site condominio registrado: https://condo1.dev")
+	print(f"   API Key: {condo_site.get_masked_api_key()}")
 else:
-	print("ℹ️ Site de prueba #2 ya existe: https://admin2.test.com")
+	print("ℹ️ Site condominio ya existe: https://condo1.dev")
 
 frappe.db.commit()
 
 print("\n🎯 ARQUITECTURA CONFIGURADA:")
 print("=" * 50)
 print("📍 DOMIKA.DEV = RECEPTOR CENTRAL (Matriz)")
-print("   • Recibe contribuciones de administradoras")
+print("   • Recibe contribuciones de administradoras y condominios")
 print("   • Centraliza pool de templates universales")
 print("   • Maneja review, aprobación e integración")
 print("")
-print("📍 ADMIN1.TEST.COM = SIMULACIÓN DE ADMIN1.DEV")
-print("   • Representa site administradora real")
+print("📍 ADMIN1.DEV = SITE ADMINISTRADORA REAL")
+print("   • Site administradora Buzola registrado")
 print("   • Enviará contribuciones a domika.dev")
-print("   • Testing de flujo cross-site")
+print("   • Testing de flujo cross-site administradora → central")
+print("")
+print("📍 CONDO1.DEV = SITE CONDOMINIO")
+print("   • Site condominio independiente registrado")
+print("   • Puede enviar contribuciones específicas")
+print("   • Testing de flujo cross-site condominio → central")
 print("")
 print("✅ domika.dev configurado como receptor central!")
 
 # Mostrar estadísticas
-print(f"\n📊 ESTADÍSTICAS:")
+print("\n📊 ESTADÍSTICAS:")
 total_sites = frappe.db.count("Registered Contributor Site", {"is_active": 1})
 total_categories = frappe.db.count("Contribution Category", {"is_active": 1})
 print(f"   • Sites registrados activos: {total_sites}")
 print(f"   • Categorías de contribución: {total_categories}")
-print(f"   • APIs cross-site: Habilitadas")
+print("   • APIs cross-site: Habilitadas")
 print("")
 print("🚀 ¡Sistema cross-site listo para testing!")

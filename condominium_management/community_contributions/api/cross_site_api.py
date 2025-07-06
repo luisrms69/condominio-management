@@ -105,7 +105,7 @@ def submit_contribution_to_domika(
 	except json.JSONDecodeError:
 		frappe.throw(_("Los datos de contribución deben ser JSON válido"))
 	except Exception as e:
-		frappe.log_error(f"Error en submit_contribution_to_domika: {str(e)}")
+		frappe.log_error(f"Error en submit_contribution_to_domika: {e!s}")
 		frappe.throw(_("Error interno: {0}").format(str(e)))
 
 
@@ -225,7 +225,7 @@ def receive_external_contribution(
 		}
 
 	except Exception as e:
-		frappe.log_error(f"Error en receive_external_contribution: {str(e)}")
+		frappe.log_error(f"Error en receive_external_contribution: {e!s}")
 		raise
 
 
@@ -415,5 +415,5 @@ def test_cross_site_connection(target_site_url: str, api_key: str) -> dict[str, 
 	except requests.RequestException as e:
 		return {"success": False, "message": _("Error de red: {0}").format(str(e))}
 	except Exception as e:
-		frappe.log_error(f"Error en test_cross_site_connection: {str(e)}")
+		frappe.log_error(f"Error en test_cross_site_connection: {e!s}")
 		return {"success": False, "message": _("Error interno: {0}").format(str(e))}

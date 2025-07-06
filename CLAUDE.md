@@ -256,7 +256,7 @@ python claude_framework_template/validate_setup.py --full-check
 - Logs de auditoría completos
 
 #### **📊 TESTING CONFIGURADO:**
-- Sites de prueba: `admin1.test.com`, `admin2.test.com`
+- Sites reales: `admin1.dev`, `condo1.dev`, `condo2.dev`
 - Categoría operativa: `document_generation-template`
 - Scripts de configuración: `configure_central.py`
 
