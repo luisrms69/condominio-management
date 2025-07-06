@@ -30,7 +30,7 @@ if not frappe.db.exists("Contribution Category", "document_generation-template")
 	category.insert(ignore_permissions=True)
 	print("✅ Categoría document_generation-template creada")
 else:
-	print("ℹ️ Categoría document_generation-template ya existe")
+	print("[INFO] Categoría document_generation-template ya existe")
 
 # 2. Registrar admin1.dev como site contribuyente real
 if not frappe.db.exists("Registered Contributor Site", "https://admin1.dev"):
@@ -51,7 +51,7 @@ if not frappe.db.exists("Registered Contributor Site", "https://admin1.dev"):
 	print(f"   API Key completo (para testing): {admin_site.api_key}")
 else:
 	admin_site = frappe.get_doc("Registered Contributor Site", "https://admin1.dev")
-	print("ℹ️ Site administradora ya existe: https://admin1.dev")
+	print("[INFO] Site administradora ya existe: https://admin1.dev")
 	print(f"   API Key: {admin_site.get_masked_api_key()}")
 
 # 3. Registrar condo1.dev como site condominio para testing adicional
@@ -70,7 +70,7 @@ if not frappe.db.exists("Registered Contributor Site", "https://condo1.dev"):
 	print("✅ Site condominio registrado: https://condo1.dev")
 	print(f"   API Key: {condo_site.get_masked_api_key()}")
 else:
-	print("ℹ️ Site condominio ya existe: https://condo1.dev")
+	print("[INFO] Site condominio ya existe: https://condo1.dev")
 
 frappe.db.commit()
 

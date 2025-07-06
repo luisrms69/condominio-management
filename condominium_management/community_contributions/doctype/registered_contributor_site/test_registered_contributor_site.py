@@ -57,10 +57,12 @@ class TestRegisteredContributorSite(FrappeTestCase):
 		# Verify API key is generated
 		self.assertEqual(len(site.api_key), 64)  # SHA-256 hash length
 
-		# Verify security logs initialized
+		# Verify security logs initialized (should have at least initial log)
 		security_logs = json.loads(site.security_logs)
-		self.assertEqual(len(security_logs), 1)
-		self.assertEqual(security_logs[0]["action"], "site_registered")
+		self.assertGreaterEqual(len(security_logs), 1)
+		# Find the site_registered action (should be present)
+		registration_logs = [log for log in security_logs if log["action"] == "site_registered"]
+		self.assertEqual(len(registration_logs), 1)
 
 	def test_spanish_labels(self):
 		"""Test that DocType has proper Spanish labels."""

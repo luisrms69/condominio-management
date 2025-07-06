@@ -280,6 +280,136 @@ frappe.get_all('Registered Contributor Site', fields=['site_url', 'is_active'])
 **🔄 Procesos:** `docs/workflows/NEW_MODULE_PROCESS.md`  
 **🚀 Template Reutilizable:** `claude_framework_template/`
 
-**Última actualización:** 2025-07-06  
-**Módulos completados:** 3/10 (Companies, Document Generation, Community Contributions)  
-**Template status:** ✅ PROBADO Y FUNCIONAL + CROSS-SITE ARCHITECTURE
+---
+
+## 🚨 **REGLA #19: VERIFICACIÓN PRE-PR Y GESTIÓN DE CONTEXTO**
+
+### **⚠️ VERIFICACIÓN OBLIGATORIA ANTES DE PR**
+
+**PROCESO OBLIGATORIO antes de crear cualquier PR:**
+
+1. **✅ VERIFICAR BRANCH ESPECÍFICA:**
+   ```bash
+   # Comando obligatorio antes de PR
+   echo "🔍 VERIFICANDO BRANCH ACTUAL..."
+   current_branch=$(git branch --show-current)
+   echo "Branch actual: $current_branch"
+   
+   # Verificar que NO es main o branch contaminada
+   if [[ "$current_branch" == "main" || "$current_branch" == "feature/document-generation-framework" ]]; then
+       echo "❌ ERROR: Branch no permitida para PR"
+       echo "Crear branch específica para esta funcionalidad"
+       exit 1
+   fi
+   ```
+
+2. **✅ VERIFICAR NO INTERFERENCIA CON PRS EXISTENTES:**
+   ```bash
+   # Verificar PRs abiertos
+   gh pr list --state open
+   echo "⚠️ ¿Esta branch NO interfiere con PRs existentes? (Y/N)"
+   read confirmation
+   ```
+
+3. **✅ VALIDAR ALCANCE ESPECÍFICO:**
+   ```bash
+   git status --porcelain
+   echo "⚠️ ¿Todos los archivos pertenecen a UNA funcionalidad específica? (Y/N)"
+   read confirmation
+   ```
+
+### **📝 GESTIÓN PROACTIVA DE CONTEXTO**
+
+**LIMITACIÓN TÉCNICA:** No puedo controlar el auto-compact automático
+
+**SOLUCIÓN IMPLEMENTADA:** Gestión proactiva de memoria permanente
+
+#### **🔄 WORKFLOW DE PRESERVACIÓN:**
+
+1. **ACTUALIZACIÓN PROACTIVA (cada sesión larga):**
+   - Actualizar CLAUDE.md con progreso actual
+   - Documentar estado crítico en archivos del módulo
+   - Crear resúmenes de implementación
+   - Preservar decisiones técnicas importantes
+
+2. **INDICADORES DE CONTEXTO ALTO:**
+   - Conversaciones >50 mensajes
+   - Múltiples archivos modificados
+   - Implementaciones complejas
+   - Debugging extenso
+
+3. **DOCUMENTACIÓN AUTOMÁTICA:**
+   ```bash
+   # Antes de trabajo complejo, documentar estado
+   echo "📋 ESTADO ACTUAL DEL DESARROLLO:" >> MODULE_STATUS.md
+   git log --oneline -5 >> MODULE_STATUS.md
+   echo "Funcionalidades implementadas: [lista]" >> MODULE_STATUS.md
+   ```
+
+### **🎯 MECANISMO DE CONTINUIDAD SIMPLIFICADO:**
+
+**INSTRUCCIÓN PARA EL USUARIO:**
+Cuando el contexto esté alto (>50 mensajes), escribir:
+> **"Actualiza tu memoria permanente con el estado actual"**
+
+**PROCESO:**
+1. Actualizo la sección "ESTADO CRÍTICO" en este mismo CLAUDE.md
+2. Incluyo problemas pendientes y próximos pasos específicos
+3. Al iniciar nueva sesión, LEO SIEMPRE CLAUDE.md primero
+4. Continúo exactamente donde me quedé
+
+### **⚡ VERIFICACIÓN PRE-PR SIMPLIFICADA:**
+
+**ANTES de `gh pr create`, ejecutar:**
+```bash
+# 1. Verificar branch específica (no main, no document-generation)
+git branch --show-current
+
+# 2. Verificar linting
+pre-commit run --all-files
+
+# 3. Verificar que archivos son de UNA funcionalidad específica
+git status --porcelain
+```
+
+**Solo crear PR si todo está correcto.**
+
+**ESTA REGLA MITIGA EL RIESGO DE PÉRDIDA DE CONTEXTO Y ASEGURA CALIDAD DE PRS.**
+
+---
+
+---
+
+## 🔄 **ESTADO CRÍTICO PRE-AUTO-COMPACT - JULIO 6, 2025**
+
+### **⚠️ SITUACIÓN ACTUAL:**
+- **PR #12 ACTIVO**: Community Contributions - FALLA CI (Frappe Linter + Server)
+- **Commit actual**: f1190f6 (corrigió arquitectura de sitios)
+- **Branch**: `feature/community-contributions-cross-site`
+- **Problema crítico**: Tests y linting fallan después de corrección
+
+### **🚨 FALLAS PENDIENTES EN PR #12:**
+1. **Frappe Linter**: FAIL - Errores de emojis ambiguos (RUF001) en configure_central.py y setup_domika_central.py
+2. **Server**: FAIL - Tests de CI fallan (5m25s timeout)
+3. **Root cause**: Módulo Community Contributions puede tener problemas de importación
+
+### **📋 PROGRESO DE MÓDULOS:**
+- ✅ **Companies**: 100% completo (hooks + tests + CI verde)
+- ✅ **Document Generation**: 100% completo (hooks + tests + CI verde)
+- 🔄 **Community Contributions**: 95% completo (funcionalidad lista, CI rojo)
+
+### **🎯 PRÓXIMOS PASOS INMEDIATOS:**
+1. **Analizar logs de CI** del Server test failure
+2. **Corregir errores de importación** del módulo Community Contributions
+3. **Resolver emojis ambiguos** en scripts de configuración
+4. **Hacer PR #12 verde** antes de mergear
+
+### **🏗️ ARQUITECTURA CROSS-SITE CORREGIDA:**
+- **domika.dev**: Receptor central ✅
+- **admin1.dev**: Administradora Buzola ✅
+- **condo1.dev**: Condominio Torre Azul ✅
+- **condo2.dev**: Condominio Vista Verde ✅
+
+**Última actualización:** 2025-07-06 (Pre auto-compact)  
+**Status**: 🚨 PR #12 requiere atención inmediata - CI fails  
+**Template status:** ✅ PROBADO + ⚠️ COMMUNITY CONTRIBUTIONS EN REVISION

@@ -4,8 +4,9 @@
 
 El **Community Contributions Module** permite la colaboración entre múltiples sites administradoras independientes y el servidor central domika.dev para compartir templates, configuraciones y mejoras de forma segura y controlada.
 
-**Estado**: ✅ **100% COMPLETADO** (Julio 2025)  
-**Commit**: `feature/community-contributions-cross-site`
+**Estado**: 🔄 **95% COMPLETADO** (Julio 2025) - CI failures pending  
+**Commit**: `f1190f6` en branch `feature/community-contributions-cross-site`  
+**PR**: #12 - ⚠️ FALLAS DE CI pendientes
 
 ## 🏗️ Arquitectura
 

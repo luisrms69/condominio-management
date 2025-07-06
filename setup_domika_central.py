@@ -73,7 +73,7 @@ def create_contribution_categories():
 			category.insert(ignore_permissions=True)
 			print(f"✅ Categoría creada: {cat_data['name']}")
 		else:
-			print(f"ℹ️ Categoría ya existe: {cat_data['name']}")
+			print(f"[INFO] Categoría ya existe: {cat_data['name']}")
 
 
 def create_test_sites():
@@ -112,7 +112,7 @@ def create_test_sites():
 			print(f"   API Key: {real_site.get_masked_api_key()}")
 		else:
 			real_site = frappe.get_doc("Registered Contributor Site", site_url)
-			print(f"ℹ️ Site real ya existe: {site_url}")
+			print(f"[INFO] Site real ya existe: {site_url}")
 			print(f"   API Key: {real_site.get_masked_api_key()}")
 
 
