@@ -417,24 +417,120 @@ git status --porcelain
 - **Instalación**: `gh extension install github/gh-copilot` completada
 - **Configuración**: Política protectiva de datos aplicada
 
-### **⚠️ PROTOCOLO DE FALLBACK COPILOT:**
-**OBLIGATORIO:** Si Copilot falla durante debugging o revision de PR:
-1. **Informar inmediatamente al usuario**: "⚠️ Copilot no disponible, usando análisis manual"
-2. **Aplicar metodología tradicional**: Comparación con apps oficiales, análisis de stack traces
-3. **Documentar el fallback**: Mencionar en commit message que se usó análisis manual
-4. **Verificar disponibilidad**: Intentar `gh copilot --version` antes de reportar falla
+### **⚠️ PROTOCOLO COPILOT OBLIGATORIO:**
+**REQUERIMIENTO:** SIEMPRE consultar Copilot ANTES de implementar soluciones de debugging:
+
+1. **OBLIGATORIO**: Ejecutar `gh copilot explain "error específico"` ANTES de implementar fix
+2. **OBLIGATORIO**: Ejecutar `gh copilot suggest` para obtener recomendaciones
+3. **Si Copilot falla o no responde útilmente**: 
+   - ⚠️ **INFORMAR AL USUARIO INMEDIATAMENTE**
+   - ⚠️ **ESPERAR DECISIÓN** del usuario antes de proceder
+   - No implementar solución sin consulta exitosa de Copilot
+4. **Documentar consulta**: Incluir recomendación de Copilot en commit message
 
 ### **🎯 COMANDOS COPILOT ESTÁNDAR:**
 ```bash
-# Análisis de errores
-gh copilot explain "error message here"
+# Análisis de errores (requiere skip prompts)
+GITHUB_COPILOT_SKIP_PROMPTS=1 gh copilot explain "error message here"
 
-# Sugerencias de comandos
-gh copilot suggest -t shell "what I want to achieve"
+# Sugerencias de comandos (requiere skip prompts)
+GITHUB_COPILOT_SKIP_PROMPTS=1 gh copilot suggest -t shell "what I want to achieve"
 ```
+
+### **⚠️ LIMITACIONES COPILOT IDENTIFICADAS:**
+- **Requiere `GITHUB_COPILOT_SKIP_PROMPTS=1`** para funcionar en este entorno
+- **Sugerencias pueden ser incorrectas** para tecnologías específicas como Frappe/ERPNext
+- **Validación manual obligatoria** de todas las recomendaciones de Copilot
+- **Análisis manual puede ser superior** cuando Copilot no conoce el framework específico
 
 ---
 
-**Última actualización:** 2025-07-06 (Post setup Copilot)  
-**Status**: ✅ COPILOT OPERATIVO - PR #12 listo para push
+---
+
+## 🚨 **REGLA #21: PROHIBICIÓN ABSOLUTA COMMITS/PUSH SIN AUTORIZACIÓN**
+
+### **❌ JAMÁS HACER SIN AUTORIZACIÓN EXPLÍCITA:**
+
+**PROHIBIDO ABSOLUTAMENTE:**
+1. **❌ `git commit`** - NUNCA sin aprobación previa del usuario
+2. **❌ `git push`** - NUNCA sin confirmación explícita
+3. **❌ Trabajar en `main`** - NUNCA commits directos a main
+4. **❌ Asumir permisos** - NUNCA "porque está listo"
+
+### **✅ PROCESO OBLIGATORIO ANTES DE CUALQUIER GIT OPERATION:**
+
+**PASO 1 - MOSTRAR CAMBIOS:**
+```bash
+# SIEMPRE mostrar esto ANTES de commit:
+git status
+git diff --name-only
+echo "¿Proceder con commit de estos archivos? (Y/N)"
+```
+
+**PASO 2 - ESPERAR APROBACIÓN:**
+- ⚠️ **ESPERAR** respuesta explícita del usuario para COMMITS
+- ⚠️ **NO proceder** sin confirmación clara para COMMITS/PUSH
+- ✅ **CREAR BRANCHES** automáticamente cuando sea necesario (no requiere autorización)
+
+**PASO 3 - CONFIRMAR PUSH:**
+```bash
+# ANTES de push SIEMPRE preguntar:
+echo "¿Hacer push a GitHub? (Y/N)"
+echo "Branch actual: $(git branch --show-current)"
+```
+
+### **⚡ EJEMPLO DE WORKFLOW CORRECTO:**
+
+```bash
+# ❌ INCORRECTO (lo que hice mal):
+git add .
+git commit -m "mensaje"
+git push origin main
+
+# ✅ CORRECTO:
+echo "📋 Archivos modificados:"
+git status --porcelain
+echo "❓ ¿Proceder con commit? (usuario debe responder Y/N)"
+# ESPERAR RESPUESTA
+# Solo si usuario dice "Y", entonces:
+git add .
+git commit -m "mensaje"
+echo "❓ ¿Hacer push? (usuario debe responder Y/N)"  
+# ESPERAR RESPUESTA
+# Solo si usuario dice "Y", entonces:
+git push origin branch-name
+```
+
+### **🔒 REGLAS INVIOLABLES:**
+
+**MAIN BRANCH:**
+- ❌ **NUNCA** commits directos a main
+- ❌ **NUNCA** push directo a main  
+- ✅ **SIEMPRE** usar feature branches
+- ✅ **SIEMPRE** PRs para merge a main
+
+**AUTORIZACIÓN:**
+- ❌ **NUNCA** asumir que "está bien" para COMMITS/PUSH
+- ❌ **NUNCA** hacer commits/push "obviamente necesarios"
+- ✅ **SIEMPRE** mostrar cambios antes de commit
+- ✅ **SIEMPRE** esperar confirmación explícita para COMMITS/PUSH
+- ✅ **CREAR BRANCHES** libremente cuando sea necesario
+
+**SIN EXCEPCIONES:**
+- NO hay urgencias que justifiquen saltarse reglas
+- NO hay cambios menores que no requieran aprobación
+- NO hay "obviamente correcto" - SIEMPRE pedir permiso
+
+### **⚠️ VIOLACIÓN DE ESTA REGLA = ERROR CRÍTICO**
+
+**Si violo esta regla:**
+1. **Reconocer error** inmediatamente
+2. **Disculparme** por la violación  
+3. **Actualizar memoria** para prevenir repetición
+4. **Esperar instrucciones** del usuario sobre cómo proceder
+
+---
+
+**Última actualización:** 2025-07-06 (Post error commits unauthorized)  
+**Status**: 🚨 REGLA #21 AGREGADA - NO MÁS COMMITS SIN AUTORIZACIÓN
 **Template status:** ✅ PROBADO + ✅ COMMUNITY CONTRIBUTIONS FUNCIONAL
