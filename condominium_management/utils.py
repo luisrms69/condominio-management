@@ -37,13 +37,17 @@ def before_tests():
 			print(f"Warning: setup_complete failed: {e}")
 			_create_minimal_company()
 
+	# Asegurar que registros básicos existen ANTES de enable_all_roles_and_domains
+	_ensure_basic_records_exist()
+
 	# Setup roles - usar ERPNext si disponible, fallback a Frappe
 	try:
 		from erpnext.setup.utils import enable_all_roles_and_domains
 
 		enable_all_roles_and_domains()
-	except ImportError:
-		print("Warning: ERPNext not available, using Frappe-only setup")
+	except (ImportError, Exception) as e:
+		print(f"Warning: enable_all_roles_and_domains failed: {e}")
+		print("Using Frappe-only setup as fallback")
 		_setup_basic_roles_frappe_only()
 
 	# Extensions para Document Generation module solamente
@@ -105,6 +109,25 @@ def _create_minimal_company():
 			}
 		)
 		company.insert(ignore_permissions=True)
+
+
+def _ensure_basic_records_exist():
+	"""
+	Asegurar que registros básicos requeridos por ERPNext existen.
+
+	Esta función previene errores en enable_all_roles_and_domains()
+	creando Department "All Departments" y otros registros críticos.
+	"""
+	# Department - crear "All Departments" como grupo principal
+	if not frappe.db.exists("Department", "All Departments"):
+		frappe.get_doc(
+			{
+				"doctype": "Department",
+				"department_name": "All Departments",
+				"is_group": 1,
+			}
+		).insert(ignore_permissions=True, ignore_if_duplicate=True)
+		print("✅ Created root department: All Departments")
 
 
 def _create_basic_warehouse_types():
