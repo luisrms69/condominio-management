@@ -23,15 +23,16 @@
 ## 🏗️ **ESTADO ACTUAL DEL PROYECTO**
 👉 **[ESTADO COMPLETO](docs/operational/MODULE_STATUS.md)**
 
-### **✅ MÓDULOS COMPLETOS (2/10):**
+### **✅ MÓDULOS COMPLETOS (3/10):**
 - **Companies** - ✅ Hooks + Tests + Framework completo
 - **Document Generation** - ✅ Hooks + Tests + Framework completo
+- **Community Contributions** - ✅ Cross-Site APIs + Autenticación HMAC + DocTypes completos
 
 ### **🔄 EN DESARROLLO:**
-- **Cross-Site Architecture** - 📋 INICIANDO (APIs para community contributions)
+- **Physical Spaces** - 📋 PRÓXIMO (aplicar template establecido)
 
-### **📅 PLANIFICADOS (8 módulos):**
-Physical Spaces, Residents, Access Control, Maintenance, Committee, Compliance, Communication, Package
+### **📅 PLANIFICADOS (7 módulos):**
+Residents, Access Control, Maintenance, Committee, Compliance, Communication, Package
 
 ---
 
@@ -41,6 +42,7 @@ Physical Spaces, Residents, Access Control, Maintenance, Committee, Compliance, 
 ### **Hooks Específicos Implementados:**
 - **Companies:** Company, Service Management Contract, Company Account
 - **Document Generation:** Master Template Registry, Entity Configuration
+- **Community Contributions:** Registered Contributor Site, Contribution Request (cross-site)
 - **Scheduled:** Performance monitoring mensual
 
 ### **❌ Hooks Universales:** Desactivados (setup wizard conflicts)
@@ -221,12 +223,63 @@ python claude_framework_template/validate_setup.py --full-check
 
 ---
 
+## 🌐 **REGLA #18: SISTEMA CROSS-SITE COMMUNITY CONTRIBUTIONS**
+
+### **✅ MÓDULO COMPLETADO - JULIO 2025**
+
+**FUNCIONALIDAD:** Sistema de contribuciones entre sites independientes de administradoras  
+**ESTADO:** ✅ 100% FUNCIONAL - APIs + Autenticación + DocTypes + Testing
+
+#### **🏗️ ARQUITECTURA IMPLEMENTADA:**
+
+**DOMIKA.DEV (Receptor Central):**
+- ✅ Recibe contribuciones de administradoras externas
+- ✅ Centraliza pool de templates universales  
+- ✅ APIs: `receive_external_contribution`, `get_cross_site_stats`
+
+**ADMIN1.DEV, ADMIN2.DEV (Sites Contribuyentes):**
+- ✅ Envían contribuciones al central
+- ✅ Autenticación HMAC con API keys únicos
+- ✅ API: `submit_contribution_to_domika`
+
+#### **🔧 COMPONENTES CLAVE:**
+
+**DocTypes:**
+- `Registered Contributor Site` - Gestión de administradoras autorizadas
+- `Contribution Request` - Extendido para cross-site
+- `Contribution Category` - Configuración de validaciones
+
+**Seguridad:**
+- API keys SHA-256 únicos por site
+- Firmas HMAC para autenticación
+- Validación de timestamps (anti-replay)
+- Logs de auditoría completos
+
+#### **📊 TESTING CONFIGURADO:**
+- Sites de prueba: `admin1.test.com`, `admin2.test.com`
+- Categoría operativa: `document_generation-template`
+- Scripts de configuración: `configure_central.py`
+
+#### **🚀 COMANDOS DE USO:**
+```bash
+# Configurar domika.dev como receptor
+cd ~/frappe-bench
+exec(open('apps/condominium_management/configure_central.py').read())
+
+# Verificar sites registrados
+frappe.get_all('Registered Contributor Site', fields=['site_url', 'is_active'])
+```
+
+**DOCUMENTACIÓN:** `condominium_management/community_contributions/README.md`
+
+---
+
 **📁 Documentación Detallada:** `/docs` folder  
 **🔧 Configuración Permanente:** `docs/core/CLAUDE_CONFIG.md`  
 **📊 Estado Actual:** `docs/operational/MODULE_STATUS.md`  
 **🔄 Procesos:** `docs/workflows/NEW_MODULE_PROCESS.md`  
 **🚀 Template Reutilizable:** `claude_framework_template/`
 
-**Última actualización:** 2025-07-05  
-**Líneas totales:** <350 (template completo incluido)  
-**Template status:** ✅ PROBADO Y FUNCIONAL
+**Última actualización:** 2025-07-06  
+**Módulos completados:** 3/10 (Companies, Document Generation, Community Contributions)  
+**Template status:** ✅ PROBADO Y FUNCIONAL + CROSS-SITE ARCHITECTURE

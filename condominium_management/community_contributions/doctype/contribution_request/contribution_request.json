@@ -11,6 +11,13 @@
         "company",
         "submitted_by",
         "submission_date",
+        "cross_site_section",
+        "source_site",
+        "source_user_email",
+        "is_external_contribution",
+        "column_break_cross_site",
+        "external_contribution_id",
+        "cross_site_auth_verified",
         "section_break_1",
         "business_justification",
         "contribution_data",
@@ -74,6 +81,51 @@
             "fieldtype": "Datetime",
             "label": "Fecha de Envío",
             "read_only": 1
+        },
+        {
+            "fieldname": "cross_site_section",
+            "fieldtype": "Section Break",
+            "label": "Información Cross-Site"
+        },
+        {
+            "fieldname": "source_site",
+            "fieldtype": "Data",
+            "label": "Site de Origen",
+            "read_only": 1,
+            "description": "URL del site que envió la contribución"
+        },
+        {
+            "fieldname": "source_user_email",
+            "fieldtype": "Data",
+            "label": "Email Usuario Origen",
+            "options": "Email",
+            "read_only": 1,
+            "description": "Email del usuario que envió desde site externo"
+        },
+        {
+            "fieldname": "is_external_contribution",
+            "fieldtype": "Check",
+            "label": "Contribución Externa",
+            "read_only": 1,
+            "description": "Marca si viene de site externo"
+        },
+        {
+            "fieldname": "column_break_cross_site",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "external_contribution_id",
+            "fieldtype": "Data",
+            "label": "ID Contribución Externa",
+            "read_only": 1,
+            "description": "ID único de la contribución en site origen"
+        },
+        {
+            "fieldname": "cross_site_auth_verified",
+            "fieldtype": "Check",
+            "label": "Autenticación Verificada",
+            "read_only": 1,
+            "description": "Confirma que la autenticación cross-site fue exitosa"
         },
         {
             "fieldname": "section_break_1",

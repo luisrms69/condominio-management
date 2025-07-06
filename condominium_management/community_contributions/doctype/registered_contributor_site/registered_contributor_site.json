@@ -1,0 +1,180 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-05 04:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "site_information_section",
+  "site_url",
+  "company_name",
+  "contact_email",
+  "business_justification",
+  "column_break_5",
+  "is_active",
+  "registration_date",
+  "last_contribution",
+  "total_contributions",
+  "api_configuration_section",
+  "api_key",
+  "api_key_generated_date",
+  "column_break_11",
+  "last_api_usage",
+  "failed_requests_count",
+  "statistics_section",
+  "contribution_stats",
+  "security_logs"
+ ],
+ "fields": [
+  {
+   "fieldname": "site_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información del Site"
+  },
+  {
+   "fieldname": "site_url",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "URL del Site",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre de la Empresa",
+   "reqd": 1
+  },
+  {
+   "fieldname": "contact_email",
+   "fieldtype": "Data",
+   "label": "Email de Contacto",
+   "options": "Email",
+   "reqd": 1
+  },
+  {
+   "fieldname": "business_justification",
+   "fieldtype": "Text",
+   "label": "Justificación de Negocio"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Está Activo"
+  },
+  {
+   "fieldname": "registration_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Registro",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_contribution",
+   "fieldtype": "Datetime",
+   "label": "Última Contribución",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_contributions",
+   "fieldtype": "Int",
+   "label": "Total de Contribuciones",
+   "read_only": 1
+  },
+  {
+   "fieldname": "api_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración API"
+  },
+  {
+   "fieldname": "api_key",
+   "fieldtype": "Data",
+   "label": "API Key",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "api_key_generated_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Generación API Key",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_api_usage",
+   "fieldtype": "Datetime",
+   "label": "Último Uso de API",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "failed_requests_count",
+   "fieldtype": "Int",
+   "label": "Contador de Requests Fallidos",
+   "read_only": 1
+  },
+  {
+   "fieldname": "statistics_section",
+   "fieldtype": "Section Break",
+   "label": "Estadísticas y Logs"
+  },
+  {
+   "fieldname": "contribution_stats",
+   "fieldtype": "JSON",
+   "label": "Estadísticas de Contribuciones",
+   "read_only": 1
+  },
+  {
+   "fieldname": "security_logs",
+   "fieldtype": "JSON",
+   "label": "Logs de Seguridad",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-05 04:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Community Contributions",
+ "name": "Registered Contributor Site",
+ "naming_rule": "By fieldname",
+ "naming_rule_fieldname": "site_url",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator Condominio",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
