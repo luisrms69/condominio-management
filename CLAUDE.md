@@ -410,6 +410,31 @@ git status --porcelain
 - **condo1.dev**: Condominio Torre Azul ✅
 - **condo2.dev**: Condominio Vista Verde ✅
 
-**Última actualización:** 2025-07-06 (Pre auto-compact)  
-**Status**: 🚨 PR #12 requiere atención inmediata - CI fails  
-**Template status:** ✅ PROBADO + ⚠️ COMMUNITY CONTRIBUTIONS EN REVISION
+## 🔄 **REGLA #20: COPILOT DISPONIBLE Y FALLBACK**
+
+### **✅ GitHub Copilot CLI Habilitado:**
+- **Comando verificado**: `gh copilot explain` y `gh copilot suggest` operativos
+- **Instalación**: `gh extension install github/gh-copilot` completada
+- **Configuración**: Política protectiva de datos aplicada
+
+### **⚠️ PROTOCOLO DE FALLBACK COPILOT:**
+**OBLIGATORIO:** Si Copilot falla durante debugging o revision de PR:
+1. **Informar inmediatamente al usuario**: "⚠️ Copilot no disponible, usando análisis manual"
+2. **Aplicar metodología tradicional**: Comparación con apps oficiales, análisis de stack traces
+3. **Documentar el fallback**: Mencionar en commit message que se usó análisis manual
+4. **Verificar disponibilidad**: Intentar `gh copilot --version` antes de reportar falla
+
+### **🎯 COMANDOS COPILOT ESTÁNDAR:**
+```bash
+# Análisis de errores
+gh copilot explain "error message here"
+
+# Sugerencias de comandos
+gh copilot suggest -t shell "what I want to achieve"
+```
+
+---
+
+**Última actualización:** 2025-07-06 (Post setup Copilot)  
+**Status**: ✅ COPILOT OPERATIVO - PR #12 listo para push
+**Template status:** ✅ PROBADO + ✅ COMMUNITY CONTRIBUTIONS FUNCIONAL
