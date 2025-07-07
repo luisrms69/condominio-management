@@ -1,0 +1,200 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:category_name",
+ "creation": "2025-07-07 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "category_name",
+  "category_code",
+  "description",
+  "column_break_basic",
+  "is_active",
+  "category_type",
+  "template_configuration_section",
+  "ps_template_code",
+  "template_version",
+  "auto_load_template",
+  "column_break_template",
+  "template_fields_config",
+  "validation_section",
+  "requires_components",
+  "requires_dimensions",
+  "requires_capacity",
+  "column_break_validation",
+  "allowed_parent_categories",
+  "allowed_child_categories",
+  "ui_configuration_section",
+  "icon_class",
+  "color_code",
+  "display_order"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "category_name",
+   "fieldtype": "Data",
+   "label": "Nombre de la Categoría",
+   "reqd": 1
+  },
+  {
+   "fieldname": "category_code",
+   "fieldtype": "Data",
+   "label": "Código de Categoría",
+   "unique": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Descripción"
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Está Activa",
+   "default": 1
+  },
+  {
+   "fieldname": "category_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Categoría",
+   "options": "Estructura\nÁrea Común\nÁrea Privada\nInstalaciones\nEquipamiento\nSeguridad\nMantenimiento\nServicios"
+  },
+  {
+   "fieldname": "template_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Template"
+  },
+  {
+   "fieldname": "ps_template_code",
+   "fieldtype": "Data",
+   "label": "Código del Template PS"
+  },
+  {
+   "fieldname": "template_version",
+   "fieldtype": "Data",
+   "label": "Versión del Template"
+  },
+  {
+   "fieldname": "auto_load_template",
+   "fieldtype": "Check",
+   "label": "Auto-cargar Template",
+   "default": 1
+  },
+  {
+   "fieldname": "column_break_template",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "template_fields_config",
+   "fieldtype": "JSON",
+   "label": "Configuración de Campos del Template",
+   "hidden": 1
+  },
+  {
+   "fieldname": "validation_section",
+   "fieldtype": "Section Break",
+   "label": "Validaciones"
+  },
+  {
+   "fieldname": "requires_components",
+   "fieldtype": "Check",
+   "label": "Requiere Componentes"
+  },
+  {
+   "fieldname": "requires_dimensions",
+   "fieldtype": "Check",
+   "label": "Requiere Dimensiones"
+  },
+  {
+   "fieldname": "requires_capacity",
+   "fieldtype": "Check",
+   "label": "Requiere Capacidad"
+  },
+  {
+   "fieldname": "column_break_validation",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "allowed_parent_categories",
+   "fieldtype": "Table",
+   "label": "Categorías Padre Permitidas",
+   "options": "Allowed Parent Category"
+  },
+  {
+   "fieldname": "allowed_child_categories",
+   "fieldtype": "Table",
+   "label": "Categorías Hijas Permitidas",
+   "options": "Allowed Child Category"
+  },
+  {
+   "fieldname": "ui_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración UI"
+  },
+  {
+   "fieldname": "icon_class",
+   "fieldtype": "Data",
+   "label": "Clase de Icono CSS"
+  },
+  {
+   "fieldname": "color_code",
+   "fieldtype": "Color",
+   "label": "Código de Color"
+  },
+  {
+   "fieldname": "display_order",
+   "fieldtype": "Int",
+   "label": "Orden de Visualización"
+  }
+ ],
+ "has_web_view": 0,
+ "hide_toolbar": 0,
+ "idx": 0,
+ "in_create": 0,
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 0,
+ "max_attachments": 0,
+ "modified": "2025-07-07 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Physical Spaces",
+ "name": "Space Category",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "restrict_to_domain": "",
+ "show_name_in_global_search": 1,
+ "sort_field": "display_order",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 0
+}

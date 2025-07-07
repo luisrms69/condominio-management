@@ -1,0 +1,231 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-07-07 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "naming_series",
+  "space_name",
+  "space_code",
+  "company",
+  "description",
+  "column_break_basic",
+  "space_category",
+  "is_active",
+  "hierarchy_section",
+  "parent_space",
+  "space_level",
+  "space_path",
+  "column_break_hierarchy",
+  "building_reference",
+  "floor_reference",
+  "zone_reference",
+  "dimensions_section",
+  "area_m2",
+  "height_m",
+  "max_capacity",
+  "column_break_dimensions",
+  "cost_center",
+  "components_section",
+  "space_components",
+  "dynamic_fields_section",
+  "template_fields"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie de Numeración",
+   "options": "PS-.YYYY.-",
+   "default": "PS-.YYYY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "space_name",
+   "fieldtype": "Data",
+   "label": "Nombre del Espacio",
+   "reqd": 1
+  },
+  {
+   "fieldname": "space_code",
+   "fieldtype": "Data",
+   "label": "Código del Espacio",
+   "unique": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Descripción del Espacio"
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "space_category",
+   "fieldtype": "Link",
+   "label": "Categoría del Espacio",
+   "options": "Space Category"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Está Activo",
+   "default": 1
+  },
+  {
+   "fieldname": "hierarchy_section",
+   "fieldtype": "Section Break",
+   "label": "Jerarquía"
+  },
+  {
+   "fieldname": "parent_space",
+   "fieldtype": "Link",
+   "label": "Espacio Padre",
+   "options": "Physical Space"
+  },
+  {
+   "fieldname": "space_level",
+   "fieldtype": "Int",
+   "label": "Nivel",
+   "read_only": 1
+  },
+  {
+   "fieldname": "space_path",
+   "fieldtype": "Data",
+   "label": "Ruta",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_hierarchy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "building_reference",
+   "fieldtype": "Link",
+   "label": "Edificio",
+   "options": "Physical Space"
+  },
+  {
+   "fieldname": "floor_reference",
+   "fieldtype": "Link",
+   "label": "Piso",
+   "options": "Physical Space"
+  },
+  {
+   "fieldname": "zone_reference",
+   "fieldtype": "Link",
+   "label": "Zona",
+   "options": "Physical Space"
+  },
+  {
+   "fieldname": "dimensions_section",
+   "fieldtype": "Section Break",
+   "label": "Dimensiones"
+  },
+  {
+   "fieldname": "area_m2",
+   "fieldtype": "Float",
+   "label": "Área en m²",
+   "precision": 2
+  },
+  {
+   "fieldname": "height_m",
+   "fieldtype": "Float",
+   "label": "Altura en metros",
+   "precision": 2
+  },
+  {
+   "fieldname": "max_capacity",
+   "fieldtype": "Int",
+   "label": "Capacidad Máxima de Personas"
+  },
+  {
+   "fieldname": "column_break_dimensions",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Centro de Costos",
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "components_section",
+   "fieldtype": "Section Break",
+   "label": "Componentes"
+  },
+  {
+   "fieldname": "space_components",
+   "fieldtype": "Table",
+   "label": "Componentes del Espacio",
+   "options": "Space Component"
+  },
+  {
+   "fieldname": "dynamic_fields_section",
+   "fieldtype": "Section Break",
+   "label": "Campos Dinámicos"
+  },
+  {
+   "fieldname": "template_fields",
+   "fieldtype": "JSON",
+   "label": "Campos del Template",
+   "hidden": 1
+  }
+ ],
+ "has_web_view": 0,
+ "hide_toolbar": 0,
+ "idx": 0,
+ "in_create": 0,
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 0,
+ "max_attachments": 0,
+ "modified": "2025-07-07 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Physical Spaces",
+ "name": "Physical Space",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "restrict_to_domain": "",
+ "show_name_in_global_search": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 0
+}
