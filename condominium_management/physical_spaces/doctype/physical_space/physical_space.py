@@ -19,6 +19,7 @@ class PhysicalSpace(Document):
 
 		self.validate_hierarchy()
 		self.update_hierarchy_info()
+		self.generate_component_inventory_codes()
 
 	def generate_space_code(self):
 		"""Generar código único del espacio si no existe"""
@@ -149,3 +150,11 @@ class PhysicalSpace(Document):
 			child_doc = frappe.get_doc("Physical Space", child.name)
 			child_doc.update_hierarchy_info()
 			child_doc.save()
+
+	def generate_component_inventory_codes(self):
+		"""Generar códigos de inventario para componentes sin código"""
+		for component in self.space_components:
+			if not component.inventory_code and component.component_type:
+				# Usar el método de ComponentType para generar código único
+				component_type_doc = frappe.get_doc("Component Type", component.component_type)
+				component.inventory_code = component_type_doc.get_next_inventory_code()

@@ -211,27 +211,27 @@ class TestComponentType(FrappeTestCase):
 
 	def test_component_categories(self):
 		"""Test categorías válidas de componentes"""
-		valid_categories = [
-			"Mecánico",
-			"Eléctrico",
-			"Electrónico",
-			"Hidráulico",
-			"Neumático",
-			"Estructural",
-			"Seguridad",
-			"Control",
-			"Medición",
-			"Iluminación",
-			"Climático",
-			"Otro",
+		valid_categories_with_prefixes = [
+			("Mecánico", "MEC"),
+			("Eléctrico", "ELE"),
+			("Electrónico", "ELT"),  # Diferente de ELE para evitar colisión
+			("Hidráulico", "HID"),
+			("Neumático", "NEU"),
+			("Estructural", "EST"),
+			("Seguridad", "SEG"),
+			("Control", "CTR"),
+			("Medición", "MED"),
+			("Iluminación", "ILU"),
+			("Climático", "CLI"),
+			("Otro", "OTR"),
 		]
 
-		for category in valid_categories:
+		for category, prefix in valid_categories_with_prefixes:
 			component_type = frappe.get_doc(
 				{
 					"doctype": "Component Type",
 					"component_type_name": f"Test {category}",
-					"code_prefix": category[:3].upper(),
+					"code_prefix": prefix,
 					"category": category,
 				}
 			)
