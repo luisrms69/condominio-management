@@ -32,6 +32,12 @@ modules = {
 		"type": "module",
 		"label": "Community Contributions",
 	},
+	"physical_spaces": {
+		"color": "orange",
+		"icon": "octicon octicon-home",
+		"type": "module",
+		"label": "Physical Spaces",
+	},
 }
 
 # Translations
@@ -198,6 +204,25 @@ doc_events = {
 	},
 	"Company Account": {
 		"after_insert": "condominium_management.companies.hooks_handlers.account_detection.after_insert",
+	},
+	# Physical Spaces Module Hooks
+	# -----------------------------
+	# Hooks específicos para módulo Physical Spaces - validaciones y actualizaciones
+	"Physical Space": {
+		"after_insert": "condominium_management.physical_spaces.hooks_handlers.space_detection.after_insert",
+		"on_update": "condominium_management.physical_spaces.hooks_handlers.space_detection.on_update",
+	},
+	"Space Category": {
+		"validate": "condominium_management.physical_spaces.hooks_handlers.category_validation.validate",
+		"on_update": "condominium_management.physical_spaces.hooks_handlers.category_detection.on_update",
+	},
+	"Space Component": {
+		"validate": "condominium_management.physical_spaces.hooks_handlers.component_validation.validate",
+		"after_insert": "condominium_management.physical_spaces.hooks_handlers.component_detection.after_insert",
+	},
+	"Component Type": {
+		"validate": "condominium_management.physical_spaces.hooks_handlers.component_type_validation.validate",
+		"on_update": "condominium_management.physical_spaces.hooks_handlers.component_type_detection.on_update",
 	},
 }
 

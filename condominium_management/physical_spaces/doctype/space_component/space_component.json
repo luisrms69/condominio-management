@@ -1,0 +1,172 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-07 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "component_name",
+  "component_type",
+  "parent_component",
+  "column_break_basic",
+  "quantity",
+  "unit_of_measure",
+  "status",
+  "generic_fields_section",
+  "inventory_date",
+  "brand",
+  "model",
+  "column_break_generic",
+  "inventory_code",
+  "installation_date",
+  "warranty_expiry_date",
+  "specifications_section",
+  "technical_specifications",
+  "maintenance_notes",
+  "column_break_specs",
+  "location_notes",
+  "access_requirements"
+ ],
+ "fields": [
+  {
+   "fieldname": "component_name",
+   "fieldtype": "Data",
+   "label": "Nombre del Componente",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "component_type",
+   "fieldtype": "Link",
+   "label": "Tipo de Componente",
+   "options": "Component Type",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "parent_component",
+   "fieldtype": "Link",
+   "label": "Componente Padre",
+   "options": "Space Component"
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "label": "Cantidad",
+   "default": 1,
+   "precision": 2
+  },
+  {
+   "fieldname": "unit_of_measure",
+   "fieldtype": "Link",
+   "label": "Unidad de Medida",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Estado",
+   "options": "Activo\nInactivo\nEn Mantenimiento\nFuera de Servicio\nPendiente Instalación",
+   "default": "Activo",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "generic_fields_section",
+   "fieldtype": "Section Break",
+   "label": "Campos Genéricos"
+  },
+  {
+   "fieldname": "inventory_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Entrada a Inventario"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Data",
+   "label": "Marca"
+  },
+  {
+   "fieldname": "model",
+   "fieldtype": "Data",
+   "label": "Modelo"
+  },
+  {
+   "fieldname": "column_break_generic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "inventory_code",
+   "fieldtype": "Data",
+   "label": "Número de Inventario"
+  },
+  {
+   "fieldname": "installation_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Instalación"
+  },
+  {
+   "fieldname": "warranty_expiry_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Vencimiento de Garantía"
+  },
+  {
+   "fieldname": "specifications_section",
+   "fieldtype": "Section Break",
+   "label": "Especificaciones"
+  },
+  {
+   "fieldname": "technical_specifications",
+   "fieldtype": "Text",
+   "label": "Especificaciones Técnicas"
+  },
+  {
+   "fieldname": "maintenance_notes",
+   "fieldtype": "Text",
+   "label": "Notas de Mantenimiento"
+  },
+  {
+   "fieldname": "column_break_specs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "location_notes",
+   "fieldtype": "Small Text",
+   "label": "Notas de Ubicación"
+  },
+  {
+   "fieldname": "access_requirements",
+   "fieldtype": "Small Text",
+   "label": "Requisitos de Acceso"
+  }
+ ],
+ "has_web_view": 0,
+ "hide_toolbar": 0,
+ "idx": 0,
+ "in_create": 0,
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 1,
+ "max_attachments": 0,
+ "modified": "2025-07-07 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Physical Spaces",
+ "name": "Space Component",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 0,
+ "restrict_to_domain": "",
+ "show_name_in_global_search": 0,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 0,
+ "track_views": 0
+}

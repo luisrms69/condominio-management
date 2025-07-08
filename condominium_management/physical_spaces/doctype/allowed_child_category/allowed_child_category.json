@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-07 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "child_category",
+  "is_required"
+ ],
+ "fields": [
+  {
+   "fieldname": "child_category",
+   "fieldtype": "Link",
+   "label": "Categoría Hija",
+   "options": "Space Category",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "is_required",
+   "fieldtype": "Check",
+   "label": "Es Obligatorio",
+   "default": 0,
+   "in_list_view": 1
+  }
+ ],
+ "has_web_view": 0,
+ "hide_toolbar": 0,
+ "idx": 0,
+ "in_create": 0,
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 1,
+ "max_attachments": 0,
+ "modified": "2025-07-07 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Physical Spaces",
+ "name": "Allowed Child Category",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 0,
+ "restrict_to_domain": "",
+ "show_name_in_global_search": 0,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 0,
+ "track_views": 0
+}
