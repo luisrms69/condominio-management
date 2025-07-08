@@ -1,0 +1,242 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:component_type_name",
+ "creation": "2025-07-07 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "component_type_name",
+  "code_prefix",
+  "description",
+  "column_break_basic",
+  "category",
+  "is_active",
+  "template_configuration_section",
+  "component_template_code",
+  "template_version",
+  "auto_load_template",
+  "column_break_template",
+  "template_fields_config",
+  "validation_section",
+  "requires_brand",
+  "requires_model",
+  "requires_installation_date",
+  "column_break_validation",
+  "requires_warranty",
+  "requires_specifications",
+  "maintenance_configuration_section",
+  "default_maintenance_frequency",
+  "maintenance_type",
+  "estimated_lifespan_years",
+  "column_break_maintenance",
+  "critical_component",
+  "requires_certification",
+  "ui_configuration_section",
+  "icon_class",
+  "color_code",
+  "display_order"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "component_type_name",
+   "fieldtype": "Data",
+   "label": "Nombre del Tipo de Componente",
+   "reqd": 1
+  },
+  {
+   "fieldname": "code_prefix",
+   "fieldtype": "Data",
+   "label": "Prefijo para Códigos",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Descripción"
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "label": "Categoría",
+   "options": "Mecánico\nEléctrico\nElectrónico\nHidráulico\nNeumático\nEstructural\nSeguridad\nControl\nMedición\nIluminación\nClimático\nOtro"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Está Activo",
+   "default": 1
+  },
+  {
+   "fieldname": "template_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Template"
+  },
+  {
+   "fieldname": "component_template_code",
+   "fieldtype": "Data",
+   "label": "Código del Template de Componente"
+  },
+  {
+   "fieldname": "template_version",
+   "fieldtype": "Data",
+   "label": "Versión del Template"
+  },
+  {
+   "fieldname": "auto_load_template",
+   "fieldtype": "Check",
+   "label": "Auto-cargar Template",
+   "default": 1
+  },
+  {
+   "fieldname": "column_break_template",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "template_fields_config",
+   "fieldtype": "JSON",
+   "label": "Configuración de Campos del Template",
+   "hidden": 1
+  },
+  {
+   "fieldname": "validation_section",
+   "fieldtype": "Section Break",
+   "label": "Validaciones"
+  },
+  {
+   "fieldname": "requires_brand",
+   "fieldtype": "Check",
+   "label": "Requiere Marca"
+  },
+  {
+   "fieldname": "requires_model",
+   "fieldtype": "Check",
+   "label": "Requiere Modelo"
+  },
+  {
+   "fieldname": "requires_installation_date",
+   "fieldtype": "Check",
+   "label": "Requiere Fecha de Instalación"
+  },
+  {
+   "fieldname": "column_break_validation",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "requires_warranty",
+   "fieldtype": "Check",
+   "label": "Requiere Información de Garantía"
+  },
+  {
+   "fieldname": "requires_specifications",
+   "fieldtype": "Check",
+   "label": "Requiere Especificaciones Técnicas"
+  },
+  {
+   "fieldname": "maintenance_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Mantenimiento"
+  },
+  {
+   "fieldname": "default_maintenance_frequency",
+   "fieldtype": "Select",
+   "label": "Frecuencia de Mantenimiento por Defecto",
+   "options": "Semanal\nQuincenal\nMensual\nTrimestral\nSemestral\nAnual\nBianual\nSegún Condición"
+  },
+  {
+   "fieldname": "maintenance_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Mantenimiento",
+   "options": "Preventivo\nCorrectivo\nPredictivo\nCondicional"
+  },
+  {
+   "fieldname": "estimated_lifespan_years",
+   "fieldtype": "Float",
+   "label": "Vida Útil Estimada (años)",
+   "precision": 1
+  },
+  {
+   "fieldname": "column_break_maintenance",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "critical_component",
+   "fieldtype": "Check",
+   "label": "Componente Crítico"
+  },
+  {
+   "fieldname": "requires_certification",
+   "fieldtype": "Check",
+   "label": "Requiere Certificación"
+  },
+  {
+   "fieldname": "ui_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración UI"
+  },
+  {
+   "fieldname": "icon_class",
+   "fieldtype": "Data",
+   "label": "Clase de Icono CSS"
+  },
+  {
+   "fieldname": "color_code",
+   "fieldtype": "Color",
+   "label": "Código de Color"
+  },
+  {
+   "fieldname": "display_order",
+   "fieldtype": "Int",
+   "label": "Orden de Visualización"
+  }
+ ],
+ "has_web_view": 0,
+ "hide_toolbar": 0,
+ "idx": 0,
+ "in_create": 0,
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 0,
+ "max_attachments": 0,
+ "modified": "2025-07-07 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Physical Spaces",
+ "name": "Component Type",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "restrict_to_domain": "",
+ "show_name_in_global_search": 1,
+ "sort_field": "display_order",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 0
+}
