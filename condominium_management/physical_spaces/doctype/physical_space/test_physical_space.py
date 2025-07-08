@@ -128,7 +128,7 @@ class TestPhysicalSpace(FrappeTestCase):
 		apto.insert()
 
 		# Verificar que obtiene todos los hijos
-		children = torre.get_all_children()
+		children = torre.get_space_hierarchy_children()
 		self.assertIn(piso.name, children)
 		self.assertIn(apto.name, children)
 

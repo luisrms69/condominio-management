@@ -13,6 +13,10 @@ class PhysicalSpace(Document):
 
 	def before_save(self):
 		"""Hook antes de guardar - validar jerarquía"""
+		# Defensive coding para ERROR #6 - asegurar parent_space es string
+		if self.parent_space and isinstance(self.parent_space, dict):
+			self.parent_space = self.parent_space.get("name")
+
 		self.validate_hierarchy()
 		self.update_hierarchy_info()
 
@@ -82,7 +86,19 @@ class PhysicalSpace(Document):
 			self.space_level = 0
 			self.space_path = f"/{self.space_name}"
 
-	def get_all_children(self, include_self=False):
+	def get_all_children(self, parentfield=None):
+		"""Override para prevenir ERROR #6 - filtrar strings en child tables"""
+		try:
+			# Llamar al método original de Frappe para child tables reales
+			frappe_children = super().get_all_children(parentfield)
+			# Filtrar solo objetos Document válidos (que tengan attribute 'modified')
+			valid_children = [d for d in frappe_children if hasattr(d, "modified")]
+			return valid_children
+		except Exception as e:
+			frappe.log_error(f"Error en get_all_children override: {e!s}")
+			return []
+
+	def get_space_hierarchy_children(self, include_self=False):
 		"""Obtener todos los hijos recursivamente - SIN limitaciones nested set"""
 		children = []
 		if include_self:
@@ -94,7 +110,7 @@ class PhysicalSpace(Document):
 
 		for child in direct_children:
 			child_doc = frappe.get_doc("Physical Space", child.name)
-			children.extend(child_doc.get_all_children(include_self=True))
+			children.extend(child_doc.get_space_hierarchy_children(include_self=True))
 
 		return children
 
