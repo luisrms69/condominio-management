@@ -9,8 +9,14 @@ from frappe.utils import cstr
 class SpaceCategory(Document):
 	def before_save(self):
 		"""Hook antes de guardar"""
+		self.set_defaults()
 		self.generate_category_code()
 		self.validate_template_configuration()
+
+	def set_defaults(self):
+		"""Establecer valores por defecto"""
+		if not self.template_version:
+			self.template_version = "1.0"
 
 	def generate_category_code(self):
 		"""Generar código único de categoría si no existe"""

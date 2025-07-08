@@ -9,8 +9,14 @@ from frappe.utils import cstr
 class ComponentType(Document):
 	def before_save(self):
 		"""Hook antes de guardar"""
+		self.set_defaults()
 		self.validate_code_prefix()
 		self.validate_template_configuration()
+
+	def set_defaults(self):
+		"""Establecer valores por defecto"""
+		if not self.template_version:
+			self.template_version = "1.0"
 
 	def validate_code_prefix(self):
 		"""Validar que el prefijo de código es único y válido"""

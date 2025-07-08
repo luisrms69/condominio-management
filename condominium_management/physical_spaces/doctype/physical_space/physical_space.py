@@ -7,9 +7,12 @@ from frappe.utils import now_datetime
 
 
 class PhysicalSpace(Document):
-	def before_save(self):
-		"""Hook antes de guardar - generar código y validar jerarquía"""
+	def before_naming(self):
+		"""Hook antes de establecer nombre - generar código"""
 		self.generate_space_code()
+
+	def before_save(self):
+		"""Hook antes de guardar - validar jerarquía"""
 		self.validate_hierarchy()
 		self.update_hierarchy_info()
 
@@ -17,19 +20,28 @@ class PhysicalSpace(Document):
 		"""Generar código único del espacio si no existe"""
 		if not self.space_code:
 			# Generar código basado en nombre y timestamp
-			base_code = frappe.utils.cstr(self.space_name)[:10].upper().replace(" ", "")
+			import re
+			import unicodedata
+
+			# Normalizar texto removiendo acentos
+			normalized = unicodedata.normalize("NFD", self.space_name)
+			ascii_text = normalized.encode("ascii", "ignore").decode("ascii")
+
+			# Crear código base
+			base_code = re.sub(r"[^A-Za-z0-9]", "", ascii_text)[:10].upper()
 			timestamp = frappe.utils.cstr(frappe.utils.now_datetime().strftime("%m%d%H%M"))
 			self.space_code = f"{base_code}-{timestamp}"
 
 	def validate_hierarchy(self):
 		"""Validaciones críticas para jerarquía híbrida"""
 		# 1. Un espacio no puede ser su propio padre
-		if self.parent_space == self.name:
+		if self.parent_space and self.name and self.parent_space == self.name:
 			frappe.throw("Un espacio no puede ser su propio padre")
 
-		# 2. Validar ciclos en la jerarquía
-		if self.parent_space and self.has_circular_reference():
-			frappe.throw("Se detectó una referencia circular en la jerarquía")
+		# 2. Validar ciclos en la jerarquía - solo si el documento ya existe
+		if self.parent_space and self.name and frappe.db.exists("Physical Space", self.name):
+			if self.has_circular_reference():
+				frappe.throw("Se detectó una referencia circular en la jerarquía")
 
 	def has_circular_reference(self):
 		"""Detectar referencias circulares en jerarquía"""
@@ -53,9 +65,19 @@ class PhysicalSpace(Document):
 	def update_hierarchy_info(self):
 		"""Actualizar información jerárquica automáticamente"""
 		if self.parent_space:
-			parent = frappe.get_doc("Physical Space", self.parent_space)
-			self.space_level = parent.space_level + 1
-			self.space_path = f"{parent.space_path}/{self.space_name}"
+			try:
+				if frappe.db.exists("Physical Space", self.parent_space):
+					parent = frappe.get_doc("Physical Space", self.parent_space)
+					self.space_level = parent.space_level + 1
+					self.space_path = f"{parent.space_path}/{self.space_name}"
+				else:
+					# Parent no existe aún, usar valores por defecto
+					self.space_level = 1
+					self.space_path = f"/PENDING/{self.space_name}"
+			except Exception:
+				# Fallback si hay cualquier error
+				self.space_level = 1
+				self.space_path = f"/ERROR/{self.space_name}"
 		else:
 			self.space_level = 0
 			self.space_path = f"/{self.space_name}"

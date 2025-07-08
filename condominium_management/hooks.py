@@ -209,10 +209,8 @@ doc_events = {
 	# -----------------------------
 	# Hooks específicos para módulo Physical Spaces - validaciones y actualizaciones
 	"Physical Space": {
-		"validate": "condominium_management.physical_spaces.hooks_handlers.space_validation.validate",
 		"after_insert": "condominium_management.physical_spaces.hooks_handlers.space_detection.after_insert",
 		"on_update": "condominium_management.physical_spaces.hooks_handlers.space_detection.on_update",
-		"before_save": "condominium_management.physical_spaces.hooks_handlers.space_validation.before_save",
 	},
 	"Space Category": {
 		"validate": "condominium_management.physical_spaces.hooks_handlers.category_validation.validate",

@@ -247,20 +247,5 @@ class TestComponentType(FrappeTestCase):
 		for comp_type in test_types:
 			frappe.delete_doc("Component Type", comp_type.name)
 
-		# Eliminar otros tipos de prueba
-		test_names = [
-			"Motor Eléctrico",
-			"Bomba Centrífuga",
-			"Válvula Manual",
-			"Sensor de Temperatura",
-			"Compresor HVAC",
-			"Sistema de Seguridad",
-			"Componente Genérico",
-			"Elevador",
-			"Luminaria LED",
-		]
-		for name in test_names:
-			if frappe.db.exists("Component Type", name):
-				frappe.delete_doc("Component Type", name)
-
-		frappe.db.commit()
+		# Hacer rollback para limpiar todos los datos de prueba
+		frappe.db.rollback()

@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "naming_series:",
+ "autoname": "field:space_code",
  "creation": "2025-07-07 00:00:00.000000",
  "default_view": "List",
  "doctype": "DocType",
@@ -9,7 +9,6 @@
  "engine": "InnoDB",
  "field_order": [
   "basic_information_section",
-  "naming_series",
   "space_name",
   "space_code",
   "company",
@@ -43,14 +42,6 @@
    "label": "Información Básica"
   },
   {
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "label": "Serie de Numeración",
-   "options": "PS-.YYYY.-",
-   "default": "PS-.YYYY.-",
-   "reqd": 1
-  },
-  {
    "fieldname": "space_name",
    "fieldtype": "Data",
    "label": "Nombre del Espacio",
@@ -60,8 +51,7 @@
    "fieldname": "space_code",
    "fieldtype": "Data",
    "label": "Código del Espacio",
-   "unique": 1,
-   "read_only": 1
+   "unique": 1
   },
   {
    "fieldname": "company",
