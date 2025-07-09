@@ -41,6 +41,10 @@ def create_test_company_with_default_fallback(company_name, abbr=None, currency=
 		}
 	)
 
+	# Agregar company_type si el campo existe (para evitar ValidationError)
+	if hasattr(company, "company_type"):
+		company.company_type = "Administradora"  # Tipo por defecto para testing
+
 	try:
 		company.insert(ignore_permissions=True)
 		return company
