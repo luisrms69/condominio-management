@@ -8,7 +8,8 @@ from frappe.tests.utils import FrappeTestCase
 class TestEnforcementLevel(FrappeTestCase):
 	def setUp(self):
 		"""Configurar datos de prueba"""
-		frappe.db.delete("Enforcement Level", {"level_name": ["like", "Test%"]})
+		# Limpiar TODOS los enforcement levels para evitar conflictos con fixtures
+		frappe.db.delete("Enforcement Level", {})
 		frappe.db.commit()
 
 	def test_enforcement_level_creation(self):

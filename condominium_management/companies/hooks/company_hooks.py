@@ -7,6 +7,10 @@ from frappe import _
 
 def validate_company_fields(doc, method):
 	"""Validar campos personalizados de Company"""
+	# Solo validar si los campos personalizados existen
+	if not hasattr(doc, "company_type"):
+		return
+
 	validate_company_type_fields(doc)
 	validate_management_fields(doc)
 	validate_financial_fields(doc)
@@ -15,6 +19,10 @@ def validate_company_fields(doc, method):
 
 def validate_company_type_fields(doc):
 	"""Validar campos específicos del tipo de empresa"""
+	# Verificar que el campo company_type existe
+	if not hasattr(doc, "company_type") or not doc.company_type:
+		return
+
 	if doc.company_type == "Condominio":
 		# Validar campos requeridos para condominios
 		if not doc.property_usage_type:
@@ -43,27 +51,36 @@ def validate_company_type_fields(doc):
 
 def validate_management_fields(doc):
 	"""Validar campos de administración"""
+	if not hasattr(doc, "management_company") or not doc.management_company:
+		return
+
 	if doc.management_company:
 		# Verificar que la empresa administradora existe y es del tipo correcto
 		admin_company = frappe.get_doc("Company", doc.management_company)
-		if admin_company.company_type != "Administradora":
+		# Solo validar company_type si el campo existe
+		if hasattr(admin_company, "company_type") and admin_company.company_type != "Administradora":
 			frappe.throw(_("La empresa seleccionada debe ser de tipo 'Administradora'"))
 
 		# Validar fechas de administración
-		if doc.management_start_date and doc.management_contract_end_date:
+		if (
+			hasattr(doc, "management_start_date")
+			and hasattr(doc, "management_contract_end_date")
+			and doc.management_start_date
+			and doc.management_contract_end_date
+		):
 			if doc.management_start_date >= doc.management_contract_end_date:
 				frappe.throw(_("La fecha de inicio debe ser anterior a la fecha de fin del contrato"))
 
 
 def validate_financial_fields(doc):
 	"""Validar campos financieros"""
-	if doc.monthly_admin_fee and doc.monthly_admin_fee < 0:
+	if hasattr(doc, "monthly_admin_fee") and doc.monthly_admin_fee and doc.monthly_admin_fee < 0:
 		frappe.throw(_("La cuota de administración mensual no puede ser negativa"))
 
-	if doc.reserve_fund and doc.reserve_fund < 0:
+	if hasattr(doc, "reserve_fund") and doc.reserve_fund and doc.reserve_fund < 0:
 		frappe.throw(_("El fondo de reserva no puede ser negativo"))
 
-	if doc.insurance_expiry_date:
+	if hasattr(doc, "insurance_expiry_date") and doc.insurance_expiry_date:
 		from datetime import datetime
 
 		if doc.insurance_expiry_date < datetime.now().date():
@@ -72,7 +89,7 @@ def validate_financial_fields(doc):
 
 def validate_legal_fields(doc):
 	"""Validar campos legales"""
-	if doc.legal_representative_id:
+	if hasattr(doc, "legal_representative_id") and doc.legal_representative_id:
 		# Validar formato de cédula colombiana (básico)
 		if not doc.legal_representative_id.isdigit() or len(doc.legal_representative_id) < 6:
 			frappe.throw(_("La cédula del representante legal debe tener al menos 6 dígitos numéricos"))
@@ -80,6 +97,9 @@ def validate_legal_fields(doc):
 
 def update_managed_properties_count(doc, method):
 	"""Actualizar contador de propiedades administradas"""
+	if not hasattr(doc, "company_type") or not doc.company_type:
+		return
+
 	if doc.company_type == "Administradora":
 		# Contar propiedades administradas por esta empresa
 		managed_count = frappe.db.count(
@@ -95,13 +115,21 @@ def on_company_save(doc, method):
 	update_managed_properties_count(doc, method)
 
 	# Si es un condominio con administradora, actualizar el contador de la administradora
-	if doc.company_type == "Condominio" and doc.management_company:
+	if (
+		hasattr(doc, "company_type")
+		and hasattr(doc, "management_company")
+		and doc.company_type == "Condominio"
+		and doc.management_company
+	):
 		admin_company = frappe.get_doc("Company", doc.management_company)
 		update_managed_properties_count(admin_company, method)
 
 
 def on_company_trash(doc, method):
 	"""Hook antes de eliminar Company"""
+	if not hasattr(doc, "company_type") or not doc.company_type:
+		return
+
 	# Si es administradora, verificar que no tenga propiedades administradas
 	if doc.company_type == "Administradora":
 		managed_count = frappe.db.count(
@@ -116,6 +144,11 @@ def on_company_trash(doc, method):
 			)
 
 	# Si es condominio con administradora, actualizar el contador de la administradora
-	if doc.company_type == "Condominio" and doc.management_company:
+	if (
+		hasattr(doc, "company_type")
+		and hasattr(doc, "management_company")
+		and doc.company_type == "Condominio"
+		and doc.management_company
+	):
 		admin_company = frappe.get_doc("Company", doc.management_company)
 		update_managed_properties_count(admin_company, method)

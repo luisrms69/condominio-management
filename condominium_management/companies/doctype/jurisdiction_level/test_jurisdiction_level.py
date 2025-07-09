@@ -8,7 +8,8 @@ from frappe.tests.utils import FrappeTestCase
 class TestJurisdictionLevel(FrappeTestCase):
 	def setUp(self):
 		"""Configurar datos de prueba"""
-		frappe.db.delete("Jurisdiction Level", {"level_name": ["like", "Test%"]})
+		# Limpiar TODOS los jurisdiction levels para evitar conflictos con fixtures
+		frappe.db.delete("Jurisdiction Level", {})
 		frappe.db.commit()
 
 	def test_jurisdiction_level_creation(self):
