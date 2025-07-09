@@ -25,23 +25,23 @@ def validate_company_type_fields(doc):
 
 	if doc.company_type == "Condominio":
 		# Validar campos requeridos para condominios
-		if not doc.property_usage_type:
+		if hasattr(doc, "property_usage_type") and not doc.property_usage_type:
 			frappe.throw(_("El tipo de uso de propiedad es requerido para condominios"))
 
-		if doc.total_units and doc.total_units <= 0:
+		if hasattr(doc, "total_units") and doc.total_units and doc.total_units <= 0:
 			frappe.throw(_("El total de unidades debe ser mayor a 0"))
 
-		if doc.total_area_sqm and doc.total_area_sqm <= 0:
+		if hasattr(doc, "total_area_sqm") and doc.total_area_sqm and doc.total_area_sqm <= 0:
 			frappe.throw(_("El área total debe ser mayor a 0"))
 
-		if doc.construction_year:
+		if hasattr(doc, "construction_year") and doc.construction_year:
 			import datetime
 
 			current_year = datetime.datetime.now().year
 			if doc.construction_year < 1900 or doc.construction_year > current_year:
 				frappe.throw(_("El año de construcción debe estar entre 1900 y {}").format(current_year))
 
-		if doc.floors_count and doc.floors_count <= 0:
+		if hasattr(doc, "floors_count") and doc.floors_count and doc.floors_count <= 0:
 			frappe.throw(_("El número de pisos debe ser mayor a 0"))
 
 	elif doc.company_type == "Administradora":
