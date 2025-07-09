@@ -108,6 +108,9 @@ def create_test_company_with_default_fallback(company_name, abbr=None, currency=
 	try:
 		company.insert(ignore_permissions=True)
 		return company
+	except frappe.DuplicateEntryError:
+		# Si ya existe, simplemente devolver la existente
+		return frappe.get_doc("Company", company_name)
 	except Exception as e:
 		# Si falla, crear empresa más básica
 		if "Row #11: Company: Test Company Default" in str(e):
@@ -120,8 +123,11 @@ def create_test_company_with_default_fallback(company_name, abbr=None, currency=
 					"country": "United States",
 				}
 			)
-			basic_company.insert(ignore_permissions=True)
-			return basic_company
+			try:
+				basic_company.insert(ignore_permissions=True)
+				return basic_company
+			except frappe.DuplicateEntryError:
+				return frappe.get_doc("Company", company_name)
 		else:
 			raise e
 
@@ -224,6 +230,14 @@ def ensure_custom_fields_exist():
 			"label": "Management Contract End Date",
 			"fieldtype": "Date",
 			"insert_after": "management_start_date",
+		},
+		{
+			"dt": "Company",
+			"fieldname": "managed_properties",
+			"label": "Managed Properties",
+			"fieldtype": "Int",
+			"insert_after": "management_contract_end_date",
+			"read_only": 1,
 		},
 	]
 
