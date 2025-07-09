@@ -1,0 +1,46 @@
+[
+ {
+  "doctype": "User Type",
+  "name": "Administrador",
+  "user_type_name": "Administrador",
+  "can_access_admin": 1,
+  "can_manage_policies": 1,
+  "can_manage_complaints": 1,
+  "can_manage_finances": 1,
+  "can_view_reports": 1,
+  "is_active": 1
+ },
+ {
+  "doctype": "User Type",
+  "name": "Residente",
+  "user_type_name": "Residente",
+  "can_access_admin": 0,
+  "can_manage_policies": 0,
+  "can_manage_complaints": 0,
+  "can_manage_finances": 0,
+  "can_view_reports": 1,
+  "is_active": 1
+ },
+ {
+  "doctype": "User Type",
+  "name": "Portero",
+  "user_type_name": "Portero",
+  "can_access_admin": 0,
+  "can_manage_policies": 0,
+  "can_manage_complaints": 1,
+  "can_manage_finances": 0,
+  "can_view_reports": 0,
+  "is_active": 1
+ },
+ {
+  "doctype": "User Type",
+  "name": "Contador",
+  "user_type_name": "Contador",
+  "can_access_admin": 0,
+  "can_manage_policies": 0,
+  "can_manage_complaints": 0,
+  "can_manage_finances": 1,
+  "can_view_reports": 1,
+  "is_active": 1
+ }
+]

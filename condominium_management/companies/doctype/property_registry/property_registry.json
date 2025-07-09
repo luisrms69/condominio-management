@@ -1,0 +1,360 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-07-08 12:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_info",
+  "naming_series",
+  "property_name",
+  "property_code",
+  "company",
+  "property_usage_type",
+  "acquisition_type",
+  "property_status_type",
+  "cb_basic_1",
+  "registration_date",
+  "acquisition_date",
+  "total_area_sqm",
+  "built_area_sqm",
+  "property_details",
+  "property_address",
+  "neighborhood",
+  "city",
+  "department",
+  "postal_code",
+  "cb_location_1",
+  "cadastral_number",
+  "public_deed_number",
+  "registration_office",
+  "folio_number",
+  "ownership_section",
+  "has_copropiedades",
+  "total_copropiedades_percentage",
+  "copropiedades_table",
+  "financial_info",
+  "property_value",
+  "assessed_value",
+  "monthly_tax",
+  "cb_financial_1",
+  "insurance_policy",
+  "insurance_value",
+  "insurance_expiry",
+  "compliance_info",
+  "predial_tax_current",
+  "valorization_current",
+  "last_inspection_date",
+  "cb_compliance_1",
+  "permits_status",
+  "environmental_clearance",
+  "fire_safety_certificate",
+  "is_active"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_info",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie de Nomenclatura",
+   "options": "PROP-.YYYY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "property_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre de la Propiedad",
+   "reqd": 1
+  },
+  {
+   "fieldname": "property_code",
+   "fieldtype": "Data",
+   "label": "Código de Propiedad",
+   "unique": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Empresa",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "property_usage_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Tipo de Uso",
+   "options": "Property Usage Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "acquisition_type",
+   "fieldtype": "Link",
+   "label": "Tipo de Adquisición",
+   "options": "Acquisition Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "property_status_type",
+   "fieldtype": "Link",
+   "label": "Estado",
+   "options": "Property Status Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb_basic_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "registration_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Registro",
+   "reqd": 1
+  },
+  {
+   "fieldname": "acquisition_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Adquisición"
+  },
+  {
+   "fieldname": "total_area_sqm",
+   "fieldtype": "Float",
+   "label": "Área Total (m²)",
+   "precision": 2
+  },
+  {
+   "fieldname": "built_area_sqm",
+   "fieldtype": "Float",
+   "label": "Área Construida (m²)",
+   "precision": 2
+  },
+  {
+   "fieldname": "property_details",
+   "fieldtype": "Section Break",
+   "label": "Detalles de Ubicación"
+  },
+  {
+   "fieldname": "property_address",
+   "fieldtype": "Small Text",
+   "label": "Dirección"
+  },
+  {
+   "fieldname": "neighborhood",
+   "fieldtype": "Data",
+   "label": "Barrio"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "Ciudad"
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Data",
+   "label": "Departamento"
+  },
+  {
+   "fieldname": "postal_code",
+   "fieldtype": "Data",
+   "label": "Código Postal"
+  },
+  {
+   "fieldname": "cb_location_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cadastral_number",
+   "fieldtype": "Data",
+   "label": "Número Catastral"
+  },
+  {
+   "fieldname": "public_deed_number",
+   "fieldtype": "Data",
+   "label": "Número de Escritura Pública"
+  },
+  {
+   "fieldname": "registration_office",
+   "fieldtype": "Data",
+   "label": "Oficina de Registro"
+  },
+  {
+   "fieldname": "folio_number",
+   "fieldtype": "Data",
+   "label": "Número de Folio"
+  },
+  {
+   "fieldname": "ownership_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Propiedad"
+  },
+  {
+   "default": "0",
+   "fieldname": "has_copropiedades",
+   "fieldtype": "Check",
+   "label": "Tiene Copropiedades"
+  },
+  {
+   "depends_on": "has_copropiedades",
+   "fieldname": "total_copropiedades_percentage",
+   "fieldtype": "Float",
+   "label": "Total Porcentaje Copropiedades (%)",
+   "precision": 2,
+   "read_only": 1
+  },
+  {
+   "depends_on": "has_copropiedades",
+   "fieldname": "copropiedades_table",
+   "fieldtype": "Table",
+   "label": "Copropiedades",
+   "options": "Property Copropiedad"
+  },
+  {
+   "fieldname": "financial_info",
+   "fieldtype": "Section Break",
+   "label": "Información Financiera"
+  },
+  {
+   "fieldname": "property_value",
+   "fieldtype": "Currency",
+   "label": "Valor de la Propiedad"
+  },
+  {
+   "fieldname": "assessed_value",
+   "fieldtype": "Currency",
+   "label": "Avalúo Catastral"
+  },
+  {
+   "fieldname": "monthly_tax",
+   "fieldtype": "Currency",
+   "label": "Impuesto Mensual"
+  },
+  {
+   "fieldname": "cb_financial_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "insurance_policy",
+   "fieldtype": "Data",
+   "label": "Póliza de Seguro"
+  },
+  {
+   "fieldname": "insurance_value",
+   "fieldtype": "Currency",
+   "label": "Valor Asegurado"
+  },
+  {
+   "fieldname": "insurance_expiry",
+   "fieldtype": "Date",
+   "label": "Vencimiento Seguro"
+  },
+  {
+   "fieldname": "compliance_info",
+   "fieldtype": "Section Break",
+   "label": "Información de Cumplimiento"
+  },
+  {
+   "default": "0",
+   "fieldname": "predial_tax_current",
+   "fieldtype": "Check",
+   "label": "Impuesto Predial al Día"
+  },
+  {
+   "default": "0",
+   "fieldname": "valorization_current",
+   "fieldtype": "Check",
+   "label": "Valorización al Día"
+  },
+  {
+   "fieldname": "last_inspection_date",
+   "fieldtype": "Date",
+   "label": "Última Inspección"
+  },
+  {
+   "fieldname": "cb_compliance_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "permits_status",
+   "fieldtype": "Select",
+   "label": "Estado de Permisos",
+   "options": "Vigente\nVencido\nEn Trámite\nNo Aplica"
+  },
+  {
+   "fieldname": "environmental_clearance",
+   "fieldtype": "Select",
+   "label": "Licencia Ambiental",
+   "options": "Vigente\nVencida\nEn Trámite\nNo Aplica"
+  },
+  {
+   "fieldname": "fire_safety_certificate",
+   "fieldtype": "Select",
+   "label": "Certificado Bomberos",
+   "options": "Vigente\nVencido\nEn Trámite\nNo Aplica"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Activo"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-08 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Companies",
+ "name": "Property Registry",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Manager",
+   "share": 1,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

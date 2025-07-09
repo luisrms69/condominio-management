@@ -1,0 +1,1 @@
+# Property Usage Type DocType

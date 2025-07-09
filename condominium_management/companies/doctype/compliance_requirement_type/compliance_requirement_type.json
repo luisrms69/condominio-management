@@ -1,0 +1,114 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:requirement_name",
+ "creation": "2025-07-08 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "requirement_name",
+  "category",
+  "priority_level",
+  "requires_documentation",
+  "requires_approval",
+  "estimated_completion_days",
+  "penalty_type",
+  "is_active"
+ ],
+ "fields": [
+  {
+   "fieldname": "requirement_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Requerimiento",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Categoría",
+   "options": "Documentación\nPermisos\nInspecciones\nPagos\nReportes\nCapacitación\nSeguridad\nAmbiental",
+   "reqd": 1
+  },
+  {
+   "fieldname": "priority_level",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Nivel de Prioridad",
+   "options": "Baja\nMedia\nAlta\nCrítica",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "requires_documentation",
+   "fieldtype": "Check",
+   "label": "Requiere Documentación"
+  },
+  {
+   "default": "0",
+   "fieldname": "requires_approval",
+   "fieldtype": "Check",
+   "label": "Requiere Aprobación"
+  },
+  {
+   "default": "30",
+   "fieldname": "estimated_completion_days",
+   "fieldtype": "Int",
+   "label": "Días Estimados de Cumplimiento"
+  },
+  {
+   "fieldname": "penalty_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Penalización",
+   "options": "\nAdvertencia\nMulta\nSuspensión\nRevocación\nProceso Legal"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Activo"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-08 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Companies",
+ "name": "Compliance Requirement Type",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Administrator",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "priority_level",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
