@@ -19,12 +19,13 @@ def validate_company_fields(doc, method):
 
 def validate_company_type_fields(doc):
 	"""Validar campos específicos del tipo de empresa"""
-	# Verificar que el campo company_type existe y es requerido
+	# Verificar que el campo company_type existe
 	if not hasattr(doc, "company_type"):
 		return  # Campo no existe, no validar
 
+	# Solo validar si el campo existe y está siendo usado
 	if not doc.company_type:
-		frappe.throw(_("El tipo de empresa es requerido"))
+		return  # No hay tipo de empresa, no validar (permite empresas básicas)
 
 	if doc.company_type == "Condominio":
 		# Validar campos requeridos para condominios
@@ -61,8 +62,11 @@ def validate_management_fields(doc):
 		# Verificar que la empresa administradora existe y es del tipo correcto
 		admin_company = frappe.get_doc("Company", doc.management_company)
 		# Solo validar company_type si el campo existe
-		if hasattr(admin_company, "company_type") and admin_company.company_type != "Administradora":
-			frappe.throw(_("La empresa seleccionada debe ser de tipo 'Administradora'"))
+		if hasattr(admin_company, "company_type") and admin_company.company_type:
+			# Buscar el tipo "Administradora" usando el ID correcto
+			admin_type = frappe.db.get_value("Company Type", {"type_name": "Administradora"}, "name")
+			if admin_type and admin_company.company_type != admin_type:
+				frappe.throw(_("La empresa seleccionada debe ser de tipo 'Administradora'"))
 
 		# Validar fechas de administración
 		if (

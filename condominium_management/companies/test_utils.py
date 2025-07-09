@@ -4,6 +4,41 @@
 import frappe
 
 
+def ensure_test_fixtures_exist():
+	"""
+	Asegurar que los fixtures base existen para testing
+	"""
+	# Crear Company Types si no existen
+	company_types = [
+		{"type_name": "Administradora", "type_code": "ADMIN", "is_management_type": 1},
+		{"type_name": "Condominio", "type_code": "CONDO", "is_management_type": 0},
+		{"type_name": "Proveedor", "type_code": "PROV", "is_management_type": 0},
+	]
+
+	for company_type_data in company_types:
+		# Verificar usando type_name ya que los fixtures están inconsistentes
+		if not frappe.db.exists("Company Type", {"type_name": company_type_data["type_name"]}):
+			try:
+				company_type = frappe.get_doc(
+					{"doctype": "Company Type", "name": company_type_data["type_name"], **company_type_data}
+				)
+				company_type.insert(ignore_permissions=True)
+			except frappe.DuplicateEntryError:
+				pass
+
+	# Crear Property Usage Types básicos
+	usage_types = ["Residencial", "Comercial", "Mixto"]
+	for usage_name in usage_types:
+		if not frappe.db.exists("Property Usage Type", {"usage_name": usage_name}):
+			try:
+				usage_type = frappe.get_doc(
+					{"doctype": "Property Usage Type", "name": usage_name, "usage_name": usage_name}
+				)
+				usage_type.insert(ignore_permissions=True)
+			except frappe.DuplicateEntryError:
+				pass
+
+
 def create_test_company_with_default_fallback(company_name, abbr=None, currency="MXN", country="Mexico"):
 	"""
 	Crear empresa de prueba con fallback para el error 'Test Company Default'
@@ -14,21 +49,40 @@ def create_test_company_with_default_fallback(company_name, abbr=None, currency=
 	if frappe.db.exists("Company", company_name):
 		return frappe.get_doc("Company", company_name)
 
-	# Crear empresa dummy 'Test Company Default' si no existe (fix para ERPNext)
-	if not frappe.db.exists("Company", "Test Company Default"):
-		try:
-			dummy_company = frappe.get_doc(
-				{
-					"doctype": "Company",
-					"company_name": "Test Company Default",
-					"abbr": "TCD",
-					"default_currency": "USD",
-					"country": "United States",
-				}
-			)
-			dummy_company.insert(ignore_permissions=True)
-		except Exception:
-			pass
+	# Asegurar que los fixtures existen
+	ensure_test_fixtures_exist()
+
+	# Crear empresas dummy requeridas por ERPNext (fix para LinkValidationError)
+	dummy_companies = [
+		{"company_name": "Test Company Default", "abbr": "TCD"},
+		{"company_name": "Test Condominium", "abbr": "TCS"},
+		{"company_name": "Test Administration", "abbr": "TAS"},
+		{"company_name": "Test Administradora XYZ", "abbr": "TAX"},
+		{"company_name": "Test Company Invalid", "abbr": "TCI"},
+		{"company_name": "Test Condominio Residencial", "abbr": "TCR"},
+		{"company_name": "Test Invalid Units", "abbr": "TIU"},
+		{"company_name": "Test Invalid Year", "abbr": "TIY"},
+		{"company_name": "Test Administradora ABC", "abbr": "TAA"},
+		{"company_name": "Test Condominio Administrado", "abbr": "TCA"},
+		{"company_name": "Test Invalid ID", "abbr": "TII"},
+		{"company_name": "Test Invalid Fee", "abbr": "TIF"},
+	]
+
+	for dummy_data in dummy_companies:
+		if not frappe.db.exists("Company", dummy_data["company_name"]):
+			try:
+				dummy_company = frappe.get_doc(
+					{
+						"doctype": "Company",
+						"company_name": dummy_data["company_name"],
+						"abbr": dummy_data["abbr"],
+						"default_currency": "USD",
+						"country": "United States",
+					}
+				)
+				dummy_company.insert(ignore_permissions=True)
+			except Exception:
+				pass
 
 	# Crear la empresa solicitada
 	company = frappe.get_doc(
@@ -43,7 +97,13 @@ def create_test_company_with_default_fallback(company_name, abbr=None, currency=
 
 	# Agregar company_type si el campo existe (para evitar ValidationError)
 	if hasattr(company, "company_type"):
-		company.company_type = "Administradora"  # Tipo por defecto para testing
+		# Buscar el tipo correcto usando type_name
+		admin_type = frappe.db.get_value("Company Type", {"type_name": "Administradora"}, "name")
+		if admin_type:
+			company.company_type = admin_type
+		else:
+			# Fallback: usar el código si no se encuentra el nombre
+			company.company_type = "ADMIN"
 
 	try:
 		company.insert(ignore_permissions=True)

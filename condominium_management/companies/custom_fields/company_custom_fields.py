@@ -24,7 +24,7 @@ def create_company_custom_fields():
 				"fieldtype": "Link",
 				"options": "Company Type",
 				"insert_after": "condominium_section",
-				"reqd": 1,
+				"reqd": 0,
 			},
 			{
 				"fieldname": "property_usage_type",
