@@ -20,10 +20,11 @@ def validate_company_fields(doc, method):
 def validate_company_type_fields(doc):
 	"""Validar campos específicos del tipo de empresa"""
 	# Verificar que el campo company_type existe y es requerido
-	if hasattr(doc, "company_type") and not doc.company_type:
+	if not hasattr(doc, "company_type"):
+		return  # Campo no existe, no validar
+
+	if not doc.company_type:
 		frappe.throw(_("El tipo de empresa es requerido"))
-	elif not hasattr(doc, "company_type"):
-		return
 
 	if doc.company_type == "Condominio":
 		# Validar campos requeridos para condominios
