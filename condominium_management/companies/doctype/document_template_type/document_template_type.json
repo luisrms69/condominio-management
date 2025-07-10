@@ -1,0 +1,105 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:template_type_name",
+ "creation": "2025-07-08 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "template_type_name",
+  "category",
+  "requires_signature",
+  "requires_notarization",
+  "is_legal_document",
+  "retention_period_days",
+  "is_active"
+ ],
+ "fields": [
+  {
+   "fieldname": "template_type_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Tipo",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Categoría",
+   "options": "Administrativo\nLegal\nComercial\nTécnico\nFinanciero\nCorrespondencia",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "requires_signature",
+   "fieldtype": "Check",
+   "label": "Requiere Firma"
+  },
+  {
+   "default": "0",
+   "fieldname": "requires_notarization",
+   "fieldtype": "Check",
+   "label": "Requiere Notarización"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_legal_document",
+   "fieldtype": "Check",
+   "label": "Es Documento Legal"
+  },
+  {
+   "default": "365",
+   "fieldname": "retention_period_days",
+   "fieldtype": "Int",
+   "label": "Período de Retención (días)"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Activo"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-08 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Companies",
+ "name": "Document Template Type",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Administrator",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "template_type_name",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1
+}

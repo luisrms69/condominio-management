@@ -1,0 +1,1 @@
+# Property Status Type DocType

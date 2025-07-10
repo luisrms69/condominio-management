@@ -1,0 +1,57 @@
+[
+ {
+  "doctype": "Document Template Type",
+  "name": "Memorando",
+  "template_type_name": "Memorando",
+  "category": "Administrativo",
+  "requires_signature": 1,
+  "requires_notarization": 0,
+  "is_legal_document": 0,
+  "retention_period_days": 365,
+  "is_active": 1
+ },
+ {
+  "doctype": "Document Template Type",
+  "name": "Contrato",
+  "template_type_name": "Contrato",
+  "category": "Legal",
+  "requires_signature": 1,
+  "requires_notarization": 1,
+  "is_legal_document": 1,
+  "retention_period_days": 1825,
+  "is_active": 1
+ },
+ {
+  "doctype": "Document Template Type",
+  "name": "Factura",
+  "template_type_name": "Factura",
+  "category": "Financiero",
+  "requires_signature": 1,
+  "requires_notarization": 0,
+  "is_legal_document": 0,
+  "retention_period_days": 1095,
+  "is_active": 1
+ },
+ {
+  "doctype": "Document Template Type",
+  "name": "Informe Técnico",
+  "template_type_name": "Informe Técnico",
+  "category": "Técnico",
+  "requires_signature": 1,
+  "requires_notarization": 0,
+  "is_legal_document": 0,
+  "retention_period_days": 730,
+  "is_active": 1
+ },
+ {
+  "doctype": "Document Template Type",
+  "name": "Carta",
+  "template_type_name": "Carta",
+  "category": "Correspondencia",
+  "requires_signature": 1,
+  "requires_notarization": 0,
+  "is_legal_document": 0,
+  "retention_period_days": 365,
+  "is_active": 1
+ }
+]

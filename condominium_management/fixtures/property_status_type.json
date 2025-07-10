@@ -1,0 +1,38 @@
+[
+ {
+  "doctype": "Property Status Type",
+  "name": "Activo",
+  "status_name": "Activo",
+  "is_active": 1
+ },
+ {
+  "doctype": "Property Status Type",
+  "name": "Inactivo",
+  "status_name": "Inactivo",
+  "is_active": 1
+ },
+ {
+  "doctype": "Property Status Type",
+  "name": "En Venta",
+  "status_name": "En Venta",
+  "is_active": 1
+ },
+ {
+  "doctype": "Property Status Type",
+  "name": "En Arriendo",
+  "status_name": "En Arriendo",
+  "is_active": 1
+ },
+ {
+  "doctype": "Property Status Type",
+  "name": "En Construcción",
+  "status_name": "En Construcción",
+  "is_active": 1
+ },
+ {
+  "doctype": "Property Status Type",
+  "name": "Abandonado",
+  "status_name": "Abandonado",
+  "is_active": 1
+ }
+]

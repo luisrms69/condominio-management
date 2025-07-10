@@ -1,0 +1,37 @@
+[
+ {
+  "doctype": "Enforcement Level",
+  "name": "Informativa",
+  "level_name": "Informativa",
+  "severity_order": 1,
+  "is_active": 1
+ },
+ {
+  "doctype": "Enforcement Level",
+  "name": "Leve",
+  "level_name": "Leve",
+  "severity_order": 2,
+  "is_active": 1
+ },
+ {
+  "doctype": "Enforcement Level",
+  "name": "Moderada",
+  "level_name": "Moderada",
+  "severity_order": 3,
+  "is_active": 1
+ },
+ {
+  "doctype": "Enforcement Level",
+  "name": "Grave",
+  "level_name": "Grave",
+  "severity_order": 4,
+  "is_active": 1
+ },
+ {
+  "doctype": "Enforcement Level",
+  "name": "Muy Grave",
+  "level_name": "Muy Grave",
+  "severity_order": 5,
+  "is_active": 1
+ }
+]

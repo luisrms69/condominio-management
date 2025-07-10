@@ -1,0 +1,62 @@
+[
+ {
+  "doctype": "Compliance Requirement Type",
+  "name": "Renovación Licencia de Funcionamiento",
+  "requirement_name": "Renovación Licencia de Funcionamiento",
+  "category": "Permisos",
+  "priority_level": "Alta",
+  "requires_documentation": 1,
+  "requires_approval": 1,
+  "estimated_completion_days": 30,
+  "penalty_type": "Multa",
+  "is_active": 1
+ },
+ {
+  "doctype": "Compliance Requirement Type",
+  "name": "Pago Impuesto Predial",
+  "requirement_name": "Pago Impuesto Predial",
+  "category": "Pagos",
+  "priority_level": "Crítica",
+  "requires_documentation": 1,
+  "requires_approval": 0,
+  "estimated_completion_days": 60,
+  "penalty_type": "Multa",
+  "is_active": 1
+ },
+ {
+  "doctype": "Compliance Requirement Type",
+  "name": "Inspección Bomberos",
+  "requirement_name": "Inspección Bomberos",
+  "category": "Inspecciones",
+  "priority_level": "Alta",
+  "requires_documentation": 1,
+  "requires_approval": 1,
+  "estimated_completion_days": 45,
+  "penalty_type": "Suspensión",
+  "is_active": 1
+ },
+ {
+  "doctype": "Compliance Requirement Type",
+  "name": "Capacitación Seguridad",
+  "requirement_name": "Capacitación Seguridad",
+  "category": "Capacitación",
+  "priority_level": "Media",
+  "requires_documentation": 1,
+  "requires_approval": 0,
+  "estimated_completion_days": 15,
+  "penalty_type": "Advertencia",
+  "is_active": 1
+ },
+ {
+  "doctype": "Compliance Requirement Type",
+  "name": "Reporte Ambiental",
+  "requirement_name": "Reporte Ambiental",
+  "category": "Ambiental",
+  "priority_level": "Media",
+  "requires_documentation": 1,
+  "requires_approval": 1,
+  "estimated_completion_days": 30,
+  "penalty_type": "Multa",
+  "is_active": 1
+ }
+]

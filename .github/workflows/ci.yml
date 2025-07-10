@@ -38,7 +38,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
         ports:
           - 3306:3306
-        options: --health-cmd="mariadb-admin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+        options: --health-cmd="mariadb-admin ping" --health-interval=10s --health-timeout=5s --health-retries=10 --health-start-period=30s
 
     steps:
       - name: Clone
@@ -64,8 +64,10 @@ jobs:
       - name: Configure yarn for stability
         run: |
           yarn config set registry https://registry.npmjs.org/
-          yarn config set network-timeout 600000
-          yarn config set network-retry 3
+          yarn config set network-timeout 900000
+          yarn config set network-retry 5
+          yarn config set prefer-offline true
+          yarn config set cache-folder ~/.yarn/cache
 
       - name: Cache pip
         uses: actions/cache@v4
@@ -91,32 +93,50 @@ jobs:
       - name: Install MariaDB Client
         run: sudo apt-get update && sudo apt-get install -y mariadb-client
 
-      - name: Setup
-        run: |
-          pip install frappe-bench
-          bench init --skip-redis-config-generation --skip-assets --python "$(which python)" --frappe-branch version-15 ~/frappe-bench
-          mariadb --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL character_set_server = 'utf8mb4'"
-          mariadb --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL collation_server = 'utf8mb4_unicode_ci'"
+      - name: Setup with retry
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: |
+            pip install frappe-bench
+            bench init --skip-redis-config-generation --skip-assets --python "$(which python)" --frappe-branch version-15 ~/frappe-bench
+            mariadb --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL character_set_server = 'utf8mb4'"
+            mariadb --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL collation_server = 'utf8mb4_unicode_ci'"
 
-      - name: Install
-        working-directory: /home/runner/frappe-bench
+      - name: Install with retry
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: |
+            cd /home/runner/frappe-bench
+            bench get-app --branch version-15 erpnext
+            bench get-app condominium_management $GITHUB_WORKSPACE
+            bench setup requirements --dev
+            bench new-site --db-root-password root --admin-password admin admin1.dev
+            bench --site admin1.dev install-app erpnext
+            bench --site admin1.dev install-app condominium_management
+            bench --site admin1.dev migrate
+            bench build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          bench get-app --branch version-15 erpnext
-          bench get-app condominium_management $GITHUB_WORKSPACE
-          bench setup requirements --dev
-          bench new-site --db-root-password root --admin-password admin test_site
-          bench --site test_site install-app erpnext
-          bench --site test_site install-app condominium_management
-          bench --site test_site migrate
-          bench build
 
 
-      - name: Run Tests
+      - name: Validate Environment
         working-directory: /home/runner/frappe-bench
         run: |
-          bench --site test_site set-config allow_tests true
-          bench --site test_site run-tests --app condominium_management
+          bench --version
+          bench --site admin1.dev doctor
+          bench --site admin1.dev list-apps
+          bench --site admin1.dev migrate --skip-failing
+
+      - name: Run Tests with detailed logging
+        working-directory: /home/runner/frappe-bench
+        run: |
+          bench --site admin1.dev set-config allow_tests true
+          bench --site admin1.dev set-config developer_mode true
+          bench --site admin1.dev run-tests --app condominium_management --coverage --failfast
         env:
           TYPE: server
+          FRAPPE_DEVELOPER_MODE: 1
