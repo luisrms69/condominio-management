@@ -195,8 +195,11 @@ doc_events = {
 	# ----------------------
 	# Hooks específicos para módulo Companies - auto-detección de configuraciones
 	"Company": {
+		"validate": "condominium_management.companies.hooks.company_hooks.validate_company_fields",
 		"after_insert": "condominium_management.companies.hooks_handlers.company_detection.after_insert",
 		"on_update": "condominium_management.companies.hooks_handlers.company_detection.on_update",
+		"on_save": "condominium_management.companies.hooks.company_hooks.on_company_save",
+		"on_trash": "condominium_management.companies.hooks.company_hooks.on_company_trash",
 	},
 	"Service Management Contract": {
 		"validate": "condominium_management.companies.hooks_handlers.contract_detection.validate",
@@ -248,6 +251,17 @@ fixtures = [
 		"doctype": "Contribution Category",
 		"filters": {"module_name": ["in", ["Document Generation", "Maintenance", "Contracts"]]},
 	},
+	# Companies Module Masters
+	"Company Type",
+	"Property Usage Type",
+	"Acquisition Type",
+	"Property Status Type",
+	"Policy Category",
+	"Enforcement Level",
+	"User Type",
+	"Document Template Type",
+	"Jurisdiction Level",
+	"Compliance Requirement Type",
 ]
 
 # Overriding Methods

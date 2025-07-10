@@ -1,0 +1,32 @@
+[
+ {
+  "doctype": "Property Usage Type",
+  "name": "Residencial",
+  "usage_name": "Residencial",
+  "is_active": 1
+ },
+ {
+  "doctype": "Property Usage Type",
+  "name": "Comercial",
+  "usage_name": "Comercial",
+  "is_active": 1
+ },
+ {
+  "doctype": "Property Usage Type",
+  "name": "Mixto",
+  "usage_name": "Mixto",
+  "is_active": 1
+ },
+ {
+  "doctype": "Property Usage Type",
+  "name": "Industrial",
+  "usage_name": "Industrial",
+  "is_active": 1
+ },
+ {
+  "doctype": "Property Usage Type",
+  "name": "Oficinas",
+  "usage_name": "Oficinas",
+  "is_active": 1
+ }
+]

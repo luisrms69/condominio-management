@@ -44,8 +44,26 @@ class TestDataFactory:
 					"is_group": 1,
 				}
 			)
-			company.insert(ignore_permissions=True)
-			return company
+			try:
+				company.insert(ignore_permissions=True)
+				return company
+			except Exception as e:
+				# Si falla, intentar con configuración básica
+				if "Row #11: Company: Test Company Default" in str(e):
+					# Crear empresa básica sin campos ERPNext complicados
+					basic_company = frappe.get_doc(
+						{
+							"doctype": "Company",
+							"company_name": company_name,
+							"abbr": abbr,
+							"default_currency": "USD",
+							"country": "United States",
+						}
+					)
+					basic_company.insert(ignore_permissions=True)
+					return basic_company
+				else:
+					raise e
 		else:
 			return frappe.get_doc("Company", company_name)
 
