@@ -110,15 +110,13 @@ def create_test_company_with_default_fallback(company_name, abbr=None, currency=
 		}
 	)
 
-	# Agregar company_type si el campo existe (para evitar ValidationError)
+	# Agregar company_type si el campo existe Y si existe un Company Type válido
 	if hasattr(company, "company_type"):
 		# Buscar el tipo correcto usando type_name
 		admin_type = frappe.db.get_value("Company Type", {"type_name": "Administradora"}, "name")
 		if admin_type:
 			company.company_type = admin_type
-		else:
-			# Fallback: usar el código si no se encuentra el nombre
-			company.company_type = "ADMIN"
+		# Si no existe Company Type válido, NO asignar nada para evitar LinkValidationError
 
 	try:
 		company.insert(ignore_permissions=True)
