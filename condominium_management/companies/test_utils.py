@@ -49,13 +49,6 @@ def create_test_company_with_default_fallback(company_name, abbr=None, currency=
 	if frappe.db.exists("Company", company_name):
 		return frappe.get_doc("Company", company_name)
 
-	# Generar abreviación única si ya existe
-	original_abbr = abbr
-	counter = 1
-	while frappe.db.exists("Company", {"abbr": abbr}):
-		abbr = f"{original_abbr}{counter}"
-		counter += 1
-
 	# Asegurar que los fixtures existen
 	ensure_test_fixtures_exist()
 
@@ -98,12 +91,20 @@ def create_test_company_with_default_fallback(company_name, abbr=None, currency=
 			except Exception:
 				pass
 
-	# Crear la empresa solicitada
+	# CRÍTICO: Generar abreviación única ANTES de crear el objeto Company
+	# Esto evita la validación de ERPNext que ocurre en validate()
+	original_abbr = abbr
+	counter = 1
+	while frappe.db.exists("Company", {"abbr": abbr}):
+		abbr = f"{original_abbr}{counter}"
+		counter += 1
+
+	# Crear la empresa solicitada CON abreviación ya única
 	company = frappe.get_doc(
 		{
 			"doctype": "Company",
 			"company_name": company_name,
-			"abbr": abbr,
+			"abbr": abbr,  # Esta abreviación ya es única
 			"default_currency": currency,
 			"country": country,
 		}
@@ -128,7 +129,7 @@ def create_test_company_with_default_fallback(company_name, abbr=None, currency=
 	except Exception as e:
 		# Si falla, crear empresa más básica
 		if "Row #11: Company: Test Company Default" in str(e):
-			# Generar nueva abreviación única para fallback
+			# Generar nueva abreviación única para fallback (ya debería ser única, pero doble verificación)
 			fallback_abbr = abbr
 			counter = 10  # Start with higher number to avoid conflicts
 			while frappe.db.exists("Company", {"abbr": fallback_abbr}):
