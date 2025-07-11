@@ -59,9 +59,9 @@ class TestCommitteeKPI(FrappeTestCase):
 						"property_name": f"Test KPI Property {i+1}",
 						"naming_series": "PROP-.YYYY.-",
 						"company": "Test KPI Company",
-						# "property_usage_type": "Residencial",
-						# "acquisition_type": "Compra",
-						# "property_status_type": "Activo",
+						"property_usage_type": "Residencial",
+						"acquisition_type": "Compra",
+						"property_status_type": "Activo",
 						"registration_date": nowdate(),
 					}
 				)
