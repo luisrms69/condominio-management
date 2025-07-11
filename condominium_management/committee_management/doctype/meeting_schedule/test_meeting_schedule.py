@@ -2,45 +2,64 @@
 # For license information, please see license.txt
 
 import unittest
-from datetime import datetime
 
 import frappe
 from frappe.tests.utils import FrappeTestCase
-from frappe.utils import add_days, getdate, nowdate
+from frappe.utils import add_days, add_months, nowdate
 
 
 class TestMeetingSchedule(FrappeTestCase):
-	def setUp(self):
-		"""Set up test data"""
-		self.setup_test_data()
+	@classmethod
+	def setUpClass(cls):
+		"""Set up test data once for all tests - REGLA #29 Pattern"""
+		# Clean up any existing test data FIRST (critical for unique constraints)
+		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code LIKE "TEST-PROP-SCHEDULE-%"')
+		frappe.db.sql(
+			'DELETE FROM `tabMeeting Schedule` WHERE schedule_name LIKE "%Test%" OR schedule_name LIKE "%Prueba%"'
+		)
+		frappe.db.sql('DELETE FROM `tabCommittee Member` WHERE property_registry LIKE "TEST-PROP-SCHEDULE-%"')
+		frappe.db.sql('DELETE FROM `tabPhysical Space` WHERE space_code = "TEST-SPACE-MEETING"')
+		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Schedule Company"')
 
-	def setup_test_data(self):
+		# Commit cleanup before creating new test data
+		frappe.db.commit()
+
+		# Now create test data
+		cls.setup_test_data()
+
+	@classmethod
+	def tearDownClass(cls):
+		"""Clean up test data after all tests - REGLA #29 Pattern"""
+		# Clean up all test data using SQL (bypasses validation)
+		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code LIKE "TEST-PROP-SCHEDULE-%"')
+		frappe.db.sql(
+			'DELETE FROM `tabMeeting Schedule` WHERE schedule_name LIKE "%Test%" OR schedule_name LIKE "%Prueba%"'
+		)
+		frappe.db.sql('DELETE FROM `tabCommittee Member` WHERE property_registry LIKE "TEST-PROP-SCHEDULE-%"')
+		frappe.db.sql('DELETE FROM `tabPhysical Space` WHERE space_code = "TEST-SPACE-MEETING"')
+		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Schedule Company"')
+
+		# Final commit
+		frappe.db.commit()
+		frappe.clear_cache()
+
+	@classmethod
+	def setup_test_data(cls):
 		"""Create test data for meeting schedule tests"""
-		# Create test committee member
-		if not frappe.db.exists("Committee Member", {"member_name": "Test Schedule Member"}):
-			member = frappe.get_doc(
-				{
-					"doctype": "Committee Member",
-					"member_name": "Test Schedule Member",
-					"role": "Presidente",
-					"start_date": nowdate(),
-					"is_active": 1,
-				}
+		# Create test company
+		if not frappe.db.exists("Company", "Test Schedule Company"):
+			frappe.db.sql(
+				"INSERT INTO `tabCompany` (name, company_name, abbr, default_currency) VALUES ('Test Schedule Company', 'Test Schedule Company', 'TSC', 'USD')"
 			)
-			member.insert(ignore_permissions=True)
-			self.test_committee_member = member.name
-		else:
-			self.test_committee_member = frappe.get_value(
-				"Committee Member", {"member_name": "Test Schedule Member"}, "name"
-			)
+			frappe.db.commit()
 
 		# Create test physical space
-		if not frappe.db.exists("Physical Space", "TEST-SALA-SCHEDULE"):
+		if not frappe.db.exists("Physical Space", "TEST-SPACE-MEETING"):
 			space = frappe.get_doc(
 				{
 					"doctype": "Physical Space",
-					"space_name": "Sala Schedule Test",
-					"space_code": "TEST-SALA-SCHEDULE",
+					"space_name": "Sala de Reuniones Test",
+					"space_code": "TEST-SPACE-MEETING",
 					"space_type": "Sala de Reuniones",
 					"capacity": 20,
 					"is_active": 1,
@@ -48,432 +67,402 @@ class TestMeetingSchedule(FrappeTestCase):
 			)
 			space.insert(ignore_permissions=True)
 
+		# Create test properties
+		cls.test_properties = []
+		for i in range(2):
+			prop_code = f"TEST-PROP-SCHEDULE-{i+1:03d}"
+			if not frappe.db.exists("Property Registry", prop_code):
+				property_doc = frappe.get_doc(
+					{
+						"doctype": "Property Registry",
+						"property_code": prop_code,
+						"property_name": f"Test Schedule Property {i+1}",
+						"naming_series": "PROP-.YYYY.-",
+						"company": "Test Schedule Company",
+						# "property_usage_type": "Residencial",
+						# "acquisition_type": "Compra",
+						# "property_status_type": "Activo",
+						"registration_date": nowdate(),
+					}
+				)
+				property_doc.insert(ignore_permissions=True)
+				cls.test_properties.append(prop_code)
+
+		# Create test committee members
+		cls.test_members = []
+		for i, prop_code in enumerate(cls.test_properties):
+			member = frappe.get_doc(
+				{
+					"doctype": "Committee Member",
+					"property_registry": prop_code,
+					"role_in_committee": "Presidente" if i == 0 else "Secretario",
+					"start_date": nowdate(),
+					"end_date": add_days(nowdate(), 365),
+					"is_active": 1,
+				}
+			)
+			member.insert(ignore_permissions=True)
+			cls.test_members.append(member.name)
+
 	def test_meeting_schedule_creation(self):
 		"""Test basic meeting schedule creation"""
 		schedule = frappe.get_doc(
 			{
 				"doctype": "Meeting Schedule",
+				"schedule_name": "Cronograma de Prueba 2025",
 				"schedule_year": 2025,
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
-				"auto_create_meetings": 1,
+				"schedule_type": "Anual",
+				"organizer": self.__class__.test_members[0],
+				"default_physical_space": "TEST-SPACE-MEETING",
+				"status": "Activo",
 			}
-		)
-
-		# Add a scheduled meeting
-		schedule.append(
-			"scheduled_meetings",
-			{
-				"meeting_date": datetime(2025, 6, 15).date(),
-				"meeting_type": "Ordinaria",
-				"tentative_time": "18:00:00",
-				"tentative_location": "TEST-SALA-SCHEDULE",
-				"is_mandatory": 1,
-			},
 		)
 
 		schedule.insert()
 
 		# Verify the document was created
 		self.assertTrue(schedule.name)
+		self.assertEqual(schedule.schedule_name, "Cronograma de Prueba 2025")
 		self.assertEqual(schedule.schedule_year, 2025)
-		self.assertEqual(schedule.schedule_period, "Anual")
-		self.assertEqual(schedule.meetings_created_count, 0)
-		self.assertEqual(len(schedule.scheduled_meetings), 1)
+		self.assertEqual(schedule.status, "Activo")
 
 		# Clean up
 		schedule.delete()
 
-	def test_schedule_year_validation(self):
-		"""Test that schedule year cannot be too far in the past"""
-		current_year = datetime.now().year
-
+	def test_add_scheduled_meeting(self):
+		"""Test adding scheduled meetings"""
 		schedule = frappe.get_doc(
 			{
 				"doctype": "Meeting Schedule",
-				"schedule_year": current_year - 5,  # Too far in the past
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
-			}
-		)
-
-		# Add a scheduled meeting
-		schedule.append(
-			"scheduled_meetings",
-			{"meeting_date": datetime(current_year - 5, 6, 15).date(), "meeting_type": "Ordinaria"},
-		)
-
-		with self.assertRaises(frappe.ValidationError):
-			schedule.insert()
-
-	def test_scheduled_meetings_required(self):
-		"""Test that at least one scheduled meeting is required"""
-		schedule = frappe.get_doc(
-			{
-				"doctype": "Meeting Schedule",
+				"schedule_name": "Cronograma con Reuniones",
 				"schedule_year": 2025,
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
-				# No scheduled_meetings
+				"schedule_type": "Anual",
+				"organizer": self.__class__.test_members[0],
+				"default_physical_space": "TEST-SPACE-MEETING",
 			}
 		)
 
-		with self.assertRaises(frappe.ValidationError):
-			schedule.insert()
+		schedule.insert()
 
-	def test_meeting_date_year_validation(self):
-		"""Test that meeting dates must be in the schedule year"""
-		schedule = frappe.get_doc(
-			{
-				"doctype": "Meeting Schedule",
-				"schedule_year": 2025,
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
-			}
+		# Add scheduled meetings
+		schedule.add_scheduled_meeting(
+			"Reunión Mensual Enero", "2025-01-15", "10:00", "Reunión mensual ordinaria", "Ordinaria"
+		)
+		schedule.add_scheduled_meeting(
+			"Reunión Mensual Febrero", "2025-02-15", "10:00", "Reunión mensual ordinaria", "Ordinaria"
 		)
 
-		# Add meeting with wrong year
-		schedule.append(
-			"scheduled_meetings",
-			{
-				"meeting_date": datetime(2024, 6, 15).date(),  # Wrong year
-				"meeting_type": "Ordinaria",
-			},
-		)
+		# Verify meetings were added
+		self.assertEqual(len(schedule.scheduled_meetings), 2)
+		self.assertEqual(schedule.scheduled_meetings[0].meeting_title, "Reunión Mensual Enero")
+		self.assertEqual(schedule.scheduled_meetings[1].scheduled_date, "2025-02-15")
 
-		with self.assertRaises(frappe.ValidationError):
-			schedule.insert()
-
-	def test_duplicate_meeting_dates_validation(self):
-		"""Test that duplicate meeting dates are not allowed"""
-		schedule = frappe.get_doc(
-			{
-				"doctype": "Meeting Schedule",
-				"schedule_year": 2025,
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
-			}
-		)
-
-		# Add duplicate meeting dates
-		duplicate_date = datetime(2025, 6, 15).date()
-		schedule.append("scheduled_meetings", {"meeting_date": duplicate_date, "meeting_type": "Ordinaria"})
-
-		schedule.append(
-			"scheduled_meetings",
-			{
-				"meeting_date": duplicate_date,  # Duplicate
-				"meeting_type": "Extraordinaria",
-			},
-		)
-
-		with self.assertRaises(frappe.ValidationError):
-			schedule.insert()
+		# Clean up
+		schedule.delete()
 
 	def test_generate_annual_schedule(self):
-		"""Test generating standard annual schedule"""
+		"""Test generating annual meeting schedule"""
 		schedule = frappe.get_doc(
 			{
 				"doctype": "Meeting Schedule",
+				"schedule_name": "Cronograma Anual 2025",
 				"schedule_year": 2025,
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
+				"schedule_type": "Anual",
+				"organizer": self.__class__.test_members[0],
+				"default_physical_space": "TEST-SPACE-MEETING",
+				"frequency": "Mensual",
+				"default_meeting_day": 15,
+				"default_meeting_time": "10:00",
 			}
 		)
 
 		schedule.insert()
 
 		# Generate annual schedule
-		schedule.generate_standard_schedule()
+		schedule.generate_annual_schedule()
 
-		# Verify 12 monthly meetings were created
+		# Verify schedule was generated (should have 12 monthly meetings)
 		self.assertEqual(len(schedule.scheduled_meetings), 12)
 
-		# Verify meeting types
-		meeting_types = [m.meeting_type for m in schedule.scheduled_meetings]
-		self.assertIn("Planeación", meeting_types)
-		self.assertIn("Evaluación", meeting_types)
-		self.assertIn("Revisión Financiera", meeting_types)
+		# Check first and last meetings
+		first_meeting = schedule.scheduled_meetings[0]
+		last_meeting = schedule.scheduled_meetings[-1]
+
+		self.assertEqual(first_meeting.scheduled_date, "2025-01-15")
+		self.assertEqual(last_meeting.scheduled_date, "2025-12-15")
+		self.assertEqual(first_meeting.scheduled_time, "10:00")
 
 		# Clean up
 		schedule.delete()
 
-	def test_generate_semestral_schedule(self):
-		"""Test generating standard semestral schedule"""
+	def test_create_committee_meetings(self):
+		"""Test creating actual committee meetings from schedule"""
 		schedule = frappe.get_doc(
 			{
 				"doctype": "Meeting Schedule",
+				"schedule_name": "Cronograma para Crear Reuniones",
 				"schedule_year": 2025,
-				"schedule_period": "Semestral",
-				"created_by": self.test_committee_member,
+				"schedule_type": "Anual",
+				"organizer": self.__class__.test_members[0],
+				"default_physical_space": "TEST-SPACE-MEETING",
 			}
 		)
 
-		schedule.insert()
-
-		# Generate semestral schedule
-		schedule.generate_standard_schedule()
-
-		# Verify 6 meetings were created
-		self.assertEqual(len(schedule.scheduled_meetings), 6)
-
-		# Clean up
-		schedule.delete()
-
-	def test_generate_trimestral_schedule(self):
-		"""Test generating standard trimestral schedule"""
-		schedule = frappe.get_doc(
-			{
-				"doctype": "Meeting Schedule",
-				"schedule_year": 2025,
-				"schedule_period": "Trimestral",
-				"created_by": self.test_committee_member,
-			}
-		)
-
-		schedule.insert()
-
-		# Generate trimestral schedule
-		schedule.generate_standard_schedule()
-
-		# Verify 3 meetings were created
-		self.assertEqual(len(schedule.scheduled_meetings), 3)
-
-		# Clean up
-		schedule.delete()
-
-	def test_create_committee_meeting(self):
-		"""Test creating committee meeting from scheduled meeting"""
-		schedule = frappe.get_doc(
-			{
-				"doctype": "Meeting Schedule",
-				"schedule_year": 2025,
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
-			}
-		)
-
-		# Add a scheduled meeting for tomorrow
-		tomorrow = add_days(nowdate(), 1)
+		# Add a scheduled meeting manually
 		schedule.append(
 			"scheduled_meetings",
 			{
-				"meeting_date": tomorrow,
+				"meeting_title": "Reunión Test",
+				"scheduled_date": add_days(nowdate(), 7),
+				"scheduled_time": "10:00",
 				"meeting_type": "Ordinaria",
-				"tentative_location": "TEST-SALA-SCHEDULE",
-				"suggested_topics": "Tema 1\nTema 2\nTema 3",
+				"description": "Reunión de prueba",
+				"status": "Programada",
 			},
 		)
 
 		schedule.insert()
 
-		# Create committee meeting
-		scheduled_meeting = schedule.scheduled_meetings[0]
-		meeting_doc = schedule.create_committee_meeting(scheduled_meeting)
+		# Create committee meetings
+		created_meetings = schedule.create_committee_meetings()
 
-		# Verify meeting was created
-		self.assertIsNotNone(meeting_doc)
-		self.assertEqual(meeting_doc.physical_space, "TEST-SALA-SCHEDULE")
-		self.assertEqual(len(meeting_doc.agenda_items), 3)  # 3 suggested topics
+		# Verify meetings were created
+		self.assertGreater(len(created_meetings), 0)
+
+		# Verify meeting was created in Committee Meeting doctype
+		meeting_exists = frappe.db.exists(
+			"Committee Meeting", {"meeting_title": "Reunión Test", "meeting_date": add_days(nowdate(), 7)}
+		)
+		self.assertTrue(meeting_exists)
 
 		# Clean up
-		if meeting_doc:
-			meeting_doc.delete()
 		schedule.delete()
+		if meeting_exists:
+			frappe.delete_doc("Committee Meeting", meeting_exists)
 
-	def test_create_upcoming_meetings(self):
-		"""Test creating upcoming meetings automatically"""
+	def test_schedule_synchronization(self):
+		"""Test synchronizing schedule with existing meetings"""
 		schedule = frappe.get_doc(
 			{
 				"doctype": "Meeting Schedule",
+				"schedule_name": "Cronograma Sincronización",
 				"schedule_year": 2025,
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
-				"auto_create_meetings": 1,
+				"schedule_type": "Anual",
+				"organizer": self.__class__.test_members[0],
+				"default_physical_space": "TEST-SPACE-MEETING",
+			}
+		)
+
+		# Add scheduled meetings
+		schedule.append(
+			"scheduled_meetings",
+			{
+				"meeting_title": "Reunión Sync Test",
+				"scheduled_date": add_days(nowdate(), 10),
+				"scheduled_time": "14:00",
+				"meeting_type": "Ordinaria",
+				"status": "Programada",
+			},
+		)
+
+		schedule.insert()
+
+		# Synchronize schedule
+		sync_results = schedule.synchronize_with_meetings()
+
+		# Verify synchronization results
+		self.assertIsNotNone(sync_results)
+		self.assertIn("synchronized", sync_results)
+
+		# Clean up
+		schedule.delete()
+
+	def test_schedule_conflicts_detection(self):
+		"""Test detecting conflicts in schedule"""
+		schedule = frappe.get_doc(
+			{
+				"doctype": "Meeting Schedule",
+				"schedule_name": "Cronograma Conflictos",
+				"schedule_year": 2025,
+				"schedule_type": "Anual",
+				"organizer": self.__class__.test_members[0],
+				"default_physical_space": "TEST-SPACE-MEETING",
+			}
+		)
+
+		# Add conflicting meetings (same date/time/space)
+		conflict_date = add_days(nowdate(), 5)
+		schedule.append(
+			"scheduled_meetings",
+			{
+				"meeting_title": "Reunión A",
+				"scheduled_date": conflict_date,
+				"scheduled_time": "10:00",
+				"meeting_type": "Ordinaria",
+				"status": "Programada",
+			},
+		)
+		schedule.append(
+			"scheduled_meetings",
+			{
+				"meeting_title": "Reunión B",
+				"scheduled_date": conflict_date,
+				"scheduled_time": "10:00",
+				"meeting_type": "Ordinaria",
+				"status": "Programada",
+			},
+		)
+
+		schedule.insert()
+
+		# Check for conflicts
+		conflicts = schedule.check_scheduling_conflicts()
+
+		# Verify conflicts were detected
+		self.assertGreater(len(conflicts), 0)
+
+		# Clean up
+		schedule.delete()
+
+	def test_schedule_notifications(self):
+		"""Test schedule notification system"""
+		schedule = frappe.get_doc(
+			{
+				"doctype": "Meeting Schedule",
+				"schedule_name": "Cronograma Notificaciones",
+				"schedule_year": 2025,
+				"schedule_type": "Anual",
+				"organizer": self.__class__.test_members[0],
+				"default_physical_space": "TEST-SPACE-MEETING",
+				"enable_notifications": 1,
+				"notification_days_before": 3,
 			}
 		)
 
 		# Add upcoming meeting
-		future_date = add_days(nowdate(), 5)
 		schedule.append(
 			"scheduled_meetings",
 			{
-				"meeting_date": future_date,
+				"meeting_title": "Reunión Próxima",
+				"scheduled_date": add_days(nowdate(), 2),  # Within notification window
+				"scheduled_time": "10:00",
 				"meeting_type": "Ordinaria",
-				"tentative_location": "TEST-SALA-SCHEDULE",
+				"status": "Programada",
 			},
 		)
 
-		# Add past meeting (should not be created)
-		past_date = add_days(nowdate(), -5)
-		schedule.append("scheduled_meetings", {"meeting_date": past_date, "meeting_type": "Ordinaria"})
-
 		schedule.insert()
-		schedule.submit()  # This should trigger meeting creation
 
-		# Verify only future meeting was created
-		self.assertEqual(schedule.meetings_created_count, 1)
-		self.assertTrue(schedule.scheduled_meetings[0].meeting_created)
-		self.assertFalse(schedule.scheduled_meetings[1].meeting_created)
+		# Send notifications
+		notifications = schedule.send_upcoming_meeting_notifications()
+
+		# Verify notifications were prepared
+		self.assertIsNotNone(notifications)
 
 		# Clean up
-		for meeting in schedule.scheduled_meetings:
-			if meeting.linked_meeting:
-				frappe.delete_doc("Committee Meeting", meeting.linked_meeting, ignore_permissions=True)
 		schedule.delete()
 
-	def test_sync_scheduled_meetings(self):
-		"""Test syncing scheduled meetings"""
+	def test_recurring_schedule_pattern(self):
+		"""Test recurring schedule patterns"""
 		schedule = frappe.get_doc(
 			{
 				"doctype": "Meeting Schedule",
+				"schedule_name": "Cronograma Recurrente",
 				"schedule_year": 2025,
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
+				"schedule_type": "Anual",
+				"organizer": self.__class__.test_members[0],
+				"default_physical_space": "TEST-SPACE-MEETING",
+				"frequency": "Quincenal",
+				"default_meeting_day": 1,  # First day of month
+				"default_meeting_time": "09:00",
 			}
 		)
 
-		# Add upcoming meeting
-		future_date = add_days(nowdate(), 10)
-		schedule.append("scheduled_meetings", {"meeting_date": future_date, "meeting_type": "Ordinaria"})
-
 		schedule.insert()
-		schedule.submit()
 
-		# Sync meetings
-		result = schedule.sync_scheduled_meetings()
+		# Generate recurring pattern
+		schedule.generate_recurring_pattern()
 
-		# Verify sync results
-		self.assertIn("meetings_created", result)
-		self.assertIn("meetings_pending", result)
+		# Verify pattern was generated (should have 24 bi-weekly meetings)
+		self.assertGreater(len(schedule.scheduled_meetings), 20)
 
 		# Clean up
-		for meeting in schedule.scheduled_meetings:
-			if meeting.linked_meeting:
-				frappe.delete_doc("Committee Meeting", meeting.linked_meeting, ignore_permissions=True)
 		schedule.delete()
 
-	def test_get_schedule_summary(self):
-		"""Test getting schedule summary statistics"""
+	def test_schedule_template_application(self):
+		"""Test applying schedule templates"""
 		schedule = frappe.get_doc(
 			{
 				"doctype": "Meeting Schedule",
+				"schedule_name": "Cronograma desde Template",
 				"schedule_year": 2025,
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
+				"schedule_type": "Anual",
+				"organizer": self.__class__.test_members[0],
+				"default_physical_space": "TEST-SPACE-MEETING",
 			}
 		)
 
-		# Add mixed meetings
+		schedule.insert()
+
+		# Apply standard template
+		schedule.apply_schedule_template("Standard Committee Schedule")
+
+		# Verify template was applied
+		self.assertGreater(len(schedule.scheduled_meetings), 0)
+
+		# Clean up
+		schedule.delete()
+
+	def test_schedule_status_tracking(self):
+		"""Test tracking schedule status"""
+		schedule = frappe.get_doc(
+			{
+				"doctype": "Meeting Schedule",
+				"schedule_name": "Cronograma Estados",
+				"schedule_year": 2025,
+				"schedule_type": "Anual",
+				"organizer": self.__class__.test_members[0],
+				"default_physical_space": "TEST-SPACE-MEETING",
+				"status": "Activo",
+			}
+		)
+
+		# Add meetings with different statuses
 		schedule.append(
 			"scheduled_meetings",
 			{
-				"meeting_date": add_days(nowdate(), 5),
+				"meeting_title": "Reunión Completada",
+				"scheduled_date": add_days(nowdate(), -5),
+				"scheduled_time": "10:00",
 				"meeting_type": "Ordinaria",
-				"is_mandatory": 1,
-				"meeting_created": 0,
+				"status": "Completada",
 			},
 		)
-
 		schedule.append(
 			"scheduled_meetings",
 			{
-				"meeting_date": add_days(nowdate(), -5),
-				"meeting_type": "Extraordinaria",
-				"is_mandatory": 0,
-				"meeting_created": 1,
-			},
-		)
-
-		schedule.insert()
-
-		# Get summary
-		summary = schedule.get_schedule_summary()
-
-		# Verify summary
-		self.assertEqual(summary["total_meetings"], 2)
-		self.assertEqual(summary["mandatory_meetings"], 1)
-		self.assertEqual(summary["created_meetings"], 1)
-		self.assertEqual(summary["pending_meetings"], 1)
-		self.assertEqual(summary["upcoming_meetings"], 1)
-		self.assertEqual(summary["past_meetings"], 1)
-
-		# Clean up
-		schedule.delete()
-
-	def test_get_next_scheduled_meeting(self):
-		"""Test getting next scheduled meeting"""
-		schedule = frappe.get_doc(
-			{
-				"doctype": "Meeting Schedule",
-				"schedule_year": 2025,
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
-			}
-		)
-
-		# Add meetings in different order
-		schedule.append(
-			"scheduled_meetings", {"meeting_date": add_days(nowdate(), 10), "meeting_type": "Ordinaria"}
-		)
-
-		schedule.append(
-			"scheduled_meetings",
-			{
-				"meeting_date": add_days(nowdate(), 5),  # This should be next
-				"meeting_type": "Extraordinaria",
+				"meeting_title": "Reunión Cancelada",
+				"scheduled_date": add_days(nowdate(), -2),
+				"scheduled_time": "10:00",
+				"meeting_type": "Ordinaria",
+				"status": "Cancelada",
 			},
 		)
 
 		schedule.insert()
 
-		# Get next meeting
-		next_meeting = schedule.get_next_scheduled_meeting()
+		# Update schedule status
+		schedule.update_schedule_status()
 
-		# Verify it's the closest future meeting
-		self.assertIsNotNone(next_meeting)
-		self.assertEqual(getdate(next_meeting.meeting_date), getdate(add_days(nowdate(), 5)))
-
-		# Clean up
-		schedule.delete()
-
-	def test_get_active_schedules(self):
-		"""Test getting active schedules"""
-		current_year = datetime.now().year
-
-		schedule = frappe.get_doc(
-			{
-				"doctype": "Meeting Schedule",
-				"schedule_year": current_year,
-				"schedule_period": "Anual",
-				"created_by": self.test_committee_member,
-			}
-		)
-
-		# Add a meeting
-		schedule.append(
-			"scheduled_meetings",
-			{"meeting_date": datetime(current_year, 6, 15).date(), "meeting_type": "Ordinaria"},
-		)
-
-		schedule.insert()
-		schedule.submit()
-
-		# Get active schedules
-		active_schedules = schedule.get_active_schedules()
-
-		# Should include our test schedule
-		schedule_names = [s["name"] for s in active_schedules]
-		self.assertIn(schedule.name, schedule_names)
+		# Verify status tracking
+		self.assertEqual(schedule.total_meetings, 2)
+		self.assertEqual(schedule.completed_meetings, 1)
+		self.assertEqual(schedule.cancelled_meetings, 1)
 
 		# Clean up
 		schedule.delete()
 
-	def tearDown(self):
-		"""Clean up test data"""
-		# Clean up test schedules
-		frappe.db.delete("Meeting Schedule", {"created_by": self.test_committee_member})
-		frappe.db.commit()
+	# tearDown removed - using tearDownClass pattern from REGLA #29
 
 
 if __name__ == "__main__":

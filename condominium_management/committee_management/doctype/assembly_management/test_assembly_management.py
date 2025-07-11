@@ -9,26 +9,54 @@ from frappe.utils import add_days, getdate, nowdate
 
 
 class TestAssemblyManagement(FrappeTestCase):
-	def setUp(self):
-		"""Set up test data"""
-		self.setup_test_data()
+	@classmethod
+	def setUpClass(cls):
+		"""Set up test data once for all tests - REGLA #29 Pattern"""
+		# Clean up any existing test data FIRST (critical for unique constraints)
+		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code LIKE "TEST-PROP-ASM-%"')
+		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Assembly Company"')
+		frappe.db.sql('DELETE FROM `tabAssembly Management` WHERE assembly_type = "Ordinaria"')
 
-	def setup_test_data(self):
+		# Commit cleanup before creating new test data
+		frappe.db.commit()
+
+		# Now create test data
+		cls.setup_test_data()
+
+	@classmethod
+	def tearDownClass(cls):
+		"""Clean up test data after all tests - REGLA #29 Pattern"""
+		# Clean up all test data using SQL (bypasses validation)
+		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code LIKE "TEST-PROP-ASM-%"')
+		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Assembly Company"')
+		frappe.db.sql('DELETE FROM `tabAssembly Management` WHERE assembly_type = "Ordinaria"')
+
+		# Final commit
+		frappe.db.commit()
+		frappe.clear_cache()
+
+	@classmethod
+	def setup_test_data(cls):
 		"""Create test data for assembly management tests"""
-		# Create test company
+		# Use existing company from test environment or create minimal one
 		if not frappe.db.exists("Company", "Test Assembly Company"):
-			company = frappe.get_doc(
-				{
-					"doctype": "Company",
-					"company_name": "Test Assembly Company",
-					"abbr": "TAC",
-					"default_currency": "USD",
-				}
-			)
-			company.insert(ignore_permissions=True)
+			# Try to use existing company or create minimal one
+			existing_company = frappe.db.get_value("Company", filters={}, fieldname="name")
+			if existing_company:
+				# Use existing company and create an alias
+				frappe.db.sql(
+					"INSERT INTO `tabCompany` (name, company_name, abbr, default_currency) VALUES ('Test Assembly Company', 'Test Assembly Company', 'TAC', 'USD') ON DUPLICATE KEY UPDATE name=name"
+				)
+				frappe.db.commit()
+			else:
+				# Create minimal company bypassing ERPNext hooks
+				frappe.db.sql(
+					"INSERT INTO `tabCompany` (name, company_name, abbr, default_currency) VALUES ('Test Assembly Company', 'Test Assembly Company', 'TAC', 'USD')"
+				)
+				frappe.db.commit()
 
 		# Create test properties for quorum
-		self.test_properties = []
+		cls.test_properties = []
 		for i in range(3):
 			prop_code = f"TEST-PROP-ASM-{i+1:03d}"
 			if not frappe.db.exists("Property Registry", prop_code):
@@ -47,7 +75,7 @@ class TestAssemblyManagement(FrappeTestCase):
 					}
 				)
 				property_doc.insert(ignore_permissions=True)
-				self.test_properties.append(prop_code)
+				cls.test_properties.append(prop_code)
 
 		# Create test physical space
 		if not frappe.db.exists("Physical Space", "TEST-SALON-ASAMBLEAS"):
@@ -147,10 +175,10 @@ class TestAssemblyManagement(FrappeTestCase):
 		assembly.load_all_properties_to_quorum()
 
 		# Verify properties were loaded
-		self.assertTrue(len(assembly.quorum_records) >= 3)
-		property_codes = [q.property_registry for q in assembly.quorum_records]
+		self.assertTrue(len(assembly.quorum_registration) >= 3)
+		property_codes = [q.property_registry for q in assembly.quorum_registration]
 
-		for prop_code in self.test_properties:
+		for prop_code in self.__class__.test_properties:
 			self.assertIn(prop_code, property_codes)
 
 		# Clean up
@@ -172,14 +200,13 @@ class TestAssemblyManagement(FrappeTestCase):
 		)
 
 		# Add quorum records manually
-		for i, prop_code in enumerate(self.test_properties):
+		for i, prop_code in enumerate(self.__class__.test_properties):
 			assembly.append(
-				"quorum_records",
+				"quorum_registration",
 				{
 					"property_registry": prop_code,
-					"owner_name": f"Owner {i+1}",
 					"attendance_status": "Presente" if i < 2 else "Ausente",
-					"participation_type": "Directo",
+					"check_in_method": "Manual",
 				},
 			)
 
@@ -287,12 +314,11 @@ class TestAssemblyManagement(FrappeTestCase):
 
 		# Add insufficient quorum (only 1 out of 3 properties)
 		assembly.append(
-			"quorum_records",
+			"quorum_registration",
 			{
-				"property_registry": self.test_properties[0],
-				"owner_name": "Owner 1",
+				"property_registry": self.__class__.test_properties[0],
 				"attendance_status": "Presente",
-				"participation_type": "Directo",
+				"check_in_method": "Manual",
 			},
 		)
 
@@ -302,12 +328,7 @@ class TestAssemblyManagement(FrappeTestCase):
 		with self.assertRaises(frappe.ValidationError):
 			assembly.submit()
 
-	def tearDown(self):
-		"""Clean up test data"""
-		# Clean up test assemblies
-		frappe.db.delete("Assembly Management", {"assembly_title": ["like", "%Prueba%"]})
-		frappe.db.delete("Assembly Management", {"assembly_title": ["like", "%Test%"]})
-		frappe.db.commit()
+	# tearDown removed - using tearDownClass pattern from REGLA #29
 
 
 if __name__ == "__main__":

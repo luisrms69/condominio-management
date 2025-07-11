@@ -26,18 +26,25 @@ def on_update(doc, method):
 		return
 
 	# Update quorum percentage when quorum records change
-	if doc.has_value_changed("quorum_records"):
-		doc.calculate_quorum_percentage()
+	if doc.has_value_changed("quorum_registration"):
+		# Calculate quorum percentage inline
+		total_properties = frappe.db.count("Property Registry", {"property_status_type": "Activo"})
+		present_count = len([q for q in doc.quorum_registration if q.attendance_status == "Presente"])
+
+		if total_properties > 0:
+			doc.current_quorum_percentage = (present_count / total_properties) * 100
+		else:
+			doc.current_quorum_percentage = 0
 
 	# Sync quorum records with all active properties
-	if not doc.quorum_records:
+	if not doc.quorum_registration:
 		load_all_properties_to_quorum(doc)
 
 
 def create_voting_systems(doc):
 	"""Create voting systems for agenda items requiring votes"""
 	try:
-		for item in doc.agenda_items:
+		for item in doc.formal_agenda:
 			if item.requires_voting and not item.voting_system:
 				voting_doc = frappe.get_doc(
 					{
@@ -65,7 +72,7 @@ def create_voting_systems(doc):
 def create_agreement_tracking(doc):
 	"""Create agreement tracking for approved motions"""
 	try:
-		for item in doc.agenda_items:
+		for item in doc.formal_agenda:
 			if item.requires_voting and item.voting_result == "Aprobado":
 				agreement_doc = frappe.get_doc(
 					{
@@ -98,7 +105,7 @@ def load_all_properties_to_quorum(doc):
 
 		for prop in properties:
 			doc.append(
-				"quorum_records",
+				"quorum_registration",
 				{
 					"property_registry": prop.name,
 					"owner_name": prop.owner_name,
@@ -129,7 +136,7 @@ def update_assembly_kpis(doc):
 			update_member_kpis(doc.assembly_organizer, "assemblies_organized", 1)
 
 		# Update KPIs for committee members who participated
-		for quorum in doc.quorum_records:
+		for quorum in doc.quorum_registration:
 			if quorum.attendance_status == "Presente":
 				# Find committee member for this property
 				committee_member = frappe.db.get_value(

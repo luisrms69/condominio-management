@@ -26,7 +26,7 @@ def validate(doc, method):
 	elif doc.due_date and getdate(doc.due_date) < getdate() and doc.status != "Completado":
 		doc.status = "Vencido"
 
-	# Validate responsible person exists
-	if doc.responsible_person:
-		if not frappe.db.exists("Committee Member", doc.responsible_person):
+	# Validate responsible party exists
+	if doc.responsible_party:
+		if not frappe.db.exists("Committee Member", doc.responsible_party):
 			frappe.throw(_("La persona responsable debe ser un miembro del comité válido"))

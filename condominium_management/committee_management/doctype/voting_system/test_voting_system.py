@@ -9,34 +9,70 @@ from frappe.utils import add_days, add_to_date, now_datetime, nowdate
 
 
 class TestVotingSystem(FrappeTestCase):
-	def setUp(self):
-		"""Set up test data"""
-		self.setup_test_data()
+	@classmethod
+	def setUpClass(cls):
+		"""Set up test data once for all tests - REGLA #29 Pattern"""
+		# Clean up any existing test data FIRST (critical for unique constraints)
+		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code LIKE "TEST-PROP-VOTE-%"')
+		frappe.db.sql(
+			'DELETE FROM `tabAssembly Management` WHERE assembly_type = "Ordinaria" AND physical_space = "TEST-SALON-VOTING"'
+		)
+		frappe.db.sql(
+			'DELETE FROM `tabVoting System` WHERE motion_title LIKE "%Test%" OR motion_title LIKE "%Prueba%"'
+		)
+		frappe.db.sql('DELETE FROM `tabPhysical Space` WHERE space_code = "TEST-SALON-VOTING"')
+		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Voting Company"')
 
-	def setup_test_data(self):
+		# Commit cleanup before creating new test data
+		frappe.db.commit()
+
+		# Now create test data
+		cls.setup_test_data()
+
+	@classmethod
+	def tearDownClass(cls):
+		"""Clean up test data after all tests - REGLA #29 Pattern"""
+		# Clean up all test data using SQL (bypasses validation)
+		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code LIKE "TEST-PROP-VOTE-%"')
+		frappe.db.sql(
+			'DELETE FROM `tabAssembly Management` WHERE assembly_type = "Ordinaria" AND physical_space = "TEST-SALON-VOTING"'
+		)
+		frappe.db.sql(
+			'DELETE FROM `tabVoting System` WHERE motion_title LIKE "%Test%" OR motion_title LIKE "%Prueba%"'
+		)
+		frappe.db.sql('DELETE FROM `tabPhysical Space` WHERE space_code = "TEST-SALON-VOTING"')
+		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Voting Company"')
+
+		# Final commit
+		frappe.db.commit()
+		frappe.clear_cache()
+
+	@classmethod
+	def setup_test_data(cls):
 		"""Create test data for voting system tests"""
-		# Create test assembly
-		if not frappe.db.exists("Assembly Management", {"assembly_title": "Test Assembly for Voting"}):
-			assembly = frappe.get_doc(
+		# Create test company
+		if not frappe.db.exists("Company", "Test Voting Company"):
+			frappe.db.sql(
+				"INSERT INTO `tabCompany` (name, company_name, abbr, default_currency) VALUES ('Test Voting Company', 'Test Voting Company', 'TVC', 'USD')"
+			)
+			frappe.db.commit()
+
+		# Create test physical space
+		if not frappe.db.exists("Physical Space", "TEST-SALON-VOTING"):
+			space = frappe.get_doc(
 				{
-					"doctype": "Assembly Management",
-					"assembly_title": "Test Assembly for Voting",
-					"assembly_type": "Ordinaria",
-					"assembly_date": add_days(nowdate(), 30),
-					"convocation_date": add_days(nowdate(), 15),
-					"first_call_quorum": 60,
-					"second_call_quorum": 30,
+					"doctype": "Physical Space",
+					"space_name": "Salón de Votación Test",
+					"space_code": "TEST-SALON-VOTING",
+					"space_type": "Salón de Eventos",
+					"capacity": 50,
+					"is_active": 1,
 				}
 			)
-			assembly.insert(ignore_permissions=True)
-			self.test_assembly = assembly.name
-		else:
-			self.test_assembly = frappe.get_value(
-				"Assembly Management", {"assembly_title": "Test Assembly for Voting"}, "name"
-			)
+			space.insert(ignore_permissions=True)
 
 		# Create test properties for voters
-		self.test_voters = []
+		cls.test_voters = []
 		for i in range(5):
 			prop_code = f"TEST-PROP-VOTE-{i+1:03d}"
 			if not frappe.db.exists("Property Registry", prop_code):
@@ -45,31 +81,59 @@ class TestVotingSystem(FrappeTestCase):
 						"doctype": "Property Registry",
 						"property_code": prop_code,
 						"property_name": f"Test Voting Property {i+1}",
-						"property_usage_type": "Residencial",
-						"acquisition_type": "Compra",
-						"property_status_type": "Activo",
+						"naming_series": "PROP-.YYYY.-",
+						"company": "Test Voting Company",
+						# "property_usage_type": "Residencial",
+						# "acquisition_type": "Compra",
+						# "property_status_type": "Activo",
 						"registration_date": nowdate(),
-						"unit_area": 100,
-						"owner_name": f"Voter {i+1}",
-						"status": "Activo",
 					}
 				)
 				property_doc.insert(ignore_permissions=True)
-				self.test_voters.append(prop_code)
+				cls.test_voters.append(prop_code)
+
+		# Create test assembly
+		if not frappe.db.exists(
+			"Assembly Management", {"assembly_type": "Ordinaria", "physical_space": "TEST-SALON-VOTING"}
+		):
+			assembly = frappe.get_doc(
+				{
+					"doctype": "Assembly Management",
+					"assembly_type": "Ordinaria",
+					"assembly_date": add_days(nowdate(), 30),
+					"convocation_date": add_days(nowdate(), 15),
+					"minimum_quorum_first": 60,
+					"minimum_quorum_second": 30,
+					"physical_space": "TEST-SALON-VOTING",
+					"first_call_time": "09:00:00",
+					"second_call_time": "09:30:00",
+				}
+			)
+			assembly.insert(ignore_permissions=True)
+			assembly.submit()  # Submit assembly for voting validation
+			cls.test_assembly = assembly.name
+		else:
+			cls.test_assembly = frappe.get_value(
+				"Assembly Management",
+				{"assembly_type": "Ordinaria", "physical_space": "TEST-SALON-VOTING"},
+				"name",
+			)
 
 	def test_voting_system_creation(self):
 		"""Test basic voting system creation"""
 		voting = frappe.get_doc(
 			{
 				"doctype": "Voting System",
-				"voting_title": "Votación de Prueba",
-				"voting_type": "Mayoría Simple",
-				"assembly_management": self.test_assembly,
-				"voting_start_date": nowdate(),
-				"voting_end_date": add_days(nowdate(), 1),
+				"motion_title": "Votación de Prueba",
+				"voting_type": "Simple",
+				"assembly": self.__class__.test_assembly,
+				"motion_number": 1,
+				"voting_start_time": now_datetime(),
+				"voting_end_time": add_to_date(now_datetime(), hours=24),
 				"required_percentage": 51,
-				"allows_anonymous": 0,
-				"status": "Activa",
+				"voting_method": "Digital",
+				"anonymous_voting": 0,
+				"status": "Abierta",
 			}
 		)
 
@@ -77,10 +141,10 @@ class TestVotingSystem(FrappeTestCase):
 
 		# Verify the document was created
 		self.assertTrue(voting.name)
-		self.assertEqual(voting.voting_title, "Votación de Prueba")
-		self.assertEqual(voting.status, "Activa")
-		self.assertEqual(voting.total_votes, 0)
-		self.assertEqual(voting.votes_in_favor, 0)
+		self.assertEqual(voting.motion_title, "Votación de Prueba")
+		self.assertEqual(voting.status, "Abierta")
+		self.assertEqual(voting.required_percentage, 51)
+		self.assertEqual(voting.motion_number, 1)
 
 		# Clean up
 		voting.delete()
@@ -90,12 +154,14 @@ class TestVotingSystem(FrappeTestCase):
 		voting = frappe.get_doc(
 			{
 				"doctype": "Voting System",
-				"voting_title": "Votación Fecha Inválida",
-				"voting_type": "Mayoría Simple",
-				"assembly_management": self.test_assembly,
-				"voting_start_date": add_days(nowdate(), 2),
-				"voting_end_date": add_days(nowdate(), 1),  # Before start date
+				"motion_title": "Votación Fecha Inválida",
+				"voting_type": "Simple",
+				"assembly": self.__class__.test_assembly,
+				"motion_number": 2,
+				"voting_start_time": add_to_date(now_datetime(), hours=48),
+				"voting_end_time": add_to_date(now_datetime(), hours=24),  # Before start time
 				"required_percentage": 51,
+				"voting_method": "Digital",
 			}
 		)
 
@@ -107,9 +173,11 @@ class TestVotingSystem(FrappeTestCase):
 		voting = frappe.get_doc(
 			{
 				"doctype": "Voting System",
-				"voting_title": "Votación Porcentaje Inválido",
-				"voting_type": "Mayoría Simple",
-				"assembly_management": self.test_assembly,
+				"motion_title": "Votación Porcentaje Inválido",
+				"voting_type": "Simple",
+				"assembly": self.__class__.test_assembly,
+				"motion_number": 3,
+				"voting_method": "Digital",
 				"voting_start_date": nowdate(),
 				"voting_end_date": add_days(nowdate(), 1),
 				"required_percentage": 150,  # Invalid percentage
@@ -124,9 +192,9 @@ class TestVotingSystem(FrappeTestCase):
 		voting = frappe.get_doc(
 			{
 				"doctype": "Voting System",
-				"voting_title": "Votación con Votantes",
+				"motion_title": "Votación con Votantes",
 				"voting_type": "Mayoría Simple",
-				"assembly_management": self.test_assembly,
+				"assembly": self.__class__.test_assembly,
 				"voting_start_date": nowdate(),
 				"voting_end_date": add_days(nowdate(), 1),
 				"required_percentage": 51,
@@ -139,7 +207,7 @@ class TestVotingSystem(FrappeTestCase):
 		voting.load_eligible_voters()
 
 		# Verify voters were loaded (should be at least our test voters)
-		self.assertTrue(len(voting.vote_records) >= 0)
+		self.assertTrue(len(voting.votes) >= 0)
 
 		# Clean up
 		voting.delete()
@@ -149,9 +217,9 @@ class TestVotingSystem(FrappeTestCase):
 		voting = frappe.get_doc(
 			{
 				"doctype": "Voting System",
-				"voting_title": "Votación para Grabar Voto",
+				"motion_title": "Votación para Grabar Voto",
 				"voting_type": "Mayoría Simple",
-				"assembly_management": self.test_assembly,
+				"assembly": self.__class__.test_assembly,
 				"voting_start_date": nowdate(),
 				"voting_end_date": add_days(nowdate(), 1),
 				"required_percentage": 51,
@@ -160,9 +228,9 @@ class TestVotingSystem(FrappeTestCase):
 
 		# Add a vote record manually
 		voting.append(
-			"vote_records",
+			"votes",
 			{
-				"voter": self.test_voters[0],
+				"voter": self.__class__.test_voters[0],
 				"voter_name": "Voter 1",
 				"voter_eligibility": "Elegible",
 				"vote_value": "",
@@ -173,10 +241,10 @@ class TestVotingSystem(FrappeTestCase):
 		voting.insert()
 
 		# Record a vote
-		voting.record_vote(self.test_voters[0], "A Favor")
+		voting.record_vote(self.__class__.test_voters[0], "A Favor")
 
 		# Verify vote was recorded
-		vote_record = next((v for v in voting.vote_records if v.voter == self.test_voters[0]), None)
+		vote_record = next((v for v in voting.votes if v.voter == self.__class__.test_voters[0]), None)
 		self.assertIsNotNone(vote_record)
 		self.assertEqual(vote_record.vote_value, "A Favor")
 		self.assertIsNotNone(vote_record.vote_timestamp)
@@ -190,9 +258,9 @@ class TestVotingSystem(FrappeTestCase):
 		voting = frappe.get_doc(
 			{
 				"doctype": "Voting System",
-				"voting_title": "Votación Cálculo Resultados",
+				"motion_title": "Votación Cálculo Resultados",
 				"voting_type": "Mayoría Simple",
-				"assembly_management": self.test_assembly,
+				"assembly": self.__class__.test_assembly,
 				"voting_start_date": nowdate(),
 				"voting_end_date": add_days(nowdate(), 1),
 				"required_percentage": 51,
@@ -203,9 +271,9 @@ class TestVotingSystem(FrappeTestCase):
 		vote_values = ["A Favor", "A Favor", "En Contra", "Abstención", "A Favor"]
 		for i, vote_value in enumerate(vote_values):
 			voting.append(
-				"vote_records",
+				"votes",
 				{
-					"voter": self.test_voters[i],
+					"voter": self.__class__.test_voters[i],
 					"voter_name": f"Voter {i+1}",
 					"voter_eligibility": "Elegible",
 					"vote_value": vote_value,
@@ -233,9 +301,9 @@ class TestVotingSystem(FrappeTestCase):
 		voting = frappe.get_doc(
 			{
 				"doctype": "Voting System",
-				"voting_title": "Votación Resultado",
+				"motion_title": "Votación Resultado",
 				"voting_type": "Mayoría Calificada",
-				"assembly_management": self.test_assembly,
+				"assembly": self.__class__.test_assembly,
 				"voting_start_date": nowdate(),
 				"voting_end_date": add_days(nowdate(), 1),
 				"required_percentage": 67,  # Qualified majority
@@ -246,9 +314,9 @@ class TestVotingSystem(FrappeTestCase):
 		vote_values = ["A Favor", "A Favor", "En Contra", "En Contra", "A Favor"]
 		for i, vote_value in enumerate(vote_values):
 			voting.append(
-				"vote_records",
+				"votes",
 				{
-					"voter": self.test_voters[i],
+					"voter": self.__class__.test_voters[i],
 					"voter_name": f"Voter {i+1}",
 					"voter_eligibility": "Elegible",
 					"vote_value": vote_value,
@@ -272,9 +340,9 @@ class TestVotingSystem(FrappeTestCase):
 		voting = frappe.get_doc(
 			{
 				"doctype": "Voting System",
-				"voting_title": "Votación Firma Digital",
+				"motion_title": "Votación Firma Digital",
 				"voting_type": "Mayoría Simple",
-				"assembly_management": self.test_assembly,
+				"assembly": self.__class__.test_assembly,
 				"voting_start_date": nowdate(),
 				"voting_end_date": add_days(nowdate(), 1),
 				"required_percentage": 51,
@@ -283,9 +351,9 @@ class TestVotingSystem(FrappeTestCase):
 
 		# Add a vote record
 		voting.append(
-			"vote_records",
+			"votes",
 			{
-				"voter": self.test_voters[0],
+				"voter": self.__class__.test_voters[0],
 				"voter_name": "Voter 1",
 				"voter_eligibility": "Elegible",
 				"vote_value": "A Favor",
@@ -296,7 +364,7 @@ class TestVotingSystem(FrappeTestCase):
 		voting.insert()
 
 		# Generate digital signature
-		vote_record = voting.vote_records[0]
+		vote_record = voting.votes[0]
 		signature = voting.generate_vote_signature(vote_record)
 
 		# Verify signature was generated
@@ -311,9 +379,9 @@ class TestVotingSystem(FrappeTestCase):
 		voting = frappe.get_doc(
 			{
 				"doctype": "Voting System",
-				"voting_title": "Votación para Cerrar",
+				"motion_title": "Votación para Cerrar",
 				"voting_type": "Mayoría Simple",
-				"assembly_management": self.test_assembly,
+				"assembly": self.__class__.test_assembly,
 				"voting_start_date": nowdate(),
 				"voting_end_date": add_days(nowdate(), 1),
 				"required_percentage": 51,
@@ -338,9 +406,9 @@ class TestVotingSystem(FrappeTestCase):
 		voting = frappe.get_doc(
 			{
 				"doctype": "Voting System",
-				"voting_title": "Votación Activa",
+				"motion_title": "Votación Activa",
 				"voting_type": "Mayoría Simple",
-				"assembly_management": self.test_assembly,
+				"assembly": self.__class__.test_assembly,
 				"voting_start_date": nowdate(),
 				"voting_end_date": add_days(nowdate(), 1),
 				"required_percentage": 51,
@@ -360,12 +428,7 @@ class TestVotingSystem(FrappeTestCase):
 		# Clean up
 		voting.delete()
 
-	def tearDown(self):
-		"""Clean up test data"""
-		# Clean up test votings
-		frappe.db.delete("Voting System", {"voting_title": ["like", "%Prueba%"]})
-		frappe.db.delete("Voting System", {"voting_title": ["like", "%Test%"]})
-		frappe.db.commit()
+	# tearDown removed - using tearDownClass pattern from REGLA #29
 
 
 if __name__ == "__main__":

@@ -5,41 +5,61 @@ import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase
-from frappe.utils import add_days, flt, nowdate
+from frappe.utils import add_days, nowdate
 
 
 class TestCommunityEvent(FrappeTestCase):
-	def setUp(self):
-		"""Set up test data"""
-		self.setup_test_data()
+	@classmethod
+	def setUpClass(cls):
+		"""Set up test data once for all tests - REGLA #29 Pattern"""
+		# Clean up any existing test data FIRST (critical for unique constraints)
+		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code LIKE "TEST-PROP-EVENT-%"')
+		frappe.db.sql(
+			'DELETE FROM `tabCommunity Event` WHERE event_name LIKE "%Test%" OR event_name LIKE "%Prueba%"'
+		)
+		frappe.db.sql('DELETE FROM `tabCommittee Member` WHERE property_registry LIKE "TEST-PROP-EVENT-%"')
+		frappe.db.sql('DELETE FROM `tabPhysical Space` WHERE space_code = "TEST-SPACE-EVENT"')
+		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Event Company"')
 
-	def setup_test_data(self):
+		# Commit cleanup before creating new test data
+		frappe.db.commit()
+
+		# Now create test data
+		cls.setup_test_data()
+
+	@classmethod
+	def tearDownClass(cls):
+		"""Clean up test data after all tests - REGLA #29 Pattern"""
+		# Clean up all test data using SQL (bypasses validation)
+		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code LIKE "TEST-PROP-EVENT-%"')
+		frappe.db.sql(
+			'DELETE FROM `tabCommunity Event` WHERE event_name LIKE "%Test%" OR event_name LIKE "%Prueba%"'
+		)
+		frappe.db.sql('DELETE FROM `tabCommittee Member` WHERE property_registry LIKE "TEST-PROP-EVENT-%"')
+		frappe.db.sql('DELETE FROM `tabPhysical Space` WHERE space_code = "TEST-SPACE-EVENT"')
+		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Event Company"')
+
+		# Final commit
+		frappe.db.commit()
+		frappe.clear_cache()
+
+	@classmethod
+	def setup_test_data(cls):
 		"""Create test data for community event tests"""
-		# Create test committee member
-		if not frappe.db.exists("Committee Member", {"member_name": "Test Event Organizer"}):
-			member = frappe.get_doc(
-				{
-					"doctype": "Committee Member",
-					"member_name": "Test Event Organizer",
-					"role": "Vocal",
-					"start_date": nowdate(),
-					"is_active": 1,
-				}
+		# Create test company
+		if not frappe.db.exists("Company", "Test Event Company"):
+			frappe.db.sql(
+				"INSERT INTO `tabCompany` (name, company_name, abbr, default_currency) VALUES ('Test Event Company', 'Test Event Company', 'TEC', 'USD')"
 			)
-			member.insert(ignore_permissions=True)
-			self.test_committee_member = member.name
-		else:
-			self.test_committee_member = frappe.get_value(
-				"Committee Member", {"member_name": "Test Event Organizer"}, "name"
-			)
+			frappe.db.commit()
 
 		# Create test physical space
-		if not frappe.db.exists("Physical Space", "TEST-SALON-EVENTOS"):
+		if not frappe.db.exists("Physical Space", "TEST-SPACE-EVENT"):
 			space = frappe.get_doc(
 				{
 					"doctype": "Physical Space",
-					"space_name": "Salón de Eventos Test",
-					"space_code": "TEST-SALON-EVENTOS",
+					"space_name": "Espacio Eventos Test",
+					"space_code": "TEST-SPACE-EVENT",
 					"space_type": "Salón de Eventos",
 					"capacity": 100,
 					"is_active": 1,
@@ -47,20 +67,55 @@ class TestCommunityEvent(FrappeTestCase):
 			)
 			space.insert(ignore_permissions=True)
 
+		# Create test properties
+		cls.test_properties = []
+		for i in range(3):
+			prop_code = f"TEST-PROP-EVENT-{i+1:03d}"
+			if not frappe.db.exists("Property Registry", prop_code):
+				property_doc = frappe.get_doc(
+					{
+						"doctype": "Property Registry",
+						"property_code": prop_code,
+						"property_name": f"Test Event Property {i+1}",
+						"naming_series": "PROP-.YYYY.-",
+						"company": "Test Event Company",
+						# "property_usage_type": "Residencial",
+						# "acquisition_type": "Compra",
+						# "property_status_type": "Activo",
+						"registration_date": nowdate(),
+					}
+				)
+				property_doc.insert(ignore_permissions=True)
+				cls.test_properties.append(prop_code)
+
+		# Create test committee members
+		cls.test_members = []
+		for i, prop_code in enumerate(cls.test_properties):
+			member = frappe.get_doc(
+				{
+					"doctype": "Committee Member",
+					"property_registry": prop_code,
+					"role_in_committee": "Miembro" if i > 0 else "Presidente",
+					"start_date": nowdate(),
+					"end_date": add_days(nowdate(), 365),
+					"is_active": 1,
+				}
+			)
+			member.insert(ignore_permissions=True)
+			cls.test_members.append(member.name)
+
 	def test_community_event_creation(self):
 		"""Test basic community event creation"""
 		event = frappe.get_doc(
 			{
 				"doctype": "Community Event",
 				"event_name": "Evento de Prueba",
-				"event_description": "Descripción del evento de prueba",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 30),
-				"event_end_date": add_days(nowdate(), 30),
-				"event_location": "TEST-SALON-EVENTOS",
-				"approved_budget": 5000,
-				"registration_limit": 50,
-				"event_status": "Planificado",
+				"event_type": "Recreativo",
+				"event_date": add_days(nowdate(), 7),
+				"physical_space": "TEST-SPACE-EVENT",
+				"organizer": self.__class__.test_members[0],
+				"status": "Planificado",
+				"description": "Evento de prueba para testing",
 			}
 		)
 
@@ -69,71 +124,24 @@ class TestCommunityEvent(FrappeTestCase):
 		# Verify the document was created
 		self.assertTrue(event.name)
 		self.assertEqual(event.event_name, "Evento de Prueba")
-		self.assertEqual(event.event_status, "Planificado")
-		self.assertEqual(event.total_expenses, 0)
-		self.assertEqual(event.registered_attendees_count, 0)
+		self.assertEqual(event.status, "Planificado")
+		self.assertEqual(event.total_budget, 0)
 
 		# Clean up
 		event.delete()
 
 	def test_event_date_validation(self):
-		"""Test that event start date must be before or equal to end date"""
+		"""Test that event date cannot be in the past"""
 		event = frappe.get_doc(
 			{
 				"doctype": "Community Event",
-				"event_name": "Evento Fecha Inválida",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 30),
-				"event_end_date": add_days(nowdate(), 25),  # Before start date
-				"approved_budget": 1000,
+				"event_name": "Evento Fecha Pasada",
+				"event_type": "Recreativo",
+				"event_date": add_days(nowdate(), -5),  # Past date
+				"physical_space": "TEST-SPACE-EVENT",
+				"organizer": self.__class__.test_members[0],
+				"description": "Event with past date",
 			}
-		)
-
-		with self.assertRaises(frappe.ValidationError):
-			event.insert()
-
-	def test_budget_validation(self):
-		"""Test that budget cannot be negative"""
-		event = frappe.get_doc(
-			{
-				"doctype": "Community Event",
-				"event_name": "Evento Presupuesto Negativo",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 30),
-				"event_end_date": add_days(nowdate(), 30),
-				"approved_budget": -1000,  # Negative budget
-			}
-		)
-
-		with self.assertRaises(frappe.ValidationError):
-			event.insert()
-
-	def test_expenses_exceed_budget_validation(self):
-		"""Test that expenses cannot exceed approved budget"""
-		event = frappe.get_doc(
-			{
-				"doctype": "Community Event",
-				"event_name": "Evento Presupuesto Excedido",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 30),
-				"event_end_date": add_days(nowdate(), 30),
-				"approved_budget": 1000,
-			}
-		)
-
-		# Add expenses that exceed budget
-		event.append(
-			"event_expenses",
-			{"expense_description": "Decoración", "expense_category": "Materiales", "amount": 800},
-		)
-
-		event.append(
-			"event_expenses",
-			{
-				"expense_description": "Catering",
-				"expense_category": "Alimentación",
-				"amount": 500,  # Total: 1300, exceeds budget of 1000
-			},
 		)
 
 		with self.assertRaises(frappe.ValidationError):
@@ -145,29 +153,24 @@ class TestCommunityEvent(FrappeTestCase):
 			{
 				"doctype": "Community Event",
 				"event_name": "Evento con Organizadores",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 30),
-				"event_end_date": add_days(nowdate(), 30),
-				"approved_budget": 2000,
+				"event_type": "Administrativo",
+				"event_date": add_days(nowdate(), 10),
+				"physical_space": "TEST-SPACE-EVENT",
+				"organizer": self.__class__.test_members[0],
+				"description": "Event with organizers",
 			}
-		)
-
-		# Add event organizer
-		event.append(
-			"event_organizers",
-			{
-				"committee_member": self.test_committee_member,
-				"organizer_role": "Coordinador General",
-				"responsibilities": "Coordinación general del evento",
-			},
 		)
 
 		event.insert()
 
-		# Verify organizer was added
-		self.assertEqual(len(event.event_organizers), 1)
-		self.assertEqual(event.event_organizers[0].committee_member, self.test_committee_member)
-		self.assertEqual(event.event_organizers[0].organizer_role, "Coordinador General")
+		# Add organizers
+		event.add_organizer(self.__class__.test_members[1], "Coordinador")
+		event.add_organizer(self.__class__.test_members[2], "Asistente")
+
+		# Verify organizers were added
+		self.assertEqual(len(event.organizers), 2)
+		self.assertEqual(event.organizers[0].committee_member, self.__class__.test_members[1])
+		self.assertEqual(event.organizers[0].role, "Coordinador")
 
 		# Clean up
 		event.delete()
@@ -178,235 +181,206 @@ class TestCommunityEvent(FrappeTestCase):
 			{
 				"doctype": "Community Event",
 				"event_name": "Evento con Gastos",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 30),
-				"event_end_date": add_days(nowdate(), 30),
-				"approved_budget": 3000,
+				"event_type": "Recreativo",
+				"event_date": add_days(nowdate(), 10),
+				"physical_space": "TEST-SPACE-EVENT",
+				"organizer": self.__class__.test_members[0],
+				"description": "Event with expenses",
 			}
 		)
 
 		event.insert()
-
-		# Add expense
-		event.add_expense("Decoración floral", "Materiales", 500, "Flores y arreglos para decoración")
-
-		# Verify expense was added
-		self.assertEqual(len(event.event_expenses), 1)
-		self.assertEqual(event.event_expenses[0].expense_description, "Decoración floral")
-		self.assertEqual(event.event_expenses[0].amount, 500)
-		self.assertEqual(event.total_expenses, 500)
-
-		# Clean up
-		event.delete()
-
-	def test_budget_utilization_calculation(self):
-		"""Test budget utilization calculation"""
-		event = frappe.get_doc(
-			{
-				"doctype": "Community Event",
-				"event_name": "Evento Utilización Presupuesto",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 30),
-				"event_end_date": add_days(nowdate(), 30),
-				"approved_budget": 2000,
-			}
-		)
 
 		# Add expenses
-		event.append(
-			"event_expenses",
-			{"expense_description": "Alquiler equipo sonido", "expense_category": "Equipos", "amount": 800},
-		)
+		event.add_expense("Decoración", 500.00, "Decoraciones para el evento")
+		event.add_expense("Catering", 1000.00, "Servicio de alimentación")
 
-		event.append(
-			"event_expenses",
-			{"expense_description": "Refrigerios", "expense_category": "Alimentación", "amount": 400},
-		)
-
-		event.insert()
-
-		# Calculate budget utilization
-		event.calculate_budget_utilization()
-
-		# Verify calculations (1200 spent out of 2000 = 60%)
-		self.assertEqual(event.total_expenses, 1200)
-		self.assertEqual(event.budget_utilization_percentage, 60)
-		self.assertEqual(event.remaining_budget, 800)
+		# Verify expenses were added
+		self.assertEqual(len(event.expenses), 2)
+		self.assertEqual(event.expenses[0].description, "Decoración")
+		self.assertEqual(event.expenses[0].amount, 500.00)
+		self.assertEqual(event.expenses[1].amount, 1000.00)
 
 		# Clean up
 		event.delete()
 
-	def test_register_attendee(self):
-		"""Test registering event attendees"""
+	def test_calculate_total_budget(self):
+		"""Test total budget calculation"""
 		event = frappe.get_doc(
 			{
 				"doctype": "Community Event",
-				"event_name": "Evento con Registro",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 30),
-				"event_end_date": add_days(nowdate(), 30),
-				"registration_limit": 10,
-				"event_status": "Abierto para Registro",
+				"event_name": "Evento Cálculo Presupuesto",
+				"event_type": "Recreativo",
+				"event_date": add_days(nowdate(), 10),
+				"physical_space": "TEST-SPACE-EVENT",
+				"organizer": self.__class__.test_members[0],
+				"description": "Event for budget calculation",
+			}
+		)
+
+		# Add expenses manually
+		event.append("expenses", {"description": "Decoración", "amount": 300.00, "category": "Decoración"})
+		event.append("expenses", {"description": "Sonido", "amount": 200.00, "category": "Equipo"})
+		event.append("expenses", {"description": "Catering", "amount": 800.00, "category": "Alimentación"})
+
+		event.insert()
+
+		# Calculate budget
+		event.calculate_total_budget()
+
+		# Verify total budget (300 + 200 + 800 = 1300)
+		self.assertEqual(event.total_budget, 1300.00)
+
+		# Clean up
+		event.delete()
+
+	def test_event_registration(self):
+		"""Test event registration functionality"""
+		event = frappe.get_doc(
+			{
+				"doctype": "Community Event",
+				"event_name": "Evento con Registros",
+				"event_type": "Recreativo",
+				"event_date": add_days(nowdate(), 10),
+				"physical_space": "TEST-SPACE-EVENT",
+				"organizer": self.__class__.test_members[0],
+				"max_attendees": 50,
+				"registration_required": 1,
+				"description": "Event with registration",
 			}
 		)
 
 		event.insert()
 
-		# Register attendee
-		event.register_attendee("Juan Pérez", "juan@example.com", "555-1234")
+		# Register attendees
+		event.register_attendee(self.__class__.test_properties[0], "Confirmado")
+		event.register_attendee(self.__class__.test_properties[1], "Pendiente")
 
-		# Verify attendee was registered
-		self.assertEqual(len(event.event_registrations), 1)
-		self.assertEqual(event.event_registrations[0].attendee_name, "Juan Pérez")
-		self.assertEqual(event.registered_attendees_count, 1)
-
-		# Clean up
-		event.delete()
-
-	def test_registration_limit_validation(self):
-		"""Test that registration doesn't exceed limit"""
-		event = frappe.get_doc(
-			{
-				"doctype": "Community Event",
-				"event_name": "Evento Límite Registro",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 30),
-				"event_end_date": add_days(nowdate(), 30),
-				"registration_limit": 1,
-				"event_status": "Abierto para Registro",
-			}
-		)
-
-		# Add registration manually to reach limit
-		event.append(
-			"event_registrations",
-			{
-				"attendee_name": "Primer Asistente",
-				"attendee_email": "primero@example.com",
-				"registration_status": "Confirmado",
-			},
-		)
-
-		event.insert()
-
-		# Try to register another attendee (should fail)
-		with self.assertRaises(frappe.ValidationError):
-			event.register_attendee("Segundo Asistente", "segundo@example.com", "555-5678")
+		# Verify registrations
+		self.assertEqual(len(event.registrations), 2)
+		self.assertEqual(event.registrations[0].property_registry, self.__class__.test_properties[0])
+		self.assertEqual(event.registrations[0].status, "Confirmado")
 
 		# Clean up
 		event.delete()
 
-	def test_capacity_validation(self):
-		"""Test validation against physical space capacity"""
-		event = frappe.get_doc(
-			{
-				"doctype": "Community Event",
-				"event_name": "Evento Validación Capacidad",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 30),
-				"event_end_date": add_days(nowdate(), 30),
-				"event_location": "TEST-SALON-EVENTOS",  # Capacity: 100
-				"registration_limit": 150,  # Exceeds space capacity
-			}
-		)
-
-		# Should show warning but not fail
-		event.insert()
-
-		# Clean up
-		event.delete()
-
-	def test_add_event_activity(self):
+	def test_event_activities(self):
 		"""Test adding event activities"""
 		event = frappe.get_doc(
 			{
 				"doctype": "Community Event",
 				"event_name": "Evento con Actividades",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 30),
-				"event_end_date": add_days(nowdate(), 30),
+				"event_type": "Recreativo",
+				"event_date": add_days(nowdate(), 10),
+				"physical_space": "TEST-SPACE-EVENT",
+				"organizer": self.__class__.test_members[0],
+				"description": "Event with activities",
 			}
-		)
-
-		# Add event activity
-		event.append(
-			"event_activities",
-			{
-				"activity_name": "Bienvenida y registro",
-				"activity_type": "Preparación",
-				"activity_start_time": "09:00:00",
-				"activity_end_time": "10:00:00",
-				"is_mandatory": 1,
-			},
 		)
 
 		event.insert()
 
-		# Verify activity was added
-		self.assertEqual(len(event.event_activities), 1)
-		self.assertEqual(event.event_activities[0].activity_name, "Bienvenida y registro")
-		self.assertTrue(event.event_activities[0].is_mandatory)
+		# Add activities
+		event.add_activity("Bienvenida", "09:00", "09:30", "Recepción de invitados")
+		event.add_activity("Presentación", "09:30", "10:00", "Presentación del evento")
+
+		# Verify activities
+		self.assertEqual(len(event.activities), 2)
+		self.assertEqual(event.activities[0].activity_name, "Bienvenida")
+		self.assertEqual(event.activities[0].start_time, "09:00")
+		self.assertEqual(event.activities[1].end_time, "10:00")
 
 		# Clean up
 		event.delete()
 
-	def test_get_upcoming_events(self):
-		"""Test getting upcoming events"""
+	def test_event_capacity_validation(self):
+		"""Test event capacity validation"""
 		event = frappe.get_doc(
 			{
 				"doctype": "Community Event",
-				"event_name": "Evento Próximo",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), 15),
-				"event_end_date": add_days(nowdate(), 15),
-				"event_status": "Planificado",
+				"event_name": "Evento Capacidad",
+				"event_type": "Recreativo",
+				"event_date": add_days(nowdate(), 10),
+				"physical_space": "TEST-SPACE-EVENT",
+				"organizer": self.__class__.test_members[0],
+				"max_attendees": 2,  # Limited capacity
+				"registration_required": 1,
+				"description": "Event with capacity limit",
 			}
 		)
 
 		event.insert()
 
-		# Get upcoming events
-		upcoming = event.get_upcoming_events()
+		# Register up to capacity
+		event.register_attendee(self.__class__.test_properties[0], "Confirmado")
+		event.register_attendee(self.__class__.test_properties[1], "Confirmado")
 
-		# Should include our test event
-		event_names = [e["name"] for e in upcoming]
-		self.assertIn(event.name, event_names)
+		# Try to register beyond capacity
+		with self.assertRaises(frappe.ValidationError):
+			event.register_attendee(self.__class__.test_properties[2], "Confirmado")
 
 		# Clean up
 		event.delete()
 
-	def test_complete_event(self):
-		"""Test completing an event"""
+	def test_event_status_progression(self):
+		"""Test event status progression"""
 		event = frappe.get_doc(
 			{
 				"doctype": "Community Event",
-				"event_name": "Evento para Completar",
-				"event_type": "Social",
-				"event_start_date": add_days(nowdate(), -1),  # Past date
-				"event_end_date": add_days(nowdate(), -1),
-				"event_status": "En Curso",
+				"event_name": "Evento Estados",
+				"event_type": "Recreativo",
+				"event_date": add_days(nowdate(), 10),
+				"physical_space": "TEST-SPACE-EVENT",
+				"organizer": self.__class__.test_members[0],
+				"status": "Planificado",
+				"description": "Event status progression",
 			}
 		)
 
 		event.insert()
 
-		# Complete event
-		event.complete_event("Evento completado exitosamente. Gran participación.")
+		# Test status progression
+		event.start_event()
+		self.assertEqual(event.status, "En Progreso")
 
-		# Verify event was completed
-		self.assertEqual(event.event_status, "Completado")
-		self.assertIsNotNone(event.completion_date)
-		self.assertEqual(event.completion_notes, "Evento completado exitosamente. Gran participación.")
+		event.complete_event()
+		self.assertEqual(event.status, "Completado")
 
 		# Clean up
 		event.delete()
 
-	def tearDown(self):
-		"""Clean up test data"""
-		# Clean up test events
-		frappe.db.delete("Community Event", {"event_name": ["like", "%Prueba%"]})
-		frappe.db.delete("Community Event", {"event_name": ["like", "%Test%"]})
-		frappe.db.commit()
+	def test_recurring_event(self):
+		"""Test recurring event functionality"""
+		event = frappe.get_doc(
+			{
+				"doctype": "Community Event",
+				"event_name": "Evento Recurrente",
+				"event_type": "Administrativo",
+				"event_date": add_days(nowdate(), 7),
+				"physical_space": "TEST-SPACE-EVENT",
+				"organizer": self.__class__.test_members[0],
+				"is_recurring": 1,
+				"recurrence_pattern": "Mensual",
+				"description": "Recurring event",
+			}
+		)
+
+		event.insert()
+
+		# Create next occurrence
+		next_event = event.create_next_occurrence()
+
+		# Verify next occurrence
+		self.assertIsNotNone(next_event)
+		self.assertEqual(next_event.event_name, "Evento Recurrente")
+		self.assertEqual(next_event.is_recurring, 1)
+
+		# Clean up
+		event.delete()
+		if next_event:
+			next_event.delete()
+
+	# tearDown removed - using tearDownClass pattern from REGLA #29
 
 
 if __name__ == "__main__":

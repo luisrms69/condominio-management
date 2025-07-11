@@ -11,7 +11,7 @@ def after_insert(doc, method):
 		return
 
 	# Assign user permissions based on role
-	if doc.user and doc.role:
+	if doc.user and doc.role_in_committee:
 		assign_role_permissions(doc)
 
 	# Create initial KPI records
@@ -24,7 +24,7 @@ def on_update(doc, method):
 		return
 
 	# Update permissions if role changed
-	if doc.has_value_changed("role") and doc.user:
+	if doc.has_value_changed("role_in_committee") and doc.user:
 		assign_role_permissions(doc)
 
 	# Update KPI records if status changed
@@ -42,7 +42,7 @@ def assign_role_permissions(doc):
 			"Vocal": "Committee Member",
 		}
 
-		frappe_role = role_mapping.get(doc.role)
+		frappe_role = role_mapping.get(doc.role_in_committee)
 		if frappe_role:
 			# Add role to user if not already present
 			if not frappe.db.exists("Has Role", {"parent": doc.user, "role": frappe_role}):

@@ -3,7 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
-from frappe.utils import flt, get_datetime, now_datetime, nowdate
+from frappe.utils import flt, get_datetime, getdate, now_datetime, nowdate
 
 
 class AssemblyManagement(Document):
@@ -19,7 +19,8 @@ class AssemblyManagement(Document):
 		"""Validate assembly and convocation dates"""
 		if self.convocation_date and self.assembly_date:
 			assembly_date_only = get_datetime(self.assembly_date).date()
-			if self.convocation_date >= assembly_date_only:
+			convocation_date_only = getdate(self.convocation_date)
+			if convocation_date_only >= assembly_date_only:
 				frappe.throw("La fecha de convocatoria debe ser anterior a la fecha de asamblea")
 
 		# Assembly cannot be in the past (unless it's completed)

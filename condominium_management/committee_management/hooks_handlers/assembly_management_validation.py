@@ -17,22 +17,24 @@ def validate(doc, method):
 			frappe.throw(_("La fecha de convocatoria debe ser anterior a la fecha de la asamblea"))
 
 	# Validate quorum percentages
-	if doc.first_call_quorum and doc.second_call_quorum:
-		if doc.first_call_quorum <= doc.second_call_quorum:
+	if doc.minimum_quorum_first and doc.minimum_quorum_second:
+		if doc.minimum_quorum_first <= doc.minimum_quorum_second:
 			frappe.throw(_("El quórum de primera convocatoria debe ser mayor al de segunda convocatoria"))
 
 	# Validate minimum quorum for submission
 	if doc.docstatus == 1:  # On submit
-		if not doc.quorum_records:
+		if not doc.quorum_registration:
 			frappe.throw(_("Debe registrar al menos un participante en el quórum para enviar la asamblea"))
 
 		# Calculate actual quorum
-		total_properties = frappe.db.count("Property Registry", {"status": "Activo"})
-		present_count = len([q for q in doc.quorum_records if q.attendance_status == "Presente"])
+		total_properties = frappe.db.count("Property Registry", {"property_status_type": "Activo"})
+		present_count = len([q for q in doc.quorum_registration if q.attendance_status == "Presente"])
 
 		if total_properties > 0:
 			actual_quorum = (present_count / total_properties) * 100
-			required_quorum = doc.second_call_quorum if doc.call_type == "Segunda" else doc.first_call_quorum
+			required_quorum = (
+				doc.minimum_quorum_second if doc.call_type == "Segunda" else doc.minimum_quorum_first
+			)
 
 			if actual_quorum < required_quorum:
 				frappe.throw(
@@ -42,8 +44,8 @@ def validate(doc, method):
 				)
 
 	# Validate agenda items with voting requirements
-	if doc.agenda_items:
-		for item in doc.agenda_items:
+	if doc.formal_agenda:
+		for item in doc.formal_agenda:
 			if item.requires_voting and not item.voting_type:
 				frappe.throw(
 					_(

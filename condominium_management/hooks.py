@@ -279,6 +279,15 @@ doc_events = {
 		"on_submit": "condominium_management.committee_management.hooks_handlers.meeting_schedule_detection.on_submit",
 		"on_update": "condominium_management.committee_management.hooks_handlers.meeting_schedule_detection.on_update",
 	},
+	"Property Usage Type": {
+		"validate": "condominium_management.committee_management.hooks_handlers.property_usage_type_validation.validate",
+	},
+	"Acquisition Type": {
+		"validate": "condominium_management.committee_management.hooks_handlers.acquisition_type_validation.validate",
+	},
+	"Property Status Type": {
+		"validate": "condominium_management.committee_management.hooks_handlers.property_status_type_validation.validate",
+	},
 }
 
 # Scheduled Tasks

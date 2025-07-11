@@ -11,17 +11,19 @@ def validate(doc, method):
 		return
 
 	# Validate unique roles per company
-	if doc.role == "Presidente" and doc.is_active:
+	if doc.role_in_committee == "Presidente" and doc.is_active:
 		existing_president = frappe.db.exists(
 			"Committee Member",
-			{"role": "Presidente", "is_active": 1, "company": doc.company, "name": ["!=", doc.name]},
+			{"role_in_committee": "Presidente", "is_active": 1, "name": ["!=", doc.name]},
 		)
 		if existing_president:
 			frappe.throw(_("Ya existe un Presidente activo para esta empresa"))
 
 	# Validate property registry is active
 	if hasattr(doc, "property_registry") and doc.property_registry:
-		property_status = frappe.db.get_value("Property Registry", doc.property_registry, "status")
+		property_status = frappe.db.get_value(
+			"Property Registry", doc.property_registry, "property_status_type"
+		)
 		if property_status != "Activo":
 			frappe.throw(_("El registro de propiedad debe estar activo para asignar un miembro del comité"))
 
