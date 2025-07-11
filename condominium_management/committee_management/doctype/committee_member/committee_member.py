@@ -109,13 +109,13 @@ class CommitteeMember(Document):
 	def get_user_roles_for_committee_position(self):
 		"""Get user roles based on committee position"""
 		role_map = {
-			"Presidente": ["Committee President"],
-			"Secretario": ["Committee Secretary"],
-			"Tesorero": ["Committee Treasurer"],
-			"Vocal": ["Committee Member"],
+			"Presidente": ["Presidente del Comité"],
+			"Secretario": ["Secretario del Comité"],
+			"Tesorero": ["Tesorero del Comité"],
+			"Vocal": ["Miembro del Comité"],
 		}
 
-		base_roles = ["Committee Member"]  # All committee members get this role
+		base_roles = ["Miembro del Comité"]  # All committee members get this role
 		specific_roles = role_map.get(self.role_in_committee, [])
 
 		return base_roles + specific_roles
@@ -131,10 +131,10 @@ class CommitteeMember(Document):
 
 		# Remove committee-specific roles
 		committee_roles = [
-			"Committee President",
-			"Committee Secretary",
-			"Committee Treasurer",
-			"Committee Member",
+			"Presidente del Comité",
+			"Secretario del Comité",
+			"Tesorero del Comité",
+			"Miembro del Comité",
 		]
 
 		for role in committee_roles:

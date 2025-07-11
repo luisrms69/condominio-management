@@ -19,7 +19,12 @@ class TestCommitteeMember(FrappeTestCase):
 		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Company"')
 
 		# Clean up test roles
-		test_roles = ["Committee President", "Committee Secretary", "Committee Treasurer", "Committee Member"]
+		test_roles = [
+			"Presidente del Comité",
+			"Secretario del Comité",
+			"Tesorero del Comité",
+			"Miembro del Comité",
+		]
 		for role_name in test_roles:
 			frappe.db.sql("DELETE FROM `tabRole` WHERE role_name = %s", (role_name,))
 
@@ -39,7 +44,12 @@ class TestCommitteeMember(FrappeTestCase):
 		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Company"')
 
 		# Clean up test roles
-		test_roles = ["Committee President", "Committee Secretary", "Committee Treasurer", "Committee Member"]
+		test_roles = [
+			"Presidente del Comité",
+			"Secretario del Comité",
+			"Tesorero del Comité",
+			"Miembro del Comité",
+		]
 		for role_name in test_roles:
 			frappe.db.sql("DELETE FROM `tabRole` WHERE role_name = %s", (role_name,))
 
@@ -59,10 +69,10 @@ class TestCommitteeMember(FrappeTestCase):
 
 		# Create required committee roles if they don't exist
 		committee_roles = [
-			"Committee President",
-			"Committee Secretary",
-			"Committee Treasurer",
-			"Committee Member",
+			"Presidente del Comité",
+			"Secretario del Comité",
+			"Tesorero del Comité",
+			"Miembro del Comité",
 		]
 
 		for role_name in committee_roles:
