@@ -28,14 +28,48 @@ class TestAgreementTracking(FrappeTestCase):
 			)
 			user.insert(ignore_permissions=True)
 
+		# Create test company first (required for property registry)
+		if not frappe.db.exists("Company", "Test Committee Company"):
+			company = frappe.get_doc(
+				{
+					"doctype": "Company",
+					"company_name": "Test Committee Company",
+					"abbr": "TCC",
+					"default_currency": "USD",
+				}
+			)
+			company.insert(ignore_permissions=True)
+
+		# Create required master data
+		self.create_test_masters()
+
+		# Create test property registry (required for committee member)
+		if not frappe.db.exists("Property Registry", "PROP-TEST-001"):
+			property_registry = frappe.get_doc(
+				{
+					"doctype": "Property Registry",
+					"naming_series": "PROP-.YYYY.-",
+					"property_name": "Apartamento de Prueba",
+					"property_code": "PROP-TEST-001",
+					"company": "Test Committee Company",
+					"property_usage_type": "Residencial",
+					"acquisition_type": "Compra",
+					"property_status_type": "Activo",
+					"registration_date": nowdate(),
+					"total_area_sqm": 85.5,
+				}
+			)
+			property_registry.insert(ignore_permissions=True)
+
 		# Create test committee member
 		if not frappe.db.exists("Committee Member", {"user": "test_agreement@example.com"}):
 			member = frappe.get_doc(
 				{
 					"doctype": "Committee Member",
 					"user": "test_agreement@example.com",
-					"member_name": "Test Agreement Member",
-					"role": "Secretario",
+					"property_registry": "PROP-TEST-001",
+					"full_name": "Test Agreement Member",
+					"role_in_committee": "Secretario",
 					"start_date": nowdate(),
 					"is_active": 1,
 				}
@@ -46,6 +80,41 @@ class TestAgreementTracking(FrappeTestCase):
 			self.test_committee_member = frappe.get_value(
 				"Committee Member", {"user": "test_agreement@example.com"}, "name"
 			)
+
+	def create_test_masters(self):
+		"""Create required master data for tests"""
+		# Create Property Usage Type
+		if not frappe.db.exists("Property Usage Type", "Residencial"):
+			usage_type = frappe.get_doc(
+				{
+					"doctype": "Property Usage Type",
+					"usage_type_name": "Residencial",
+					"description": "Uso residencial para vivienda",
+				}
+			)
+			usage_type.insert(ignore_permissions=True)
+
+		# Create Acquisition Type
+		if not frappe.db.exists("Acquisition Type", "Compra"):
+			acquisition_type = frappe.get_doc(
+				{
+					"doctype": "Acquisition Type",
+					"acquisition_type_name": "Compra",
+					"description": "Adquisición por compra",
+				}
+			)
+			acquisition_type.insert(ignore_permissions=True)
+
+		# Create Property Status Type
+		if not frappe.db.exists("Property Status Type", "Activo"):
+			status_type = frappe.get_doc(
+				{
+					"doctype": "Property Status Type",
+					"status_type_name": "Activo",
+					"description": "Propiedad activa",
+				}
+			)
+			status_type.insert(ignore_permissions=True)
 
 	def test_agreement_tracking_creation(self):
 		"""Test basic agreement tracking creation"""

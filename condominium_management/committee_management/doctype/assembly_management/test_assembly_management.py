@@ -68,13 +68,13 @@ class TestAssemblyManagement(FrappeTestCase):
 		assembly = frappe.get_doc(
 			{
 				"doctype": "Assembly Management",
-				"assembly_title": "Asamblea de Prueba",
 				"assembly_type": "Ordinaria",
-				"assembly_date": add_days(nowdate(), 30),
+				"assembly_date": add_days(nowdate(), 30) + " 09:00:00",
 				"convocation_date": add_days(nowdate(), 15),
-				"first_call_quorum": 60,
-				"second_call_quorum": 30,
-				"call_type": "Primera",
+				"first_call_time": "09:00:00",
+				"second_call_time": "09:30:00",
+				"minimum_quorum_first": 60,
+				"minimum_quorum_second": 30,
 				"physical_space": "TEST-SALON-ASAMBLEAS",
 			}
 		)
@@ -84,8 +84,8 @@ class TestAssemblyManagement(FrappeTestCase):
 		# Verify the document was created
 		self.assertTrue(assembly.name)
 		self.assertEqual(assembly.assembly_title, "Asamblea de Prueba")
-		self.assertEqual(assembly.assembly_status, "Convocada")
-		self.assertEqual(assembly.actual_quorum_percentage, 0)
+		self.assertEqual(assembly.status, "Convocada")
+		self.assertEqual(assembly.current_quorum_percentage, 0)
 
 		# Clean up
 		assembly.delete()
@@ -95,12 +95,13 @@ class TestAssemblyManagement(FrappeTestCase):
 		assembly = frappe.get_doc(
 			{
 				"doctype": "Assembly Management",
-				"assembly_title": "Asamblea Fecha Inválida",
 				"assembly_type": "Ordinaria",
 				"assembly_date": add_days(nowdate(), 15),
 				"convocation_date": add_days(nowdate(), 30),  # After assembly date
-				"first_call_quorum": 60,
-				"second_call_quorum": 30,
+				"first_call_time": "09:00:00",
+				"second_call_time": "09:30:00",
+				"minimum_quorum_first": 60,
+				"minimum_quorum_second": 30,
 			}
 		)
 
@@ -112,12 +113,13 @@ class TestAssemblyManagement(FrappeTestCase):
 		assembly = frappe.get_doc(
 			{
 				"doctype": "Assembly Management",
-				"assembly_title": "Asamblea Quórum Inválido",
 				"assembly_type": "Ordinaria",
 				"assembly_date": add_days(nowdate(), 30),
 				"convocation_date": add_days(nowdate(), 15),
-				"first_call_quorum": 30,  # Lower than second call
-				"second_call_quorum": 60,
+				"first_call_time": "09:00:00",
+				"second_call_time": "09:30:00",
+				"minimum_quorum_first": 30,  # Lower than second call
+				"minimum_quorum_second": 60,
 			}
 		)
 
@@ -129,12 +131,13 @@ class TestAssemblyManagement(FrappeTestCase):
 		assembly = frappe.get_doc(
 			{
 				"doctype": "Assembly Management",
-				"assembly_title": "Asamblea con Propiedades",
 				"assembly_type": "Ordinaria",
 				"assembly_date": add_days(nowdate(), 30),
 				"convocation_date": add_days(nowdate(), 15),
-				"first_call_quorum": 60,
-				"second_call_quorum": 30,
+				"first_call_time": "09:00:00",
+				"second_call_time": "09:30:00",
+				"minimum_quorum_first": 60,
+				"minimum_quorum_second": 30,
 			}
 		)
 
@@ -158,12 +161,13 @@ class TestAssemblyManagement(FrappeTestCase):
 		assembly = frappe.get_doc(
 			{
 				"doctype": "Assembly Management",
-				"assembly_title": "Asamblea Cálculo Quórum",
 				"assembly_type": "Ordinaria",
 				"assembly_date": add_days(nowdate(), 30),
 				"convocation_date": add_days(nowdate(), 15),
-				"first_call_quorum": 60,
-				"second_call_quorum": 30,
+				"first_call_time": "09:00:00",
+				"second_call_time": "09:30:00",
+				"minimum_quorum_first": 60,
+				"minimum_quorum_second": 30,
 			}
 		)
 
@@ -186,7 +190,7 @@ class TestAssemblyManagement(FrappeTestCase):
 
 		# Should be 66.67% (2 out of 3 present)
 		expected_percentage = (2 / 3) * 100
-		self.assertAlmostEqual(assembly.actual_quorum_percentage, expected_percentage, places=1)
+		self.assertAlmostEqual(assembly.current_quorum_percentage, expected_percentage, places=1)
 
 		# Clean up
 		assembly.delete()
@@ -196,12 +200,13 @@ class TestAssemblyManagement(FrappeTestCase):
 		assembly = frappe.get_doc(
 			{
 				"doctype": "Assembly Management",
-				"assembly_title": "Asamblea con Agenda",
 				"assembly_type": "Ordinaria",
 				"assembly_date": add_days(nowdate(), 30),
 				"convocation_date": add_days(nowdate(), 15),
-				"first_call_quorum": 60,
-				"second_call_quorum": 30,
+				"first_call_time": "09:00:00",
+				"second_call_time": "09:30:00",
+				"minimum_quorum_first": 60,
+				"minimum_quorum_second": 30,
 			}
 		)
 
@@ -224,12 +229,13 @@ class TestAssemblyManagement(FrappeTestCase):
 		assembly = frappe.get_doc(
 			{
 				"doctype": "Assembly Management",
-				"assembly_title": "Asamblea Extraordinaria",
 				"assembly_type": "Extraordinaria",
 				"assembly_date": add_days(nowdate(), 30),
 				"convocation_date": add_days(nowdate(), 15),
-				"first_call_quorum": 60,
-				"second_call_quorum": 30,
+				"first_call_time": "09:00:00",
+				"second_call_time": "09:30:00",
+				"minimum_quorum_first": 60,
+				"minimum_quorum_second": 30,
 				# No extraordinary_reason specified
 			}
 		)
@@ -242,12 +248,13 @@ class TestAssemblyManagement(FrappeTestCase):
 		assembly = frappe.get_doc(
 			{
 				"doctype": "Assembly Management",
-				"assembly_title": "Asamblea Próxima",
 				"assembly_type": "Ordinaria",
 				"assembly_date": add_days(nowdate(), 30),
 				"convocation_date": add_days(nowdate(), 15),
-				"first_call_quorum": 60,
-				"second_call_quorum": 30,
+				"first_call_time": "09:00:00",
+				"second_call_time": "09:30:00",
+				"minimum_quorum_first": 60,
+				"minimum_quorum_second": 30,
 			}
 		)
 
@@ -268,13 +275,13 @@ class TestAssemblyManagement(FrappeTestCase):
 		assembly = frappe.get_doc(
 			{
 				"doctype": "Assembly Management",
-				"assembly_title": "Asamblea Sin Quórum",
 				"assembly_type": "Ordinaria",
 				"assembly_date": add_days(nowdate(), 30),
 				"convocation_date": add_days(nowdate(), 15),
-				"first_call_quorum": 60,
-				"second_call_quorum": 30,
-				"call_type": "Segunda",
+				"first_call_time": "09:00:00",
+				"second_call_time": "09:30:00",
+				"minimum_quorum_first": 60,
+				"minimum_quorum_second": 30,
 			}
 		)
 

@@ -1,0 +1,62 @@
+{
+  "models": [
+    {
+      "title": "Claude 3.5 Sonnet",
+      "provider": "anthropic",
+      "model": "claude-3-5-sonnet-20241022",
+      "apiKey": "ANTHROPIC_API_KEY"
+    }
+  ],
+  "contextProviders": [
+    {
+      "name": "files",
+      "params": {
+        "patterns": [
+          "**/*.json",
+          "**/*.py",
+          "**/test_*.py",
+          "**/*_test.py"
+        ]
+      }
+    },
+    {
+      "name": "folder",
+      "params": {
+        "folders": [
+          "condominium_management/committee_management/doctype",
+          "condominium_management/committee_management/doctype/*/test_*.py"
+        ]
+      }
+    }
+  ],
+  "slashCommands": [
+    {
+      "name": "test-gen",
+      "description": "Generate corrected Frappe test file for DocType"
+    },
+    {
+      "name": "doctype-analyze", 
+      "description": "Analyze DocType JSON for required fields and relationships"
+    },
+    {
+      "name": "field-validate",
+      "description": "Validate test file field names against DocType JSON"
+    }
+  ],
+  "customCommands": [
+    {
+      "name": "Generate Committee Test",
+      "prompt": "Generate a complete FrappeTestCase for the given DocType based on its JSON definition. Include all required fields, proper master data setup, and comprehensive test methods.",
+      "description": "Auto-generate corrected test file for Committee Management DocTypes"
+    }
+  ],
+  "rules": [
+    "Always analyze DocType JSON files to identify required fields (reqd: 1)",
+    "Include all master data dependencies in test setup",
+    "Use exact field names from DocType JSON, never assume field names",
+    "Create proper hierarchical test data (Company -> Property Registry -> Committee Member)",
+    "Validate all Link fields have proper target DocType creation",
+    "Include edge cases and validation testing",
+    "Follow Frappe testing patterns with setUp/tearDown methods"
+  ]
+}
