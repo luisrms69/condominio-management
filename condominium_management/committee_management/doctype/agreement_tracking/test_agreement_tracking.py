@@ -226,7 +226,7 @@ class TestAgreementTrackingCorrected(FrappeTestCase):
 		self.assertEqual(agreement.priority, "Alta")
 
 	def test_required_fields_are_defined_in_doctype(self):
-		"""Test that required fields are properly defined in DocType JSON - Pragmatic approach"""
+		"""Test that required fields are properly defined in DocType JSON - Configuration verification"""
 		# Read the DocType JSON and verify reqd: 1 fields exist
 		import json
 		import os
@@ -259,6 +259,94 @@ class TestAgreementTrackingCorrected(FrappeTestCase):
 
 		# Verify we have the minimum expected number of required fields
 		self.assertGreaterEqual(len(required_fields), 6, "Should have at least 6 required fields")
+
+	def test_mandatory_field_validation_runtime_behavior(self):
+		"""Test runtime validation behavior - Critical coverage for production safety"""
+		# This test ensures that mandatory field validation actually works at runtime
+		# Protects against: human error, Frappe bugs, CI/CD version issues
+
+		# Create minimal document with one required field missing
+		test_cases = [
+			{
+				"missing_field": "source_type",
+				"data": {
+					"doctype": "Agreement Tracking",
+					# "source_type": Missing
+					"agreement_category": "Operativo",
+					"responsible_party": self.__class__.test_committee_member,
+					"priority": "Alta",
+					"agreement_text": "Test agreement",
+				},
+			},
+			{
+				"missing_field": "agreement_category",
+				"data": {
+					"doctype": "Agreement Tracking",
+					"source_type": "Asamblea",
+					# "agreement_category": Missing
+					"responsible_party": self.__class__.test_committee_member,
+					"priority": "Alta",
+					"agreement_text": "Test agreement",
+				},
+			},
+			{
+				"missing_field": "responsible_party",
+				"data": {
+					"doctype": "Agreement Tracking",
+					"source_type": "Asamblea",
+					"agreement_category": "Operativo",
+					# "responsible_party": Missing
+					"priority": "Alta",
+					"agreement_text": "Test agreement",
+				},
+			},
+			{
+				"missing_field": "priority",
+				"data": {
+					"doctype": "Agreement Tracking",
+					"source_type": "Asamblea",
+					"agreement_category": "Operativo",
+					"responsible_party": self.__class__.test_committee_member,
+					# "priority": Missing
+					"agreement_text": "Test agreement",
+				},
+			},
+			{
+				"missing_field": "agreement_text",
+				"data": {
+					"doctype": "Agreement Tracking",
+					"source_type": "Asamblea",
+					"agreement_category": "Operativo",
+					"responsible_party": self.__class__.test_committee_member,
+					"priority": "Alta",
+					# "agreement_text": Missing
+				},
+			},
+		]
+
+		for test_case in test_cases:
+			with self.subTest(missing_field=test_case["missing_field"]):
+				agreement = frappe.get_doc(test_case["data"])
+
+				# Critical: This MUST raise an exception for mandatory fields
+				# If this doesn't raise an exception, we have a serious problem
+				try:
+					agreement.insert(ignore_permissions=True)
+					# If we get here, the validation failed - this is BAD
+					self.fail(
+						f"CRITICAL: Mandatory field '{test_case['missing_field']}' validation failed! "
+						f"Document was created without required field. This indicates a serious "
+						f"configuration or framework issue that could lead to data corruption."
+					)
+				except Exception as e:
+					# Good - an exception was raised as expected
+					# Verify it's the right type of exception
+					self.assertIn(
+						type(e).__name__,
+						["MandatoryError", "ValidationError", "RequiredError"],
+						f"Expected mandatory field exception for '{test_case['missing_field']}', "
+						f"got {type(e).__name__}: {e!s}",
+					)
 
 	def test_successful_agreement_creation_with_all_fields(self):
 		"""Test successful creation when all required fields are provided"""
