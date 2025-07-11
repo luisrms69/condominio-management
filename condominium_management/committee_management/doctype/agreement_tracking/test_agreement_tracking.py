@@ -19,6 +19,16 @@ class TestAgreementTrackingCorrected(FrappeTestCase):
 		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Committee Company"')
 		frappe.db.sql('DELETE FROM `tabAgreement Tracking` WHERE responsible_party LIKE "%test_agreement%"')
 
+		# Clean up committee roles
+		committee_roles = [
+			"Presidente del Comité",
+			"Secretario del Comité",
+			"Tesorero del Comité",
+			"Miembro del Comité",
+		]
+		for role_name in committee_roles:
+			frappe.db.sql("DELETE FROM `tabRole` WHERE role_name = %s", (role_name,))
+
 		# Commit cleanup before creating new test data
 		frappe.db.commit()
 
@@ -42,6 +52,16 @@ class TestAgreementTrackingCorrected(FrappeTestCase):
 			frappe.db.sql('DELETE FROM `tabProperty Status Type` WHERE status_type_name = "Activo"')
 		except Exception:
 			pass  # Ignore if tables don't exist
+
+		# Clean up committee roles
+		committee_roles = [
+			"Presidente del Comité",
+			"Secretario del Comité",
+			"Tesorero del Comité",
+			"Miembro del Comité",
+		]
+		for role_name in committee_roles:
+			frappe.db.sql("DELETE FROM `tabRole` WHERE role_name = %s", (role_name,))
 
 		# Final commit
 		frappe.db.commit()
@@ -77,6 +97,9 @@ class TestAgreementTrackingCorrected(FrappeTestCase):
 
 		# Create required master data
 		cls.create_test_masters()
+
+		# Create required committee roles in Spanish (needed for Committee Member)
+		cls.create_committee_roles()
 
 		# Create test property registry (required for committee member)
 		if not frappe.db.exists("Property Registry", {"property_code": "PROP-TEST-001"}):
@@ -158,6 +181,23 @@ class TestAgreementTrackingCorrected(FrappeTestCase):
 				}
 			)
 			status_type.insert(ignore_permissions=True)
+
+	@classmethod
+	def create_committee_roles(cls):
+		"""Create required committee roles in Spanish"""
+		committee_roles = [
+			"Presidente del Comité",
+			"Secretario del Comité",
+			"Tesorero del Comité",
+			"Miembro del Comité",
+		]
+
+		for role_name in committee_roles:
+			if not frappe.db.exists("Role", role_name):
+				frappe.db.sql(
+					"INSERT INTO `tabRole` (name, role_name, desk_access) VALUES (%s, %s, %s)",
+					(role_name, role_name, 1),
+				)
 
 	def test_agreement_tracking_creation(self):
 		"""Test basic agreement tracking creation with ALL REQUIRED FIELDS"""
