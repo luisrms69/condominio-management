@@ -9,12 +9,69 @@ from frappe.utils import add_days, nowdate
 
 
 class TestCommitteeMember(FrappeTestCase):
-	def setUp(self):
-		"""Set up test data"""
-		self.setup_test_data()
+	@classmethod
+	def setUpClass(cls):
+		"""Set up test data once for all tests - REGLA #29 Pattern"""
+		# Clean up any existing test data FIRST (critical for unique constraints)
+		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code = "TEST-PROP-001"')
+		frappe.db.sql('DELETE FROM `tabCommittee Member` WHERE user = "test_committee@example.com"')
+		frappe.db.sql('DELETE FROM `tabUser` WHERE email = "test_committee@example.com"')
+		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Company"')
 
-	def setup_test_data(self):
+		# Clean up test roles
+		test_roles = ["Committee President", "Committee Secretary", "Committee Treasurer", "Committee Member"]
+		for role_name in test_roles:
+			frappe.db.sql("DELETE FROM `tabRole` WHERE role_name = %s", (role_name,))
+
+		# Commit cleanup before creating new test data
+		frappe.db.commit()
+
+		# Now create test data
+		cls.setup_test_data()
+
+	@classmethod
+	def tearDownClass(cls):
+		"""Clean up test data after all tests - REGLA #29 Pattern"""
+		# Clean up all test data using SQL (bypasses validation)
+		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code = "TEST-PROP-001"')
+		frappe.db.sql('DELETE FROM `tabCommittee Member` WHERE user = "test_committee@example.com"')
+		frappe.db.sql('DELETE FROM `tabUser` WHERE email = "test_committee@example.com"')
+		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Company"')
+
+		# Clean up test roles
+		test_roles = ["Committee President", "Committee Secretary", "Committee Treasurer", "Committee Member"]
+		for role_name in test_roles:
+			frappe.db.sql("DELETE FROM `tabRole` WHERE role_name = %s", (role_name,))
+
+		# Final commit
+		frappe.db.commit()
+		frappe.clear_cache()
+
+	@classmethod
+	def setup_test_data(cls):
 		"""Create test data for committee member tests"""
+		# Create a test company if it doesn't exist
+		if not frappe.db.exists("Company", "Test Company"):
+			frappe.db.sql(
+				"INSERT INTO `tabCompany` (name, company_name, abbr, default_currency) VALUES ('Test Company', 'Test Company', 'TC', 'USD')"
+			)
+			frappe.db.commit()
+
+		# Create required committee roles if they don't exist
+		committee_roles = [
+			"Committee President",
+			"Committee Secretary",
+			"Committee Treasurer",
+			"Committee Member",
+		]
+
+		for role_name in committee_roles:
+			if not frappe.db.exists("Role", role_name):
+				frappe.db.sql(
+					"INSERT INTO `tabRole` (name, role_name, desk_access) VALUES (%s, %s, %s)",
+					(role_name, role_name, 1),
+				)
+
 		# Create a test user if it doesn't exist
 		if not frappe.db.exists("User", "test_committee@example.com"):
 			user = frappe.get_doc(
@@ -28,17 +85,29 @@ class TestCommitteeMember(FrappeTestCase):
 			)
 			user.insert(ignore_permissions=True)
 
-		# Create a test property registry if it doesn't exist
-		if not frappe.db.exists("Property Registry", "TEST-PROP-001"):
+		# Create a test property registry if it doesn't exist with property_code TEST-PROP-001
+		existing_property = frappe.db.get_value(
+			"Property Registry", {"property_code": "TEST-PROP-001"}, "name"
+		)
+		if not existing_property:
 			property_doc = frappe.get_doc(
 				{
 					"doctype": "Property Registry",
 					"property_code": "TEST-PROP-001",
-					"property_type": "Apartamento",
+					"property_name": "Test Property Committee",
+					"naming_series": "PROP-.YYYY.-",
+					"company": "Test Company",
+					"property_usage_type": "Residencial",
+					"acquisition_type": "Compra",
+					"property_status_type": "Activo",
+					"registration_date": nowdate(),
 					"is_active": 1,
 				}
 			)
 			property_doc.insert(ignore_permissions=True)
+			cls.test_property_name = property_doc.name
+		else:
+			cls.test_property_name = existing_property
 
 	def test_committee_member_creation(self):
 		"""Test basic committee member creation"""
@@ -46,7 +115,7 @@ class TestCommitteeMember(FrappeTestCase):
 			{
 				"doctype": "Committee Member",
 				"user": "test_committee@example.com",
-				"property_registry": "TEST-PROP-001",
+				"property_registry": self.test_property_name,
 				"role_in_committee": "Vocal",
 				"start_date": nowdate(),
 				"responsibilities": "Participar en reuniones del comité",
@@ -71,7 +140,7 @@ class TestCommitteeMember(FrappeTestCase):
 			{
 				"doctype": "Committee Member",
 				"user": "test_committee@example.com",
-				"property_registry": "TEST-PROP-001",
+				"property_registry": self.test_property_name,
 				"role_in_committee": "Presidente",
 				"start_date": nowdate(),
 			}
@@ -83,7 +152,7 @@ class TestCommitteeMember(FrappeTestCase):
 			{
 				"doctype": "Committee Member",
 				"user": "test_committee@example.com",
-				"property_registry": "TEST-PROP-001",
+				"property_registry": self.test_property_name,
 				"role_in_committee": "Presidente",
 				"start_date": nowdate(),
 			}
@@ -102,7 +171,7 @@ class TestCommitteeMember(FrappeTestCase):
 			{
 				"doctype": "Committee Member",
 				"user": "test_committee@example.com",
-				"property_registry": "TEST-PROP-001",
+				"property_registry": self.test_property_name,
 				"role_in_committee": "Presidente",
 				"start_date": nowdate(),
 			}
@@ -119,7 +188,7 @@ class TestCommitteeMember(FrappeTestCase):
 			{
 				"doctype": "Committee Member",
 				"user": "test_committee@example.com",
-				"property_registry": "TEST-PROP-001",
+				"property_registry": self.test_property_name,
 				"role_in_committee": "Vocal",
 				"start_date": nowdate(),
 			}
@@ -146,7 +215,7 @@ class TestCommitteeMember(FrappeTestCase):
 				{
 					"doctype": "Committee Member",
 					"user": "test_committee@example.com",
-					"property_registry": "TEST-PROP-001",
+					"property_registry": self.test_property_name,
 					"role_in_committee": role,
 					"start_date": nowdate(),
 				}
@@ -167,7 +236,7 @@ class TestCommitteeMember(FrappeTestCase):
 			{
 				"doctype": "Committee Member",
 				"user": "test_committee@example.com",
-				"property_registry": "TEST-PROP-001",
+				"property_registry": self.test_property_name,
 				"role_in_committee": "Vocal",
 				"start_date": nowdate(),
 				"end_date": add_days(nowdate(), -1),  # End date before start date
@@ -184,7 +253,7 @@ class TestCommitteeMember(FrappeTestCase):
 			{
 				"doctype": "Committee Member",
 				"user": "test_committee@example.com",
-				"property_registry": "TEST-PROP-001",
+				"property_registry": self.test_property_name,
 				"role_in_committee": "Tesorero",
 				"start_date": nowdate(),
 				"expense_approval_limit": 5000,
@@ -201,7 +270,7 @@ class TestCommitteeMember(FrappeTestCase):
 			{
 				"doctype": "Committee Member",
 				"user": "test_committee@example.com",
-				"property_registry": "TEST-PROP-001",
+				"property_registry": self.test_property_name,
 				"role_in_committee": "Vocal",
 				"start_date": nowdate(),
 			}
@@ -225,7 +294,7 @@ class TestCommitteeMember(FrappeTestCase):
 				{
 					"doctype": "Committee Member",
 					"user": "test_committee@example.com",
-					"property_registry": "TEST-PROP-001",
+					"property_registry": self.test_property_name,
 					"role_in_committee": role,
 					"start_date": nowdate(),
 				}
@@ -254,7 +323,7 @@ class TestCommitteeMember(FrappeTestCase):
 			{
 				"doctype": "Committee Member",
 				"user": "test_committee@example.com",
-				"property_registry": "TEST-PROP-001",
+				"property_registry": self.test_property_name,
 				"role_in_committee": "Presidente",
 				"start_date": nowdate(),
 			}
