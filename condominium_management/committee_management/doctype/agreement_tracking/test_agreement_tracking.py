@@ -225,9 +225,81 @@ class TestAgreementTrackingCorrected(FrappeTestCase):
 		self.assertEqual(agreement.status, "Pendiente")
 		self.assertEqual(agreement.priority, "Alta")
 
-	# NOTE: Mandatory field validation tests removed
-	# Frappe Framework handles mandatory field validation automatically
-	# These tests were causing false failures and are not necessary
+	def test_mandatory_field_validation_source_type(self):
+		"""Test that source_type is mandatory - Frappe Framework best practice"""
+		# Test missing source_type (required field)
+		with self.assertRaises(frappe.ValidationError):
+			agreement = frappe.get_doc(
+				{
+					"doctype": "Agreement Tracking",
+					# "source_type": Missing required field
+					"agreement_category": "Operativo",
+					"responsible_party": self.__class__.test_committee_member,
+					"priority": "Alta",
+					"agreement_text": "Test agreement",
+				}
+			)
+			agreement.insert(ignore_permissions=True)
+
+	def test_mandatory_field_validation_agreement_text(self):
+		"""Test that agreement_text is mandatory - Frappe Framework best practice"""
+		with self.assertRaises(frappe.ValidationError):
+			agreement = frappe.get_doc(
+				{
+					"doctype": "Agreement Tracking",
+					"source_type": "Asamblea",
+					"agreement_category": "Operativo",
+					"responsible_party": self.__class__.test_committee_member,
+					"priority": "Alta",
+					# "agreement_text": Missing required field
+				}
+			)
+			agreement.insert(ignore_permissions=True)
+
+	def test_mandatory_field_validation_category(self):
+		"""Test that agreement_category is mandatory - Frappe Framework best practice"""
+		with self.assertRaises(frappe.ValidationError):
+			agreement = frappe.get_doc(
+				{
+					"doctype": "Agreement Tracking",
+					"source_type": "Asamblea",
+					# "agreement_category": Missing required field
+					"responsible_party": self.__class__.test_committee_member,
+					"priority": "Alta",
+					"agreement_text": "Test agreement",
+				}
+			)
+			agreement.insert(ignore_permissions=True)
+
+	def test_mandatory_field_validation_responsible_party(self):
+		"""Test that responsible_party is mandatory - Frappe Framework best practice"""
+		with self.assertRaises(frappe.ValidationError):
+			agreement = frappe.get_doc(
+				{
+					"doctype": "Agreement Tracking",
+					"source_type": "Asamblea",
+					"agreement_category": "Operativo",
+					# "responsible_party": Missing required field
+					"priority": "Alta",
+					"agreement_text": "Test agreement",
+				}
+			)
+			agreement.insert(ignore_permissions=True)
+
+	def test_mandatory_field_validation_priority(self):
+		"""Test that priority is mandatory - Frappe Framework best practice"""
+		with self.assertRaises(frappe.ValidationError):
+			agreement = frappe.get_doc(
+				{
+					"doctype": "Agreement Tracking",
+					"source_type": "Asamblea",
+					"agreement_category": "Operativo",
+					"responsible_party": self.__class__.test_committee_member,
+					# "priority": Missing required field
+					"agreement_text": "Test agreement",
+				}
+			)
+			agreement.insert(ignore_permissions=True)
 
 	def test_date_validation(self):
 		"""Test that agreement date must be before due date"""
