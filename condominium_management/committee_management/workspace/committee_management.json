@@ -1,0 +1,364 @@
+{
+ "category": "Modules",
+ "charts": [
+  {
+   "chart_name": "Committee Performance Overview",
+   "label": "Resumen de Rendimiento del Comité"
+  },
+  {
+   "chart_name": "Assembly Participation Trends",
+   "label": "Tendencias de Participación en Asambleas"
+  },
+  {
+   "chart_name": "Agreement Completion Status",
+   "label": "Estado de Cumplimiento de Acuerdos"
+  }
+ ],
+ "creation": "2025-07-11 10:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "extends": "",
+ "extends_another_page": 0,
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "gavel",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "label": "Gestión de Comités",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Gestión Democrática",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Miembro del Comité",
+   "link_count": 4,
+   "link_to": "Committee Member",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reunión del Comité",
+   "link_count": 0,
+   "link_to": "Committee Meeting",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Gestión de Asambleas",
+   "link_count": 0,
+   "link_to": "Assembly Management",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sistema de Votación",
+   "link_count": 0,
+   "link_to": "Voting System",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Seguimiento y Control",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Seguimiento de Acuerdos",
+   "link_count": 0,
+   "link_to": "Agreement Tracking",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "KPI del Comité",
+   "link_count": 0,
+   "link_to": "Committee KPI",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Programa de Reuniones",
+   "link_count": 0,
+   "link_to": "Meeting Schedule",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Participación Comunitaria",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Encuesta del Comité",
+   "link_count": 0,
+   "link_to": "Committee Poll",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Evento Comunitario",
+   "link_count": 0,
+   "link_to": "Community Event",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reportes Ejecutivos",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Reporte de Rendimiento del Comité",
+   "link_count": 0,
+   "link_to": "Committee Performance Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Reporte de Participación en Asambleas",
+   "link_count": 0,
+   "link_to": "Assembly Participation Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Reporte de Estado de Acuerdos",
+   "link_count": 0,
+   "link_to": "Agreement Status Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Reporte de Eventos Comunitarios",
+   "link_count": 0,
+   "link_to": "Community Events Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Configuración",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Configuración de Comité",
+   "link_count": 0,
+   "link_to": "/app/committee-management-settings",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2025-07-11 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Committee Management",
+ "number_cards": [
+  {
+   "aggregate_function_based_on": "",
+   "color": "#29cd42",
+   "filters_json": "[[\"Committee Member\",\"is_active\",\"=\",1]]",
+   "function": "Count",
+   "is_public": 0,
+   "label": "Miembros Activos",
+   "stats_time_interval": "Daily",
+   "type": "DocType"
+  },
+  {
+   "aggregate_function_based_on": "",
+   "color": "#ffa00a",
+   "filters_json": "[[\"Committee Meeting\",\"meeting_status\",\"=\",\"Programada\"]]",
+   "function": "Count",
+   "is_public": 0,
+   "label": "Reuniones Programadas",
+   "stats_time_interval": "Daily",
+   "type": "DocType"
+  },
+  {
+   "aggregate_function_based_on": "",
+   "color": "#a83333",
+   "filters_json": "[[\"Agreement Tracking\",\"status\",\"=\",\"Vencido\"]]",
+   "function": "Count",
+   "is_public": 0,
+   "label": "Acuerdos Vencidos",
+   "stats_time_interval": "Daily",
+   "type": "DocType"
+  },
+  {
+   "aggregate_function_based_on": "",
+   "color": "#7575ff",
+   "filters_json": "[[\"Committee Poll\",\"poll_status\",\"=\",\"Activa\"]]",
+   "function": "Count",
+   "is_public": 0,
+   "label": "Encuestas Activas",
+   "stats_time_interval": "Daily",
+   "type": "DocType"
+  },
+  {
+   "aggregate_function_based_on": "",
+   "color": "#ff7846",
+   "filters_json": "[[\"Community Event\",\"event_status\",\"=\",\"Planificado\"]]",
+   "function": "Count",
+   "is_public": 0,
+   "label": "Eventos Planificados",
+   "stats_time_interval": "Daily",
+   "type": "DocType"
+  },
+  {
+   "aggregate_function_based_on": "actual_quorum_percentage",
+   "color": "#28a745",
+   "filters_json": "[[\"Assembly Management\",\"assembly_status\",\"=\",\"Completada\"]]",
+   "function": "Average",
+   "is_public": 0,
+   "label": "Quórum Promedio (%)",
+   "stats_time_interval": "Monthly",
+   "type": "DocType"
+  }
+ ],
+ "owner": "Administrator",
+ "parent": "",
+ "parentfield": "",
+ "parenttype": "",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Committee Meeting",
+   "filters": "[[\"Committee Meeting\",\"meeting_date\",\">\",\"Today\"]]",
+   "label": "Próximas Reuniones",
+   "stats_filter": "creation"
+  },
+  {
+   "document_type": "Agreement Tracking",
+   "filters": "[[\"Agreement Tracking\",\"status\",\"in\",[\"Pendiente\",\"En Progreso\"]]]",
+   "label": "Acuerdos Pendientes",
+   "stats_filter": "creation"
+  },
+  {
+   "document_type": "Committee Poll",
+   "filters": "[[\"Committee Poll\",\"poll_status\",\"=\",\"Activa\"]]",
+   "label": "Encuestas Activas",
+   "stats_filter": "creation"
+  },
+  {
+   "document_type": "Community Event",
+   "filters": "[[\"Community Event\",\"event_start_date\",\">\",\"Today\"]]",
+   "label": "Próximos Eventos",
+   "stats_filter": "creation"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 20.0,
+ "shortcuts": [
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Nueva Reunión",
+   "link_to": "Committee Meeting",
+   "restrict_to_domain": "",
+   "stats_filter": "creation",
+   "type": "DocType"
+  },
+  {
+   "color": "Orange",
+   "doc_view": "New",
+   "label": "Nueva Asamblea",
+   "link_to": "Assembly Management",
+   "restrict_to_domain": "",
+   "stats_filter": "creation",
+   "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "doc_view": "New",
+   "label": "Nueva Encuesta",
+   "link_to": "Committee Poll",
+   "restrict_to_domain": "",
+   "stats_filter": "creation",
+   "type": "DocType"
+  },
+  {
+   "color": "Purple",
+   "doc_view": "New",
+   "label": "Nuevo Evento",
+   "link_to": "Community Event",
+   "restrict_to_domain": "",
+   "stats_filter": "creation",
+   "type": "DocType"
+  }
+ ],
+ "title": "Gestión de Comités"
+}

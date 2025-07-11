@@ -1,0 +1,229 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:CM-{YY}-{MM}-{###}",
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "user",
+  "property_registry",
+  "full_name",
+  "phone_emergency",
+  "email_secondary",
+  "column_break_7",
+  "role_in_committee",
+  "committee_position_weight",
+  "start_date",
+  "end_date",
+  "is_active",
+  "responsibilities_section",
+  "responsibilities",
+  "permissions_section",
+  "can_approve_expenses",
+  "expense_approval_limit",
+  "can_call_assembly",
+  "can_sign_documents",
+  "can_create_polls",
+  "signature_section",
+  "signature_image"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Usuario del Sistema",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "property_registry",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Propiedad que Representa",
+   "options": "Property Registry",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "user.full_name",
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Nombre Completo",
+   "read_only": 1
+  },
+  {
+   "fieldname": "phone_emergency",
+   "fieldtype": "Phone",
+   "label": "Teléfono de Emergencia"
+  },
+  {
+   "fieldname": "email_secondary",
+   "fieldtype": "Data",
+   "label": "Email Alternativo"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "role_in_committee",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Cargo en el Comité",
+   "options": "Presidente\nSecretario\nTesorero\nVocal",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "committee_position_weight",
+   "fieldtype": "Int",
+   "label": "Peso del Cargo (Jerarquía)",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Fecha de Inicio",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Finalización"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Activo"
+  },
+  {
+   "fieldname": "responsibilities_section",
+   "fieldtype": "Section Break",
+   "label": "Responsabilidades"
+  },
+  {
+   "fieldname": "responsibilities",
+   "fieldtype": "Small Text",
+   "label": "Responsabilidades del Cargo"
+  },
+  {
+   "fieldname": "permissions_section",
+   "fieldtype": "Section Break",
+   "label": "Permisos Especiales"
+  },
+  {
+   "default": "0",
+   "fieldname": "can_approve_expenses",
+   "fieldtype": "Check",
+   "label": "Puede Aprobar Gastos"
+  },
+  {
+   "depends_on": "can_approve_expenses",
+   "fieldname": "expense_approval_limit",
+   "fieldtype": "Currency",
+   "label": "Límite de Aprobación de Gastos"
+  },
+  {
+   "default": "0",
+   "fieldname": "can_call_assembly",
+   "fieldtype": "Check",
+   "label": "Puede Convocar Asambleas"
+  },
+  {
+   "default": "0",
+   "fieldname": "can_sign_documents",
+   "fieldtype": "Check",
+   "label": "Puede Firmar Documentos"
+  },
+  {
+   "default": "0",
+   "fieldname": "can_create_polls",
+   "fieldtype": "Check",
+   "label": "Puede Crear Encuestas"
+  },
+  {
+   "depends_on": "can_sign_documents",
+   "fieldname": "signature_section",
+   "fieldtype": "Section Break",
+   "label": "Firma Digital"
+  },
+  {
+   "fieldname": "signature_image",
+   "fieldtype": "Attach Image",
+   "label": "Imagen de Firma"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Committee Member",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee President",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Secretary",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

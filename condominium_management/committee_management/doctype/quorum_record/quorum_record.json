@@ -1,0 +1,103 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "property_registry",
+  "owner_name",
+  "ownership_percentage",
+  "column_break_4",
+  "attendance_status",
+  "attendance_time",
+  "check_in_method",
+  "section_break_8",
+  "proxy_document",
+  "proxy_holder"
+ ],
+ "fields": [
+  {
+   "fieldname": "property_registry",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Registro de Propiedad",
+   "options": "Property Registry",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "property_registry.owner_name",
+   "fieldname": "owner_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Propietario",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "property_registry.ownership_percentage",
+   "fieldname": "ownership_percentage",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "Porcentaje de Propiedad",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "attendance_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado de Asistencia",
+   "options": "Presente\nRepresentado\nAusente",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.attendance_status == 'Presente' || doc.attendance_status == 'Representado'",
+   "fieldname": "attendance_time",
+   "fieldtype": "Datetime",
+   "label": "Hora de Asistencia"
+  },
+  {
+   "depends_on": "eval:doc.attendance_status == 'Presente' || doc.attendance_status == 'Representado'",
+   "fieldname": "check_in_method",
+   "fieldtype": "Select",
+   "label": "Método de Registro",
+   "options": "Manual\nQR\nDigital"
+  },
+  {
+   "depends_on": "eval:doc.attendance_status == 'Representado'",
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break",
+   "label": "Información de Representación"
+  },
+  {
+   "depends_on": "eval:doc.attendance_status == 'Representado'",
+   "fieldname": "proxy_document",
+   "fieldtype": "Attach",
+   "label": "Documento de Representación"
+  },
+  {
+   "depends_on": "eval:doc.attendance_status == 'Representado'",
+   "fieldname": "proxy_holder",
+   "fieldtype": "Link",
+   "label": "Representante",
+   "options": "Property Registry"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Quorum Record",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

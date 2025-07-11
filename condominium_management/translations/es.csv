@@ -24,3 +24,242 @@ Conflict Detection Field,Campo de Detección de Conflictos
 Community Contributions,Contribuciones de la Comunidad
 Contribution Category,Categoría de Contribución
 Contribution Request,Solicitud de Contribución
+Physical Spaces,Espacios Físicos
+Physical Space,Espacio Físico
+Space Category,Categoría de Espacio
+Space Component,Componente de Espacio
+Component Type,Tipo de Componente
+Committee Management,Gestión de Comités
+Committee Member,Miembro del Comité
+Committee Meeting,Reunión del Comité
+Assembly Management,Gestión de Asambleas
+Voting System,Sistema de Votación
+Agreement Tracking,Seguimiento de Acuerdos
+Committee Poll,Encuesta del Comité
+Community Event,Evento Comunitario
+Committee KPI,KPI del Comité
+Meeting Schedule,Programa de Reuniones
+Meeting Attendee,Asistente de Reunión
+Meeting Agenda Item,Punto de Agenda de Reunión
+Assembly Agenda,Agenda de Asamblea
+Quorum Record,Registro de Quórum
+Vote Record,Registro de Voto
+Progress Update,Actualización de Progreso
+Poll Option,Opción de Encuesta
+Event Organizer,Organizador de Evento
+Event Expense,Gasto de Evento
+Event Activity,Actividad de Evento
+Event Registration,Registro de Evento
+Scheduled Meeting Item,Elemento de Reunión Programada
+Active,Activo
+Inactive,Inactivo
+Draft,Borrador
+Submitted,Enviado
+Cancelled,Cancelado
+Pending,Pendiente
+In Progress,En Progreso
+Completed,Completado
+Overdue,Vencido
+Approved,Aprobado
+Rejected,Rechazado
+Open,Abierto
+Closed,Cerrado
+Planned,Planificado
+Scheduled,Programado
+Present,Presente
+Absent,Ausente
+Virtual,Virtual
+Excused,Justificado
+In Favor,A Favor
+Against,En Contra
+Abstention,Abstención
+High,Alta
+Medium,Media
+Low,Baja
+Critical,Crítica
+Ordinary,Ordinaria
+Extraordinary,Extraordinaria
+Emergency,Emergencia
+In-Person,Presencial
+Hybrid,Híbrida
+Simple Majority,Mayoría Simple
+Qualified Majority,Mayoría Calificada
+Unanimous,Unánime
+Monthly,Mensual
+Quarterly,Trimestral
+Semestral,Semestral
+Annual,Anual
+Financial,Financiero
+Operational,Operativo
+Legal,Legal
+Social,Social
+Maintenance,Mantenimiento
+Security,Seguridad
+Other,Otro
+President,Presidente
+Secretary,Secretario
+Treasurer,Tesorero
+Board Member,Vocal
+Assembly Participant,Participante de Asamblea
+Valid,Válido
+Invalid,Inválido
+Eligible,Elegible
+Not Eligible,No Elegible
+Anonymous,Anónimo
+Public,Público
+Committee Only,Solo Comité
+All Owners,Todos los Propietarios
+Resident Owners,Propietarios Residentes
+Specific Group,Grupo Específico
+Cultural,Cultural
+Sports,Deportivo
+Festive,Festivo
+Educational,Educativo
+Workshop,Taller
+Information Meeting,Reunión Informativa
+Food and Beverages,Comida y Bebidas
+Decoration,Decoración
+Entertainment,Entretenimiento
+Logistics,Logística
+Equipment and Sound,Equipo y Sonido
+Cleaning,Limpieza
+Materials,Materiales
+Paid,Pagado
+Partial,Parcial
+Committee,Comité
+Owner,Propietario
+Resident,Residente
+External Volunteer,Voluntario Externo
+Weekly,Semanal
+Assembly Resolution,Resolución de Asamblea
+Committee Decision,Decisión del Comité
+Direct Decision,Decisión Directa
+Already exists an active President for this company,Ya existe un Presidente activo para esta empresa
+Property registry must be active to assign a committee member,El registro de propiedad debe estar activo para asignar un miembro del comité
+Start date must be before end date,La fecha de inicio debe ser anterior a la fecha de fin
+Meeting date is in the past,La fecha de la reunión es en el pasado
+Must specify a physical space for in-person or hybrid meetings,Debe especificar un espacio físico para reuniones presenciales o híbridas
+Must specify a virtual meeting link for virtual or hybrid meetings,Debe especificar un enlace de reunión virtual para reuniones virtuales o híbridas
+All agenda items must have a title,Todos los elementos de la agenda deben tener un título
+Cannot have duplicate committee members in attendee list,No puede haber miembros del comité duplicados en la lista de asistentes
+Must provide a meeting summary to mark as completed,Debe proporcionar un resumen de la reunión para marcarla como completada
+There are agenda items without recorded decisions,Hay elementos de la agenda sin decisión registrada
+Convocation date must be before assembly date,La fecha de convocatoria debe ser anterior a la fecha de la asamblea
+First call quorum must be greater than second call quorum,El quórum de primera convocatoria debe ser mayor al de segunda convocatoria
+Must register at least one participant in quorum to submit assembly,Debe registrar al menos un participante en el quórum para enviar la asamblea
+Current quorum is less than required,El quórum actual es menor al requerido
+Agenda items requiring voting must specify voting type,Los elementos de la agenda que requieren votación deben especificar el tipo de votación
+Extraordinary assemblies must specify reason,Las asambleas extraordinarias deben especificar la razón
+Voting start date must be before end date,La fecha de inicio de votación debe ser anterior a la fecha de fin
+Required percentage must be between 0 and 100,El porcentaje requerido debe estar entre 0 y 100
+All voters must have validated eligibility,Todos los votantes deben tener elegibilidad validada
+Voting should be closed as end date has passed,La votación debería estar cerrada ya que la fecha de fin ha pasado
+Agreement date must be before due date,La fecha del acuerdo debe ser anterior a la fecha de vencimiento
+Completion percentage must be between 0 and 100,El porcentaje de completitud debe estar entre 0 y 100
+Responsible person must be a valid committee member,La persona responsable debe ser un miembro del comité válido
+Poll start date must be before end date,La fecha de inicio de la encuesta debe ser anterior a la fecha de fin
+Poll must have at least one option,La encuesta debe tener al menos una opción
+Cannot close poll before its end date,No se puede cerrar una encuesta antes de su fecha de fin
+Event start date must be before or equal to end date,La fecha de inicio del evento debe ser anterior o igual a la fecha de fin
+Approved budget cannot be negative,El presupuesto aprobado no puede ser negativo
+Event expenses exceed approved budget,Los gastos del evento exceden el presupuesto aprobado
+Registration limit cannot be negative,El límite de registro no puede ser negativo
+Registration limit exceeds physical space capacity,El límite de registro excede la capacidad del espacio físico
+KPI value cannot be negative,El valor de KPI no puede ser negativo
+Value must be between 0 and 100,El valor debe estar entre 0 y 100
+Monthly KPIs must specify month,Los KPIs mensuales deben especificar el mes
+Cannot create schedules for years too far in the past,No se pueden crear programas para años muy anteriores
+Must schedule at least one meeting,Debe programar al menos una reunión
+All meetings must be in the schedule year,Todas las reuniones deben estar en el año del programa
+Cannot have duplicate meeting dates,No puede haber fechas de reunión duplicadas
+Must have scheduled meetings to enable automatic creation,Debe tener reuniones programadas para habilitar la creación automática
+Today,Hoy
+Tomorrow,Mañana
+Yesterday,Ayer
+This Week,Esta Semana
+Next Week,Próxima Semana
+This Month,Este Mes
+Next Month,Próximo Mes
+Loading,Cargando
+Saving,Guardando
+Deleting,Eliminando
+Processing,Procesando
+Error,Error
+Success,Éxito
+Warning,Advertencia
+Information,Información
+Confirmation,Confirmación
+Are you sure?,¿Está seguro?
+Yes,Sí
+No,No
+Cancel,Cancelar
+Save,Guardar
+Submit,Enviar
+Update,Actualizar
+Delete,Eliminar
+View,Ver
+Edit,Editar
+Create,Crear
+Add,Agregar
+Remove,Quitar
+Search,Buscar
+Filter,Filtrar
+Sort,Ordenar
+Export,Exportar
+Print,Imprimir
+Email,Correo Electrónico
+Phone,Teléfono
+Address,Dirección
+Date,Fecha
+Time,Hora
+Name,Nombre
+Description,Descripción
+Notes,Notas
+Comments,Comentarios
+Attachments,Archivos Adjuntos
+Status,Estado
+Type,Tipo
+Category,Categoría
+Priority,Prioridad
+Responsible,Responsable
+Created By,Creado por
+Modified By,Modificado por
+Creation Date,Fecha de Creación
+Modified Date,Fecha de Modificación
+Due Date,Fecha de Vencimiento
+Start Date,Fecha de Inicio
+End Date,Fecha de Fin
+Total,Total
+Count,Cantidad
+Percentage,Porcentaje
+Amount,Cantidad
+Budget,Presupuesto
+Expenses,Gastos
+Balance,Saldo
+Details,Detalles
+Summary,Resumen
+Report,Reporte
+Dashboard,Panel de Control
+Settings,Configuraciones
+Preferences,Preferencias
+Profile,Perfil
+Account,Cuenta
+Login,Iniciar Sesión
+Logout,Cerrar Sesión
+Password,Contraseña
+Username,Usuario
+Full Name,Nombre Completo
+First Name,Nombre
+Last Name,Apellido
+Company,Empresa
+Department,Departamento
+Position,Cargo
+Role,Rol
+Permissions,Permisos
+Access,Acceso
+Rights,Derechos
+Owner,Propietario
+Manager,Gerente
+Administrator,Administrador
+User,Usuario
+Guest,Invitado
