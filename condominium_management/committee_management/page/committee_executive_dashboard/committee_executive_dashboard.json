@@ -1,0 +1,35 @@
+{
+ "content": null,
+ "creation": "2025-07-11 10:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2025-07-11 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "committee-executive-dashboard",
+ "owner": "Administrator",
+ "page_name": "Panel Ejecutivo del Comité",
+ "roles": [
+  {
+   "role": "Committee President"
+  },
+  {
+   "role": "Committee Secretary"
+  },
+  {
+   "role": "Committee Treasurer"
+  },
+  {
+   "role": "Property Administrator"
+  },
+  {
+   "role": "System Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Panel Ejecutivo del Comité"
+}

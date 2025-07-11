@@ -1,0 +1,229 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:MTG-{YY}-{MM}-{###}",
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "meeting_title",
+  "meeting_date",
+  "meeting_type",
+  "meeting_format",
+  "column_break_5",
+  "physical_space",
+  "virtual_meeting_link",
+  "is_scheduled_meeting",
+  "meeting_series",
+  "status",
+  "attendees_section",
+  "attendees",
+  "agenda_section",
+  "agenda_items",
+  "follow_up_section",
+  "next_meeting_scheduled",
+  "pending_items_count",
+  "completion_rate",
+  "meeting_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "meeting_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Título de la Reunión",
+   "reqd": 1
+  },
+  {
+   "fieldname": "meeting_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Fecha y Hora",
+   "reqd": 1
+  },
+  {
+   "fieldname": "meeting_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Reunión",
+   "options": "Ordinaria\nExtraordinaria\nEmergencia\nTrabajo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "meeting_format",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Formato",
+   "options": "Presencial\nVirtual\nHíbrida",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.meeting_format == 'Presencial' || doc.meeting_format == 'Híbrida'",
+   "fieldname": "physical_space",
+   "fieldtype": "Link",
+   "label": "Espacio Físico",
+   "options": "Physical Space"
+  },
+  {
+   "depends_on": "eval:doc.meeting_format == 'Virtual' || doc.meeting_format == 'Híbrida'",
+   "fieldname": "virtual_meeting_link",
+   "fieldtype": "Data",
+   "label": "Enlace de Reunión Virtual"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_scheduled_meeting",
+   "fieldtype": "Check",
+   "label": "Reunión Programada"
+  },
+  {
+   "depends_on": "is_scheduled_meeting",
+   "fieldname": "meeting_series",
+   "fieldtype": "Link",
+   "label": "Serie de Reuniones",
+   "options": "Meeting Schedule"
+  },
+  {
+   "default": "Planificada",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado",
+   "options": "Planificada\nEn Progreso\nCompletada\nCancelada\nPospuesta"
+  },
+  {
+   "fieldname": "attendees_section",
+   "fieldtype": "Section Break",
+   "label": "Asistentes"
+  },
+  {
+   "fieldname": "attendees",
+   "fieldtype": "Table",
+   "label": "Lista de Asistentes",
+   "options": "Meeting Attendee"
+  },
+  {
+   "fieldname": "agenda_section",
+   "fieldtype": "Section Break",
+   "label": "Agenda"
+  },
+  {
+   "fieldname": "agenda_items",
+   "fieldtype": "Table",
+   "label": "Puntos de Agenda",
+   "options": "Meeting Agenda Item"
+  },
+  {
+   "fieldname": "follow_up_section",
+   "fieldtype": "Section Break",
+   "label": "Seguimiento"
+  },
+  {
+   "fieldname": "next_meeting_scheduled",
+   "fieldtype": "Date",
+   "label": "Próxima Reunión Programada"
+  },
+  {
+   "fieldname": "pending_items_count",
+   "fieldtype": "Int",
+   "label": "Temas Pendientes",
+   "read_only": 1
+  },
+  {
+   "fieldname": "completion_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Cumplimiento",
+   "read_only": 1
+  },
+  {
+   "fieldname": "meeting_notes",
+   "fieldtype": "Text Editor",
+   "label": "Notas de la Reunión"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Committee Meeting",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee President",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Secretary",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Member",
+   "share": 1,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -1,0 +1,353 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:KPI-{YY}-{MM}",
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "period_information_section",
+  "period_year",
+  "period_month",
+  "calculation_date",
+  "status",
+  "governance_kpis_section",
+  "assembly_participation_rate",
+  "agreement_completion_rate",
+  "average_decision_time",
+  "meeting_attendance_rate",
+  "column_break_9",
+  "poll_participation_rate",
+  "voting_participation_rate",
+  "quorum_achievement_rate",
+  "community_engagement_score",
+  "financial_kpis_section",
+  "collection_efficiency",
+  "budget_variance",
+  "expense_reduction",
+  "column_break_16",
+  "reserve_fund_months",
+  "event_budget_efficiency",
+  "cost_per_resident",
+  "operational_kpis_section",
+  "maintenance_resolution_time",
+  "supplier_performance_avg",
+  "community_event_participation",
+  "column_break_23",
+  "incident_response_time",
+  "space_utilization_rate",
+  "agreement_fulfillment_rate",
+  "compliance_kpis_section",
+  "regulatory_compliance_score",
+  "document_update_status",
+  "policy_violations_trend",
+  "column_break_29",
+  "legal_requirement_compliance",
+  "audit_readiness_score",
+  "transparency_index",
+  "calculation_details_section",
+  "data_sources",
+  "calculation_methodology",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "period_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información del Período"
+  },
+  {
+   "fieldname": "period_year",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Año",
+   "reqd": 1
+  },
+  {
+   "fieldname": "period_month",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Mes",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "calculation_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Cálculo",
+   "read_only": 1
+  },
+  {
+   "default": "Borrador",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado",
+   "options": "Borrador\nCalculado\nAprobado\nPublicado"
+  },
+  {
+   "fieldname": "governance_kpis_section",
+   "fieldtype": "Section Break",
+   "label": "KPIs de Gestión Democrática"
+  },
+  {
+   "fieldname": "assembly_participation_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Participación en Asambleas"
+  },
+  {
+   "fieldname": "agreement_completion_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Cumplimiento de Acuerdos"
+  },
+  {
+   "fieldname": "average_decision_time",
+   "fieldtype": "Duration",
+   "label": "Tiempo Promedio de Decisión"
+  },
+  {
+   "fieldname": "meeting_attendance_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Asistencia a Reuniones"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "poll_participation_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Participación en Encuestas"
+  },
+  {
+   "fieldname": "voting_participation_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Participación en Votaciones"
+  },
+  {
+   "fieldname": "quorum_achievement_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Logro de Quórum"
+  },
+  {
+   "fieldname": "community_engagement_score",
+   "fieldtype": "Float",
+   "label": "Puntuación de Participación Comunitaria",
+   "precision": "2"
+  },
+  {
+   "fieldname": "financial_kpis_section",
+   "fieldtype": "Section Break",
+   "label": "KPIs Financieros"
+  },
+  {
+   "fieldname": "collection_efficiency",
+   "fieldtype": "Percent",
+   "label": "Eficiencia de Cobranza"
+  },
+  {
+   "fieldname": "budget_variance",
+   "fieldtype": "Percent",
+   "label": "Variación Presupuestal"
+  },
+  {
+   "fieldname": "expense_reduction",
+   "fieldtype": "Percent",
+   "label": "Reducción de Gastos"
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reserve_fund_months",
+   "fieldtype": "Float",
+   "label": "Meses de Fondo de Reserva",
+   "precision": "1"
+  },
+  {
+   "fieldname": "event_budget_efficiency",
+   "fieldtype": "Percent",
+   "label": "Eficiencia Presupuestal de Eventos"
+  },
+  {
+   "fieldname": "cost_per_resident",
+   "fieldtype": "Currency",
+   "label": "Costo por Residente"
+  },
+  {
+   "fieldname": "operational_kpis_section",
+   "fieldtype": "Section Break",
+   "label": "KPIs Operacionales"
+  },
+  {
+   "fieldname": "maintenance_resolution_time",
+   "fieldtype": "Duration",
+   "label": "Tiempo de Resolución de Mantenimiento"
+  },
+  {
+   "fieldname": "supplier_performance_avg",
+   "fieldtype": "Rating",
+   "label": "Desempeño Promedio de Proveedores"
+  },
+  {
+   "fieldname": "community_event_participation",
+   "fieldtype": "Percent",
+   "label": "Participación en Eventos Comunitarios"
+  },
+  {
+   "fieldname": "column_break_23",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "incident_response_time",
+   "fieldtype": "Duration",
+   "label": "Tiempo de Respuesta a Incidentes"
+  },
+  {
+   "fieldname": "space_utilization_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Utilización de Espacios"
+  },
+  {
+   "fieldname": "agreement_fulfillment_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Cumplimiento de Acuerdos"
+  },
+  {
+   "fieldname": "compliance_kpis_section",
+   "fieldtype": "Section Break",
+   "label": "KPIs de Cumplimiento"
+  },
+  {
+   "fieldname": "regulatory_compliance_score",
+   "fieldtype": "Percent",
+   "label": "Puntuación de Cumplimiento Regulatorio"
+  },
+  {
+   "fieldname": "document_update_status",
+   "fieldtype": "Percent",
+   "label": "Estado de Actualización de Documentos"
+  },
+  {
+   "fieldname": "policy_violations_trend",
+   "fieldtype": "Data",
+   "label": "Tendencia de Violaciones de Políticas"
+  },
+  {
+   "fieldname": "column_break_29",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "legal_requirement_compliance",
+   "fieldtype": "Percent",
+   "label": "Cumplimiento de Requisitos Legales"
+  },
+  {
+   "fieldname": "audit_readiness_score",
+   "fieldtype": "Percent",
+   "label": "Puntuación de Preparación para Auditoría"
+  },
+  {
+   "fieldname": "transparency_index",
+   "fieldtype": "Float",
+   "label": "Índice de Transparencia",
+   "precision": "2"
+  },
+  {
+   "fieldname": "calculation_details_section",
+   "fieldtype": "Section Break",
+   "label": "Detalles de Cálculo"
+  },
+  {
+   "fieldname": "data_sources",
+   "fieldtype": "Small Text",
+   "label": "Fuentes de Datos"
+  },
+  {
+   "fieldname": "calculation_methodology",
+   "fieldtype": "Text Editor",
+   "label": "Metodología de Cálculo"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text Editor",
+   "label": "Notas y Observaciones"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Committee KPI",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee President",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Secretary",
+   "share": 1,
+   "write": 0
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Member",
+   "share": 1,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

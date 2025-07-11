@@ -1,0 +1,104 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "property_registry",
+  "registrant_name",
+  "contact_phone",
+  "contact_email",
+  "column_break_5",
+  "adults_count",
+  "children_count",
+  "total_attendees",
+  "registration_date",
+  "section_break_10",
+  "special_requirements"
+ ],
+ "fields": [
+  {
+   "fieldname": "property_registry",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Registro de Propiedad",
+   "options": "Property Registry",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "property_registry.primary_owner_name",
+   "fieldname": "registrant_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Registrante",
+   "read_only": 1
+  },
+  {
+   "fieldname": "contact_phone",
+   "fieldtype": "Phone",
+   "label": "Teléfono de Contacto"
+  },
+  {
+   "fieldname": "contact_email",
+   "fieldtype": "Data",
+   "label": "Email de Contacto"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "adults_count",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Cantidad de Adultos",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "children_count",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Cantidad de Niños",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "total_attendees",
+   "fieldtype": "Int",
+   "label": "Total de Asistentes",
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "registration_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Registro",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "special_requirements",
+   "fieldtype": "Small Text",
+   "label": "Requerimientos Especiales"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Event Registration",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
