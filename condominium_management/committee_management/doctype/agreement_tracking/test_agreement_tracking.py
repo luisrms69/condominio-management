@@ -296,7 +296,7 @@ class TestAgreementTrackingCorrected(FrappeTestCase):
 
 		# Verify progress update was added
 		self.assertEqual(len(agreement.progress_updates), 1)
-		self.assertEqual(agreement.progress_updates[0].progress_percentage, 25)
+		self.assertEqual(agreement.progress_updates[0].percentage_complete, 25)
 		self.assertEqual(agreement.completion_percentage, 25)
 
 	def test_auto_status_update_completed(self):

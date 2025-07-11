@@ -245,7 +245,7 @@ class TestAgreementTracking(FrappeTestCase):
 		self.assertEqual(
 			agreement.progress_updates[0].update_description, "Primera actualización de progreso"
 		)
-		self.assertEqual(agreement.progress_updates[0].progress_percentage, 25)
+		self.assertEqual(agreement.progress_updates[0].percentage_complete, 25)
 		self.assertEqual(agreement.completion_percentage, 25)
 
 		# Clean up
