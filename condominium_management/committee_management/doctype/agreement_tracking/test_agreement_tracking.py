@@ -4,112 +4,55 @@
 import unittest
 
 import frappe
-from frappe.tests.utils import FrappeTestCase
 from frappe.utils import add_days, getdate, nowdate
 
+from condominium_management.committee_management.test_base import CommitteeTestBase
 
-class TestAgreementTrackingCorrected(FrappeTestCase):
+
+class TestAgreementTrackingCorrected(CommitteeTestBase):
+	# Configuration for this specific DocType
+	DOCTYPE_NAME = "Agreement Tracking"
+	TEST_IDENTIFIER_PATTERN = "%CTEST_agreement%"
+
+	REQUIRED_FIELDS = {
+		"doctype": "Agreement Tracking",
+		"source_type": "Asamblea",
+		"agreement_date": nowdate(),
+		"agreement_category": "Operativo",
+		"responsible_party": None,  # Set in setup_test_data
+		"priority": "Alta",
+		"agreement_text": "Acuerdo de prueba para testing automático",
+	}
+
+	@classmethod
+	def cleanup_specific_data(cls):
+		"""Cleanup specific to Agreement Tracking tests"""
+		# Specific cleanup for Agreement Tracking
+		frappe.db.sql('DELETE FROM `tabAgreement Tracking` WHERE responsible_party LIKE "%CTEST_agreement%"')
+		frappe.db.sql('DELETE FROM `tabCommittee Member` WHERE property_registry = "PROP-CTEST-001"')
+		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code = "PROP-CTEST-001"')
+
 	@classmethod
 	def setUpClass(cls):
-		"""Set up test data once for all tests - Forum-validated pattern"""
-		# Clean up any existing test data first (critical for unique constraints)
-		frappe.db.sql('DELETE FROM `tabCommittee Member` WHERE property_registry = "PROP-TEST-001"')
-		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code = "PROP-TEST-001"')
-		frappe.db.sql('DELETE FROM `tabUser` WHERE email = "test_agreement@example.com"')
-		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Committee Company"')
-		frappe.db.sql('DELETE FROM `tabAgreement Tracking` WHERE responsible_party LIKE "%test_agreement%"')
-
-		# Clean up committee roles
-		committee_roles = [
-			"Presidente del Comité",
-			"Secretario del Comité",
-			"Tesorero del Comité",
-			"Miembro del Comité",
-		]
-		for role_name in committee_roles:
-			frappe.db.sql("DELETE FROM `tabRole` WHERE role_name = %s", (role_name,))
-
-		# Commit cleanup before creating new test data
-		frappe.db.commit()
-
-		# Now create test data
-		cls.setup_test_data()
-
-	@classmethod
-	def tearDownClass(cls):
-		"""Clean up test data after all tests - Forum-validated pattern"""
-		# Clean up all test data using SQL (bypasses validation)
-		frappe.db.sql('DELETE FROM `tabCommittee Member` WHERE property_registry = "PROP-TEST-001"')
-		frappe.db.sql('DELETE FROM `tabProperty Registry` WHERE property_code = "PROP-TEST-001"')
-		frappe.db.sql('DELETE FROM `tabUser` WHERE email = "test_agreement@example.com"')
-		frappe.db.sql('DELETE FROM `tabCompany` WHERE company_name = "Test Committee Company"')
-		frappe.db.sql('DELETE FROM `tabAgreement Tracking` WHERE responsible_party LIKE "%test_agreement%"')
-
-		# Clean up masters (only if they exist)
-		try:
-			frappe.db.sql('DELETE FROM `tabProperty Usage Type` WHERE usage_type_name = "Residencial"')
-			frappe.db.sql('DELETE FROM `tabAcquisition Type` WHERE acquisition_type_name = "Compra"')
-			frappe.db.sql('DELETE FROM `tabProperty Status Type` WHERE status_type_name = "Activo"')
-		except Exception:
-			pass  # Ignore if tables don't exist
-
-		# Clean up committee roles
-		committee_roles = [
-			"Presidente del Comité",
-			"Secretario del Comité",
-			"Tesorero del Comité",
-			"Miembro del Comité",
-		]
-		for role_name in committee_roles:
-			frappe.db.sql("DELETE FROM `tabRole` WHERE role_name = %s", (role_name,))
-
-		# Final commit
-		frappe.db.commit()
-		frappe.clear_cache()
+		"""Set up test data using enhanced base class pattern"""
+		# Use parent setUpClass which handles shared infrastructure
+		super().setUpClass()
 
 	@classmethod
 	def setup_test_data(cls):
-		"""Create test data for agreement tracking tests"""
-		# Create test user
-		if not frappe.db.exists("User", "test_agreement@example.com"):
-			user = frappe.get_doc(
-				{
-					"doctype": "User",
-					"email": "test_agreement@example.com",
-					"first_name": "Test",
-					"last_name": "Agreement",
-					"user_type": "System User",
-				}
-			)
-			user.insert(ignore_permissions=True)
-
-		# Create test company first (required for property registry)
-		if not frappe.db.exists("Company", "Test Committee Company"):
-			company = frappe.get_doc(
-				{
-					"doctype": "Company",
-					"company_name": "Test Committee Company",
-					"abbr": "TCC",
-					"default_currency": "USD",
-				}
-			)
-			company.insert(ignore_permissions=True)
-
-		# Create required master data
-		cls.create_test_masters()
-
-		# Create required committee roles in Spanish (needed for Committee Member)
-		cls.create_committee_roles()
+		"""Create test data for agreement tracking tests - simplified using base class"""
+		# Get any available company for testing
+		test_company = frappe.db.get_single_value("Global Defaults", "default_company") or "Test Company"
 
 		# Create test property registry (required for committee member)
-		if not frappe.db.exists("Property Registry", {"property_code": "PROP-TEST-001"}):
+		if not frappe.db.exists("Property Registry", {"property_code": "PROP-CTEST-001"}):
 			property_registry = frappe.get_doc(
 				{
 					"doctype": "Property Registry",
 					"naming_series": "PROP-.YYYY.-",
-					"property_name": "Apartamento de Prueba",
-					"property_code": "PROP-TEST-001",
-					"company": "Test Committee Company",
+					"property_name": "Apartamento CTEST Prueba",
+					"property_code": "PROP-CTEST-001",
+					"company": test_company,
 					"property_usage_type": "Residencial",
 					"acquisition_type": "Compra",
 					"property_status_type": "Activo",
@@ -122,17 +65,17 @@ class TestAgreementTrackingCorrected(FrappeTestCase):
 			cls.test_property_registry = property_registry.name
 		else:
 			cls.test_property_registry = frappe.get_value(
-				"Property Registry", {"property_code": "PROP-TEST-001"}, "name"
+				"Property Registry", {"property_code": "PROP-CTEST-001"}, "name"
 			)
 
 		# Create test committee member
-		if not frappe.db.exists("Committee Member", {"user": "test_agreement@example.com"}):
+		if not frappe.db.exists("Committee Member", {"user": "CTEST_committee@example.com"}):
 			member = frappe.get_doc(
 				{
 					"doctype": "Committee Member",
-					"user": "test_agreement@example.com",
+					"user": "CTEST_committee@example.com",
 					"property_registry": cls.test_property_registry,
-					"full_name": "Test Agreement Member",
+					"full_name": "CTEST Agreement Member",
 					"role_in_committee": "Secretario",
 					"start_date": nowdate(),
 					"is_active": 1,
@@ -143,61 +86,15 @@ class TestAgreementTrackingCorrected(FrappeTestCase):
 			cls.test_committee_member = member.name
 		else:
 			cls.test_committee_member = frappe.get_value(
-				"Committee Member", {"user": "test_agreement@example.com"}, "name"
+				"Committee Member", {"user": "CTEST_committee@example.com"}, "name"
 			)
 
-	@classmethod
-	def create_test_masters(cls):
-		"""Create required master data for tests"""
-		# Create Property Usage Type
-		if not frappe.db.exists("Property Usage Type", "Residencial"):
-			usage_type = frappe.get_doc(
-				{
-					"doctype": "Property Usage Type",
-					"usage_type_name": "Residencial",
-					"description": "Uso residencial para vivienda",
-				}
-			)
-			usage_type.insert(ignore_permissions=True)
+		# Update REQUIRED_FIELDS with the created committee member
+		cls.REQUIRED_FIELDS["responsible_party"] = cls.test_committee_member
 
-		# Create Acquisition Type
-		if not frappe.db.exists("Acquisition Type", "Compra"):
-			acquisition_type = frappe.get_doc(
-				{
-					"doctype": "Acquisition Type",
-					"acquisition_type_name": "Compra",
-					"description": "Adquisición por compra",
-				}
-			)
-			acquisition_type.insert(ignore_permissions=True)
-
-		# Create Property Status Type
-		if not frappe.db.exists("Property Status Type", "Activo"):
-			status_type = frappe.get_doc(
-				{
-					"doctype": "Property Status Type",
-					"status_type_name": "Activo",
-					"description": "Propiedad activa",
-				}
-			)
-			status_type.insert(ignore_permissions=True)
-
-	@classmethod
-	def create_committee_roles(cls):
-		"""Create required committee roles in Spanish"""
-		committee_roles = [
-			"Presidente del Comité",
-			"Secretario del Comité",
-			"Tesorero del Comité",
-			"Miembro del Comité",
-		]
-
-		for role_name in committee_roles:
-			if not frappe.db.exists("Role", role_name):
-				frappe.db.sql(
-					"INSERT INTO `tabRole` (name, role_name, desk_access) VALUES (%s, %s, %s)",
-					(role_name, role_name, 1),
-				)
+	def get_required_fields_data(self):
+		"""Get required fields data for Agreement Tracking DocType"""
+		return self.__class__.REQUIRED_FIELDS
 
 	def test_agreement_tracking_creation(self):
 		"""Test basic agreement tracking creation with ALL REQUIRED FIELDS"""
