@@ -282,6 +282,17 @@ class AgreementTracking(Document):
 			"average_completion_percentage": avg_completion,
 		}
 
+	def mark_as_completed(self, completion_note=None):
+		"""Mark agreement as completed with optional note"""
+		self.status = "Completado"
+		self.completion_percentage = 100
+
+		if completion_note:
+			self.add_progress_update(completion_note, 100)
+
+		self.save()
+		return self
+
 	@staticmethod
 	def send_due_date_reminders():
 		"""Send reminders for agreements approaching due date"""
