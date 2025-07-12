@@ -38,6 +38,12 @@ modules = {
 		"type": "module",
 		"label": "Physical Spaces",
 	},
+	"committee_management": {
+		"color": "red",
+		"icon": "octicon octicon-gavel",
+		"type": "module",
+		"label": "Committee Management",
+	},
 }
 
 # Translations
@@ -227,6 +233,52 @@ doc_events = {
 		"validate": "condominium_management.physical_spaces.hooks_handlers.component_type_validation.validate",
 		"on_update": "condominium_management.physical_spaces.hooks_handlers.component_type_detection.on_update",
 	},
+	# Committee Management Module Hooks
+	# ---------------------------------
+	# Hooks específicos para módulo Committee Management - validaciones y automatizaciones
+	"Committee Member": {
+		"validate": "condominium_management.committee_management.hooks_handlers.committee_member_validation.validate",
+		"on_update": "condominium_management.committee_management.hooks_handlers.committee_member_detection.on_update",
+		"after_insert": "condominium_management.committee_management.hooks_handlers.committee_member_detection.after_insert",
+	},
+	"Committee Meeting": {
+		"validate": "condominium_management.committee_management.hooks_handlers.committee_meeting_validation.validate",
+		"on_update": "condominium_management.committee_management.hooks_handlers.committee_meeting_detection.on_update",
+		"after_insert": "condominium_management.committee_management.hooks_handlers.committee_meeting_detection.after_insert",
+	},
+	"Assembly Management": {
+		"validate": "condominium_management.committee_management.hooks_handlers.assembly_management_validation.validate",
+		"on_submit": "condominium_management.committee_management.hooks_handlers.assembly_management_detection.on_submit",
+		"on_update": "condominium_management.committee_management.hooks_handlers.assembly_management_detection.on_update",
+	},
+	"Voting System": {
+		"validate": "condominium_management.committee_management.hooks_handlers.voting_system_validation.validate",
+		"on_update": "condominium_management.committee_management.hooks_handlers.voting_system_detection.on_update",
+		"after_insert": "condominium_management.committee_management.hooks_handlers.voting_system_detection.after_insert",
+	},
+	"Agreement Tracking": {
+		"validate": "condominium_management.committee_management.hooks_handlers.agreement_tracking_validation.validate",
+		"on_update": "condominium_management.committee_management.hooks_handlers.agreement_tracking_detection.on_update",
+		"after_insert": "condominium_management.committee_management.hooks_handlers.agreement_tracking_detection.after_insert",
+	},
+	"Committee Poll": {
+		"validate": "condominium_management.committee_management.hooks_handlers.committee_poll_validation.validate",
+		"on_update": "condominium_management.committee_management.hooks_handlers.committee_poll_detection.on_update",
+	},
+	"Community Event": {
+		"validate": "condominium_management.committee_management.hooks_handlers.community_event_validation.validate",
+		"on_update": "condominium_management.committee_management.hooks_handlers.community_event_detection.on_update",
+		"after_insert": "condominium_management.committee_management.hooks_handlers.community_event_detection.after_insert",
+	},
+	"Committee KPI": {
+		"validate": "condominium_management.committee_management.hooks_handlers.committee_kpi_validation.validate",
+		"on_update": "condominium_management.committee_management.hooks_handlers.committee_kpi_detection.on_update",
+	},
+	"Meeting Schedule": {
+		"validate": "condominium_management.committee_management.hooks_handlers.meeting_schedule_validation.validate",
+		"on_submit": "condominium_management.committee_management.hooks_handlers.meeting_schedule_detection.on_submit",
+		"on_update": "condominium_management.committee_management.hooks_handlers.meeting_schedule_detection.on_update",
+	},
 }
 
 # Scheduled Tasks
@@ -234,6 +286,15 @@ doc_events = {
 
 scheduler_events = {
 	"monthly": ["condominium_management.document_generation.scheduled.performance_monitoring"],
+	"daily": [
+		"condominium_management.committee_management.scheduled.check_pending_meetings",
+		"condominium_management.committee_management.scheduled.check_overdue_agreements",
+		"condominium_management.committee_management.scheduled.calculate_daily_kpis",
+	],
+	"weekly": [
+		"condominium_management.committee_management.scheduled.send_meeting_reminders",
+		"condominium_management.committee_management.scheduled.generate_weekly_reports",
+	],
 }
 
 # Testing

@@ -1,0 +1,78 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "committee_member",
+  "member_name",
+  "column_break_3",
+  "attendance_status",
+  "arrival_time",
+  "departure_time",
+  "participation_quality"
+ ],
+ "fields": [
+  {
+   "fieldname": "committee_member",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Miembro del Comité",
+   "options": "Committee Member",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "committee_member.full_name",
+   "fieldname": "member_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "attendance_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado de Asistencia",
+   "options": "Presente\nAusente\nVirtual\nExcusado",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.attendance_status == 'Presente' || doc.attendance_status == 'Virtual'",
+   "fieldname": "arrival_time",
+   "fieldtype": "Time",
+   "label": "Hora de Llegada"
+  },
+  {
+   "depends_on": "eval:doc.attendance_status == 'Presente' || doc.attendance_status == 'Virtual'",
+   "fieldname": "departure_time",
+   "fieldtype": "Time",
+   "label": "Hora de Salida"
+  },
+  {
+   "depends_on": "eval:doc.attendance_status == 'Virtual'",
+   "fieldname": "participation_quality",
+   "fieldtype": "Rating",
+   "label": "Calidad de Participación Virtual"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Meeting Attendee",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

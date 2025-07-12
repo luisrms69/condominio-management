@@ -1,0 +1,268 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:VOT-{assembly.assembly_number}-{motion_number}",
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "voting_configuration_section",
+  "assembly",
+  "motion_number",
+  "motion_title",
+  "voting_type",
+  "column_break_6",
+  "required_percentage",
+  "voting_method",
+  "anonymous_voting",
+  "voting_start_time",
+  "voting_end_time",
+  "motion_section",
+  "motion_description",
+  "votes_section",
+  "votes",
+  "results_section",
+  "total_voting_power_present",
+  "votes_in_favor",
+  "votes_against",
+  "abstentions",
+  "column_break_19",
+  "result",
+  "result_timestamp",
+  "certified_by",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "voting_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Votación"
+  },
+  {
+   "fieldname": "assembly",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Asamblea",
+   "options": "Assembly Management",
+   "reqd": 1
+  },
+  {
+   "fieldname": "motion_number",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Número de Moción",
+   "reqd": 1
+  },
+  {
+   "fieldname": "motion_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Título de la Moción",
+   "reqd": 1
+  },
+  {
+   "fieldname": "voting_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Votación",
+   "options": "Simple\nCalificada\nUnánime\nEspecial",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "required_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje Requerido",
+   "reqd": 1
+  },
+  {
+   "fieldname": "voting_method",
+   "fieldtype": "Select",
+   "label": "Método de Votación",
+   "options": "Presencial\nDigital\nMixto",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "anonymous_voting",
+   "fieldtype": "Check",
+   "label": "Votación Anónima"
+  },
+  {
+   "fieldname": "voting_start_time",
+   "fieldtype": "Datetime",
+   "label": "Hora de Inicio de Votación"
+  },
+  {
+   "fieldname": "voting_end_time",
+   "fieldtype": "Datetime",
+   "label": "Hora de Fin de Votación"
+  },
+  {
+   "fieldname": "motion_section",
+   "fieldtype": "Section Break",
+   "label": "Descripción de la Moción"
+  },
+  {
+   "fieldname": "motion_description",
+   "fieldtype": "Text Editor",
+   "label": "Descripción Detallada"
+  },
+  {
+   "fieldname": "votes_section",
+   "fieldtype": "Section Break",
+   "label": "Registro de Votos"
+  },
+  {
+   "fieldname": "votes",
+   "fieldtype": "Table",
+   "label": "Votos",
+   "options": "Vote Record"
+  },
+  {
+   "fieldname": "results_section",
+   "fieldtype": "Section Break",
+   "label": "Resultados"
+  },
+  {
+   "fieldname": "total_voting_power_present",
+   "fieldtype": "Percent",
+   "label": "Poder de Voto Total Presente",
+   "read_only": 1
+  },
+  {
+   "fieldname": "votes_in_favor",
+   "fieldtype": "Percent",
+   "label": "Votos a Favor (%)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "votes_against",
+   "fieldtype": "Percent",
+   "label": "Votos en Contra (%)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "abstentions",
+   "fieldtype": "Percent",
+   "label": "Abstenciones (%)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_19",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Resultado",
+   "options": "Aprobado\nRechazado\nEmpate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "result_timestamp",
+   "fieldtype": "Datetime",
+   "label": "Hora del Resultado",
+   "read_only": 1
+  },
+  {
+   "fieldname": "certified_by",
+   "fieldtype": "Link",
+   "label": "Certificado por",
+   "options": "Committee Member"
+  },
+  {
+   "default": "Abierta",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado",
+   "options": "Abierta\nCerrada\nCancelada"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Voting System",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Administrator",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee President",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Secretary",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Assembly Participant",
+   "share": 1,
+   "submit": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

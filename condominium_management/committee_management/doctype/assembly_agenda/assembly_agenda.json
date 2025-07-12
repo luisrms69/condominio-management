@@ -1,0 +1,94 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_number",
+  "agenda_topic",
+  "presenter",
+  "column_break_4",
+  "requires_vote",
+  "vote_type",
+  "required_percentage",
+  "section_break_8",
+  "topic_description",
+  "supporting_documents"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_number",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Número de Orden",
+   "reqd": 1
+  },
+  {
+   "fieldname": "agenda_topic",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Tema de Agenda",
+   "reqd": 1
+  },
+  {
+   "fieldname": "presenter",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Presentador",
+   "options": "Committee Member"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "requires_vote",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Requiere Votación"
+  },
+  {
+   "depends_on": "requires_vote",
+   "fieldname": "vote_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Votación",
+   "options": "Simple\nCalificada\nUnánime\nEspecial"
+  },
+  {
+   "depends_on": "requires_vote",
+   "fieldname": "required_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje Requerido"
+  },
+  {
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "topic_description",
+   "fieldtype": "Text Editor",
+   "label": "Descripción del Tema"
+  },
+  {
+   "fieldname": "supporting_documents",
+   "fieldtype": "Attach",
+   "label": "Documentos de Soporte"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Assembly Agenda",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -1,0 +1,238 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:AGR-{YY}-{MM}-{###}",
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "agreement_information_section",
+  "source_type",
+  "source_reference",
+  "agreement_number",
+  "agreement_date",
+  "column_break_6",
+  "agreement_category",
+  "responsible_party",
+  "secondary_responsible",
+  "due_date",
+  "priority",
+  "agreement_details_section",
+  "agreement_text",
+  "status_section",
+  "status",
+  "completion_percentage",
+  "column_break_15",
+  "auto_create_todos",
+  "reminder_days_before",
+  "progress_updates_section",
+  "progress_updates"
+ ],
+ "fields": [
+  {
+   "fieldname": "agreement_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información del Acuerdo"
+  },
+  {
+   "fieldname": "source_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Fuente",
+   "options": "Asamblea\nReunión Comité\nDecisión Directa",
+   "reqd": 1
+  },
+  {
+   "fieldname": "source_reference",
+   "fieldtype": "Dynamic Link",
+   "label": "Referencia de Fuente",
+   "options": "source_type"
+  },
+  {
+   "fieldname": "agreement_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Número de Acuerdo",
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "agreement_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Fecha del Acuerdo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "agreement_category",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Categoría",
+   "options": "Operativo\nLegal\nFinanciero\nSocial\nMantenimiento\nSeguridad",
+   "reqd": 1
+  },
+  {
+   "fieldname": "responsible_party",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Responsable Principal",
+   "options": "Committee Member",
+   "reqd": 1
+  },
+  {
+   "fieldname": "secondary_responsible",
+   "fieldtype": "Link",
+   "label": "Responsable Secundario",
+   "options": "Committee Member"
+  },
+  {
+   "fieldname": "due_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Fecha Límite"
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Prioridad",
+   "options": "Crítica\nAlta\nMedia\nBaja",
+   "reqd": 1
+  },
+  {
+   "fieldname": "agreement_details_section",
+   "fieldtype": "Section Break",
+   "label": "Detalles del Acuerdo"
+  },
+  {
+   "fieldname": "agreement_text",
+   "fieldtype": "Text Editor",
+   "label": "Texto del Acuerdo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "status_section",
+   "fieldtype": "Section Break",
+   "label": "Estado"
+  },
+  {
+   "default": "Pendiente",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado",
+   "options": "Pendiente\nEn Proceso\nCompletado\nCancelado\nVencido"
+  },
+  {
+   "fieldname": "completion_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje de Cumplimiento"
+  },
+  {
+   "fieldname": "column_break_15",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "auto_create_todos",
+   "fieldtype": "Check",
+   "label": "Crear ToDos Automáticamente"
+  },
+  {
+   "default": "3",
+   "fieldname": "reminder_days_before",
+   "fieldtype": "Int",
+   "label": "Días de Recordatorio Antes del Vencimiento"
+  },
+  {
+   "fieldname": "progress_updates_section",
+   "fieldtype": "Section Break",
+   "label": "Actualizaciones de Progreso"
+  },
+  {
+   "fieldname": "progress_updates",
+   "fieldtype": "Table",
+   "label": "Actualizaciones",
+   "options": "Progress Update"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Agreement Tracking",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee President",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Secretary",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Member",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
