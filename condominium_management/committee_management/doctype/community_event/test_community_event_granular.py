@@ -157,10 +157,12 @@ class TestCommunityEventGranular(CommitteeTestBaseGranular):
 
 	def test_event_with_mocked_dependencies(self):
 		"""LAYER 2: Test with Link fields mocked"""
-		with patch("frappe.get_doc") as mock_get_doc:
-			# Mock the linked documents
-			mock_get_doc.return_value = MagicMock()
+		# Mock only the dependencies, not the main document creation
+		with patch("frappe.db.exists") as mock_exists:
+			# Mock that the linked documents exist
+			mock_exists.return_value = True
 
+			# Create real document (not mocked)
 			doc = frappe.new_doc("Community Event")
 			doc.update(
 				{
@@ -173,7 +175,7 @@ class TestCommunityEventGranular(CommitteeTestBaseGranular):
 				}
 			)
 
-			# Test that document structure is correct
+			# Test that document structure is correct (doc is real, not mocked)
 			self.assertEqual(doc.doctype, "Community Event")
 			self.assertEqual(doc.event_name, "Event Mocked Dependencies")
 
