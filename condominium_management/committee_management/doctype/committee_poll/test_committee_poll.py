@@ -22,6 +22,10 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 		"target_audience": "Solo Comité",
 		"start_date": nowdate(),
 		"results_visibility": "Al Cerrar",
+		"poll_options": [
+			{"option_text": "Opción 1 - Sí", "option_value": "si"},
+			{"option_text": "Opción 2 - No", "option_value": "no"},
+		],
 	}
 
 	@classmethod
@@ -59,8 +63,7 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 		required_data = self.get_required_fields_data()
 		doc = frappe.get_doc(required_data)
 
-		# Add required poll options for Committee Poll
-		self.add_poll_options(doc)
+		# poll_options are already included in REQUIRED_FIELDS, no need to add again
 
 		# Insert document
 		doc.insert(ignore_permissions=True, ignore_if_duplicate=True)

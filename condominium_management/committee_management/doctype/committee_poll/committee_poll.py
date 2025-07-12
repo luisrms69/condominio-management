@@ -326,3 +326,13 @@ class CommitteePoll(Document):
 			"average_participation_rate": avg_participation,
 			"total_responses": total_responses,
 		}
+
+	def on_update(self):
+		"""Hook method called after document update"""
+		# Recalculate results and update status if needed
+		self.calculate_results()
+
+		# Check if poll should be automatically closed
+		if self.end_date and getdate(self.end_date) < getdate(nowdate()) and self.status == "Abierta":
+			self.status = "Cerrada"
+			self.closed_date = now_datetime()
