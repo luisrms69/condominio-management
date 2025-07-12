@@ -1,0 +1,270 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:POLL-{YY}-{MM}-{###}",
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "poll_configuration_section",
+  "poll_title",
+  "poll_type",
+  "poll_category",
+  "target_audience",
+  "column_break_6",
+  "start_date",
+  "end_date",
+  "is_anonymous",
+  "allow_comments",
+  "results_visibility",
+  "poll_description_section",
+  "poll_description",
+  "poll_options_section",
+  "poll_options",
+  "results_section",
+  "total_eligible_voters",
+  "total_responses",
+  "participation_rate",
+  "column_break_18",
+  "status",
+  "created_by",
+  "closed_by",
+  "closed_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "poll_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Encuesta"
+  },
+  {
+   "fieldname": "poll_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Título de la Encuesta",
+   "reqd": 1
+  },
+  {
+   "fieldname": "poll_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Encuesta",
+   "options": "Comité\nResidentes\nMixto",
+   "reqd": 1
+  },
+  {
+   "fieldname": "poll_category",
+   "fieldtype": "Select",
+   "label": "Categoría",
+   "options": "Operativo\nSocial\nFinanciero\nMejoras\nSeguridad\nMantenimiento\nOtro"
+  },
+  {
+   "fieldname": "target_audience",
+   "fieldtype": "Select",
+   "label": "Audiencia Objetivo",
+   "options": "Solo Comité\nTodos los Propietarios\nPropietarios Residentes\nGrupo Específico",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Fecha de Inicio",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Fecha de Cierre"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_anonymous",
+   "fieldtype": "Check",
+   "label": "Encuesta Anónima"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_comments",
+   "fieldtype": "Check",
+   "label": "Permitir Comentarios"
+  },
+  {
+   "fieldname": "results_visibility",
+   "fieldtype": "Select",
+   "label": "Visibilidad de Resultados",
+   "options": "Inmediato\nAl Cerrar\nSolo Comité",
+   "reqd": 1
+  },
+  {
+   "fieldname": "poll_description_section",
+   "fieldtype": "Section Break",
+   "label": "Descripción"
+  },
+  {
+   "fieldname": "poll_description",
+   "fieldtype": "Text Editor",
+   "label": "Descripción de la Encuesta"
+  },
+  {
+   "fieldname": "poll_options_section",
+   "fieldtype": "Section Break",
+   "label": "Opciones de Respuesta"
+  },
+  {
+   "fieldname": "poll_options",
+   "fieldtype": "Table",
+   "label": "Opciones",
+   "options": "Poll Option",
+   "reqd": 1
+  },
+  {
+   "fieldname": "results_section",
+   "fieldtype": "Section Break",
+   "label": "Resultados"
+  },
+  {
+   "fieldname": "total_eligible_voters",
+   "fieldtype": "Int",
+   "label": "Total de Votantes Elegibles",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_responses",
+   "fieldtype": "Int",
+   "label": "Total de Respuestas",
+   "read_only": 1
+  },
+  {
+   "fieldname": "participation_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Participación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_18",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Abierta",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado",
+   "options": "Abierta\nCerrada\nCancelada"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creada por",
+   "options": "Committee Member",
+   "read_only": 1
+  },
+  {
+   "fieldname": "closed_by",
+   "fieldtype": "Link",
+   "label": "Cerrada por",
+   "options": "Committee Member",
+   "read_only": 1
+  },
+  {
+   "fieldname": "closed_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Cierre",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Committee Poll",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee President",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Secretary",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Member",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Assembly Participant",
+   "share": 1,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

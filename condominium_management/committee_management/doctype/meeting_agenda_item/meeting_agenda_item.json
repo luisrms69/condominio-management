@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "topic_title",
+  "topic_category",
+  "column_break_3",
+  "responsible_member",
+  "priority",
+  "time_spent",
+  "section_break_7",
+  "discussion_summary",
+  "decisions_taken",
+  "action_items",
+  "due_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "topic_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Título del Tema",
+   "reqd": 1
+  },
+  {
+   "fieldname": "topic_category",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Categoría",
+   "options": "Financiero\nOperativo\nLegal\nSocial\nMantenimiento\nSeguridad\nOtro"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "responsible_member",
+   "fieldtype": "Link",
+   "label": "Miembro Responsable",
+   "options": "Committee Member"
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Prioridad",
+   "options": "Crítica\nAlta\nMedia\nBaja"
+  },
+  {
+   "fieldname": "time_spent",
+   "fieldtype": "Duration",
+   "label": "Tiempo Dedicado"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "discussion_summary",
+   "fieldtype": "Text Editor",
+   "label": "Resumen de Discusión"
+  },
+  {
+   "fieldname": "decisions_taken",
+   "fieldtype": "Small Text",
+   "label": "Decisiones Tomadas"
+  },
+  {
+   "fieldname": "action_items",
+   "fieldtype": "Small Text",
+   "label": "Acciones Pendientes"
+  },
+  {
+   "fieldname": "due_date",
+   "fieldtype": "Date",
+   "label": "Fecha Límite"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Meeting Agenda Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -1,0 +1,226 @@
+<!-- Committee Executive Dashboard HTML Template -->
+<div class="committee-dashboard">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="row">
+            <div class="col-md-8">
+                <h2>{{ __('Panel Ejecutivo del Comité') }}</h2>
+                <p class="text-muted">{{ __('Gestión integral de actividades del comité y asamblea') }}</p>
+            </div>
+            <div class="col-md-4 text-right">
+                <div class="dashboard-refresh">
+                    <button class="btn btn-sm btn-default" onclick="dashboard.refresh()">
+                        <i class="fa fa-refresh"></i> {{ __('Actualizar') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Metrics Cards -->
+    <div class="dashboard-metrics">
+        <div class="row">
+            <div class="col-md-2 col-sm-4">
+                <div class="metric-card metric-card-primary">
+                    <div class="metric-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-number" data-metric="active_members">0</div>
+                        <div class="metric-label">{{ __('Miembros Activos') }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <div class="metric-card metric-card-success">
+                    <div class="metric-icon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-number" data-metric="scheduled_meetings">0</div>
+                        <div class="metric-label">{{ __('Reuniones Programadas') }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <div class="metric-card metric-card-warning">
+                    <div class="metric-icon">
+                        <i class="fa fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-number" data-metric="overdue_agreements">0</div>
+                        <div class="metric-label">{{ __('Acuerdos Vencidos') }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <div class="metric-card metric-card-info">
+                    <div class="metric-icon">
+                        <i class="fa fa-question-circle"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-number" data-metric="active_polls">0</div>
+                        <div class="metric-label">{{ __('Encuestas Activas') }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <div class="metric-card metric-card-purple">
+                    <div class="metric-icon">
+                        <i class="fa fa-calendar-check-o"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-number" data-metric="planned_events">0</div>
+                        <div class="metric-label">{{ __('Eventos Planificados') }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <div class="metric-card metric-card-orange">
+                    <div class="metric-icon">
+                        <i class="fa fa-check-square-o"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-number" data-metric="pending_agreements">0</div>
+                        <div class="metric-label">{{ __('Acuerdos Pendientes') }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerts and Notifications -->
+    <div class="dashboard-alerts" id="dashboard-alerts" style="display: none;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert-container" id="alert-container">
+                    <!-- Alerts will be dynamically populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <div class="dashboard-content">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-8">
+                <!-- Recent and Upcoming Meetings -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h4>{{ __('Reuniones') }}</h4>
+                        <a href="/app/committee-meeting" class="btn btn-xs btn-default">{{ __('Ver Todas') }}</a>
+                    </div>
+                    <div class="section-content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>{{ __('Próximas Reuniones') }}</h5>
+                                <div class="meeting-list" id="upcoming-meetings">
+                                    <div class="loading-indicator">{{ __('Cargando...') }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>{{ __('Reuniones Recientes') }}</h5>
+                                <div class="meeting-list" id="recent-meetings">
+                                    <div class="loading-indicator">{{ __('Cargando...') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Agreements -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h4>{{ __('Acuerdos Pendientes') }}</h4>
+                        <a href="/app/agreement-tracking" class="btn btn-xs btn-default">{{ __('Ver Todos') }}</a>
+                    </div>
+                    <div class="section-content">
+                        <div class="agreement-table" id="pending-agreements-table">
+                            <div class="loading-indicator">{{ __('Cargando...') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assembly Insights -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h4>{{ __('Información de Asambleas') }}</h4>
+                        <a href="/app/assembly-management" class="btn btn-xs btn-default">{{ __('Ver Todas') }}</a>
+                    </div>
+                    <div class="section-content">
+                        <div class="assembly-insights" id="assembly-insights">
+                            <div class="loading-indicator">{{ __('Cargando...') }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-4">
+                <!-- User Profile Card -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h4>{{ __('Mi Perfil') }}</h4>
+                    </div>
+                    <div class="section-content">
+                        <div class="member-profile" id="member-profile">
+                            <div class="loading-indicator">{{ __('Cargando...') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h4>{{ __('Acciones Rápidas') }}</h4>
+                    </div>
+                    <div class="section-content">
+                        <div class="quick-actions" id="quick-actions">
+                            <div class="loading-indicator">{{ __('Cargando...') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Polls -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h4>{{ __('Encuestas Activas') }}</h4>
+                        <a href="/app/committee-poll" class="btn btn-xs btn-default">{{ __('Ver Todas') }}</a>
+                    </div>
+                    <div class="section-content">
+                        <div class="poll-list" id="active-polls">
+                            <div class="loading-indicator">{{ __('Cargando...') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Events -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h4>{{ __('Próximos Eventos') }}</h4>
+                        <a href="/app/community-event" class="btn btn-xs btn-default">{{ __('Ver Todos') }}</a>
+                    </div>
+                    <div class="section-content">
+                        <div class="event-list" id="upcoming-events">
+                            <div class="loading-indicator">{{ __('Cargando...') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Committee Performance -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h4>{{ __('Rendimiento del Comité') }}</h4>
+                        <a href="/app/committee-kpi" class="btn btn-xs btn-default">{{ __('Ver KPIs') }}</a>
+                    </div>
+                    <div class="section-content">
+                        <div class="performance-summary" id="performance-summary">
+                            <div class="loading-indicator">{{ __('Cargando...') }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

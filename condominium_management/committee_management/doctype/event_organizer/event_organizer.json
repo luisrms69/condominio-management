@@ -1,0 +1,91 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "organizer_type",
+  "committee_member",
+  "property_registry",
+  "resident_name",
+  "column_break_5",
+  "role_in_event",
+  "contact_phone",
+  "contact_email",
+  "responsibilities"
+ ],
+ "fields": [
+  {
+   "fieldname": "organizer_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Organizador",
+   "options": "Comité\nPropietario\nResidente\nVoluntario Externo",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.organizer_type == 'Comité'",
+   "fieldname": "committee_member",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Miembro del Comité",
+   "options": "Committee Member"
+  },
+  {
+   "depends_on": "eval:doc.organizer_type == 'Propietario'",
+   "fieldname": "property_registry",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Registro de Propiedad",
+   "options": "Property Registry"
+  },
+  {
+   "depends_on": "eval:doc.organizer_type == 'Residente' || doc.organizer_type == 'Voluntario Externo'",
+   "fieldname": "resident_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Residente"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "role_in_event",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Rol en el Evento",
+   "reqd": 1
+  },
+  {
+   "fieldname": "contact_phone",
+   "fieldtype": "Phone",
+   "label": "Teléfono de Contacto"
+  },
+  {
+   "fieldname": "contact_email",
+   "fieldtype": "Data",
+   "label": "Email de Contacto"
+  },
+  {
+   "fieldname": "responsibilities",
+   "fieldtype": "Small Text",
+   "label": "Responsabilidades"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Event Organizer",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

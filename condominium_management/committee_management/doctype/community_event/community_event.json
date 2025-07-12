@@ -1,0 +1,363 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:EVT-{YY}-{MM}-{###}",
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "event_information_section",
+  "event_name",
+  "event_type",
+  "event_date",
+  "start_time",
+  "end_time",
+  "column_break_7",
+  "physical_space",
+  "expected_attendance",
+  "is_recurring",
+  "recurrence_pattern",
+  "status",
+  "organization_section",
+  "event_coordinator",
+  "organizing_team",
+  "budget_section",
+  "budget_amount",
+  "require_assembly_approval",
+  "assembly_approved",
+  "column_break_17",
+  "total_estimated_cost",
+  "total_actual_cost",
+  "profit_loss",
+  "expense_tracking",
+  "activities_section",
+  "activities_schedule",
+  "registration_section",
+  "registration_required",
+  "registration_deadline",
+  "max_capacity",
+  "column_break_26",
+  "current_registrations",
+  "available_capacity",
+  "attendee_registration",
+  "post_event_section",
+  "actual_attendance",
+  "event_success_rating",
+  "event_photos_link",
+  "lessons_learned"
+ ],
+ "fields": [
+  {
+   "fieldname": "event_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información del Evento"
+  },
+  {
+   "fieldname": "event_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Evento",
+   "reqd": 1
+  },
+  {
+   "fieldname": "event_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Evento",
+   "options": "Social\nCultural\nDeportivo\nFestivo\nEducativo\nReunión Informativa\nTaller\nOtro",
+   "reqd": 1
+  },
+  {
+   "fieldname": "event_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Fecha del Evento",
+   "reqd": 1
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "label": "Hora de Inicio",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_time",
+   "fieldtype": "Time",
+   "label": "Hora de Finalización"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "physical_space",
+   "fieldtype": "Link",
+   "label": "Espacio Físico",
+   "options": "Physical Space",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expected_attendance",
+   "fieldtype": "Int",
+   "label": "Asistencia Esperada"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_recurring",
+   "fieldtype": "Check",
+   "label": "Evento Recurrente"
+  },
+  {
+   "depends_on": "is_recurring",
+   "fieldname": "recurrence_pattern",
+   "fieldtype": "Select",
+   "label": "Patrón de Recurrencia",
+   "options": "Semanal\nMensual\nTrimestral\nSemestral\nAnual"
+  },
+  {
+   "default": "Planificado",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado",
+   "options": "Planificado\nEn Organización\nConfirmado\nEn Progreso\nCompletado\nCancelado\nPospuesto"
+  },
+  {
+   "fieldname": "organization_section",
+   "fieldtype": "Section Break",
+   "label": "Organización"
+  },
+  {
+   "fieldname": "event_coordinator",
+   "fieldtype": "Link",
+   "label": "Coordinador del Evento",
+   "options": "Committee Member",
+   "reqd": 1
+  },
+  {
+   "fieldname": "organizing_team",
+   "fieldtype": "Table",
+   "label": "Equipo Organizador",
+   "options": "Event Organizer"
+  },
+  {
+   "fieldname": "budget_section",
+   "fieldtype": "Section Break",
+   "label": "Presupuesto"
+  },
+  {
+   "fieldname": "budget_amount",
+   "fieldtype": "Currency",
+   "label": "Presupuesto Asignado"
+  },
+  {
+   "default": "0",
+   "fieldname": "require_assembly_approval",
+   "fieldtype": "Check",
+   "label": "Requiere Aprobación de Asamblea"
+  },
+  {
+   "depends_on": "require_assembly_approval",
+   "fieldname": "assembly_approved",
+   "fieldtype": "Check",
+   "label": "Aprobado por Asamblea"
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_estimated_cost",
+   "fieldtype": "Currency",
+   "label": "Costo Total Estimado",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_actual_cost",
+   "fieldtype": "Currency",
+   "label": "Costo Total Real",
+   "read_only": 1
+  },
+  {
+   "fieldname": "profit_loss",
+   "fieldtype": "Currency",
+   "label": "Ganancia/Pérdida",
+   "read_only": 1
+  },
+  {
+   "fieldname": "expense_tracking",
+   "fieldtype": "Table",
+   "label": "Seguimiento de Gastos",
+   "options": "Event Expense"
+  },
+  {
+   "fieldname": "activities_section",
+   "fieldtype": "Section Break",
+   "label": "Actividades"
+  },
+  {
+   "fieldname": "activities_schedule",
+   "fieldtype": "Table",
+   "label": "Programación de Actividades",
+   "options": "Event Activity"
+  },
+  {
+   "fieldname": "registration_section",
+   "fieldtype": "Section Break",
+   "label": "Registro"
+  },
+  {
+   "default": "0",
+   "fieldname": "registration_required",
+   "fieldtype": "Check",
+   "label": "Requiere Registro"
+  },
+  {
+   "depends_on": "registration_required",
+   "fieldname": "registration_deadline",
+   "fieldtype": "Date",
+   "label": "Fecha Límite de Registro"
+  },
+  {
+   "depends_on": "registration_required",
+   "fieldname": "max_capacity",
+   "fieldtype": "Int",
+   "label": "Capacidad Máxima"
+  },
+  {
+   "fieldname": "column_break_26",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "current_registrations",
+   "fieldtype": "Int",
+   "label": "Registros Actuales",
+   "read_only": 1
+  },
+  {
+   "fieldname": "available_capacity",
+   "fieldtype": "Int",
+   "label": "Capacidad Disponible",
+   "read_only": 1
+  },
+  {
+   "depends_on": "registration_required",
+   "fieldname": "attendee_registration",
+   "fieldtype": "Table",
+   "label": "Registro de Asistentes",
+   "options": "Event Registration"
+  },
+  {
+   "fieldname": "post_event_section",
+   "fieldtype": "Section Break",
+   "label": "Post-Evento"
+  },
+  {
+   "fieldname": "actual_attendance",
+   "fieldtype": "Int",
+   "label": "Asistencia Real"
+  },
+  {
+   "fieldname": "event_success_rating",
+   "fieldtype": "Rating",
+   "label": "Calificación de Éxito del Evento"
+  },
+  {
+   "fieldname": "event_photos_link",
+   "fieldtype": "Data",
+   "label": "Enlace a Galería de Fotos"
+  },
+  {
+   "fieldname": "lessons_learned",
+   "fieldtype": "Text Editor",
+   "label": "Lecciones Aprendidas"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Community Event",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee President",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Secretary",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Member",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Event Organizer",
+   "share": 1,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

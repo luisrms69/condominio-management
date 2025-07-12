@@ -1,0 +1,248 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:ASM-{YY}-{###}",
+ "creation": "2025-07-10 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "convocation_section",
+  "assembly_type",
+  "assembly_number",
+  "convocation_date",
+  "assembly_date",
+  "column_break_6",
+  "first_call_time",
+  "second_call_time",
+  "minimum_quorum_first",
+  "minimum_quorum_second",
+  "location_section",
+  "physical_space",
+  "hybrid_meeting_enabled",
+  "virtual_platform_link",
+  "status",
+  "formal_agenda_section",
+  "formal_agenda",
+  "quorum_section",
+  "quorum_registration",
+  "current_quorum_percentage",
+  "quorum_reached",
+  "assembly_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "convocation_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Convocatoria"
+  },
+  {
+   "fieldname": "assembly_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Asamblea",
+   "options": "Ordinaria\nExtraordinaria",
+   "reqd": 1
+  },
+  {
+   "fieldname": "assembly_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Número de Asamblea",
+   "read_only": 1
+  },
+  {
+   "fieldname": "convocation_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Convocatoria",
+   "reqd": 1
+  },
+  {
+   "fieldname": "assembly_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Fecha y Hora de Asamblea",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "first_call_time",
+   "fieldtype": "Time",
+   "label": "Hora Primera Convocatoria",
+   "reqd": 1
+  },
+  {
+   "fieldname": "second_call_time",
+   "fieldtype": "Time",
+   "label": "Hora Segunda Convocatoria",
+   "reqd": 1
+  },
+  {
+   "default": "51",
+   "fieldname": "minimum_quorum_first",
+   "fieldtype": "Percent",
+   "label": "Quórum Mínimo Primera Convocatoria"
+  },
+  {
+   "default": "25",
+   "fieldname": "minimum_quorum_second",
+   "fieldtype": "Percent",
+   "label": "Quórum Mínimo Segunda Convocatoria"
+  },
+  {
+   "fieldname": "location_section",
+   "fieldtype": "Section Break",
+   "label": "Ubicación"
+  },
+  {
+   "fieldname": "physical_space",
+   "fieldtype": "Link",
+   "label": "Espacio Físico",
+   "options": "Physical Space",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "hybrid_meeting_enabled",
+   "fieldtype": "Check",
+   "label": "Reunión Híbrida Habilitada"
+  },
+  {
+   "depends_on": "hybrid_meeting_enabled",
+   "fieldname": "virtual_platform_link",
+   "fieldtype": "Data",
+   "label": "Enlace de Plataforma Virtual"
+  },
+  {
+   "default": "Planificada",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado",
+   "options": "Planificada\nConvocada\nEn Progreso\nCompletada\nCancelada"
+  },
+  {
+   "fieldname": "formal_agenda_section",
+   "fieldtype": "Section Break",
+   "label": "Agenda Formal"
+  },
+  {
+   "fieldname": "formal_agenda",
+   "fieldtype": "Table",
+   "label": "Puntos de Agenda",
+   "options": "Assembly Agenda"
+  },
+  {
+   "fieldname": "quorum_section",
+   "fieldtype": "Section Break",
+   "label": "Control de Quórum"
+  },
+  {
+   "fieldname": "quorum_registration",
+   "fieldtype": "Table",
+   "label": "Registro de Quórum",
+   "options": "Quorum Record"
+  },
+  {
+   "fieldname": "current_quorum_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje de Quórum Actual",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "quorum_reached",
+   "fieldtype": "Check",
+   "label": "Quórum Alcanzado",
+   "read_only": 1
+  },
+  {
+   "fieldname": "assembly_notes",
+   "fieldtype": "Text Editor",
+   "label": "Notas de la Asamblea"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-07-10 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Assembly Management",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Property Administrator",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee President",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Secretary",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Committee Member",
+   "share": 1,
+   "submit": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

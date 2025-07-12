@@ -2,3 +2,4 @@ Companies
 Document Generation
 Community Contributions
 Physical Spaces
+Committee Management
