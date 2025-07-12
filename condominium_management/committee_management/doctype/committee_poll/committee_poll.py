@@ -61,10 +61,9 @@ class CommitteePoll(Document):
 		elif self.target_audience == "Todos los Propietarios":
 			self.total_eligible_voters = frappe.db.count("Property Registry", {"is_active": 1})
 		elif self.target_audience == "Propietarios Residentes":
-			# Assuming we have a way to identify resident properties
-			self.total_eligible_voters = frappe.db.count(
-				"Property Registry", {"is_active": 1, "property_status": "Habitada"}
-			)
+			# TODO: Fix property_status field - column doesn't exist in Property Registry
+			# Fallback to all active properties for now
+			self.total_eligible_voters = frappe.db.count("Property Registry", {"is_active": 1})
 		else:  # Grupo Específico
 			# This would need custom logic based on specific criteria
 			self.total_eligible_voters = 0

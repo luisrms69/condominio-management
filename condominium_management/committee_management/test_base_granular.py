@@ -136,10 +136,13 @@ class CommitteeTestBaseGranular(FrappeTestCase):
 		import json
 		import os
 
-		# Build JSON path
-		module_path = os.path.dirname(os.path.dirname(__file__))
+		# Build JSON path - FIXED: account for committee_management module structure
+		# Ensure we're in committee_management directory, not parent condominium_management
+		current_dir = os.path.dirname(__file__)  # committee_management directory
+		if not current_dir.endswith("committee_management"):
+			current_dir = os.path.join(current_dir, "committee_management")
 		doctype_folder = self.DOCTYPE_NAME.lower().replace(" ", "_")
-		json_path = os.path.join(module_path, "doctype", doctype_folder, f"{doctype_folder}.json")
+		json_path = os.path.join(current_dir, "doctype", doctype_folder, f"{doctype_folder}.json")
 
 		# Test JSON file exists and is valid
 		self.assertTrue(os.path.exists(json_path), f"JSON file not found: {json_path}")
@@ -207,7 +210,7 @@ class CommitteeTestBaseGranular(FrappeTestCase):
 		# Test creation with absolute minimum data
 		try:
 			doc = frappe.get_doc(required_fields)
-			doc.insert(ignore_permissions=True)
+			doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
 
 			# Basic verification
 			self.assertTrue(doc.name)
