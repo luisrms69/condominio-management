@@ -162,15 +162,18 @@ class TestMeetingScheduleGranular(CommitteeTestBaseGranular):
 
 	def test_schedule_with_mocked_child_table_validation(self):
 		"""LAYER 2: Test with child table validation mocked"""
-		with patch("frappe.get_doc") as mock_get_doc:
-			mock_get_doc.return_value = MagicMock()
+		# Mock only the dependencies, not the main document creation
+		with patch("frappe.db.exists") as mock_exists:
+			# Mock that the child table validations pass
+			mock_exists.return_value = True
 
+			# Create real document (not mocked)
 			doc = frappe.new_doc("Meeting Schedule")
 			doc.update(
 				{"schedule_year": 2025, "schedule_period": "Trimestral", "approval_status": "En Revisión"}
 			)
 
-			# Test that document structure is correct
+			# Test that document structure is correct (doc is real, not mocked)
 			self.assertEqual(doc.doctype, "Meeting Schedule")
 			self.assertEqual(doc.schedule_year, 2025)
 			self.assertEqual(doc.schedule_period, "Trimestral")
