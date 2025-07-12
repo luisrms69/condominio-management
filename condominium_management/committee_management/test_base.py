@@ -3,6 +3,7 @@
 
 import json
 import os
+from typing import ClassVar
 
 import frappe
 from frappe.tests.utils import FrappeTestCase
@@ -17,8 +18,8 @@ class CommitteeTestBase(FrappeTestCase):
 
 	# Default configuration - Override in subclasses
 	DOCTYPE_NAME = None
-	REQUIRED_FIELDS = {}
-	TEST_DATA = {}
+	REQUIRED_FIELDS: ClassVar[dict] = {}
+	TEST_DATA: ClassVar[dict] = {}
 	UNIQUE_TEST_FIELD = "name"
 	TEST_IDENTIFIER_PATTERN = "%CTEST%"  # More specific pattern to avoid conflicts
 
@@ -180,6 +181,15 @@ class CommitteeTestBase(FrappeTestCase):
 					"doctype": "Property Status Type",
 					"name": "Activo",
 					"status_description": "Propiedad en estado activo",
+				},
+			),
+			(
+				"Space Category",
+				"Área Común",
+				{
+					"doctype": "Space Category",
+					"name": "Área Común",
+					"category_description": "Espacios de uso común del condominio",
 				},
 			),
 		]

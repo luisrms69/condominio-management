@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import unittest
+from typing import ClassVar
 
 import frappe
 from frappe.utils import add_days, getdate, nowdate
@@ -14,7 +15,7 @@ class TestAgreementTrackingCorrected(CommitteeTestBase):
 	DOCTYPE_NAME = "Agreement Tracking"
 	TEST_IDENTIFIER_PATTERN = "%CTEST_agreement%"
 
-	REQUIRED_FIELDS = {
+	REQUIRED_FIELDS: ClassVar[dict] = {
 		"doctype": "Agreement Tracking",
 		"source_type": "Asamblea",
 		"agreement_date": nowdate(),
@@ -76,7 +77,7 @@ class TestAgreementTrackingCorrected(CommitteeTestBase):
 					"user": "CTEST_committee@example.com",
 					"property_registry": cls.test_property_registry,
 					"full_name": "CTEST Agreement Member",
-					"role_in_committee": "Secretario",
+					"role_in_committee": "Vocal",  # Use Vocal to avoid unique role conflicts
 					"start_date": nowdate(),
 					"is_active": 1,
 				}

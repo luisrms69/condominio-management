@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import unittest
+from typing import ClassVar
 
 import frappe
 from frappe.utils import add_days, getdate, nowdate
@@ -14,7 +15,7 @@ class TestCommitteeMemberCorrected(CommitteeTestBase):
 	DOCTYPE_NAME = "Committee Member"
 	TEST_IDENTIFIER_PATTERN = "%CTEST_member%"
 
-	REQUIRED_FIELDS = {
+	REQUIRED_FIELDS: ClassVar[dict] = {
 		"doctype": "Committee Member",
 		"user": None,  # Set in setup_test_data
 		"property_registry": None,  # Set in setup_test_data
