@@ -21,6 +21,7 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 		"poll_type": "Comité",
 		"target_audience": "Solo Comité",
 		"start_date": nowdate(),
+		"results_visibility": "Al Cerrar",
 	}
 
 	@classmethod
@@ -47,6 +48,30 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 		"""Get required fields data for Committee Poll DocType"""
 		return self.__class__.REQUIRED_FIELDS
 
+	def add_poll_options(self, poll_doc):
+		"""Add required poll options to poll document"""
+		poll_doc.append("poll_options", {"option_text": "Opción 1 - Sí", "option_value": "si"})
+		poll_doc.append("poll_options", {"option_text": "Opción 2 - No", "option_value": "no"})
+
+	def test_creation_with_all_required_fields(self):
+		"""Override base test to handle poll_options child table requirement"""
+		# Create document with all required fields from REQUIRED_FIELDS
+		required_data = self.get_required_fields_data()
+		doc = frappe.get_doc(required_data)
+
+		# Add required poll options for Committee Poll
+		self.add_poll_options(doc)
+
+		# Insert document
+		doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
+
+		# Basic verification
+		self.assertTrue(doc.name)
+		self.assertEqual(doc.doctype, self.DOCTYPE_NAME)
+
+		# Clean up
+		doc.delete(ignore_permissions=True)
+
 	def test_committee_poll_creation(self):
 		"""Test basic committee poll creation with ALL REQUIRED FIELDS"""
 		poll = frappe.get_doc(
@@ -57,12 +82,16 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 				"poll_type": "Comité",  # REQUIRED - Select
 				"target_audience": "Solo Comité",  # REQUIRED - Select
 				"start_date": nowdate(),  # REQUIRED - Date
+				"results_visibility": "Al Cerrar",  # REQUIRED - Select
 				# Optional fields for completeness
 				"poll_category": "Operativo",
 				"is_anonymous": 0,
 				"allow_comments": 1,
 			}
 		)
+
+		# Add required poll options
+		self.add_poll_options(poll)
 
 		poll.insert()
 
@@ -139,8 +168,12 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 				"poll_type": "Residentes",
 				"target_audience": "Todos los Propietarios",
 				"start_date": nowdate(),
+				"results_visibility": "Inmediato",
 			}
 		)
+
+		# Add required poll options
+		self.add_poll_options(poll)
 
 		# This should always work and tests the real business functionality
 		poll.insert(ignore_permissions=True)
@@ -172,12 +205,16 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 				"target_audience": "Propietarios Residentes",
 				"start_date": nowdate(),
 				"end_date": add_days(nowdate(), 7),
+				"results_visibility": "Solo Comité",
 				"poll_category": "Social",
 				"is_anonymous": 1,
 				"allow_comments": 0,
 				"poll_description": "Descripción completa de la encuesta para testing",
 			}
 		)
+
+		# Add required poll options
+		self.add_poll_options(poll)
 
 		# This should succeed without any errors
 		poll.insert(ignore_permissions=True)
@@ -204,8 +241,10 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 					"poll_type": poll_type,
 					"target_audience": "Solo Comité",
 					"start_date": nowdate(),
+					"results_visibility": "Al Cerrar",
 				}
 			)
+			self.add_poll_options(poll)
 			poll.insert()
 
 			# Verify type was set correctly
@@ -226,8 +265,10 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 					"poll_type": "Comité",
 					"target_audience": audience,
 					"start_date": nowdate(),
+					"results_visibility": "Inmediato",
 				}
 			)
+			self.add_poll_options(poll)
 			poll.insert()
 
 			# Verify audience was set correctly
@@ -246,8 +287,10 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 				"target_audience": "Solo Comité",
 				"start_date": nowdate(),
 				"end_date": add_days(nowdate(), 7),
+				"results_visibility": "Al Cerrar",
 			}
 		)
+		self.add_poll_options(poll)
 		poll.insert()
 
 		# Verify dates are set correctly
@@ -263,10 +306,12 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 				"poll_type": "Residentes",
 				"target_audience": "Todos los Propietarios",
 				"start_date": nowdate(),
+				"results_visibility": "Solo Comité",
 				"is_anonymous": 1,
 				"allow_comments": 0,
 			}
 		)
+		self.add_poll_options(poll)
 		poll.insert()
 
 		# Verify anonymous configuration
@@ -282,9 +327,11 @@ class TestCommitteePollCorrected(CommitteeTestBase):
 				"poll_type": "Comité",
 				"target_audience": "Solo Comité",
 				"start_date": nowdate(),
+				"results_visibility": "Inmediato",
 				"poll_category": "Financiero",
 			}
 		)
+		self.add_poll_options(poll)
 		poll.insert()
 
 		# Verify category is set correctly

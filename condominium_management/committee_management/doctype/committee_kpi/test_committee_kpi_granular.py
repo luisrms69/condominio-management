@@ -35,14 +35,19 @@ class TestCommitteeKPIGranular(CommitteeTestBaseGranular):
 	REQUIRED_FIELDS: ClassVar[dict] = {
 		"doctype": "Committee KPI",
 		"period_year": 2025,  # REQUIRED - Int
-		"period_month": 7,  # REQUIRED - Int
+		"period_month": 6,  # REQUIRED - Int - Use June to avoid conflicts
 	}
 
 	@classmethod
 	def cleanup_specific_data(cls):
 		"""Cleanup specific to Committee KPI tests"""
+		# Cleanup by autoname pattern - KPI-{YY}-{MM} for 2025
+		frappe.db.sql("DELETE FROM `tabCommittee KPI` WHERE name LIKE 'KPI-25-%'")
+		# Specific cleanup for all potential test months
+		frappe.db.sql("DELETE FROM `tabCommittee KPI` WHERE name LIKE 'KPI-24-%'")
+		# Also cleanup by test period - include all months used in tests
 		frappe.db.sql(
-			"DELETE FROM `tabCommittee KPI` WHERE period_year = 2025 AND period_month BETWEEN 7 AND 12"
+			"DELETE FROM `tabCommittee KPI` WHERE period_year = 2025 AND period_month BETWEEN 6 AND 12"
 		)
 
 	@classmethod

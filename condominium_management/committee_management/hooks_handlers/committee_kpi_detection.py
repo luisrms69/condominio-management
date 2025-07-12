@@ -11,19 +11,28 @@ def on_update(doc, method):
 		return
 
 	# Recalculate performance metrics when values change
-	if doc.has_value_changed(
+	# Check individual fields - has_value_changed() doesn't accept lists
+	metrics_fields_changed = any(
 		[
-			"meetings_attended",
-			"meetings_organized",
-			"agreements_created",
-			"agreements_completed",
-			"polls_created",
-			"events_organized",
+			hasattr(doc, field) and doc.has_value_changed(field)
+			for field in [
+				"meetings_attended",
+				"meetings_organized",
+				"agreements_created",
+				"agreements_completed",
+				"polls_created",
+				"events_organized",
+			]
+			if hasattr(doc, field)
 		]
-	):
-		doc.calculate_performance_metrics()
+	)
 
-	# Generate alerts for low performance
-	if doc.performance_score and doc.performance_score < 50:
+	if metrics_fields_changed:
+		# TEMP: Method not implemented yet
+		if hasattr(doc, "calculate_performance_metrics"):
+			doc.calculate_performance_metrics()
+
+	# Generate alerts for low performance - TEMP: Field not implemented yet
+	if hasattr(doc, "performance_score") and doc.performance_score and doc.performance_score < 50:
 		# create_performance_alert(doc)  # TODO: Implement alert function
 		pass

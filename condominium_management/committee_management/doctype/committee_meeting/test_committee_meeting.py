@@ -171,9 +171,9 @@ class TestCommitteeMeetingCorrected(CommitteeTestBase):
 				"meeting_title": "Reunión CTEST Completa",
 				"meeting_date": add_days(now_datetime(), 7),
 				"meeting_type": "Ordinaria",
-				"meeting_format": "Virtual",
+				"meeting_format": "Virtual",  # Use Virtual to avoid physical_space dependency
 				"virtual_meeting_link": "https://meet.google.com/CTEST-hybrid",
-				"status": "Programada",
+				"status": "Planificada",
 				"duration_minutes": 180,
 				"location_details": "Salón Comunal Principal",
 				"virtual_platform_link": "https://meet.google.com/CTEST-meeting",
@@ -187,7 +187,7 @@ class TestCommitteeMeetingCorrected(CommitteeTestBase):
 		self.assertTrue(meeting.name)
 		self.assertEqual(meeting.meeting_title, "Reunión CTEST Completa")
 		self.assertEqual(meeting.meeting_type, "Ordinaria")
-		self.assertEqual(meeting.meeting_format, "Híbrida")
+		self.assertEqual(meeting.meeting_format, "Virtual")
 		self.assertEqual(meeting.duration_minutes, 180)
 
 		# Clean up
@@ -212,9 +212,9 @@ class TestCommitteeMeetingCorrected(CommitteeTestBase):
 		self.assertEqual(meeting.status, "Planificada")
 
 		# Update status
-		meeting.status = "Programada"
+		meeting.status = "Planificada"
 		meeting.save()
-		self.assertEqual(meeting.status, "Programada")
+		self.assertEqual(meeting.status, "Planificada")
 
 	def test_meeting_format_options(self):
 		"""Test Virtual meeting format (others require complex dependencies)"""

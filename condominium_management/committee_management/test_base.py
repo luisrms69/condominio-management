@@ -198,7 +198,7 @@ class CommitteeTestBase(FrappeTestCase):
 			try:
 				if not frappe.db.exists(doctype, name):
 					doc = frappe.get_doc(data)
-					doc.insert(ignore_permissions=True)
+					doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
 			except Exception as e:
 				frappe.log_error(
 					f"Master creation warning for {doctype} {name}: {e}",
@@ -256,8 +256,14 @@ class CommitteeTestBase(FrappeTestCase):
 
 		required_data = self.get_required_fields_data()
 
+		# For Committee KPI, use unique month to avoid autoname conflicts
+		if self.DOCTYPE_NAME == "Committee KPI":
+			required_data = required_data.copy()
+			required_data["period_month"] = 2  # Use February for base class test
+			required_data["period_year"] = 2024  # Use 2024 for base class
+
 		doc = frappe.get_doc(required_data)
-		doc.insert(ignore_permissions=True)
+		doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
 
 		self.assertTrue(doc.name)
 		self.assertEqual(doc.doctype, self.DOCTYPE_NAME)

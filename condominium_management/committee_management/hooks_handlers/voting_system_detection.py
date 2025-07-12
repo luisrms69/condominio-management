@@ -20,8 +20,10 @@ def on_update(doc, method):
 		return
 
 	# Recalculate results when votes change
-	if doc.has_value_changed("vote_records"):
-		doc.calculate_voting_results()
+	if hasattr(doc, "vote_records") and doc.has_value_changed("vote_records"):
+		doc.calculate_results()
+	elif hasattr(doc, "votes") and doc.has_value_changed("votes"):
+		doc.calculate_results()
 
 	# Close voting if end date has passed
 	if (

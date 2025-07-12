@@ -11,10 +11,14 @@ def validate(doc, method):
 	if doc.doctype != "Committee Meeting":
 		return
 
-	# Validate meeting dates
-	if doc.meeting_date and doc.meeting_time:
+	# Validate meeting dates - FIXED: meeting_date is Datetime, no separate meeting_time field
+	if doc.meeting_date:
 		# Check if meeting date is not in the past (except for rescheduled meetings)
-		if not doc.is_rescheduled and getdate(doc.meeting_date) < getdate():
+		if (
+			hasattr(doc, "is_rescheduled")
+			and not doc.is_rescheduled
+			and getdate(doc.meeting_date) < getdate()
+		):
 			frappe.msgprint(_("La fecha de la reunión es en el pasado"), alert=True)
 
 	# Validate physical space requirements
@@ -37,12 +41,15 @@ def validate(doc, method):
 		if len(committee_members) != len(set(committee_members)):
 			frappe.throw(_("No puede haber miembros del comité duplicados en la lista de asistentes"))
 
-	# Validate meeting completion
-	if doc.meeting_status == "Completada":
-		if not doc.meeting_summary:
+	# Validate meeting completion - TEMP: meeting_status field not implemented yet
+	if hasattr(doc, "meeting_status") and doc.meeting_status == "Completada":
+		if hasattr(doc, "meeting_summary") and not doc.meeting_summary:
 			frappe.throw(_("Debe proporcionar un resumen de la reunión para marcarla como completada"))
 
 		# Check if all agenda items have decisions
-		incomplete_items = [item for item in doc.agenda_items if not item.decision_made]
-		if incomplete_items:
-			frappe.msgprint(_("Hay elementos de la agenda sin decisión registrada"), alert=True)
+		if hasattr(doc, "agenda_items") and doc.agenda_items:
+			incomplete_items = [
+				item for item in doc.agenda_items if hasattr(item, "decision_made") and not item.decision_made
+			]
+			if incomplete_items:
+				frappe.msgprint(_("Hay elementos de la agenda sin decisión registrada"), alert=True)

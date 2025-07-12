@@ -11,11 +11,11 @@ def on_update(doc, method):
 		return
 
 	# Recalculate results when poll options change
-	if doc.has_value_changed("poll_options"):
-		doc.calculate_poll_results()
+	if hasattr(doc, "poll_options") and doc.has_value_changed("poll_options"):
+		doc.calculate_results()
 
 	# Update KPIs when poll is closed
-	if doc.has_value_changed("poll_status") and doc.poll_status == "Cerrada":
+	if hasattr(doc, "status") and doc.has_value_changed("status") and doc.status == "Cerrada":
 		update_poll_kpis(doc)
 
 

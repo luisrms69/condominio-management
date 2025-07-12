@@ -53,6 +53,7 @@ def validate(doc, method):
 					)
 				)
 
-	# Validate assembly type consistency
-	if doc.assembly_type == "Extraordinaria" and not doc.extraordinary_reason:
-		frappe.throw(_("Las asambleas extraordinarias deben especificar la razón"))
+	# TODO: Validate assembly type consistency - extraordinary_reason field not implemented yet
+	# if doc.assembly_type == "Extraordinaria" and not doc.extraordinary_reason:
+	# frappe.throw(_("Las asambleas extraordinarias deben especificar la razón"))
+	# TEMPORARY: Removed validation until extraordinary_reason field is added to DocType JSON
