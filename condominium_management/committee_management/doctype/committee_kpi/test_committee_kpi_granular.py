@@ -32,11 +32,22 @@ class TestCommitteeKPIGranular(CommitteeTestBaseGranular):
 	TEST_IDENTIFIER_PATTERN = "%CTEST_kpi%"
 	MOCK_HOOKS = True  # Enable hook mocking
 
-	REQUIRED_FIELDS: ClassVar[dict] = {
-		"doctype": "Committee KPI",
-		"period_year": 2025,  # REQUIRED - Int
-		"period_month": 6,  # REQUIRED - Int - Use June to avoid conflicts
-	}
+	@classmethod
+	def get_current_month(cls):
+		"""Get current month for dynamic testing"""
+		return getdate(nowdate()).month
+
+	REQUIRED_FIELDS: ClassVar[dict] = {}
+
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+		# Set dynamic required fields with current month
+		cls.REQUIRED_FIELDS = {
+			"doctype": "Committee KPI",
+			"period_year": 2025,  # REQUIRED - Int
+			"period_month": cls.get_current_month(),  # REQUIRED - Int - Dynamic current month
+		}
 
 	@classmethod
 	def cleanup_specific_data(cls):
@@ -73,7 +84,7 @@ class TestCommitteeKPIGranular(CommitteeTestBaseGranular):
 		self.assertEqual(doc.period_year, 2025)
 
 		doc.period_month = 7
-		self.assertEqual(doc.period_month, 7)
+		self.assertEqual(doc.period_month, self.get_current_month())
 
 		# Test optional fields
 		doc.status = "Borrador"
@@ -159,7 +170,7 @@ class TestCommitteeKPIGranular(CommitteeTestBaseGranular):
 		# Test that document structure is correct
 		self.assertEqual(doc.doctype, "Committee KPI")
 		self.assertEqual(doc.period_year, 2025)
-		self.assertEqual(doc.period_month, 7)
+		self.assertEqual(doc.period_month, self.get_current_month())
 
 	# ========================
 	# LAYER 3: INTEGRATION TESTS (SHOULD WORK FOR SIMPLE DOCTYPE)
