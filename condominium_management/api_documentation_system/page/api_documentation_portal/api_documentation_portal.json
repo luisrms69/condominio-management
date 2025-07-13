@@ -1,0 +1,24 @@
+{
+ "creation": "2025-07-13 18:00:00.000000",
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2025-07-13 18:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "API Documentation System",
+ "name": "api-documentation-portal",
+ "owner": "Administrator",
+ "page_name": "API Documentation Portal",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "API Manager"
+  },
+  {
+   "role": "API User"
+  }
+ ],
+ "standard": "Yes",
+ "title": "Portal de Documentación de APIs"
+}

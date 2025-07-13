@@ -1,0 +1,47 @@
+{
+ "actions": [],
+ "creation": "2025-07-12 15:10:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "language",
+  "example_description",
+  "example_code"
+ ],
+ "fields": [
+  {
+   "fieldname": "language",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Lenguaje",
+   "options": "curl\nPython\nJavaScript\nPHP\nJava\nC#\nGo\nRuby",
+   "reqd": 1
+  },
+  {
+   "fieldname": "example_description",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Descripción del Ejemplo"
+  },
+  {
+   "fieldname": "example_code",
+   "fieldtype": "Code",
+   "label": "Código de Ejemplo",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-07-12 15:10:00.000000",
+ "modified_by": "Administrator",
+ "module": "API Documentation System",
+ "name": "API Code Example",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
