@@ -1,0 +1,349 @@
+<div class="api-documentation-portal">
+	<!-- Header Section -->
+	<div class="portal-header">
+		<div class="container">
+			<div class="header-content">
+				<h1>🚀 Portal de Documentación de APIs</h1>
+				<p class="subtitle">Explora, prueba y documenta todas las APIs del sistema</p>
+				<div class="portal-stats" id="portal-stats">
+					<!-- Stats will be loaded here -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Search and Filters Section -->
+	<div class="search-section">
+		<div class="container">
+			<div class="search-box">
+				<input type="text" id="api-search" placeholder="Buscar APIs por nombre, ruta o descripción..." class="form-control">
+				<div class="search-filters">
+					<select id="method-filter" class="form-control">
+						<option value="">Todos los métodos</option>
+						<option value="GET">GET</option>
+						<option value="POST">POST</option>
+						<option value="PUT">PUT</option>
+						<option value="DELETE">DELETE</option>
+						<option value="PATCH">PATCH</option>
+					</select>
+					<select id="module-filter" class="form-control">
+						<option value="">Todos los módulos</option>
+						<!-- Options will be populated by JS -->
+					</select>
+					<button class="btn btn-primary" onclick="window.apiPortal.searchAPIs()">
+						<i class="fa fa-search"></i> Buscar
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Main Content Area -->
+	<div class="main-content">
+		<div class="container">
+			<div class="row">
+				<!-- Sidebar - API Collections -->
+				<div class="col-md-4">
+					<div class="api-collections-sidebar">
+						<h3>📚 Colecciones de APIs</h3>
+						<div id="api-collections" class="collections-list">
+							<!-- Collections will be loaded here -->
+						</div>
+					</div>
+				</div>
+
+				<!-- Main Panel - API Details -->
+				<div class="col-md-8">
+					<div class="api-details-panel">
+						<!-- Welcome Screen -->
+						<div id="welcome-screen" class="welcome-screen">
+							<div class="welcome-content">
+								<h2>👋 Bienvenido al Portal de APIs</h2>
+								<p>Selecciona una API de la lista para ver sus detalles, probarla en el sandbox o generar código de ejemplo.</p>
+
+								<div class="feature-highlights">
+									<div class="feature">
+										<i class="fa fa-search fa-2x"></i>
+										<h4>Explorar APIs</h4>
+										<p>Navega por todas las APIs organizadas por módulos</p>
+									</div>
+									<div class="feature">
+										<i class="fa fa-play-circle fa-2x"></i>
+										<h4>Probar APIs</h4>
+										<p>Ejecuta requests directamente desde el navegador</p>
+									</div>
+									<div class="feature">
+										<i class="fa fa-code fa-2x"></i>
+										<h4>Generar Código</h4>
+										<p>Obtén ejemplos en múltiples lenguajes de programación</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- API Details View -->
+						<div id="api-details" class="api-details" style="display: none;">
+							<!-- API details will be rendered here -->
+						</div>
+
+						<!-- API Tester -->
+						<div id="api-tester" class="api-tester" style="display: none;">
+							<!-- API tester will be rendered here -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Loading Overlay -->
+	<div id="loading-overlay" class="loading-overlay" style="display: none;">
+		<div class="loading-spinner">
+			<i class="fa fa-spinner fa-spin fa-3x"></i>
+			<p>Cargando...</p>
+		</div>
+	</div>
+</div>
+
+<!-- API Details Template -->
+<script type="text/template" id="api-details-template">
+	<div class="api-header">
+		<div class="api-title">
+			<span class="http-method method-<%= api.http_method.toLowerCase() %>"><%= api.http_method %></span>
+			<h2><%= api.api_name %></h2>
+			<div class="api-path">
+				<code><%= api.full_url %></code>
+				<button class="btn btn-sm btn-secondary copy-url" data-url="<%= api.full_url %>">
+					<i class="fa fa-copy"></i> Copiar URL
+				</button>
+			</div>
+		</div>
+		<div class="api-actions">
+			<button class="btn btn-primary test-api-btn" onclick="window.apiPortal.showTester('<%= api.name %>')">
+				<i class="fa fa-play"></i> Probar API
+			</button>
+			<button class="btn btn-secondary generate-code-btn" onclick="window.apiPortal.generateCode('<%= api.name %>')">
+				<i class="fa fa-code"></i> Generar Código
+			</button>
+		</div>
+	</div>
+
+	<div class="api-body">
+		<div class="api-nav">
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+					<a class="nav-link active" href="#overview" data-toggle="tab">📋 Resumen</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#parameters" data-toggle="tab">⚙️ Parámetros</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#responses" data-toggle="tab">📤 Respuestas</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#examples" data-toggle="tab">💻 Ejemplos</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#schema" data-toggle="tab">🔧 Esquemas</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="tab-content">
+			<!-- Overview Tab -->
+			<div class="tab-pane active" id="overview">
+				<div class="api-description">
+					<h4>Descripción</h4>
+					<p><%= api.description || 'Sin descripción disponible' %></p>
+				</div>
+
+				<div class="api-metadata">
+					<div class="row">
+						<div class="col-md-6">
+							<h5>Información General</h5>
+							<table class="table table-sm">
+								<tr><th>Versión:</th><td><%= api.api_version %></td></tr>
+								<tr><th>Módulo:</th><td><%= api.module_path || 'N/A' %></td></tr>
+								<tr><th>Función:</th><td><%= api.function_name || 'N/A' %></td></tr>
+								<tr><th>Autenticación:</th><td><%= api.authentication_required ? 'Requerida' : 'No requerida' %></td></tr>
+							</table>
+						</div>
+						<div class="col-md-6">
+							<h5>Configuración</h5>
+							<table class="table table-sm">
+								<tr><th>Rate Limit:</th><td><%= api.rate_limit || 'Sin límite' %> req/min</td></tr>
+								<tr><th>Cache:</th><td><%= api.cache_timeout || 0 %> segundos</td></tr>
+								<tr><th>Sandbox:</th><td><%= api.sandbox_enabled ? 'Habilitado' : 'Deshabilitado' %></td></tr>
+								<tr><th>Estado:</th><td>
+									<% if (api.is_deprecated) { %>
+										<span class="badge badge-warning">Deprecada</span>
+									<% } else { %>
+										<span class="badge badge-success">Activa</span>
+									<% } %>
+								</td></tr>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<% if (api.auto_generated) { %>
+				<div class="auto-generation-info">
+					<div class="alert alert-info">
+						<i class="fa fa-robot"></i>
+						<strong>API Auto-generada:</strong> Esta documentación fue generada automáticamente
+						<% if (api.needs_manual_review) { %>
+							<span class="badge badge-warning ml-2">Requiere Revisión</span>
+						<% } %>
+					</div>
+				</div>
+				<% } %>
+			</div>
+
+			<!-- Parameters Tab -->
+			<div class="tab-pane" id="parameters">
+				<h4>Parámetros de Request</h4>
+				<% if (api.parameters && api.parameters.length > 0) { %>
+					<div class="parameters-table">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Nombre</th>
+									<th>Tipo</th>
+									<th>Requerido</th>
+									<th>Default</th>
+									<th>Descripción</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% api.parameters.forEach(function(param) { %>
+								<tr>
+									<td><code><%= param.parameter_name %></code></td>
+									<td><span class="type-badge"><%= param.data_type %></span></td>
+									<td>
+										<% if (param.is_required) { %>
+											<span class="badge badge-danger">Requerido</span>
+										<% } else { %>
+											<span class="badge badge-secondary">Opcional</span>
+										<% } %>
+									</td>
+									<td><%= param.default_value || '-' %></td>
+									<td><%= param.parameter_description || 'Sin descripción' %></td>
+								</tr>
+								<% }); %>
+							</tbody>
+						</table>
+					</div>
+				<% } else { %>
+					<div class="alert alert-info">
+						<i class="fa fa-info-circle"></i> Esta API no tiene parámetros definidos.
+					</div>
+				<% } %>
+			</div>
+
+			<!-- Responses Tab -->
+			<div class="tab-pane" id="responses">
+				<h4>Códigos de Respuesta</h4>
+				<% if (api.response_codes && api.response_codes.length > 0) { %>
+					<div class="responses-list">
+						<% api.response_codes.forEach(function(response) { %>
+						<div class="response-code">
+							<div class="response-header">
+								<span class="status-code status-<%= Math.floor(response.status_code / 100) %>">
+									<%= response.status_code %>
+								</span>
+								<span class="response-description"><%= response.response_description %></span>
+							</div>
+							<% if (response.response_example) { %>
+							<div class="response-example">
+								<h6>Ejemplo:</h6>
+								<pre><code class="json"><%= response.response_example %></code></pre>
+							</div>
+							<% } %>
+						</div>
+						<% }); %>
+					</div>
+				<% } else { %>
+					<div class="alert alert-info">
+						<i class="fa fa-info-circle"></i> No hay códigos de respuesta definidos.
+					</div>
+				<% } %>
+			</div>
+
+			<!-- Examples Tab -->
+			<div class="tab-pane" id="examples">
+				<h4>Ejemplos de Código</h4>
+				<% if (api.code_examples && api.code_examples.length > 0) { %>
+					<div class="code-examples">
+						<% api.code_examples.forEach(function(example) { %>
+						<div class="code-example">
+							<div class="example-header">
+								<span class="language-tag"><%= example.language %></span>
+								<span class="example-description"><%= example.example_description %></span>
+								<button class="btn btn-sm btn-secondary copy-code" data-code="<%= encodeURIComponent(example.example_code) %>">
+									<i class="fa fa-copy"></i> Copiar
+								</button>
+							</div>
+							<pre><code class="<%= example.language.toLowerCase() %>"><%= example.example_code %></code></pre>
+						</div>
+						<% }); %>
+					</div>
+				<% } else { %>
+					<div class="alert alert-info">
+						<i class="fa fa-info-circle"></i> No hay ejemplos de código disponibles.
+						<button class="btn btn-primary btn-sm ml-2" onclick="window.apiPortal.generateCode('<%= api.name %>')">
+							<i class="fa fa-magic"></i> Generar Ejemplos
+						</button>
+					</div>
+				<% } %>
+			</div>
+
+			<!-- Schema Tab -->
+			<div class="tab-pane" id="schema">
+				<h4>Esquemas JSON</h4>
+				<div class="row">
+					<div class="col-md-6">
+						<h5>Request Schema</h5>
+						<% if (api.request_schema && Object.keys(api.request_schema).length > 0) { %>
+							<pre><code class="json"><%= JSON.stringify(api.request_schema, null, 2) %></code></pre>
+						<% } else { %>
+							<div class="alert alert-secondary">No hay esquema de request definido</div>
+						<% } %>
+					</div>
+					<div class="col-md-6">
+						<h5>Response Schema</h5>
+						<% if (api.response_schema && Object.keys(api.response_schema).length > 0) { %>
+							<pre><code class="json"><%= JSON.stringify(api.response_schema, null, 2) %></code></pre>
+						<% } else { %>
+							<div class="alert alert-secondary">No hay esquema de response definido</div>
+						<% } %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<!-- Collections Template -->
+<script type="text/template" id="collections-template">
+	<% collections.forEach(function(collection) { %>
+	<div class="collection-group">
+		<div class="collection-header" onclick="window.apiPortal.toggleCollection(this)">
+			<i class="fa fa-folder"></i>
+			<span class="collection-name"><%= collection.display_name %></span>
+			<span class="api-count">(<%= collection.api_count %>)</span>
+			<i class="fa fa-chevron-down toggle-icon"></i>
+		</div>
+		<div class="collection-apis">
+			<% collection.apis.forEach(function(api) { %>
+			<div class="api-item" onclick="window.apiPortal.loadAPIDetails('<%= api.name %>')">
+				<span class="method-badge method-<%= api.http_method.toLowerCase() %>"><%= api.http_method %></span>
+				<span class="api-name"><%= api.api_name %></span>
+				<% if (api.auto_generated) { %>
+					<i class="fa fa-robot auto-icon" title="Auto-generada"></i>
+				<% } %>
+			</div>
+			<% }); %>
+		</div>
+	</div>
+	<% }); %>
+</script>

@@ -18,7 +18,16 @@ import frappe
 import requests
 from frappe import _
 
+from condominium_management.api_documentation_system.decorator import api_documentation
 
+
+@api_documentation(
+	name="Enviar Contribución Cross-Site",
+	description="Envía contribuciones desde site administradora a domika.dev para revisión e integración",
+	version="v1",
+	collection="community-contributions",
+	method="POST",
+)
 @frappe.whitelist()
 def submit_contribution_to_domika(
 	contribution_data: str, target_site_url: str, api_key: str, contribution_title: str | None = None
