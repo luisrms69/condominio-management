@@ -1,0 +1,70 @@
+{
+ "actions": [],
+ "creation": "2025-01-13 14:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "source_module",
+  "source_doctype",
+  "source_field",
+  "column_break_4",
+  "aggregation",
+  "filters"
+ ],
+ "fields": [
+  {
+   "fieldname": "source_module",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Módulo Origen",
+   "options": "Companies\nPhysical Spaces\nDocument Generation\nCommunity Contributions\nCommittee Management\nAPI Documentation System",
+   "reqd": 1
+  },
+  {
+   "fieldname": "source_doctype",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "DocType Origen",
+   "options": "DocType",
+   "reqd": 1
+  },
+  {
+   "fieldname": "source_field",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Campo Origen",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "aggregation",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Agregación",
+   "options": "Suma\nPromedio\nConteo\nMínimo\nMáximo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "filters",
+   "fieldtype": "JSON",
+   "label": "Filtros (JSON)"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-01-13 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Dashboard Consolidado",
+ "name": "KPI Data Source",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

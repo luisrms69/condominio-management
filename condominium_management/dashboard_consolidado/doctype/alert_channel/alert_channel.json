@@ -1,0 +1,46 @@
+{
+ "actions": [],
+ "creation": "2025-01-13 14:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "channel_type",
+  "recipients",
+  "message_template"
+ ],
+ "fields": [
+  {
+   "fieldname": "channel_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Canal",
+   "options": "Email\nSMS\nNotificación Interna\nSlack",
+   "reqd": 1
+  },
+  {
+   "fieldname": "recipients",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Destinatarios"
+  },
+  {
+   "fieldname": "message_template",
+   "fieldtype": "Text",
+   "label": "Plantilla de Mensaje"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-01-13 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Dashboard Consolidado",
+ "name": "Alert Channel",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

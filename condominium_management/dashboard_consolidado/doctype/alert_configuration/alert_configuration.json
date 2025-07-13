@@ -1,0 +1,226 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:alert_name",
+ "creation": "2025-01-13 14:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_info_section",
+  "alert_name",
+  "alert_priority",
+  "is_active",
+  "column_break_4",
+  "modules_to_monitor",
+  "conditions_section",
+  "trigger_type",
+  "condition_formula",
+  "check_frequency",
+  "column_break_9",
+  "persistence_required",
+  "actions_section",
+  "notification_channels",
+  "escalation_section",
+  "auto_escalate",
+  "escalation_time",
+  "escalation_level",
+  "control_section",
+  "created_by",
+  "last_modified_by",
+  "column_break_17",
+  "creation_date",
+  "last_modified_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_info_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "alert_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre de la Alerta",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "alert_priority",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Prioridad",
+   "options": "Crítica\nAlta\nMedia\nBaja",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Activa"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "modules_to_monitor",
+   "fieldtype": "Table",
+   "label": "Módulos a Monitorear",
+   "options": "Module Monitor"
+  },
+  {
+   "fieldname": "conditions_section",
+   "fieldtype": "Section Break",
+   "label": "Condiciones de Activación"
+  },
+  {
+   "fieldname": "trigger_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Disparador",
+   "options": "Umbral\nTendencia\nAnomalía\nProgramado",
+   "reqd": 1
+  },
+  {
+   "fieldname": "condition_formula",
+   "fieldtype": "Code",
+   "label": "Fórmula de Condición (Python)"
+  },
+  {
+   "fieldname": "check_frequency",
+   "fieldtype": "Select",
+   "label": "Frecuencia de Verificación",
+   "options": "Tiempo Real\nMinuto\nHora\nDiaria",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "5",
+   "fieldname": "persistence_required",
+   "fieldtype": "Int",
+   "label": "Persistencia Requerida (minutos)"
+  },
+  {
+   "fieldname": "actions_section",
+   "fieldtype": "Section Break",
+   "label": "Acciones de Notificación"
+  },
+  {
+   "fieldname": "notification_channels",
+   "fieldtype": "Table",
+   "label": "Canales de Notificación",
+   "options": "Alert Channel"
+  },
+  {
+   "fieldname": "escalation_section",
+   "fieldtype": "Section Break",
+   "label": "Escalamiento"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_escalate",
+   "fieldtype": "Check",
+   "label": "Escalar Automáticamente"
+  },
+  {
+   "fieldname": "escalation_time",
+   "fieldtype": "Int",
+   "label": "Tiempo para Escalar (minutos)"
+  },
+  {
+   "fieldname": "escalation_level",
+   "fieldtype": "Link",
+   "label": "Nivel de Escalamiento",
+   "options": "Alert Configuration"
+  },
+  {
+   "fieldname": "control_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Control"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Última Modificación",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-13 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Dashboard Consolidado",
+ "name": "Alert Configuration",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Gestor de Dashboards",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Usuario de Dashboards"
+  }
+ ],
+ "search_fields": "alert_name, alert_priority",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

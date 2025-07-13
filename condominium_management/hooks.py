@@ -44,6 +44,12 @@ modules = {
 		"type": "module",
 		"label": "Committee Management",
 	},
+	"dashboard_consolidado": {
+		"color": "teal",
+		"icon": "octicon octicon-dashboard",
+		"type": "module",
+		"label": "Dashboard Consolidado",
+	},
 }
 
 # Translations

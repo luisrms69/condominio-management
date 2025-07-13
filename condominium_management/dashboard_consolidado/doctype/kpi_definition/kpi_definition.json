@@ -1,0 +1,265 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:kpi_code",
+ "creation": "2025-01-13 14:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_info_section",
+  "kpi_name",
+  "kpi_code",
+  "kpi_category",
+  "calculation_type",
+  "column_break_5",
+  "unit_type",
+  "cache_duration",
+  "company",
+  "is_active",
+  "calculation_section",
+  "data_sources",
+  "calculation_formula",
+  "thresholds_section",
+  "threshold_critical",
+  "threshold_warning",
+  "threshold_good",
+  "column_break_13",
+  "inverse_threshold",
+  "visualization_section",
+  "display_format",
+  "trend_period",
+  "show_sparkline",
+  "icon",
+  "control_section",
+  "created_by",
+  "last_modified_by",
+  "column_break_20",
+  "creation_date",
+  "last_modified_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_info_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "kpi_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del KPI",
+   "reqd": 1
+  },
+  {
+   "fieldname": "kpi_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Código del KPI",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "kpi_category",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Categoría",
+   "options": "Financiero\nOperacional\nCalidad\nCumplimiento",
+   "reqd": 1
+  },
+  {
+   "fieldname": "calculation_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Cálculo",
+   "options": "Suma\nPromedio\nConteo\nPersonalizado",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "unit_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Unidad",
+   "options": "Moneda\nPorcentaje\nNúmero\nDuración",
+   "reqd": 1
+  },
+  {
+   "default": "300",
+   "fieldname": "cache_duration",
+   "fieldtype": "Int",
+   "label": "Duración de Cache (segundos)"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Empresa",
+   "options": "Company"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Activo"
+  },
+  {
+   "fieldname": "calculation_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Cálculo"
+  },
+  {
+   "fieldname": "data_sources",
+   "fieldtype": "Table",
+   "label": "Fuentes de Datos",
+   "options": "KPI Data Source"
+  },
+  {
+   "fieldname": "calculation_formula",
+   "fieldtype": "Code",
+   "label": "Fórmula de Cálculo (Python)"
+  },
+  {
+   "fieldname": "thresholds_section",
+   "fieldtype": "Section Break",
+   "label": "Umbrales de Alerta"
+  },
+  {
+   "fieldname": "threshold_critical",
+   "fieldtype": "Float",
+   "label": "Umbral Crítico"
+  },
+  {
+   "fieldname": "threshold_warning",
+   "fieldtype": "Float",
+   "label": "Umbral de Advertencia"
+  },
+  {
+   "fieldname": "threshold_good",
+   "fieldtype": "Float",
+   "label": "Umbral Óptimo"
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "inverse_threshold",
+   "fieldtype": "Check",
+   "label": "Umbral Inverso (menor es mejor)"
+  },
+  {
+   "fieldname": "visualization_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración Visual"
+  },
+  {
+   "fieldname": "display_format",
+   "fieldtype": "Data",
+   "label": "Formato de Visualización"
+  },
+  {
+   "fieldname": "trend_period",
+   "fieldtype": "Select",
+   "label": "Período de Tendencia",
+   "options": "Diario\nSemanal\nMensual\nAnual"
+  },
+  {
+   "default": "0",
+   "fieldname": "show_sparkline",
+   "fieldtype": "Check",
+   "label": "Mostrar Mini Gráfico"
+  },
+  {
+   "fieldname": "icon",
+   "fieldtype": "Data",
+   "label": "Icono"
+  },
+  {
+   "fieldname": "control_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Control"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_20",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Última Modificación",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-13 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Dashboard Consolidado",
+ "name": "KPI Definition",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Gestor de Dashboards",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Usuario de Dashboards"
+  }
+ ],
+ "search_fields": "kpi_name, kpi_code, kpi_category",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
