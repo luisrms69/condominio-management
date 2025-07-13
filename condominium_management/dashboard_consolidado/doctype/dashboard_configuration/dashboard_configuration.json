@@ -1,0 +1,210 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:dashboard_name",
+ "creation": "2025-01-13 14:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_info_section",
+  "dashboard_name",
+  "dashboard_type",
+  "user_role",
+  "is_default",
+  "column_break_5",
+  "refresh_interval",
+  "company_filter",
+  "is_active",
+  "layout_section",
+  "layout_config",
+  "theme",
+  "color_scheme",
+  "widgets_section",
+  "dashboard_widgets",
+  "permissions_section",
+  "created_by",
+  "last_modified_by",
+  "column_break_16",
+  "creation_date",
+  "last_modified_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_info_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "dashboard_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Dashboard",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "dashboard_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Dashboard",
+   "options": "Ejecutivo\nOperacional\nFinanciero\nPersonalizado",
+   "reqd": 1
+  },
+  {
+   "fieldname": "user_role",
+   "fieldtype": "Link",
+   "label": "Rol de Usuario",
+   "options": "Role"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_default",
+   "fieldtype": "Check",
+   "label": "Dashboard por Defecto"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "30",
+   "fieldname": "refresh_interval",
+   "fieldtype": "Int",
+   "label": "Intervalo de Actualización (segundos)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company_filter",
+   "fieldtype": "Link",
+   "label": "Filtro de Empresa",
+   "options": "Company"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Activo"
+  },
+  {
+   "fieldname": "layout_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Layout"
+  },
+  {
+   "fieldname": "layout_config",
+   "fieldtype": "JSON",
+   "label": "Configuración de Grid Responsive"
+  },
+  {
+   "default": "Claro",
+   "fieldname": "theme",
+   "fieldtype": "Select",
+   "label": "Tema",
+   "options": "Claro\nOscuro\nAutomático"
+  },
+  {
+   "default": "Predeterminado",
+   "fieldname": "color_scheme",
+   "fieldtype": "Select",
+   "label": "Esquema de Colores",
+   "options": "Predeterminado\nDaltónicos\nAlto Contraste"
+  },
+  {
+   "fieldname": "widgets_section",
+   "fieldtype": "Section Break",
+   "label": "Widgets del Dashboard"
+  },
+  {
+   "fieldname": "dashboard_widgets",
+   "fieldtype": "Table",
+   "label": "Widgets",
+   "options": "Dashboard Widget Config"
+  },
+  {
+   "fieldname": "permissions_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Control"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Última Modificación",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-13 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Dashboard Consolidado",
+ "name": "Dashboard Configuration",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Gestor de Dashboards",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Usuario de Dashboards"
+  }
+ ],
+ "search_fields": "dashboard_name, dashboard_type, user_role",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
