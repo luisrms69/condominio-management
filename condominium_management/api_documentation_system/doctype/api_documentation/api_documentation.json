@@ -1,0 +1,289 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:api_name",
+ "creation": "2025-07-12 15:05:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_info_section",
+  "api_name",
+  "api_path",
+  "api_version",
+  "http_method",
+  "module",
+  "column_break_basic",
+  "is_active",
+  "is_deprecated",
+  "deprecation_date",
+  "replacement_api",
+  "documentation_section",
+  "description",
+  "request_schema",
+  "response_schema",
+  "column_break_doc",
+  "authentication_required",
+  "permissions_required",
+  "examples_section",
+  "code_examples",
+  "parameters_section",
+  "parameters",
+  "responses_section",
+  "response_codes",
+  "testing_section",
+  "sandbox_enabled",
+  "rate_limit",
+  "cache_timeout"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_info_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "api_name",
+   "fieldtype": "Data",
+   "label": "Nombre de la API",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "api_path",
+   "fieldtype": "Data",
+   "label": "Ruta de la API",
+   "reqd": 1
+  },
+  {
+   "fieldname": "api_version",
+   "fieldtype": "Select",
+   "label": "Versión",
+   "options": "v1\nv2\nv3",
+   "reqd": 1,
+   "default": "v1"
+  },
+  {
+   "fieldname": "http_method",
+   "fieldtype": "Select",
+   "label": "Método HTTP",
+   "options": "GET\nPOST\nPUT\nDELETE\nPATCH",
+   "reqd": 1
+  },
+  {
+   "fieldname": "module",
+   "fieldtype": "Link",
+   "label": "Módulo",
+   "options": "Module Def"
+  },
+  {
+   "fieldname": "module_path",
+   "fieldtype": "Data",
+   "label": "Ruta del Módulo",
+   "read_only": 1
+  },
+  {
+   "fieldname": "function_name",
+   "fieldtype": "Data",
+   "label": "Nombre de la Función",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Activa",
+   "default": 1
+  },
+  {
+   "fieldname": "is_deprecated",
+   "fieldtype": "Check",
+   "label": "Deprecada"
+  },
+  {
+   "fieldname": "deprecation_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Deprecación",
+   "depends_on": "is_deprecated"
+  },
+  {
+   "fieldname": "replacement_api",
+   "fieldtype": "Link",
+   "label": "API de Reemplazo",
+   "options": "API Documentation",
+   "depends_on": "is_deprecated"
+  },
+  {
+   "fieldname": "documentation_section",
+   "fieldtype": "Section Break",
+   "label": "Documentación"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Descripción"
+  },
+  {
+   "fieldname": "request_schema",
+   "fieldtype": "Code",
+   "label": "Esquema de Request",
+   "options": "JSON"
+  },
+  {
+   "fieldname": "response_schema",
+   "fieldtype": "Code",
+   "label": "Esquema de Response",
+   "options": "JSON"
+  },
+  {
+   "fieldname": "column_break_doc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "authentication_required",
+   "fieldtype": "Check",
+   "label": "Requiere Autenticación",
+   "default": 1
+  },
+  {
+   "fieldname": "permissions_required",
+   "fieldtype": "Small Text",
+   "label": "Permisos Requeridos"
+  },
+  {
+   "fieldname": "examples_section",
+   "fieldtype": "Section Break",
+   "label": "Ejemplos de Código"
+  },
+  {
+   "fieldname": "code_examples",
+   "fieldtype": "Table",
+   "label": "Ejemplos",
+   "options": "API Code Example"
+  },
+  {
+   "fieldname": "parameters_section",
+   "fieldtype": "Section Break",
+   "label": "Parámetros"
+  },
+  {
+   "fieldname": "parameters",
+   "fieldtype": "Table",
+   "label": "Parámetros",
+   "options": "API Parameter"
+  },
+  {
+   "fieldname": "responses_section",
+   "fieldtype": "Section Break",
+   "label": "Respuestas"
+  },
+  {
+   "fieldname": "response_codes",
+   "fieldtype": "Table",
+   "label": "Códigos de Respuesta",
+   "options": "API Response Code"
+  },
+  {
+   "fieldname": "testing_section",
+   "fieldtype": "Section Break",
+   "label": "Testing y Performance"
+  },
+  {
+   "fieldname": "sandbox_enabled",
+   "fieldtype": "Check",
+   "label": "Sandbox Habilitado",
+   "default": 1
+  },
+  {
+   "fieldname": "rate_limit",
+   "fieldtype": "Int",
+   "label": "Límite de Requests por Minuto",
+   "default": 60
+  },
+  {
+   "fieldname": "cache_timeout",
+   "fieldtype": "Int",
+   "label": "Timeout de Cache (segundos)",
+   "default": 300
+  },
+  {
+   "fieldname": "auto_generation_section",
+   "fieldtype": "Section Break",
+   "label": "Auto-Generación"
+  },
+  {
+   "fieldname": "auto_generated",
+   "fieldtype": "Check",
+   "label": "Generada Automáticamente",
+   "read_only": 1
+  },
+  {
+   "fieldname": "needs_manual_review",
+   "fieldtype": "Check",
+   "label": "Requiere Revisión Manual",
+   "read_only": 1
+  },
+  {
+   "fieldname": "generation_source",
+   "fieldtype": "Data",
+   "label": "Fuente de Generación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_auto_update",
+   "fieldtype": "Datetime",
+   "label": "Última Actualización Automática",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-12 15:05:00.000000",
+ "modified_by": "Administrator",
+ "module": "API Documentation System",
+ "name": "API Documentation",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "API Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "API User",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "api_name",
+ "track_changes": 1
+}

@@ -12,7 +12,16 @@ distribuidas entre múltiples condominios.
 import frappe
 from frappe import _
 
+from condominium_management.api_documentation_system.decorator import api_documentation
 
+
+@api_documentation(
+	name="Propagar Cambios de Templates",
+	description="Propaga cambios de templates a configuraciones existentes de múltiples condominios",
+	version="v1",
+	collection="document-generation",
+	method="POST",
+)
 @frappe.whitelist()
 def propagate_template_changes(registry_name, template_version, affected_stats):
 	"""
