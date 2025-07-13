@@ -1,0 +1,101 @@
+{
+ "actions": [],
+ "creation": "2025-01-13 14:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "widget_type",
+  "widget_name",
+  "data_source",
+  "column_break_3",
+  "position_x",
+  "position_y",
+  "width",
+  "height",
+  "section_break_8",
+  "widget_config",
+  "refresh_override"
+ ],
+ "fields": [
+  {
+   "fieldname": "widget_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Widget",
+   "options": "Tarjeta KPI\nGráfico\nTabla\nMapa\nAlerta",
+   "reqd": 1
+  },
+  {
+   "fieldname": "widget_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Widget",
+   "reqd": 1
+  },
+  {
+   "fieldname": "data_source",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Fuente de Datos",
+   "options": "Companies\nPhysical Spaces\nDocument Generation\nCommunity Contributions\nCommittee Management\nAPI Documentation System",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "position_x",
+   "fieldtype": "Int",
+   "label": "Posición X (Grid)"
+  },
+  {
+   "default": "0",
+   "fieldname": "position_y",
+   "fieldtype": "Int",
+   "label": "Posición Y (Grid)"
+  },
+  {
+   "default": "4",
+   "fieldname": "width",
+   "fieldtype": "Int",
+   "label": "Ancho (Columnas)"
+  },
+  {
+   "default": "3",
+   "fieldname": "height",
+   "fieldtype": "Int",
+   "label": "Alto (Filas)"
+  },
+  {
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break",
+   "label": "Configuración Específica"
+  },
+  {
+   "fieldname": "widget_config",
+   "fieldtype": "JSON",
+   "label": "Configuración del Widget (JSON)"
+  },
+  {
+   "fieldname": "refresh_override",
+   "fieldtype": "Int",
+   "label": "Override de Refresh (segundos)"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-01-13 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Dashboard Consolidado",
+ "name": "Dashboard Widget Config",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

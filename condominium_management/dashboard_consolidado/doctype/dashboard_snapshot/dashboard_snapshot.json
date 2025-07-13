@@ -1,0 +1,167 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:SNAP-{dashboard_config}-{YY}{MM}{DD}-{###}",
+ "creation": "2025-01-13 14:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_info_section",
+  "snapshot_date",
+  "dashboard_config",
+  "company",
+  "column_break_4",
+  "snapshot_type",
+  "triggered_by",
+  "is_milestone",
+  "data_section",
+  "kpi_values",
+  "widget_data",
+  "active_alerts",
+  "column_break_10",
+  "system_health",
+  "notes_section",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_info_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "default": "now",
+   "fieldname": "snapshot_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Fecha y Hora del Snapshot",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dashboard_config",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Configuración de Dashboard",
+   "options": "Dashboard Configuration",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Empresa",
+   "options": "Company"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "snapshot_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Snapshot",
+   "options": "Programado\nManual\nActivado por Evento",
+   "reqd": 1
+  },
+  {
+   "fieldname": "triggered_by",
+   "fieldtype": "Data",
+   "label": "Activado por"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_milestone",
+   "fieldtype": "Check",
+   "label": "Marcar como Hito"
+  },
+  {
+   "fieldname": "data_section",
+   "fieldtype": "Section Break",
+   "label": "Datos del Snapshot"
+  },
+  {
+   "fieldname": "kpi_values",
+   "fieldtype": "JSON",
+   "label": "Valores de KPIs"
+  },
+  {
+   "fieldname": "widget_data",
+   "fieldtype": "JSON",
+   "label": "Datos de Widgets"
+  },
+  {
+   "fieldname": "active_alerts",
+   "fieldtype": "JSON",
+   "label": "Alertas Activas"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "system_health",
+   "fieldtype": "JSON",
+   "label": "Estado del Sistema"
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notas"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text",
+   "label": "Notas del Snapshot"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-13 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Dashboard Consolidado",
+ "name": "Dashboard Snapshot",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Gestor de Dashboards",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Usuario de Dashboards"
+  }
+ ],
+ "search_fields": "dashboard_config, company, snapshot_type",
+ "sort_field": "snapshot_date",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
