@@ -1,0 +1,85 @@
+{
+ "actions": [],
+ "creation": "2025-01-13 08:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "component_name",
+  "amount_type",
+  "column_break_1",
+  "amount",
+  "percentage",
+  "section_break_applicability",
+  "apply_to_all",
+  "property_types"
+ ],
+ "fields": [
+  {
+   "fieldname": "component_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Componente",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amount_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Monto",
+   "options": "Fijo\nPorcentaje",
+   "reqd": 1,
+   "default": "Fijo"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "depends_on": "eval:doc.amount_type=='Fijo'",
+   "in_list_view": 1,
+   "label": "Monto",
+   "precision": 2
+  },
+  {
+   "fieldname": "percentage",
+   "fieldtype": "Percent",
+   "depends_on": "eval:doc.amount_type=='Porcentaje'",
+   "in_list_view": 1,
+   "label": "Porcentaje",
+   "precision": 2
+  },
+  {
+   "fieldname": "section_break_applicability",
+   "fieldtype": "Section Break",
+   "label": "Aplicabilidad"
+  },
+  {
+   "fieldname": "apply_to_all",
+   "fieldtype": "Check",
+   "label": "Aplicar a Todas las Propiedades",
+   "default": 1
+  },
+  {
+   "fieldname": "property_types",
+   "fieldtype": "Table",
+   "depends_on": "eval:!doc.apply_to_all",
+   "label": "Tipos de Propiedad",
+   "options": "Property Type Filter"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-01-13 08:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Financial Management",
+ "name": "Fee Component",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
