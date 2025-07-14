@@ -86,7 +86,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "default": "_Test Company",
    "fieldname": "company",
    "fieldtype": "Link",
    "label": "Condominio",
@@ -94,7 +93,6 @@
    "reqd": 1
   },
   {
-   "default": "Familiar",
    "fieldname": "resident_type",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -103,7 +101,6 @@
    "reqd": 1
   },
   {
-   "default": "Activa",
    "fieldname": "account_status",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -117,7 +114,6 @@
    "label": "Información Financiera"
   },
   {
-   "default": "0",
    "fieldname": "current_balance",
    "fieldtype": "Currency",
    "label": "Saldo Actual",
@@ -229,13 +225,11 @@
    "precision": "2"
   },
   {
-   "default": "1",
    "fieldname": "auto_charge_enabled",
    "fieldtype": "Check",
    "label": "Auto-cargo Habilitado"
   },
   {
-   "default": "1",
    "fieldname": "notifications_enabled",
    "fieldtype": "Check",
    "label": "Notificaciones Habilitadas"
