@@ -1,0 +1,404 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-01-14 11:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "naming_series",
+  "balance_date",
+  "account_type",
+  "column_break_basic",
+  "credit_amount",
+  "balance_status",
+  "expiration_date",
+  "account_details_section",
+  "property_account",
+  "resident_account",
+  "customer",
+  "column_break_account",
+  "origin_type",
+  "origin_reference",
+  "payment_collection_ref",
+  "credit_source_section",
+  "source_type",
+  "source_description",
+  "column_break_source",
+  "overpayment_amount",
+  "refund_eligible",
+  "refund_requested",
+  "usage_tracking_section",
+  "total_applied",
+  "remaining_balance",
+  "column_break_usage",
+  "usage_count",
+  "last_used_date",
+  "next_application_date",
+  "management_section",
+  "auto_apply_enabled",
+  "priority_level",
+  "column_break_management",
+  "requires_approval",
+  "approved_by",
+  "approval_date",
+  "expiration_settings_section",
+  "days_until_expiry",
+  "expiry_notification_sent",
+  "column_break_expiry",
+  "auto_extend_enabled",
+  "extension_criteria",
+  "max_extensions",
+  "audit_information_section",
+  "created_by",
+  "creation_date",
+  "column_break_audit",
+  "last_modified_by",
+  "last_modified_date",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie de Numeración",
+   "options": "CB-.YYYY.-.MM.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "balance_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Fecha del Saldo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "account_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Cuenta",
+   "options": "Property Account\nResident Account\nAmbos",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "credit_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Monto del Crédito",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "balance_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado del Saldo",
+   "options": "Activo\nAplicado Parcial\nAplicado Total\nExpirado\nCancelado",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expiration_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Expiración"
+  },
+  {
+   "fieldname": "account_details_section",
+   "fieldtype": "Section Break",
+   "label": "Detalles de la Cuenta"
+  },
+  {
+   "fieldname": "property_account",
+   "fieldtype": "Link",
+   "label": "Cuenta de Propiedad",
+   "options": "Property Account"
+  },
+  {
+   "fieldname": "resident_account",
+   "fieldtype": "Link",
+   "label": "Cuenta de Residente",
+   "options": "Resident Account"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Cliente ERPNext",
+   "options": "Customer",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_account",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "origin_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Origen",
+   "options": "Sobrepago\nReembolso\nAjuste Manual\nDescuento Aplicado\nError Corrección\nTransferencia"
+  },
+  {
+   "fieldname": "origin_reference",
+   "fieldtype": "Data",
+   "label": "Referencia de Origen"
+  },
+  {
+   "fieldname": "payment_collection_ref",
+   "fieldtype": "Link",
+   "label": "Pago de Referencia",
+   "options": "Payment Collection"
+  },
+  {
+   "fieldname": "credit_source_section",
+   "fieldtype": "Section Break",
+   "label": "Origen del Crédito"
+  },
+  {
+   "fieldname": "source_type",
+   "fieldtype": "Select",
+   "label": "Fuente del Crédito",
+   "options": "Pago Excedente\nReembolso Autorizado\nDescuento por Pronto Pago\nCompensación de Servicios\nAjuste Administrativo\nTransferencia entre Cuentas"
+  },
+  {
+   "fieldname": "source_description",
+   "fieldtype": "Text",
+   "label": "Descripción del Origen"
+  },
+  {
+   "fieldname": "column_break_source",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "overpayment_amount",
+   "fieldtype": "Currency",
+   "label": "Monto de Sobrepago",
+   "precision": "2"
+  },
+  {
+   "fieldname": "refund_eligible",
+   "fieldtype": "Check",
+   "label": "Elegible para Reembolso"
+  },
+  {
+   "fieldname": "refund_requested",
+   "fieldtype": "Check",
+   "label": "Reembolso Solicitado"
+  },
+  {
+   "fieldname": "usage_tracking_section",
+   "fieldtype": "Section Break",
+   "label": "Seguimiento de Uso"
+  },
+  {
+   "fieldname": "total_applied",
+   "fieldtype": "Currency",
+   "label": "Total Aplicado",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "remaining_balance",
+   "fieldtype": "Currency",
+   "label": "Saldo Restante",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_usage",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "usage_count",
+   "fieldtype": "Int",
+   "label": "Veces Utilizado",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_used_date",
+   "fieldtype": "Date",
+   "label": "Última Fecha de Uso",
+   "read_only": 1
+  },
+  {
+   "fieldname": "next_application_date",
+   "fieldtype": "Date",
+   "label": "Próxima Aplicación Programada"
+  },
+  {
+   "fieldname": "management_section",
+   "fieldtype": "Section Break",
+   "label": "Gestión del Saldo"
+  },
+  {
+   "fieldname": "auto_apply_enabled",
+   "fieldtype": "Check",
+   "label": "Aplicación Automática Habilitada"
+  },
+  {
+   "fieldname": "priority_level",
+   "fieldtype": "Select",
+   "label": "Nivel de Prioridad",
+   "options": "Alta\nMedia\nBaja"
+  },
+  {
+   "fieldname": "column_break_management",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "requires_approval",
+   "fieldtype": "Check",
+   "label": "Requiere Aprobación"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Aprobado Por",
+   "options": "User"
+  },
+  {
+   "fieldname": "approval_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Aprobación"
+  },
+  {
+   "fieldname": "expiration_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Expiración"
+  },
+  {
+   "fieldname": "days_until_expiry",
+   "fieldtype": "Int",
+   "label": "Días Hasta Expiración",
+   "read_only": 1
+  },
+  {
+   "fieldname": "expiry_notification_sent",
+   "fieldtype": "Check",
+   "label": "Notificación de Expiración Enviada",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_expiry",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "auto_extend_enabled",
+   "fieldtype": "Check",
+   "label": "Extensión Automática Habilitada"
+  },
+  {
+   "fieldname": "extension_criteria",
+   "fieldtype": "Text",
+   "label": "Criterios de Extensión"
+  },
+  {
+   "fieldname": "max_extensions",
+   "fieldtype": "Int",
+   "label": "Máximo de Extensiones"
+  },
+  {
+   "fieldname": "audit_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Auditoría"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_audit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha Modificación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Long Text",
+   "label": "Notas del Saldo"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-14 11:00:00.000000",
+ "modified_by": "Administrator",
+ "app_name": "condominium_management",
+ "module": "Financial Management",
+ "name": "Credit Balance Management",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrador Financiero",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Contador Condominio",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Comité Administración"
+  },
+  {
+   "read": 1,
+   "role": "Residente Propietario"
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

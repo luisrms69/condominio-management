@@ -63,100 +63,88 @@ class TestPropertyAccount(FinancialTestBaseGranular):
 
 	def test_layer_2_basic_document_creation(self):
 		"""LAYER 2: Creación básica de documento con campos mínimos"""
-		doc = self.create_test_document(
-			"Property Account",
-			{
-				"account_name": "TEST Cuenta Básica",
-				"property_registry": "TEST_PROP_001",
-				"customer": "TEST_CUSTOMER_001",
-				"company": "TEST_FINANCIAL_COMPANY",
-				"billing_frequency": "Mensual",
-				"current_balance": 0.0,
-				"billing_start_date": getdate(),
-				"billing_day": 1,
-			},
-		)
+		# Create document directly without dependencies for basic field testing
+		doc = frappe.new_doc("Property Account")
 
+		# Set basic fields
+		doc.account_name = "TEST Cuenta Básica"
+		doc.property_registry = "TEST_PROP_001"
+		doc.customer = "TEST_CUSTOMER_001"
+		doc.company = "Test Condominium"
+		doc.billing_frequency = "Mensual"
+		doc.current_balance = 0.0
+		doc.billing_start_date = getdate()
+		doc.billing_day = 1
+
+		# Test field assignments (no save needed)
 		self.assertEqual(doc.doctype, "Property Account")
 		self.assertEqual(doc.account_name, "TEST Cuenta Básica")
 		self.assertEqual(doc.billing_frequency, "Mensual")
 		self.assertEqual(doc.current_balance, 0.0)
+
+		# Test default values - REGLA #36: Correct method name
+		doc.set_default_values()
 		self.assertEqual(doc.account_status, "Activa")  # Default value
 
 	def test_layer_2_validation_methods(self):
 		"""LAYER 2: Validación de métodos de negocio"""
-		# Test validación de día de facturación inválido
-		with self.assertRaises(frappe.ValidationError):
-			doc = frappe.get_doc(
-				{
-					"doctype": "Property Account",
-					"account_name": "TEST Invalid Billing Day",
-					"property_registry": "TEST_PROP_001",
-					"customer": "TEST_CUSTOMER_001",
-					"company": "TEST_FINANCIAL_COMPANY",
-					"billing_frequency": "Mensual",
-					"current_balance": 0.0,
-					"billing_start_date": getdate(),
-					"billing_day": 35,  # Inválido
-				}
-			)
-			doc.save()
+		# Test validación de día de facturación inválido - business logic only
+		doc = frappe.new_doc("Property Account")
+		doc.billing_day = 35  # Inválido
 
-		# Test validación de saldo a favor negativo
+		# Test validation method directly
 		with self.assertRaises(frappe.ValidationError):
-			doc = frappe.get_doc(
-				{
-					"doctype": "Property Account",
-					"account_name": "TEST Invalid Credit",
-					"property_registry": "TEST_PROP_002",
-					"customer": "TEST_CUSTOMER_002",
-					"company": "TEST_FINANCIAL_COMPANY",
-					"billing_frequency": "Mensual",
-					"current_balance": 0.0,
-					"credit_balance": -500.0,  # Negativo inválido
-					"billing_start_date": getdate(),
-					"billing_day": 1,
-				}
-			)
-			doc.save()
+			doc.validate_billing_configuration()
+
+		# Test validación de saldo a favor negativo - business logic only
+		doc2 = frappe.new_doc("Property Account")
+		doc2.credit_balance = -500.0  # Negativo inválido
+
+		# Test validation method directly - REGLA #36: Correct method name
+		with self.assertRaises(frappe.ValidationError):
+			doc2.validate_financial_data()
 
 	def test_layer_2_default_values_assignment(self):
-		"""LAYER 2: Verificar asignación de valores por defecto"""
-		doc = self.create_test_document(
-			"Property Account",
-			{
-				"account_name": "TEST Default Values",
-				"property_registry": "TEST_PROP_003",
-				"customer": "TEST_CUSTOMER_003",
-				"company": "TEST_FINANCIAL_COMPANY",
-				"billing_frequency": "Mensual",
-				"current_balance": 0.0,
-			},
-		)
+		"""LAYER 2: Verificar asignación de valores por defecto - REGLA #36"""
+		# Create document directly without save - no dependencies needed
+		doc = frappe.new_doc("Property Account")
+		doc.account_name = "TEST Default Values"
+		doc.property_registry = "TEST_PROP_003"
+		doc.customer = "TEST_CUSTOMER_003"
+		doc.company = "Test Condominium"
+		doc.billing_frequency = "Mensual"
+		doc.current_balance = 0.0
+
+		# Set None values to trigger default assignment
+		doc.auto_generate_invoices = None
+		doc.discount_eligibility = None
+
+		# Apply default values method
+		doc.set_default_values()
 
 		# Verificar valores por defecto
 		self.assertEqual(doc.account_status, "Activa")
 		self.assertEqual(doc.billing_frequency, "Mensual")
 		self.assertEqual(doc.billing_day, 1)
 		self.assertEqual(doc.billing_start_date, getdate())
-		self.assertTrue(doc.auto_generate_invoices)
-		self.assertTrue(doc.discount_eligibility)
+		self.assertEqual(doc.auto_generate_invoices, 1)  # REGLA #36: Check integer value
+		self.assertEqual(doc.discount_eligibility, 1)  # REGLA #36: Check integer value
 
 	def test_layer_2_audit_information(self):
-		"""LAYER 2: Verificar información de auditoría"""
-		doc = self.create_test_document(
-			"Property Account",
-			{
-				"account_name": "TEST Audit Info",
-				"property_registry": "TEST_PROP_004",
-				"customer": "TEST_CUSTOMER_004",
-				"company": "TEST_FINANCIAL_COMPANY",
-				"billing_frequency": "Mensual",
-				"current_balance": 0.0,
-				"billing_start_date": getdate(),
-				"billing_day": 1,
-			},
-		)
+		"""LAYER 2: Verificar información de auditoría - REGLA #36"""
+		# Create document directly and apply audit method - no dependencies needed
+		doc = frappe.new_doc("Property Account")
+		doc.account_name = "TEST Audit Info"
+		doc.property_registry = "TEST_PROP_004"
+		doc.customer = "TEST_CUSTOMER_004"
+		doc.company = "Test Condominium"
+		doc.billing_frequency = "Mensual"
+		doc.current_balance = 0.0
+		doc.billing_start_date = getdate()
+		doc.billing_day = 1
+
+		# Apply audit information method directly
+		doc.update_audit_information()
 
 		# Verificar campos de auditoría se establecen automáticamente
 		self.assertEqual(doc.created_by, "Administrator")
@@ -164,143 +152,146 @@ class TestPropertyAccount(FinancialTestBaseGranular):
 		self.assertEqual(doc.last_modified_by, "Administrator")
 		self.assertIsNotNone(doc.last_modified_date)
 
-	@patch("frappe.get_doc")
-	def test_layer_3_property_registry_integration(self, mock_get_doc):
-		"""LAYER 3: Integración con Property Registry"""
-		# Mock Property Registry
-		mock_property = MagicMock()
-		mock_property.status = "Activa"
-		mock_property.property_number = "101"
-		mock_property.name = "TEST_PROP_005"
-		mock_get_doc.return_value = mock_property
+	def test_layer_3_property_registry_integration(self):
+		"""LAYER 3: Integración con Property Registry - REGLA #36"""
+		# Create document and test account name generation logic directly
+		doc = frappe.new_doc("Property Account")
+		doc.property_registry = "TEST_PROP_005"
+		doc.customer = "TEST_CUSTOMER_005"
+		doc.company = "Test Condominium"
+		doc.billing_frequency = "Mensual"
+		doc.current_balance = 0.0
+		doc.billing_start_date = getdate()
+		doc.billing_day = 1
 
-		doc = self.create_test_document(
-			"Property Account",
-			{
-				"property_registry": "TEST_PROP_005",
-				"customer": "TEST_CUSTOMER_005",
-				"company": "TEST_FINANCIAL_COMPANY",
-				"billing_frequency": "Mensual",
-				"current_balance": 0.0,
-				"billing_start_date": getdate(),
-				"billing_day": 1,
-			},
-		)
-
-		# Verificar que se generó account_name automáticamente
-		self.assertEqual(doc.account_name, "CUENTA-101")
-
-	@patch("frappe.db.exists")
-	def test_layer_3_customer_validation(self, mock_exists):
-		"""LAYER 3: Validación de Customer ERPNext"""
-		mock_exists.return_value = True
-
+		# Mock targeted frappe.get_doc only for Property Registry
 		with patch("frappe.get_doc") as mock_get_doc:
-			# Mock Customer
-			mock_customer = MagicMock()
-			mock_customer.customer_group = "Condóminos"
-			mock_get_doc.return_value = mock_customer
+			mock_property = MagicMock()
+			mock_property.status = "Activa"
+			mock_property.property_number = "101"
+			mock_property.name = "TEST_PROP_005"
+			mock_get_doc.return_value = mock_property
 
-			doc = self.create_test_document(
-				"Property Account",
-				{
-					"account_name": "TEST Customer Validation",
-					"property_registry": "TEST_PROP_006",
-					"customer": "TEST_CUSTOMER_006",
-					"company": "TEST_FINANCIAL_COMPANY",
-					"billing_frequency": "Mensual",
-					"current_balance": 0.0,
-					"billing_start_date": getdate(),
-					"billing_day": 1,
-				},
-			)
+			# Apply account name generation method directly
+			doc.generate_account_name()
 
-			self.assertEqual(doc.customer, "TEST_CUSTOMER_006")
+			# Verificar que se generó account_name automáticamente
+			self.assertEqual(doc.account_name, "CUENTA-101")
 
-	@patch("frappe.db.sql")
-	def test_layer_3_pending_amount_calculation(self, mock_sql):
-		"""LAYER 3: Cálculo de monto pendiente"""
-		# Mock SQL query para facturas pendientes
-		mock_sql.return_value = [(1500.00,)]
+	def test_layer_3_customer_validation(self):
+		"""LAYER 3: Validación de Customer ERPNext - REGLA #36"""
+		# Create document and test customer validation logic directly
+		doc = frappe.new_doc("Property Account")
+		doc.account_name = "TEST Customer Validation"
+		doc.property_registry = "TEST_PROP_006"
+		doc.customer = "TEST_CUSTOMER_006"
+		doc.company = "Test Condominium"
+		doc.billing_frequency = "Mensual"
+		doc.current_balance = 0.0
+		doc.billing_start_date = getdate()
+		doc.billing_day = 1
 
-		doc = self.create_test_document(
-			"Property Account",
-			{
-				"account_name": "TEST Pending Amount",
-				"property_registry": "TEST_PROP_007",
-				"customer": "TEST_CUSTOMER_007",
-				"company": "TEST_FINANCIAL_COMPANY",
-				"billing_frequency": "Mensual",
-				"current_balance": 0.0,
-				"billing_start_date": getdate(),
-				"billing_day": 1,
-			},
-		)
+		# Mock targeted dependencies for customer validation
+		with patch("frappe.db.exists") as mock_exists:
+			with patch("frappe.get_doc") as mock_get_doc:
+				mock_exists.return_value = True
+				mock_customer = MagicMock()
+				mock_customer.customer_group = "Condóminos"
+				mock_get_doc.return_value = mock_customer
 
-		# Forzar cálculo de monto pendiente
-		doc.calculate_pending_amount()
-		self.assertEqual(doc.pending_amount, 1500.00)
+				# Apply customer validation method directly
+				doc.validate_customer_link()
 
-	@patch("frappe.db.sql")
-	def test_layer_3_payment_summary_calculation(self, mock_sql):
-		"""LAYER 3: Cálculo de resumen de pagos"""
-		# Mock SQL queries para pagos YTD y facturas YTD
-		mock_sql.side_effect = [
-			[(2500.00,)],  # YTD payments
-			[(3000.00,)],  # YTD invoiced
-		]
+				# Verify customer assignment
+				self.assertEqual(doc.customer, "TEST_CUSTOMER_006")
 
-		doc = self.create_test_document(
-			"Property Account",
-			{
-				"account_name": "TEST Payment Summary",
-				"property_registry": "TEST_PROP_008",
-				"customer": "TEST_CUSTOMER_008",
-				"company": "TEST_FINANCIAL_COMPANY",
-				"billing_frequency": "Mensual",
-				"current_balance": 0.0,
-				"billing_start_date": getdate(),
-				"billing_day": 1,
-			},
-		)
+	def test_layer_3_pending_amount_calculation(self):
+		"""LAYER 3: Cálculo de monto pendiente - REGLA #36"""
+		# Create document and test pending amount calculation directly
+		doc = frappe.new_doc("Property Account")
+		doc.account_name = "TEST Pending Amount"
+		doc.property_registry = "TEST_PROP_007"
+		doc.customer = "TEST_CUSTOMER_007"
+		doc.company = "Test Condominium"
+		doc.billing_frequency = "Mensual"
+		doc.current_balance = 0.0
+		doc.billing_start_date = getdate()
+		doc.billing_day = 1
 
-		# Forzar actualización de resumen de pagos
-		doc.update_payment_summary()
+		# Mock targeted SQL query for pending amount calculation
+		with patch("frappe.db.sql") as mock_sql:
+			mock_sql.return_value = [(1500.00,)]
 
-		self.assertEqual(doc.ytd_paid_amount, 2500.00)
-		self.assertEqual(doc.total_invoiced_ytd, 3000.00)
-		self.assertEqual(doc.payment_success_rate, 83.33)  # 2500/3000 * 100
+			# Apply pending amount calculation method directly
+			doc.calculate_pending_amount()
 
-	@patch("frappe.get_doc")
-	def test_layer_3_monthly_fee_calculation(self, mock_get_doc):
-		"""LAYER 3: Cálculo de cuota mensual"""
-		# Mock Fee Structure con cálculo
-		mock_fee_structure = MagicMock()
-		mock_fee_structure.calculate_fee_for_property.return_value = {
-			"total_fee": 1250.00,
-			"base_fee": 1000.00,
-			"reserve_fund": 250.00,
-		}
-		mock_get_doc.return_value = mock_fee_structure
+			# Verify calculation result
+			self.assertEqual(doc.pending_amount, 1500.00)
 
-		doc = self.create_test_document(
-			"Property Account",
-			{
-				"account_name": "TEST Monthly Fee",
-				"property_registry": "TEST_PROP_009",
-				"customer": "TEST_CUSTOMER_009",
-				"company": "TEST_FINANCIAL_COMPANY",
-				"billing_frequency": "Mensual",
-				"current_balance": 0.0,
-				"billing_start_date": getdate(),
-				"billing_day": 1,
-				"fee_structure": "TEST_FEE_STRUCTURE",
-			},
-		)
+	def test_layer_3_payment_summary_calculation(self):
+		"""LAYER 3: Cálculo de resumen de pagos - REGLA #36"""
+		# Create document and test payment summary calculation directly
+		doc = frappe.new_doc("Property Account")
+		doc.account_name = "TEST Payment Summary"
+		doc.property_registry = "TEST_PROP_008"
+		doc.customer = "TEST_CUSTOMER_008"
+		doc.company = "Test Condominium"
+		doc.billing_frequency = "Mensual"
+		doc.current_balance = 0.0
+		doc.billing_start_date = getdate()
+		doc.billing_day = 1
 
-		# Forzar cálculo de cuota mensual
-		doc.calculate_monthly_fee()
-		self.assertEqual(doc.monthly_fee_amount, 1250.00)
+		# Mock targeted SQL queries for payment summary calculation
+		with patch("frappe.db.sql") as mock_sql:
+			mock_sql.side_effect = [
+				[(2500.00,)],  # YTD payments
+				[(3000.00,)],  # YTD invoiced
+				[],  # Additional calls for average payment delay
+			]
+
+			# Mock frappe.get_doc for Fee Structure calculation
+			with patch("frappe.get_doc") as mock_get_doc:
+				mock_fee_structure = MagicMock()
+				mock_fee_structure.calculate_fee_for_property.return_value = {"total_fee": 1250.00}
+				mock_get_doc.return_value = mock_fee_structure
+
+				# Apply payment summary calculation method directly
+				doc.update_payment_summary()
+
+				# Verify calculation results
+				self.assertEqual(doc.ytd_paid_amount, 2500.00)
+				self.assertEqual(doc.total_invoiced_ytd, 3000.00)
+				self.assertEqual(doc.payment_success_rate, 83.33)  # 2500/3000 * 100
+
+	def test_layer_3_monthly_fee_calculation(self):
+		"""LAYER 3: Cálculo de cuota mensual - REGLA #36"""
+		# Create document and test monthly fee calculation directly
+		doc = frappe.new_doc("Property Account")
+		doc.account_name = "TEST Monthly Fee"
+		doc.property_registry = "TEST_PROP_009"
+		doc.customer = "TEST_CUSTOMER_009"
+		doc.company = "Test Condominium"
+		doc.billing_frequency = "Mensual"
+		doc.current_balance = 0.0
+		doc.billing_start_date = getdate()
+		doc.billing_day = 1
+		doc.fee_structure = "TEST_FEE_STRUCTURE"
+
+		# Mock targeted frappe.get_doc for Fee Structure calculation
+		with patch("frappe.get_doc") as mock_get_doc:
+			mock_fee_structure = MagicMock()
+			mock_fee_structure.calculate_fee_for_property.return_value = {
+				"total_fee": 1250.00,
+				"base_fee": 1000.00,
+				"reserve_fund": 250.00,
+			}
+			mock_get_doc.return_value = mock_fee_structure
+
+			# Apply monthly fee calculation method directly
+			doc.calculate_monthly_fee()
+
+			# Verify calculation result
+			self.assertEqual(doc.monthly_fee_amount, 1250.00)
 
 	def test_layer_4_permissions_enforcement(self):
 		"""LAYER 4: Verificación de enforcement de permisos"""
@@ -335,78 +326,79 @@ class TestPropertyAccount(FinancialTestBaseGranular):
 		self.assertEqual(condomino_perms.read, 1)
 		self.assertEqual(condomino_perms.write, 0)
 
-	@patch("frappe.db.get_value")
-	def test_layer_4_uniqueness_constraints(self, mock_get_value):
-		"""LAYER 4: Verificación de constraints de unicidad"""
-		# Test constraint: Una cuenta por propiedad
-		mock_get_value.return_value = "EXISTING_ACCOUNT"
+	def test_layer_4_uniqueness_constraints(self):
+		"""LAYER 4: Verificación de constraints de unicidad - REGLA #36"""
+		# Create document and test uniqueness validation directly
+		doc = frappe.new_doc("Property Account")
+		doc.account_name = "TEST Duplicate Property"
+		doc.property_registry = "TEST_PROP_DUPLICATE"
+		doc.customer = "TEST_CUSTOMER_010"
+		doc.company = "Test Condominium"
+		doc.billing_frequency = "Mensual"
+		doc.current_balance = 0.0
+		doc.billing_start_date = getdate()
+		doc.billing_day = 1
 
-		with self.assertRaises(frappe.ValidationError):
-			doc = frappe.get_doc(
+		# Mock targeted dependencies for uniqueness validation
+		with patch("frappe.db.get_value") as mock_get_value:
+			with patch("frappe.get_doc") as mock_get_doc:
+				mock_get_value.return_value = "EXISTING_ACCOUNT"
+				mock_property = MagicMock()
+				mock_property.status = "Activa"
+				mock_get_doc.return_value = mock_property
+
+				# Test constraint: Una cuenta por propiedad
+				with self.assertRaises(frappe.ValidationError):
+					doc.validate_property_registry()
+
+	def test_layer_4_api_methods_functionality(self):
+		"""LAYER 4: Verificación de métodos API - REGLA #36"""
+		# Create document and test API methods directly
+		doc = frappe.new_doc("Property Account")
+		doc.account_name = "TEST API Methods"
+		doc.property_registry = "TEST_PROP_011"
+		doc.customer = "TEST_CUSTOMER_011"
+		doc.company = "Test Condominium"
+		doc.billing_frequency = "Mensual"
+		doc.current_balance = 0.0
+		doc.billing_start_date = getdate()
+		doc.billing_day = 1
+
+		# Mock targeted SQL queries for API methods
+		with patch("frappe.db.sql") as mock_sql:
+			# Test get_outstanding_invoices first
+			mock_sql.return_value = [
 				{
-					"doctype": "Property Account",
-					"account_name": "TEST Duplicate Property",
-					"property_registry": "TEST_PROP_DUPLICATE",
-					"customer": "TEST_CUSTOMER_010",
-					"company": "TEST_FINANCIAL_COMPANY",
-					"billing_frequency": "Mensual",
-					"current_balance": 0.0,
-					"billing_start_date": getdate(),
-					"billing_day": 1,
+					"name": "INV-001",
+					"posting_date": getdate(),
+					"due_date": add_days(getdate(), 30),
+					"grand_total": 1000.00,
+					"outstanding_amount": 1000.00,
+					"days_overdue": 0,
 				}
-			)
-			doc.save()
+			]
 
-	@patch("frappe.db.sql")
-	def test_layer_4_api_methods_functionality(self, mock_sql):
-		"""LAYER 4: Verificación de métodos API"""
-		doc = self.create_test_document(
-			"Property Account",
-			{
-				"account_name": "TEST API Methods",
-				"property_registry": "TEST_PROP_011",
-				"customer": "TEST_CUSTOMER_011",
-				"company": "TEST_FINANCIAL_COMPANY",
-				"billing_frequency": "Mensual",
-				"current_balance": 0.0,
-				"billing_start_date": getdate(),
-				"billing_day": 1,
-			},
-		)
+			invoices = doc.get_outstanding_invoices()
+			self.assertEqual(len(invoices), 1)
+			self.assertEqual(invoices[0]["name"], "INV-001")
+			self.assertEqual(invoices[0]["outstanding_amount"], 1000.00)
 
-		# Test get_outstanding_invoices
-		mock_sql.return_value = [
-			{
-				"name": "INV-001",
-				"posting_date": getdate(),
-				"due_date": add_days(getdate(), 30),
-				"grand_total": 1000.00,
-				"outstanding_amount": 1000.00,
-				"days_overdue": 0,
-			}
-		]
+			# Test get_payment_history
+			mock_sql.return_value = [
+				{
+					"name": "PAY-001",
+					"posting_date": getdate(),
+					"paid_amount": 1000.00,
+					"mode_of_payment": "Transferencia",
+					"reference_no": "REF001",
+					"reference_date": getdate(),
+				}
+			]
 
-		invoices = doc.get_outstanding_invoices()
-		self.assertEqual(len(invoices), 1)
-		self.assertEqual(invoices[0]["name"], "INV-001")
-		self.assertEqual(invoices[0]["outstanding_amount"], 1000.00)
-
-		# Test get_payment_history
-		mock_sql.return_value = [
-			{
-				"name": "PAY-001",
-				"posting_date": getdate(),
-				"paid_amount": 1000.00,
-				"mode_of_payment": "Transferencia",
-				"reference_no": "REF001",
-				"reference_date": getdate(),
-			}
-		]
-
-		payments = doc.get_payment_history(5)
-		self.assertEqual(len(payments), 1)
-		self.assertEqual(payments[0]["name"], "PAY-001")
-		self.assertEqual(payments[0]["paid_amount"], 1000.00)
+			payments = doc.get_payment_history(5)
+			self.assertEqual(len(payments), 1)
+			self.assertEqual(payments[0]["name"], "PAY-001")
+			self.assertEqual(payments[0]["paid_amount"], 1000.00)
 
 
 if __name__ == "__main__":

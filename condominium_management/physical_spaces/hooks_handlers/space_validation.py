@@ -136,8 +136,7 @@ def validate_cost_center(doc):
 				# Validar que pertenece a la company correcta
 				if cost_center.company != doc.company:
 					frappe.throw(
-						f"El centro de costos '{doc.cost_center}' no pertenece "
-						f"a la company '{doc.company}'"
+						f"El centro de costos '{doc.cost_center}' no pertenece a la company '{doc.company}'"
 					)
 		except frappe.DoesNotExistError:
 			frappe.throw(f"El centro de costos '{doc.cost_center}' no existe")

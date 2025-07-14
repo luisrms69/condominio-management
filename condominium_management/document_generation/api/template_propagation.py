@@ -276,10 +276,10 @@ def create_propagation_log(registry, status, results):
         Fecha: {frappe.utils.now()}
 
         Estadísticas:
-        - Total procesadas: {results['total_processed']}
-        - Actualizaciones exitosas: {results['successful_updates']}
-        - Actualizaciones fallidas: {results['failed_updates']}
-        - Omitidas: {results['skipped_updates']}
+        - Total procesadas: {results["total_processed"]}
+        - Actualizaciones exitosas: {results["successful_updates"]}
+        - Actualizaciones fallidas: {results["failed_updates"]}
+        - Omitidas: {results["skipped_updates"]}
 
         """
 

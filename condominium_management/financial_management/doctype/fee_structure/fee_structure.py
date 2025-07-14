@@ -292,7 +292,7 @@ class FeeStructure(Document):
 
 		total_income = 0
 		for prop in properties:
-			fee_calc = self.calculate_fee_for_property(prop.name)
+			fee_calc = self.calculate_fee_for_property(prop["name"])  # REGLA #34: Dictionary access
 			total_income += fee_calc["total_fee"]
 
 		return flt(total_income, 2)
