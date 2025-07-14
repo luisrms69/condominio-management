@@ -15,7 +15,7 @@ if not current_dir.endswith("financial_management"):
 	current_dir = os.path.join(current_dir, "..", "..")
 sys.path.insert(0, current_dir)
 
-from test_base import FinancialTestBaseGranular
+from condominium_management.financial_management.test_base import FinancialTestBaseGranular
 
 
 class TestFeeStructure(FinancialTestBaseGranular):
