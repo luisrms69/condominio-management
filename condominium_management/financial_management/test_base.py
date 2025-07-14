@@ -72,31 +72,39 @@ class FinancialTestBase(unittest.TestCase):
 	def setup_erpnext_financial_config(cls):
 		"""Setup configuración financiera ERPNext"""
 
-		# Crear Customer Group para condóminos
+		# Crear Customer Group para condóminos con duplicate handling
 		if not frappe.db.exists("Customer Group", "Condóminos"):
-			customer_group = frappe.get_doc(
-				{
-					"doctype": "Customer Group",
-					"customer_group_name": "Condóminos",
-					"parent_customer_group": "All Customer Groups",
-					"is_group": 0,
-				}
-			)
-			customer_group.insert(ignore_permissions=True)
-			frappe.db.commit()
+			try:
+				customer_group = frappe.get_doc(
+					{
+						"doctype": "Customer Group",
+						"customer_group_name": "Condóminos",
+						"parent_customer_group": "All Customer Groups",
+						"is_group": 0,
+					}
+				)
+				customer_group.insert(ignore_permissions=True)
+				frappe.db.commit()
+			except frappe.DuplicateEntryError:
+				# Customer Group ya existe, continuar
+				pass
 
-		# Crear Customer Group para residentes
+		# Crear Customer Group para residentes con duplicate handling
 		if not frappe.db.exists("Customer Group", "Residentes"):
-			customer_group = frappe.get_doc(
-				{
-					"doctype": "Customer Group",
-					"customer_group_name": "Residentes",
-					"parent_customer_group": "All Customer Groups",
-					"is_group": 0,
-				}
-			)
-			customer_group.insert(ignore_permissions=True)
-			frappe.db.commit()
+			try:
+				customer_group = frappe.get_doc(
+					{
+						"doctype": "Customer Group",
+						"customer_group_name": "Residentes",
+						"parent_customer_group": "All Customer Groups",
+						"is_group": 0,
+					}
+				)
+				customer_group.insert(ignore_permissions=True)
+				frappe.db.commit()
+			except frappe.DuplicateEntryError:
+				# Customer Group ya existe, continuar
+				pass
 
 		cls.erpnext_config_ready = True
 
@@ -104,19 +112,24 @@ class FinancialTestBase(unittest.TestCase):
 	def setup_companies_data(cls):
 		"""Setup datos de companies para testing"""
 
-		# Crear Company real de prueba
-		if not frappe.db.exists("Company", "TEST_FINANCIAL_COMPANY"):
-			company = frappe.get_doc(
-				{
-					"doctype": "Company",
-					"company_name": "Condominio Test Financiero",
-					"abbr": "TFC",
-					"default_currency": "MXN",
-					"country": "Mexico",
-				}
-			)
-			company.insert(ignore_permissions=True)
-			frappe.db.commit()
+		# Crear Company real de prueba con ignore_if_duplicate
+		company_name = "Condominio Test Financiero"
+		if not frappe.db.exists("Company", company_name):
+			try:
+				company = frappe.get_doc(
+					{
+						"doctype": "Company",
+						"company_name": company_name,
+						"abbr": "TFC",
+						"default_currency": "MXN",
+						"country": "Mexico",
+					}
+				)
+				company.insert(ignore_permissions=True)
+				frappe.db.commit()
+			except frappe.DuplicateEntryError:
+				# Company ya existe, continuar
+				pass
 
 		# Company de prueba
 		cls.test_company = type(
@@ -192,17 +205,21 @@ class FinancialTestBase(unittest.TestCase):
 		if frappe.db.exists("Customer", customer_name):
 			return frappe.get_doc("Customer", customer_name)
 
-		customer = frappe.get_doc(
-			{
-				"doctype": "Customer",
-				"customer_name": customer_name,
-				"customer_type": "Individual",
-				"customer_group": customer_group,
-				"territory": "Mexico",
-			}
-		)
-		customer.insert(ignore_permissions=True)
-		return customer
+		try:
+			customer = frappe.get_doc(
+				{
+					"doctype": "Customer",
+					"customer_name": customer_name,
+					"customer_type": "Individual",
+					"customer_group": customer_group,
+					"territory": "All Territories",
+				}
+			)
+			customer.insert(ignore_permissions=True)
+			return customer
+		except frappe.DuplicateEntryError:
+			# Customer ya existe, obtenerlo
+			return frappe.get_doc("Customer", customer_name)
 
 	@classmethod
 	def create_test_company(cls, company_name):
@@ -264,6 +281,7 @@ class FinancialTestBaseGranular(FinancialTestBase):
 		"Property Account": ["property_registry", "customer", "billing_frequency", "current_balance"],
 		"Resident Account": ["resident_name", "property_account", "resident_type", "current_balance"],
 		"Billing Cycle": ["cycle_name", "company", "billing_month", "billing_year", "fee_structure"],
+		"Payment Collection": ["payment_date", "payment_amount", "payment_method", "account_type"],
 	}
 
 	def create_test_document(self, doctype, override_fields=None, ignore_if_duplicate=False):
@@ -307,6 +325,16 @@ class FinancialTestBaseGranular(FinancialTestBase):
 				"billing_year": getdate().year,
 				"fee_structure": "TEST Fee Structure",
 				"generation_status": "Pendiente",
+			},
+			"Payment Collection": {
+				"payment_date": getdate(),
+				"payment_amount": 2500.00,
+				"payment_method": "Transferencia Bancaria",
+				"account_type": "Propietario",
+				"reference_number": f"REF{frappe.utils.random_string(10)}",
+				"payment_status": "Pendiente",
+				"property_account": None,  # Se override en test específico si se necesita
+				"resident_account": None,  # Se override en test específico si se necesita
 			},
 		}
 
