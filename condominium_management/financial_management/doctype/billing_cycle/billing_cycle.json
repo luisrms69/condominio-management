@@ -1,0 +1,452 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-01-13 14:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "naming_series",
+  "cycle_name",
+  "company",
+  "column_break_basic",
+  "cycle_status",
+  "cycle_type",
+  "billing_frequency",
+  "date_configuration_section",
+  "billing_month",
+  "billing_year",
+  "column_break_dates_1",
+  "start_date",
+  "end_date",
+  "column_break_dates",
+  "due_date",
+  "grace_period_days",
+  "next_cycle_date",
+  "fee_configuration_section",
+  "fee_structure",
+  "total_properties",
+  "column_break_fees",
+  "total_amount",
+  "total_invoiced",
+  "total_collected",
+  "invoice_generation_section",
+  "auto_generate_invoices",
+  "invoice_template",
+  "column_break_invoice",
+  "generation_status",
+  "generated_count",
+  "failed_count",
+  "collection_tracking_section",
+  "collection_rate",
+  "overdue_amount",
+  "column_break_collection",
+  "paid_amount",
+  "pending_amount",
+  "average_payment_days",
+  "late_fee_configuration_section",
+  "apply_late_fees",
+  "late_fee_percentage",
+  "column_break_late_fee",
+  "late_fee_flat_amount",
+  "late_fee_after_days",
+  "notifications_section",
+  "send_notifications",
+  "notification_template",
+  "column_break_notifications",
+  "reminder_schedule",
+  "last_reminder_sent",
+  "audit_information_section",
+  "created_by",
+  "creation_date",
+  "column_break_audit",
+  "last_modified_by",
+  "last_modified_date",
+  "cycle_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie de Numeración",
+   "options": "BC-.YYYY.-.MM.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cycle_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Ciclo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cycle_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado del Ciclo",
+   "options": "Borrador\nProgramado\nActivo\nFacturado\nCompletado\nCancelado",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cycle_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Ciclo",
+   "options": "Regular\nEspecial\nAjuste\nReserva",
+   "reqd": 1
+  },
+  {
+   "fieldname": "billing_frequency",
+   "fieldtype": "Select",
+   "label": "Frecuencia de Facturación",
+   "options": "Mensual\nBimestral\nTrimestral\nSemestral\nAnual",
+   "reqd": 1
+  },
+  {
+   "fieldname": "date_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Fechas"
+  },
+  {
+   "fieldname": "billing_month",
+   "fieldtype": "Int",
+   "label": "Mes de Facturación",
+   "reqd": 1
+  },
+  {
+   "fieldname": "billing_year",
+   "fieldtype": "Int",
+   "label": "Año de Facturación",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_dates_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Inicio",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Fin",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_dates",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "due_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Vencimiento",
+   "reqd": 1
+  },
+  {
+   "fieldname": "grace_period_days",
+   "fieldtype": "Int",
+   "label": "Días de Gracia"
+  },
+  {
+   "fieldname": "next_cycle_date",
+   "fieldtype": "Date",
+   "label": "Próximo Ciclo"
+  },
+  {
+   "fieldname": "fee_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Cuotas"
+  },
+  {
+   "fieldname": "fee_structure",
+   "fieldtype": "Link",
+   "label": "Estructura de Cuotas",
+   "options": "Fee Structure",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_properties",
+   "fieldtype": "Int",
+   "label": "Total Propiedades",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_fees",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Total",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_invoiced",
+   "fieldtype": "Currency",
+   "label": "Total Facturado",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_collected",
+   "fieldtype": "Currency",
+   "label": "Total Cobrado",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "invoice_generation_section",
+   "fieldtype": "Section Break",
+   "label": "Generación de Facturas"
+  },
+  {
+   "fieldname": "auto_generate_invoices",
+   "fieldtype": "Check",
+   "label": "Auto-generar Facturas"
+  },
+  {
+   "fieldname": "invoice_template",
+   "fieldtype": "Data",
+   "label": "Plantilla de Factura"
+  },
+  {
+   "fieldname": "column_break_invoice",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "generation_status",
+   "fieldtype": "Select",
+   "label": "Estado de Generación",
+   "options": "Pendiente\nEn Proceso\nCompletado\nError",
+   "read_only": 1
+  },
+  {
+   "fieldname": "generated_count",
+   "fieldtype": "Int",
+   "label": "Facturas Generadas",
+   "read_only": 1
+  },
+  {
+   "fieldname": "failed_count",
+   "fieldtype": "Int",
+   "label": "Facturas Fallidas",
+   "read_only": 1
+  },
+  {
+   "fieldname": "collection_tracking_section",
+   "fieldtype": "Section Break",
+   "label": "Seguimiento de Cobranza"
+  },
+  {
+   "fieldname": "collection_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Cobranza",
+   "read_only": 1
+  },
+  {
+   "fieldname": "overdue_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Vencido",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_collection",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "paid_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Pagado",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "pending_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Pendiente",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "average_payment_days",
+   "fieldtype": "Float",
+   "label": "Días Promedio de Pago",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "late_fee_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Recargos"
+  },
+  {
+   "fieldname": "apply_late_fees",
+   "fieldtype": "Check",
+   "label": "Aplicar Recargos por Mora"
+  },
+  {
+   "fieldname": "late_fee_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje de Recargo"
+  },
+  {
+   "fieldname": "column_break_late_fee",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "late_fee_flat_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Fijo de Recargo",
+   "precision": "2"
+  },
+  {
+   "fieldname": "late_fee_after_days",
+   "fieldtype": "Int",
+   "label": "Recargo Después de Días"
+  },
+  {
+   "fieldname": "notifications_section",
+   "fieldtype": "Section Break",
+   "label": "Notificaciones"
+  },
+  {
+   "fieldname": "send_notifications",
+   "fieldtype": "Check",
+   "label": "Enviar Notificaciones"
+  },
+  {
+   "fieldname": "notification_template",
+   "fieldtype": "Data",
+   "label": "Plantilla de Notificación"
+  },
+  {
+   "fieldname": "column_break_notifications",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reminder_schedule",
+   "fieldtype": "Small Text",
+   "label": "Cronograma de Recordatorios"
+  },
+  {
+   "fieldname": "last_reminder_sent",
+   "fieldtype": "Datetime",
+   "label": "Último Recordatorio Enviado",
+   "read_only": 1
+  },
+  {
+   "fieldname": "audit_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Auditoría"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_audit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha Modificación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cycle_notes",
+   "fieldtype": "Long Text",
+   "label": "Notas del Ciclo"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-13 14:00:00.000000",
+ "modified_by": "Administrator",
+ "app_name": "condominium_management",
+ "module": "Financial Management",
+ "name": "Billing Cycle",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrador Financiero",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Contador Condominio"
+  },
+  {
+   "read": 1,
+   "role": "Comité Administración"
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

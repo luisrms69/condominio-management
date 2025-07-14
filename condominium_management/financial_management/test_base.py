@@ -83,6 +83,7 @@ class FinancialTestBase(unittest.TestCase):
 				}
 			)
 			customer_group.insert(ignore_permissions=True)
+			frappe.db.commit()
 
 		# Crear Customer Group para residentes
 		if not frappe.db.exists("Customer Group", "Residentes"):
@@ -95,12 +96,27 @@ class FinancialTestBase(unittest.TestCase):
 				}
 			)
 			customer_group.insert(ignore_permissions=True)
+			frappe.db.commit()
 
 		cls.erpnext_config_ready = True
 
 	@classmethod
 	def setup_companies_data(cls):
 		"""Setup datos de companies para testing"""
+
+		# Crear Company real de prueba
+		if not frappe.db.exists("Company", "TEST_FINANCIAL_COMPANY"):
+			company = frappe.get_doc(
+				{
+					"doctype": "Company",
+					"company_name": "Condominio Test Financiero",
+					"abbr": "TFC",
+					"default_currency": "MXN",
+					"country": "Mexico",
+				}
+			)
+			company.insert(ignore_permissions=True)
+			frappe.db.commit()
 
 		# Company de prueba
 		cls.test_company = type(
@@ -215,27 +231,39 @@ class FinancialTestBase(unittest.TestCase):
 		"""Cleanup para cada test individual"""
 		frappe.db.rollback()
 
+	def create_test_property_account(self):
+		"""Crea Property Account de test para integration tests"""
+		if frappe.db.exists("Property Account", "TEST_PROP_ACCOUNT_001"):
+			return frappe.get_doc("Property Account", "TEST_PROP_ACCOUNT_001")
+
+		# Crear Customer de test primero
+		customer = self.create_test_customer("TEST Customer Propietario")
+
+		property_account = frappe.get_doc(
+			{
+				"doctype": "Property Account",
+				"account_code": "TEST_PROP_ACCOUNT_001",
+				"property_registry": "TEST_PROP_001",
+				"customer": customer.name,
+				"company": "TEST_FINANCIAL_COMPANY",
+				"billing_frequency": "Mensual",
+				"current_balance": 0.0,
+				"account_status": "Activa",
+			}
+		)
+		property_account.insert(ignore_permissions=True)
+		return property_account
+
 
 class FinancialTestBaseGranular(FinancialTestBase):
 	"""Framework para testing granular financiero - REGLA #32"""
 
-	# Campos requeridos para cada DocType
+	# Campos requeridos para cada DocType (solo DocTypes implementados)
 	REQUIRED_FIELDS: typing.ClassVar[dict[str, list[str]]] = {
 		"Fee Structure": ["fee_structure_name", "company", "calculation_method", "base_amount"],
 		"Property Account": ["property_registry", "customer", "billing_frequency", "current_balance"],
 		"Resident Account": ["resident_name", "property_account", "resident_type", "current_balance"],
 		"Billing Cycle": ["cycle_name", "company", "billing_month", "billing_year", "fee_structure"],
-		"Payment Collection": ["payment_date", "payment_amount", "payment_method", "account_type"],
-		"Credit Balance Management": [
-			"credit_note_number",
-			"account_type",
-			"original_amount",
-			"current_balance",
-		],
-		"Fine Management": ["fine_type", "property_account", "fine_date", "total_amount"],
-		"Budget Planning": ["budget_name", "company", "fiscal_year", "budget_type"],
-		"Financial Transparency Config": ["company", "transparency_rules"],
-		"Premium Services Integration": ["service_category", "service_name", "billing_integration"],
 	}
 
 	def create_test_document(self, doctype, override_fields=None, ignore_if_duplicate=False):
@@ -279,14 +307,6 @@ class FinancialTestBaseGranular(FinancialTestBase):
 				"billing_year": getdate().year,
 				"fee_structure": "TEST Fee Structure",
 				"generation_status": "Pendiente",
-			},
-			"Payment Collection": {
-				"payment_date": getdate(),
-				"payment_amount": 2500.00,
-				"payment_method": "Transferencia",
-				"account_type": "Propietario",
-				"reference_number": f"REF{frappe.utils.random_string(10)}",
-				"reconciliation_status": "Pendiente",
 			},
 		}
 

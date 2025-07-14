@@ -75,6 +75,7 @@
  "links": [],
  "modified": "2025-01-13 08:00:00.000000",
  "modified_by": "Administrator",
+ "app_name": "condominium_management",
  "module": "Financial Management",
  "name": "Fee Component",
  "owner": "Administrator",
