@@ -1,0 +1,11 @@
+[
+	{
+		"doctype": "Company",
+		"company_name": "_Test Company",
+		"abbr": "_TC",
+		"default_currency": "INR",
+		"country": "India",
+		"chart_of_accounts": "Standard",
+		"enable_perpetual_inventory": 0
+	}
+]
