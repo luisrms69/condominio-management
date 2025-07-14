@@ -59,12 +59,12 @@ def performance_monitoring():
 		if metrics["json_size_bytes"] >= thresholds["json_size_critical"]:
 			status = "red"
 			alerts.append(
-				f"🚨 CRÍTICO: JSON size {metrics['json_size_kb']} KB (>= {thresholds['json_size_critical']/1024} MB). Migración REQUERIDA."
+				f"🚨 CRÍTICO: JSON size {metrics['json_size_kb']} KB (>= {thresholds['json_size_critical'] / 1024} MB). Migración REQUERIDA."
 			)
 		elif metrics["json_size_bytes"] >= thresholds["json_size_warning"]:
 			status = "yellow" if status != "red" else status
 			alerts.append(
-				f"⚠️ ADVERTENCIA: JSON size {metrics['json_size_kb']} KB (>= {thresholds['json_size_warning']/1024} MB). Monitorear de cerca."
+				f"⚠️ ADVERTENCIA: JSON size {metrics['json_size_kb']} KB (>= {thresholds['json_size_warning'] / 1024} MB). Monitorear de cerca."
 			)
 
 		# Crear reporte
@@ -169,28 +169,28 @@ def send_critical_alert(report):
 		message = f"""
         <h2>🚨 ALERTA CRÍTICA: Performance Document Generation Framework</h2>
 
-        <p><strong>Estado:</strong> {report['status'].upper()}</p>
-        <p><strong>Timestamp:</strong> {report['metrics']['timestamp']}</p>
+        <p><strong>Estado:</strong> {report["status"].upper()}</p>
+        <p><strong>Timestamp:</strong> {report["metrics"]["timestamp"]}</p>
 
         <h3>📊 Métricas Actuales:</h3>
         <ul>
-            <li><strong>Templates:</strong> {report['metrics']['infrastructure_templates_count']}</li>
-            <li><strong>Reglas auto-asignación:</strong> {report['metrics']['auto_assignment_rules_count']}</li>
-            <li><strong>Tamaño JSON:</strong> {report['metrics']['json_size_kb']} KB</li>
-            <li><strong>Versión:</strong> {report['metrics']['template_version']}</li>
+            <li><strong>Templates:</strong> {report["metrics"]["infrastructure_templates_count"]}</li>
+            <li><strong>Reglas auto-asignación:</strong> {report["metrics"]["auto_assignment_rules_count"]}</li>
+            <li><strong>Tamaño JSON:</strong> {report["metrics"]["json_size_kb"]} KB</li>
+            <li><strong>Versión:</strong> {report["metrics"]["template_version"]}</li>
         </ul>
 
         <h3>🚨 Alertas:</h3>
         <ul>
-        {"".join([f"<li>{alert}</li>" for alert in report['alerts']])}
+        {"".join([f"<li>{alert}</li>" for alert in report["alerts"]])}
         </ul>
 
         <h3>💡 Recomendaciones:</h3>
         <ul>
-        {"".join([f"<li>{rec}</li>" for rec in report['recommendations']])}
+        {"".join([f"<li>{rec}</li>" for rec in report["recommendations"]])}
         </ul>
 
-        <p><strong>Próxima revisión:</strong> {report['next_review']}</p>
+        <p><strong>Próxima revisión:</strong> {report["next_review"]}</p>
 
         <hr>
         <p><em>Generado automáticamente por el sistema de monitoreo mensual.</em></p>

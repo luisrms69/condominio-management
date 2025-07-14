@@ -322,7 +322,7 @@ docs/workflows/                       # Procesos de desarrollo
 		if not hooks_script.exists():
 			hooks_content = f'''#!/usr/bin/env python3
 """
-Generador de hooks específicos para módulos de {config['app_info']['app_name']}
+Generador de hooks específicos para módulos de {config["app_info"]["app_name"]}
 """
 
 def generate_hooks_for_module(module_name: str) -> str:
@@ -332,8 +332,8 @@ def generate_hooks_for_module(module_name: str) -> str:
 doc_events = {{
     # Agregar DocTypes específicos del módulo aquí
     # "DocType Name": {{
-    #     "before_save": "{config['app_info']['app_name']}.{{module_name}}.handlers.before_save",
-    #     "after_insert": "{config['app_info']['app_name']}.{{module_name}}.handlers.after_insert"
+    #     "before_save": "{config["app_info"]["app_name"]}.{{module_name}}.handlers.before_save",
+    #     "after_insert": "{config["app_info"]["app_name"]}.{{module_name}}.handlers.after_insert"
     # }}
 }}
 """

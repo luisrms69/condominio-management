@@ -1,0 +1,605 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-01-14 17:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "naming_series",
+  "service_name",
+  "service_category",
+  "column_break_basic",
+  "company",
+  "service_status",
+  "integration_date",
+  "service_configuration_section",
+  "service_type",
+  "pricing_model",
+  "column_break_config",
+  "billing_frequency",
+  "auto_billing_enabled",
+  "requires_approval",
+  "pricing_structure_section",
+  "base_price",
+  "currency",
+  "column_break_pricing",
+  "seasonal_pricing_enabled",
+  "dynamic_pricing_enabled",
+  "member_discount_percentage",
+  "resident_access_configuration_section",
+  "access_level_required",
+  "membership_tier_required",
+  "column_break_access",
+  "advance_booking_required",
+  "booking_window_days",
+  "capacity_limits",
+  "billing_integration_section",
+  "integrate_with_property_account",
+  "integrate_with_resident_account",
+  "column_break_billing",
+  "payment_collection_method",
+  "invoice_generation_automatic",
+  "credit_balance_applicable",
+  "service_delivery_section",
+  "service_provider",
+  "delivery_method",
+  "column_break_delivery",
+  "location_based_service",
+  "physical_space_required",
+  "equipment_required",
+  "booking_and_scheduling_section",
+  "enable_online_booking",
+  "booking_system_integration",
+  "column_break_booking",
+  "cancellation_policy",
+  "reschedule_policy",
+  "no_show_penalty",
+  "financial_tracking_section",
+  "revenue_tracking_enabled",
+  "cost_center_allocation",
+  "column_break_financial",
+  "profit_margin_target",
+  "monthly_revenue_target",
+  "expense_allocation_method",
+  "quality_and_feedback_section",
+  "quality_standards_required",
+  "feedback_collection_enabled",
+  "column_break_quality",
+  "service_rating_minimum",
+  "continuous_improvement_enabled",
+  "performance_metrics_tracking",
+  "compliance_and_insurance_section",
+  "insurance_coverage_required",
+  "liability_coverage_amount",
+  "column_break_compliance",
+  "regulatory_compliance_needed",
+  "safety_protocols_required",
+  "staff_certification_required",
+  "integration_apis_section",
+  "external_system_integration",
+  "api_endpoint_url",
+  "column_break_apis",
+  "authentication_method",
+  "webhook_notifications_enabled",
+  "data_sync_frequency",
+  "audit_information_section",
+  "created_by",
+  "creation_date",
+  "column_break_audit",
+  "last_modified_by",
+  "last_modified_date",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie de Numeración",
+   "options": "PSI-.YYYY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "service_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Servicio",
+   "reqd": 1
+  },
+  {
+   "fieldname": "service_category",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Categoría del Servicio",
+   "options": "Spa y Bienestar\nGastronomía\nEntretenimiento\nDeportes y Recreación\nTransporte\nConcierge\nServicios Domésticos\nEventos Especiales\nServicios Médicos\nOtros",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "service_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado del Servicio",
+   "options": "En Configuración\nEn Prueba\nActivo\nSuspendido\nDescontinuado\nEn Mantenimiento",
+   "reqd": 1
+  },
+  {
+   "fieldname": "integration_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Integración"
+  },
+  {
+   "fieldname": "service_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración del Servicio"
+  },
+  {
+   "fieldname": "service_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Servicio",
+   "options": "Básico\nPremium\nLuxury\nExclusivo\nPersonalizado"
+  },
+  {
+   "fieldname": "pricing_model",
+   "fieldtype": "Select",
+   "label": "Modelo de Precios",
+   "options": "Pago por Uso\nSuscripción Mensual\nPaquete Anual\nMembresía\nPor Horas\nTarifa Plana"
+  },
+  {
+   "fieldname": "column_break_config",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "billing_frequency",
+   "fieldtype": "Select",
+   "label": "Frecuencia de Facturación",
+   "options": "Inmediato\nSemanal\nQuincenal\nMensual\nTrimestral\nAnual"
+  },
+  {
+   "fieldname": "auto_billing_enabled",
+   "fieldtype": "Check",
+   "label": "Facturación Automática Habilitada"
+  },
+  {
+   "fieldname": "requires_approval",
+   "fieldtype": "Check",
+   "label": "Requiere Aprobación"
+  },
+  {
+   "fieldname": "pricing_structure_section",
+   "fieldtype": "Section Break",
+   "label": "Estructura de Precios"
+  },
+  {
+   "fieldname": "base_price",
+   "fieldtype": "Currency",
+   "label": "Precio Base",
+   "precision": "2"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Moneda",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "column_break_pricing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "seasonal_pricing_enabled",
+   "fieldtype": "Check",
+   "label": "Precios Estacionales Habilitados"
+  },
+  {
+   "fieldname": "dynamic_pricing_enabled",
+   "fieldtype": "Check",
+   "label": "Precios Dinámicos Habilitados"
+  },
+  {
+   "fieldname": "member_discount_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje Descuento Miembros"
+  },
+  {
+   "fieldname": "resident_access_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Acceso de Residentes"
+  },
+  {
+   "fieldname": "access_level_required",
+   "fieldtype": "Select",
+   "label": "Nivel de Acceso Requerido",
+   "options": "Todos los Residentes\nSolo Propietarios\nMiembros Premium\nInvitados Especiales\nAcceso Restringido"
+  },
+  {
+   "fieldname": "membership_tier_required",
+   "fieldtype": "Select",
+   "label": "Nivel de Membresía Requerido",
+   "options": "Básico\nPlata\nOro\nPlatino\nDiamante\nNo Aplica"
+  },
+  {
+   "fieldname": "column_break_access",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "advance_booking_required",
+   "fieldtype": "Check",
+   "label": "Reserva Anticipada Requerida"
+  },
+  {
+   "fieldname": "booking_window_days",
+   "fieldtype": "Int",
+   "label": "Ventana de Reserva (días)"
+  },
+  {
+   "fieldname": "capacity_limits",
+   "fieldtype": "Int",
+   "label": "Límites de Capacidad"
+  },
+  {
+   "fieldname": "billing_integration_section",
+   "fieldtype": "Section Break",
+   "label": "Integración de Facturación"
+  },
+  {
+   "fieldname": "integrate_with_property_account",
+   "fieldtype": "Check",
+   "label": "Integrar con Cuenta de Propiedad"
+  },
+  {
+   "fieldname": "integrate_with_resident_account",
+   "fieldtype": "Check",
+   "label": "Integrar con Cuenta de Residente"
+  },
+  {
+   "fieldname": "column_break_billing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payment_collection_method",
+   "fieldtype": "Select",
+   "label": "Método de Recaudación",
+   "options": "Cargo a Cuenta\nPago Inmediato\nFacturación Mensual\nDebito Automático\nPrepago\nPostpago"
+  },
+  {
+   "fieldname": "invoice_generation_automatic",
+   "fieldtype": "Check",
+   "label": "Generación Automática de Facturas"
+  },
+  {
+   "fieldname": "credit_balance_applicable",
+   "fieldtype": "Check",
+   "label": "Aplicable Saldo a Favor"
+  },
+  {
+   "fieldname": "service_delivery_section",
+   "fieldtype": "Section Break",
+   "label": "Entrega del Servicio"
+  },
+  {
+   "fieldname": "service_provider",
+   "fieldtype": "Data",
+   "label": "Proveedor del Servicio"
+  },
+  {
+   "fieldname": "delivery_method",
+   "fieldtype": "Select",
+   "label": "Método de Entrega",
+   "options": "En Sitio\nA Domicilio\nVirtual\nHíbrido\nExterna"
+  },
+  {
+   "fieldname": "column_break_delivery",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "location_based_service",
+   "fieldtype": "Check",
+   "label": "Servicio Basado en Ubicación"
+  },
+  {
+   "fieldname": "physical_space_required",
+   "fieldtype": "Link",
+   "label": "Espacio Físico Requerido",
+   "options": "Physical Space"
+  },
+  {
+   "fieldname": "equipment_required",
+   "fieldtype": "Text",
+   "label": "Equipamiento Requerido"
+  },
+  {
+   "fieldname": "booking_and_scheduling_section",
+   "fieldtype": "Section Break",
+   "label": "Reservas y Programación"
+  },
+  {
+   "fieldname": "enable_online_booking",
+   "fieldtype": "Check",
+   "label": "Habilitar Reservas en Línea"
+  },
+  {
+   "fieldname": "booking_system_integration",
+   "fieldtype": "Data",
+   "label": "Integración Sistema de Reservas"
+  },
+  {
+   "fieldname": "column_break_booking",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cancellation_policy",
+   "fieldtype": "Select",
+   "label": "Política de Cancelación",
+   "options": "Flexible\n24 horas\n48 horas\n1 semana\nNo reembolsable\nPersonalizada"
+  },
+  {
+   "fieldname": "reschedule_policy",
+   "fieldtype": "Select",
+   "label": "Política de Reprogramación",
+   "options": "Libre\nUna vez gratis\nCargo adicional\nNo permitido"
+  },
+  {
+   "fieldname": "no_show_penalty",
+   "fieldtype": "Currency",
+   "label": "Penalización por No Presentarse",
+   "precision": "2"
+  },
+  {
+   "fieldname": "financial_tracking_section",
+   "fieldtype": "Section Break",
+   "label": "Seguimiento Financiero"
+  },
+  {
+   "fieldname": "revenue_tracking_enabled",
+   "fieldtype": "Check",
+   "label": "Seguimiento de Ingresos Habilitado"
+  },
+  {
+   "fieldname": "cost_center_allocation",
+   "fieldtype": "Link",
+   "label": "Asignación Centro de Costos",
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "column_break_financial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "profit_margin_target",
+   "fieldtype": "Percent",
+   "label": "Margen de Ganancia Objetivo"
+  },
+  {
+   "fieldname": "monthly_revenue_target",
+   "fieldtype": "Currency",
+   "label": "Objetivo Ingresos Mensuales",
+   "precision": "2"
+  },
+  {
+   "fieldname": "expense_allocation_method",
+   "fieldtype": "Select",
+   "label": "Método Asignación Gastos",
+   "options": "Proporcional\nFijo\nPor Uso\nVariable"
+  },
+  {
+   "fieldname": "quality_and_feedback_section",
+   "fieldtype": "Section Break",
+   "label": "Calidad y Retroalimentación"
+  },
+  {
+   "fieldname": "quality_standards_required",
+   "fieldtype": "Check",
+   "label": "Estándares de Calidad Requeridos"
+  },
+  {
+   "fieldname": "feedback_collection_enabled",
+   "fieldtype": "Check",
+   "label": "Recolección de Retroalimentación Habilitada"
+  },
+  {
+   "fieldname": "column_break_quality",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "service_rating_minimum",
+   "fieldtype": "Float",
+   "label": "Calificación Mínima del Servicio",
+   "precision": "1"
+  },
+  {
+   "fieldname": "continuous_improvement_enabled",
+   "fieldtype": "Check",
+   "label": "Mejora Continua Habilitada"
+  },
+  {
+   "fieldname": "performance_metrics_tracking",
+   "fieldtype": "Check",
+   "label": "Seguimiento Métricas de Rendimiento"
+  },
+  {
+   "fieldname": "compliance_and_insurance_section",
+   "fieldtype": "Section Break",
+   "label": "Cumplimiento y Seguros"
+  },
+  {
+   "fieldname": "insurance_coverage_required",
+   "fieldtype": "Check",
+   "label": "Cobertura de Seguros Requerida"
+  },
+  {
+   "fieldname": "liability_coverage_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Cobertura de Responsabilidad",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_compliance",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "regulatory_compliance_needed",
+   "fieldtype": "Check",
+   "label": "Cumplimiento Regulatorio Necesario"
+  },
+  {
+   "fieldname": "safety_protocols_required",
+   "fieldtype": "Check",
+   "label": "Protocolos de Seguridad Requeridos"
+  },
+  {
+   "fieldname": "staff_certification_required",
+   "fieldtype": "Check",
+   "label": "Certificación de Personal Requerida"
+  },
+  {
+   "fieldname": "integration_apis_section",
+   "fieldtype": "Section Break",
+   "label": "Integración APIs"
+  },
+  {
+   "fieldname": "external_system_integration",
+   "fieldtype": "Check",
+   "label": "Integración Sistema Externo"
+  },
+  {
+   "fieldname": "api_endpoint_url",
+   "fieldtype": "Data",
+   "label": "URL Endpoint API"
+  },
+  {
+   "fieldname": "column_break_apis",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "authentication_method",
+   "fieldtype": "Select",
+   "label": "Método de Autenticación",
+   "options": "API Key\nOAuth 2.0\nJWT Token\nBasic Auth\nCustom"
+  },
+  {
+   "fieldname": "webhook_notifications_enabled",
+   "fieldtype": "Check",
+   "label": "Notificaciones Webhook Habilitadas"
+  },
+  {
+   "fieldname": "data_sync_frequency",
+   "fieldtype": "Select",
+   "label": "Frecuencia Sincronización Datos",
+   "options": "Tiempo Real\nCada 15 minutos\nCada Hora\nDiario\nSemanal"
+  },
+  {
+   "fieldname": "audit_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Auditoría"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_audit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha Modificación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Long Text",
+   "label": "Notas Adicionales"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-14 17:00:00.000000",
+ "modified_by": "Administrator",
+ "app_name": "condominium_management",
+ "module": "Financial Management",
+ "name": "Premium Services Integration",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrador Financiero",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Comité Administración",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Contador Condominio"
+  },
+  {
+   "read": 1,
+   "role": "Residente Propietario"
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

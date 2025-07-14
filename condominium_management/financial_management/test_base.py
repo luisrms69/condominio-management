@@ -34,6 +34,7 @@ class FinancialTestBase(unittest.TestCase):
 		cls.setup_companies_data()
 		cls.setup_financial_roles()
 		cls.setup_test_properties()
+		cls.setup_test_users()  # FASE 1: Crear usuarios requeridos
 
 	@classmethod
 	def tearDownClass(cls):
@@ -136,9 +137,9 @@ class FinancialTestBase(unittest.TestCase):
 			"MockCompany",
 			(),
 			{
-				"name": "TEST_FINANCIAL_COMPANY",
-				"company_name": "Condominio Test Financiero",
-				"abbr": "TFC",
+				"name": "Test Condominium",
+				"company_name": "Test Condominium",
+				"abbr": "TC",
 				"default_currency": "MXN",
 				"country": "Mexico",
 			},
@@ -178,7 +179,7 @@ class FinancialTestBase(unittest.TestCase):
 				"built_area_sqm": 85.5,
 				"ownership_percentage": 2.5,
 				"owner_name": "Juan Pérez García",
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 			},
 		)()
 
@@ -193,11 +194,53 @@ class FinancialTestBase(unittest.TestCase):
 				"built_area_sqm": 120.0,
 				"ownership_percentage": 3.2,
 				"owner_name": "María González López",
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 			},
 		)()
 
 		cls.test_properties_ready = True
+
+	@classmethod
+	def setup_test_users(cls):
+		"""Crear usuarios de test requeridos por Financial Management test records"""
+		users_to_create = [
+			{
+				"email": "test1@example.com",
+				"first_name": "Test",
+				"last_name": "User 1",
+				"roles": ["System Manager"],
+			},
+			{
+				"email": "test_financial@example.com",
+				"first_name": "Test",
+				"last_name": "Financial User",
+				"roles": ["Administrador Financiero"],
+			},
+		]
+
+		for user_data in users_to_create:
+			email = user_data["email"]
+			if not frappe.db.exists("User", email):
+				try:
+					test_user = frappe.get_doc(
+						{
+							"doctype": "User",
+							"email": email,
+							"first_name": user_data["first_name"],
+							"last_name": user_data["last_name"],
+							"new_password": f"test_password_{frappe.utils.random_string(8)}",
+							"roles": [{"role": role} for role in user_data["roles"]],
+						}
+					)
+					test_user.insert(ignore_permissions=True)
+					frappe.db.commit()
+					frappe.logger().info(f"✅ Test user {email} created successfully")
+				except Exception as e:
+					frappe.logger().error(f"❌ Error creating test user {email}: {e!s}")
+			else:
+				frappe.logger().info(f"✅ Test user {email} already exists")
+
+		cls.test_users_ready = True
 
 	@classmethod
 	def create_test_customer(cls, customer_name, customer_group="Condóminos"):
@@ -262,7 +305,7 @@ class FinancialTestBase(unittest.TestCase):
 				"account_code": "TEST_PROP_ACCOUNT_001",
 				"property_registry": "TEST_PROP_001",
 				"customer": customer.name,
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 				"billing_frequency": "Mensual",
 				"current_balance": 0.0,
 				"account_status": "Activa",
@@ -282,6 +325,11 @@ class FinancialTestBaseGranular(FinancialTestBase):
 		"Resident Account": ["resident_name", "property_account", "resident_type", "current_balance"],
 		"Billing Cycle": ["cycle_name", "company", "billing_month", "billing_year", "fee_structure"],
 		"Payment Collection": ["payment_date", "payment_amount", "payment_method", "account_type"],
+		"Credit Balance Management": ["balance_date", "account_type", "credit_amount", "balance_status"],
+		"Fine Management": ["fine_date", "fine_type", "fine_amount", "fine_status"],
+		"Budget Planning": ["budget_name", "budget_period", "company", "budget_status"],
+		"Financial Transparency Config": ["config_name", "company", "effective_from", "config_status"],
+		"Premium Services Integration": ["service_name", "service_category", "company", "service_status"],
 	}
 
 	def create_test_document(self, doctype, override_fields=None, ignore_if_duplicate=False):
@@ -296,7 +344,7 @@ class FinancialTestBaseGranular(FinancialTestBase):
 		base_fields = {
 			"Fee Structure": {
 				"fee_structure_name": f"TEST Estructura Cuotas {frappe.utils.random_string(5)}",
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 				"calculation_method": "Por Indiviso",
 				"base_amount": 2500.00,
 				"effective_from": getdate(),
@@ -320,7 +368,7 @@ class FinancialTestBaseGranular(FinancialTestBase):
 			},
 			"Billing Cycle": {
 				"cycle_name": f"TEST Facturación {frappe.utils.random_string(5)}",
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 				"billing_month": getdate().month,
 				"billing_year": getdate().year,
 				"fee_structure": "TEST Fee Structure",
@@ -335,6 +383,77 @@ class FinancialTestBaseGranular(FinancialTestBase):
 				"payment_status": "Pendiente",
 				"property_account": None,  # Se override en test específico si se necesita
 				"resident_account": None,  # Se override en test específico si se necesita
+			},
+			"Credit Balance Management": {
+				"balance_date": getdate(),
+				"account_type": "Property Account",
+				"credit_amount": 1500.00,
+				"balance_status": "Activo",
+				"origin_type": "Sobrepago",
+				"source_type": "Pago Excedente",
+				"source_description": "Sobrepago en cuota mensual",
+				"priority_level": "Media",
+				"property_account": None,  # Se override en test específico si se necesita
+				"resident_account": None,  # Se override en test específico si se necesita
+			},
+			"Fine Management": {
+				"fine_date": getdate(),
+				"fine_type": "Reglamento Interno",
+				"fine_amount": 2000.00,
+				"fine_status": "Pendiente",
+				"violation_category": "Moderada",
+				"violation_description": "TEST Infracción para pruebas unitarias",
+				"violator_type": "Propietario",
+				"violator_name": f"TEST Infractor {frappe.utils.random_string(5)}",
+				"due_date": add_days(getdate(), 21),
+				"property_account": None,  # Se override en test específico si se necesita
+				"resident_account": None,  # Se override en test específico si se necesita
+			},
+			"Budget Planning": {
+				"budget_name": f"TEST Presupuesto {frappe.utils.random_string(5)}",
+				"budget_period": "Anual",
+				"company": "Test Condominium",
+				"budget_status": "Borrador",
+				"budget_type": "Operativo",
+				"planning_method": "Histórico",
+				"total_income_budgeted": 600000.00,
+				"total_expenses_budgeted": 550000.00,
+				"maintenance_fees_budget": 400000.00,
+				"administrative_expenses": 150000.00,
+				"maintenance_expenses": 200000.00,
+				"approval_required": 0,
+			},
+			"Financial Transparency Config": {
+				"config_name": f"TEST Transparencia {frappe.utils.random_string(5)}",
+				"company": "Test Condominium",
+				"effective_from": getdate(),
+				"config_status": "Borrador",
+				"transparency_level": "Estándar",
+				"enable_role_based_access": 1,
+				"default_access_level": "Lectura Limitada",
+				"income_transparency_level": "Detallado",
+				"expense_transparency_level": "Detallado",
+				"budget_transparency_level": "Resumen",
+				"enable_resident_portal": 1,
+				"portal_access_level": "Estándar",
+				"regulatory_compliance_level": "Estándar",
+				"data_retention_period": 5,
+			},
+			"Premium Services Integration": {
+				"service_name": f"TEST Servicio Premium {frappe.utils.random_string(5)}",
+				"service_category": "Spa y Bienestar",
+				"company": "Test Condominium",
+				"service_status": "En Configuración",
+				"service_type": "Premium",
+				"pricing_model": "Pago por Uso",
+				"billing_frequency": "Inmediato",
+				"base_price": 250.00,
+				"currency": "MXN",
+				"access_level_required": "Todos los Residentes",
+				"integrate_with_property_account": 1,
+				"payment_collection_method": "Cargo a Cuenta",
+				"delivery_method": "En Sitio",
+				"revenue_tracking_enabled": 1,
 			},
 		}
 

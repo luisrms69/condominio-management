@@ -202,7 +202,7 @@ def validate_technical_specifications_format(doc):
 		# Validación básica - debe tener cierta longitud mínima
 		if len(doc.technical_specifications.strip()) < 10:
 			frappe.msgprint(
-				"Las especificaciones técnicas parecen muy breves. " "Considere proporcionar más detalles."
+				"Las especificaciones técnicas parecen muy breves. Considere proporcionar más detalles."
 			)
 
 		# TODO: Implementar validaciones más específicas según el tipo de componente

@@ -280,7 +280,7 @@ class EntityConfiguration(Document):
 			self.configuration_status = "Requiere Revisión"
 			frappe.msgprint(
 				_(
-					"Se detectaron {0} conflictos de alta severidad. " "La configuración requiere revisión."
+					"Se detectaron {0} conflictos de alta severidad. La configuración requiere revisión."
 				).format(high_severity),
 				indicator="red",
 			)

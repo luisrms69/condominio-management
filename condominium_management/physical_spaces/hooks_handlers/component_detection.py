@@ -117,7 +117,7 @@ def load_component_template(doc, component_type):
 	"""Cargar template del componente"""
 	# TODO: Implementar cuando esté disponible el template system
 	frappe.logger().info(
-		f"Loading template {component_type.component_template_code} " f"for component {doc.component_name}"
+		f"Loading template {component_type.component_template_code} for component {doc.component_name}"
 	)
 
 

@@ -339,7 +339,7 @@ def preview_api_scan(limit: int = 10) -> None:
 	print(f"\n🔍 API Scanner Preview - Found {len(apis)} APIs\n")
 
 	for i, api in enumerate(apis[:limit]):
-		print(f"{i+1}. {api['function_name']} ({api['module_path']})")
+		print(f"{i + 1}. {api['function_name']} ({api['module_path']})")
 		print(f"   Path: {api['inferred_api_path']}")
 		print(f"   Method: {api['inferred_http_method']}")
 		print(f"   Has Doc: {'✅' if api['has_api_documentation_decorator'] else '❌'}")

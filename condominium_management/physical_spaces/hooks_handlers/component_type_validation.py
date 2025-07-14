@@ -225,14 +225,13 @@ def validate_validations_consistency(doc):
 	# Si requiere especificaciones, probablemente debería requerir marca/modelo
 	if doc.requires_specifications and not (doc.requires_brand or doc.requires_model):
 		frappe.msgprint(
-			"Recomendación: Si requiere especificaciones técnicas, "
-			"considere requerir también marca y modelo"
+			"Recomendación: Si requiere especificaciones técnicas, considere requerir también marca y modelo"
 		)
 
 	# Si requiere garantía, debería requerir fecha de instalación
 	if doc.requires_warranty and not doc.requires_installation_date:
 		frappe.msgprint(
-			"Recomendación: Si requiere garantía, " "considere requerir también fecha de instalación"
+			"Recomendación: Si requiere garantía, considere requerir también fecha de instalación"
 		)
 
 

@@ -48,7 +48,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 			"Fee Structure",
 			{
 				"fee_structure_name": "TEST Estructura Básica",
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 				"calculation_method": "Por Indiviso",
 				"base_amount": 50000.00,
 				"effective_from": getdate(),
@@ -69,7 +69,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 				{
 					"doctype": "Fee Structure",
 					"fee_structure_name": "TEST Invalid Amount",
-					"company": "TEST_FINANCIAL_COMPANY",
+					"company": "Test Condominium",
 					"calculation_method": "Por Indiviso",
 					"base_amount": 0,  # Inválido
 					"effective_from": getdate(),
@@ -83,7 +83,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 				{
 					"doctype": "Fee Structure",
 					"fee_structure_name": "TEST Invalid Dates",
-					"company": "TEST_FINANCIAL_COMPANY",
+					"company": "Test Condominium",
 					"calculation_method": "Por Indiviso",
 					"base_amount": 25000.00,
 					"effective_from": getdate(),
@@ -99,7 +99,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 			"Fee Structure",
 			{
 				"fee_structure_name": "TEST Reserve Fund",
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 				"calculation_method": "Por Indiviso",
 				"base_amount": 30000.00,
 				"effective_from": getdate(),
@@ -116,7 +116,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 				{
 					"doctype": "Fee Structure",
 					"fee_structure_name": "TEST Invalid Reserve",
-					"company": "TEST_FINANCIAL_COMPANY",
+					"company": "Test Condominium",
 					"calculation_method": "Por Indiviso",
 					"base_amount": 25000.00,
 					"effective_from": getdate(),
@@ -133,7 +133,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 			"Fee Structure",
 			{
 				"fee_structure_name": "TEST Early Payment",
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 				"calculation_method": "Por Indiviso",
 				"base_amount": 25000.00,
 				"effective_from": getdate(),
@@ -152,7 +152,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 				{
 					"doctype": "Fee Structure",
 					"fee_structure_name": "TEST Invalid Discount",
-					"company": "TEST_FINANCIAL_COMPANY",
+					"company": "Test Condominium",
 					"calculation_method": "Por Indiviso",
 					"base_amount": 25000.00,
 					"effective_from": getdate(),
@@ -169,7 +169,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 			"Fee Structure",
 			{
 				"fee_structure_name": "TEST Calculation Structure",
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 				"calculation_method": "Por Indiviso",
 				"base_amount": 100000.00,
 				"effective_from": getdate(),
@@ -206,7 +206,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 			"Fee Structure",
 			{
 				"fee_structure_name": "TEST Committee Approval",
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 				"calculation_method": "Por Indiviso",
 				"base_amount": 25000.00,
 				"effective_from": getdate(),
@@ -226,6 +226,14 @@ class TestFeeStructure(FinancialTestBaseGranular):
 		doc.approval_status = "Aprobado"
 		doc.approved_by = "Administrator"
 		doc.approval_date = getdate()
+
+		# REGLA #35: Reload document para evitar TimestampMismatchError
+		if doc.name:
+			doc = frappe.get_doc("Fee Structure", doc.name)
+			doc.approval_status = "Aprobado"
+			doc.approved_by = "Administrator"
+			doc.approval_date = getdate()
+
 		doc.save()
 
 		# Verificar que ahora se puede enviar
@@ -255,7 +263,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 			"Fee Structure",
 			{
 				"fee_structure_name": "TEST Total Income",
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 				"calculation_method": "Por Indiviso",
 				"base_amount": 100000.00,
 				"effective_from": getdate(),
@@ -279,7 +287,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 			"Fee Structure",
 			{
 				"fee_structure_name": "TEST Structure 1",
-				"company": "TEST_FINANCIAL_COMPANY",
+				"company": "Test Condominium",
 				"calculation_method": "Por Indiviso",
 				"base_amount": 25000.00,
 				"effective_from": getdate(),
@@ -295,7 +303,7 @@ class TestFeeStructure(FinancialTestBaseGranular):
 				{
 					"doctype": "Fee Structure",
 					"fee_structure_name": "TEST Structure 2",
-					"company": "TEST_FINANCIAL_COMPANY",
+					"company": "Test Condominium",
 					"calculation_method": "Por Indiviso",
 					"base_amount": 30000.00,
 					"effective_from": add_days(getdate(), 30),  # Superpuesta
