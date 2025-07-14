@@ -16,8 +16,10 @@ class TestResidentAccountBusinessLogic(unittest.TestCase):
 	def setUp(self):
 		"""Setup basic test environment"""
 		# Crear instancia directa de la clase para testing
-		# Document requires doctype parameter
-		self.doc = ResidentAccount("Resident Account")
+		# REGLA #37: Expert debugging - usar frappe.new_doc en lugar de cargar desde DB
+		import frappe
+
+		self.doc = frappe.new_doc("Resident Account")
 
 		# Setup básico de campos requeridos para testing
 		self.setup_basic_fields()
@@ -40,7 +42,9 @@ class TestResidentAccountBusinessLogic(unittest.TestCase):
 	def test_set_default_values_functionality(self):
 		"""Test método set_default_values"""
 		# Test con campos vacíos
-		doc = ResidentAccount("Resident Account")
+		import frappe
+
+		doc = frappe.new_doc("Resident Account")
 		doc.resident_type = "Propietario"
 
 		doc.set_default_values()
@@ -65,7 +69,9 @@ class TestResidentAccountBusinessLogic(unittest.TestCase):
 
 		for resident_type, expected_spending, expected_approval in test_cases:
 			with self.subTest(resident_type=resident_type):
-				doc = ResidentAccount("Resident Account")
+				import frappe
+
+				doc = frappe.new_doc("Resident Account")
 				doc.resident_type = resident_type
 
 				doc.set_default_values()
@@ -171,7 +177,9 @@ class TestResidentAccountBusinessLogic(unittest.TestCase):
 
 		for case in test_cases:
 			with self.subTest(field=case["field"], value=case["value"]):
-				doc = ResidentAccount("Resident Account")
+				import frappe
+
+				doc = frappe.new_doc("Resident Account")
 				doc.current_balance = 0.0  # Set default to avoid None
 				setattr(doc, case["field"], case["value"])
 
@@ -276,7 +284,9 @@ class TestResidentAccountBusinessLogic(unittest.TestCase):
 	def test_comprehensive_business_logic_flow(self):
 		"""Test flujo completo de business logic"""
 		# 1. Setup inicial
-		doc = ResidentAccount("Resident Account")
+		import frappe
+
+		doc = frappe.new_doc("Resident Account")
 		doc.resident_type = "Inquilino"
 		doc.property_account = "PROP-001"
 		doc.resident_name = "María García"
