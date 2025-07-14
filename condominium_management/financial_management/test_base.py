@@ -36,9 +36,15 @@ class FinancialTestBase(unittest.TestCase):
 		cls.setup_test_properties()
 		cls.setup_test_users()  # FASE 1: Crear usuarios requeridos
 
+		# Mock warehouse creation to avoid Company abbr issues
+		cls.setup_warehouse_mocks()
+
 	@classmethod
 	def tearDownClass(cls):
 		"""Cleanup de clase"""
+		# Clean up warehouse mock
+		if hasattr(cls, "warehouse_patch"):
+			cls.warehouse_patch.stop()
 		cls.cleanup_test_data()
 
 	@classmethod
@@ -113,24 +119,74 @@ class FinancialTestBase(unittest.TestCase):
 	def setup_companies_data(cls):
 		"""Setup datos de companies para testing"""
 
+		# CRÍTICO: Asegurar que _Test Company de ERPNext esté disponible
+		# antes de make_test_records para evitar Warehouse autoname error
+		cls.ensure_test_company_available()
+
 		# Crear Company real de prueba con ignore_if_duplicate
-		company_name = "Condominio Test Financiero"
+		company_name = "Test Condominium"
 		if not frappe.db.exists("Company", company_name):
 			try:
+				# Create company with full setup
+				from erpnext.setup.doctype.company.company import install_country_fixtures
+
 				company = frappe.get_doc(
 					{
 						"doctype": "Company",
 						"company_name": company_name,
-						"abbr": "TFC",
+						"abbr": "TCS",
+						"default_currency": "MXN",
+						"country": "Mexico",
+						"create_chart_of_accounts_based_on": "Standard Template",
+						"chart_of_accounts": "Mexico",
+						"enable_perpetual_inventory": 0,
+						"default_warehouse": "Stores - TCS",
+						"default_buying_terms": "Net 30",
+						"default_selling_terms": "Net 30",
+						"stock_settings": {"enable_negative_stock": 1},
+					}
+				)
+				company.insert(ignore_permissions=True)
+				frappe.db.commit()
+
+				# Ensure basic warehouse exists
+				if not frappe.db.exists("Warehouse", "Stores - TCS"):
+					warehouse = frappe.get_doc(
+						{
+							"doctype": "Warehouse",
+							"warehouse_name": "Stores",
+							"company": company_name,
+							"warehouse_type": "Stock",
+						}
+					)
+					warehouse.insert(ignore_permissions=True)
+					frappe.db.commit()
+
+			except frappe.DuplicateEntryError:
+				# Company ya existe, continuar
+				pass
+			except Exception as e:
+				frappe.logger().error(f"Error creating company: {e}")
+				# Fallback: create minimal company
+				company = frappe.get_doc(
+					{
+						"doctype": "Company",
+						"company_name": company_name,
+						"abbr": "TCS",
 						"default_currency": "MXN",
 						"country": "Mexico",
 					}
 				)
 				company.insert(ignore_permissions=True)
 				frappe.db.commit()
-			except frappe.DuplicateEntryError:
-				# Company ya existe, continuar
-				pass
+
+		# Ensure company is properly created and accessible
+		if frappe.db.exists("Company", company_name):
+			# Set as default company for the session
+			frappe.defaults.set_user_default("company", company_name)
+
+			# Create Customer Groups without warehouse requirements
+			cls.setup_customer_groups()
 
 		# Company de prueba
 		cls.test_company = type(
@@ -139,7 +195,7 @@ class FinancialTestBase(unittest.TestCase):
 			{
 				"name": "Test Condominium",
 				"company_name": "Test Condominium",
-				"abbr": "TC",
+				"abbr": "TCS",
 				"default_currency": "MXN",
 				"country": "Mexico",
 			},
@@ -241,6 +297,80 @@ class FinancialTestBase(unittest.TestCase):
 				frappe.logger().info(f"✅ Test user {email} already exists")
 
 		cls.test_users_ready = True
+
+	@classmethod
+	def ensure_test_company_available(cls):
+		"""Ensure _Test Company is available with proper abbr to avoid Warehouse autoname error"""
+		# Verificar si _Test Company existe y tiene abbr
+		if not frappe.db.exists("Company", "_Test Company"):
+			# Crear _Test Company con abbr para evitar Warehouse autoname error
+			try:
+				test_company = frappe.get_doc(
+					{
+						"doctype": "Company",
+						"company_name": "_Test Company",
+						"abbr": "_TC",
+						"default_currency": "INR",
+						"country": "India",
+						"chart_of_accounts": "Standard",
+						"enable_perpetual_inventory": 0,
+					}
+				)
+				test_company.insert(ignore_permissions=True)
+				frappe.db.commit()
+			except frappe.DuplicateEntryError:
+				pass
+		else:
+			# Verificar que _Test Company tenga abbr
+			abbr = frappe.db.get_value("Company", "_Test Company", "abbr")
+			if not abbr:
+				# Actualizar abbr si no existe
+				frappe.db.set_value("Company", "_Test Company", "abbr", "_TC")
+				frappe.db.commit()
+
+		# Limpiar cache para asegurar que esté disponible
+		frappe.clear_cache(doctype="Company")
+
+	@classmethod
+	def setup_customer_groups(cls):
+		"""Create Customer Groups without warehouse requirements"""
+		customer_groups = ["Condóminos", "Residentes", "All Customer Groups"]
+
+		for group_name in customer_groups:
+			if not frappe.db.exists("Customer Group", group_name):
+				try:
+					customer_group = frappe.get_doc(
+						{
+							"doctype": "Customer Group",
+							"customer_group_name": group_name,
+							"parent_customer_group": "All Customer Groups"
+							if group_name != "All Customer Groups"
+							else None,
+							"is_group": 1 if group_name == "All Customer Groups" else 0,
+						}
+					)
+					customer_group.insert(ignore_permissions=True)
+				except frappe.DuplicateEntryError:
+					pass
+
+		frappe.db.commit()
+
+	@classmethod
+	def setup_warehouse_mocks(cls):
+		"""Mock warehouse creation to avoid Company abbr issues during tests"""
+		from unittest.mock import patch
+
+		def mock_warehouse_autoname(self):
+			"""Mock autoname for Warehouse to avoid Company abbr issues"""
+			if not hasattr(self, "warehouse_name"):
+				self.warehouse_name = f"Mock Warehouse {frappe.utils.random_string(5)}"
+			self.name = self.warehouse_name
+
+		# Apply the mock
+		cls.warehouse_patch = patch(
+			"erpnext.stock.doctype.warehouse.warehouse.Warehouse.autoname", mock_warehouse_autoname
+		)
+		cls.warehouse_patch.start()
 
 	@classmethod
 	def create_test_customer(cls, customer_name, customer_group="Condóminos"):
