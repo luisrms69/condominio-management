@@ -112,10 +112,12 @@ jobs:
           command: |
             cd /home/runner/frappe-bench
             bench get-app --branch version-15 erpnext
+            bench get-app --branch version-15 payments
             bench get-app condominium_management $GITHUB_WORKSPACE
             bench setup requirements --dev
             bench new-site --db-root-password root --admin-password admin admin1.dev
             bench --site admin1.dev install-app erpnext
+            bench --site admin1.dev install-app payments
             bench --site admin1.dev install-app condominium_management
             bench --site admin1.dev migrate
             bench build
