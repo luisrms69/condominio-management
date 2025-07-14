@@ -1,43 +1,50 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:account_name",
- "creation": "2025-01-13 10:00:00.000000",
+ "autoname": "field:account_code",
+ "creation": "2025-01-13 12:00:00.000000",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "basic_information_section",
-  "account_name",
-  "property_registry",
-  "customer",
-  "column_break_setup",
+  "account_code",
+  "resident_name",
+  "property_account",
+  "column_break_basic",
   "company",
-  "billing_frequency",
+  "resident_type",
   "account_status",
   "financial_information_section",
   "current_balance",
-  "credit_balance",
+  "credit_limit",
   "column_break_financial",
-  "pending_amount",
-  "last_payment_date",
-  "last_payment_amount",
-  "billing_configuration_section",
-  "fee_structure",
-  "billing_start_date",
-  "column_break_billing",
-  "billing_day",
-  "auto_generate_invoices",
-  "discount_eligibility",
-  "payment_history_section",
-  "payment_history_summary",
+  "deposit_amount",
+  "last_transaction_date",
+  "last_transaction_amount",
+  "credit_management_section",
+  "available_credit",
+  "pending_charges",
+  "column_break_credit",
+  "credit_utilization_percentage",
+  "credit_payment_due_date",
+  "credit_payment_status",
+  "transaction_history_section",
+  "transaction_summary",
+  "services_configuration_section",
+  "allowed_services",
+  "spending_limits",
+  "column_break_services",
+  "approval_required_amount",
+  "auto_charge_enabled",
+  "notifications_enabled",
   "account_summary_section",
-  "monthly_fee_amount",
-  "ytd_paid_amount",
+  "monthly_average_spending",
+  "ytd_charges",
   "column_break_summary",
-  "total_invoiced_ytd",
-  "payment_success_rate",
-  "average_payment_delay",
+  "ytd_payments",
+  "total_savings",
+  "loyalty_points",
   "audit_information_section",
   "created_by",
   "creation_date",
@@ -52,31 +59,30 @@
    "label": "Información Básica"
   },
   {
-   "fieldname": "account_name",
+   "fieldname": "account_code",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Nombre de Cuenta",
+   "label": "Código de Cuenta",
    "reqd": 1,
    "unique": 1
   },
   {
-   "fieldname": "property_registry",
-   "fieldtype": "Link",
+   "fieldname": "resident_name",
+   "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Registro de Propiedad",
-   "options": "Property Registry",
+   "label": "Nombre del Residente",
    "reqd": 1
   },
   {
-   "fieldname": "customer",
+   "fieldname": "property_account",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Cliente ERPNext",
-   "options": "Customer",
+   "label": "Cuenta de Propiedad",
+   "options": "Property Account",
    "reqd": 1
   },
   {
-   "fieldname": "column_break_setup",
+   "fieldname": "column_break_basic",
    "fieldtype": "Column Break"
   },
   {
@@ -87,11 +93,11 @@
    "reqd": 1
   },
   {
-   "fieldname": "billing_frequency",
+   "fieldname": "resident_type",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "label": "Frecuencia de Facturación",
-   "options": "Mensual\nBimestral\nTrimestral\nSemestral\nAnual",
+   "label": "Tipo de Residente",
+   "options": "Propietario\nInquilino\nFamiliar\nHuésped\nEmpleado Doméstico",
    "reqd": 1
   },
   {
@@ -99,7 +105,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Estado de Cuenta",
-   "options": "Activa\nSuspendida\nMorosa\nCerrada",
+   "options": "Activa\nSuspendida\nBloqueada\nCerrada",
    "reqd": 1
   },
   {
@@ -115,9 +121,9 @@
    "reqd": 1
   },
   {
-   "fieldname": "credit_balance",
+   "fieldname": "credit_limit",
    "fieldtype": "Currency",
-   "label": "Saldo a Favor",
+   "label": "Límite de Crédito",
    "precision": "2"
   },
   {
@@ -125,70 +131,108 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "pending_amount",
+   "fieldname": "deposit_amount",
    "fieldtype": "Currency",
-   "label": "Monto Pendiente",
+   "label": "Monto de Depósito",
+   "precision": "2"
+  },
+  {
+   "fieldname": "last_transaction_date",
+   "fieldtype": "Date",
+   "label": "Fecha Última Transacción"
+  },
+  {
+   "fieldname": "last_transaction_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Última Transacción",
+   "precision": "2"
+  },
+  {
+   "fieldname": "credit_management_section",
+   "fieldtype": "Section Break",
+   "label": "Gestión de Crédito"
+  },
+  {
+   "fieldname": "available_credit",
+   "fieldtype": "Currency",
+   "label": "Crédito Disponible",
    "precision": "2",
    "read_only": 1
   },
   {
-   "fieldname": "last_payment_date",
-   "fieldtype": "Date",
-   "label": "Fecha Último Pago"
-  },
-  {
-   "fieldname": "last_payment_amount",
+   "fieldname": "pending_charges",
    "fieldtype": "Currency",
-   "label": "Monto Último Pago",
-   "precision": "2"
+   "label": "Cargos Pendientes",
+   "precision": "2",
+   "read_only": 1
   },
   {
-   "fieldname": "billing_configuration_section",
-   "fieldtype": "Section Break",
-   "label": "Configuración de Facturación"
-  },
-  {
-   "fieldname": "fee_structure",
-   "fieldtype": "Link",
-   "label": "Estructura de Cuotas",
-   "options": "Fee Structure"
-  },
-  {
-   "fieldname": "billing_start_date",
-   "fieldtype": "Date",
-   "label": "Fecha Inicio Facturación",
-   "reqd": 1
-  },
-  {
-   "fieldname": "column_break_billing",
+   "fieldname": "column_break_credit",
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "billing_day",
-   "fieldtype": "Int",
-   "label": "Día de Facturación",
-   "reqd": 1
-  },
-  {
-   "fieldname": "auto_generate_invoices",
-   "fieldtype": "Check",
-   "label": "Auto-generar Facturas"
-  },
-  {
-   "fieldname": "discount_eligibility",
-   "fieldtype": "Check",
-   "label": "Elegible para Descuentos"
-  },
-  {
-   "fieldname": "payment_history_section",
-   "fieldtype": "Section Break",
-   "label": "Historial de Pagos"
-  },
-  {
-   "fieldname": "payment_history_summary",
-   "fieldtype": "Long Text",
-   "label": "Resumen Historial Pagos",
+   "fieldname": "credit_utilization_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje Utilización Crédito",
    "read_only": 1
+  },
+  {
+   "fieldname": "credit_payment_due_date",
+   "fieldtype": "Date",
+   "label": "Fecha Vencimiento Pago"
+  },
+  {
+   "fieldname": "credit_payment_status",
+   "fieldtype": "Select",
+   "label": "Estado Pago Crédito",
+   "options": "Al Día\nVencido\nMoroso\nPagado"
+  },
+  {
+   "fieldname": "transaction_history_section",
+   "fieldtype": "Section Break",
+   "label": "Historial de Transacciones"
+  },
+  {
+   "fieldname": "transaction_summary",
+   "fieldtype": "Long Text",
+   "label": "Resumen de Transacciones",
+   "read_only": 1
+  },
+  {
+   "fieldname": "services_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Servicios"
+  },
+  {
+   "fieldname": "allowed_services",
+   "fieldtype": "Small Text",
+   "label": "Servicios Permitidos"
+  },
+  {
+   "fieldname": "spending_limits",
+   "fieldtype": "Currency",
+   "label": "Límite de Gastos Diarios",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_services",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approval_required_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Requiere Aprobación",
+   "precision": "2"
+  },
+  {
+   "fieldname": "auto_charge_enabled",
+   "fieldtype": "Check",
+   "label": "Auto-cargo Habilitado"
+  },
+  {
+   "fieldname": "notifications_enabled",
+   "fieldtype": "Check",
+   "label": "Notificaciones Habilitadas"
   },
   {
    "fieldname": "account_summary_section",
@@ -196,16 +240,16 @@
    "label": "Resumen de Cuenta"
   },
   {
-   "fieldname": "monthly_fee_amount",
+   "fieldname": "monthly_average_spending",
    "fieldtype": "Currency",
-   "label": "Cuota Mensual",
+   "label": "Gasto Promedio Mensual",
    "precision": "2",
    "read_only": 1
   },
   {
-   "fieldname": "ytd_paid_amount",
+   "fieldname": "ytd_charges",
    "fieldtype": "Currency",
-   "label": "Pagado Este Año",
+   "label": "Cargos Este Año",
    "precision": "2",
    "read_only": 1
   },
@@ -214,22 +258,23 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "total_invoiced_ytd",
+   "fieldname": "ytd_payments",
    "fieldtype": "Currency",
-   "label": "Total Facturado Este Año",
+   "label": "Pagos Este Año",
    "precision": "2",
    "read_only": 1
   },
   {
-   "fieldname": "payment_success_rate",
-   "fieldtype": "Percent",
-   "label": "Tasa Éxito Pagos",
+   "fieldname": "total_savings",
+   "fieldtype": "Currency",
+   "label": "Ahorros Totales",
+   "precision": "2",
    "read_only": 1
   },
   {
-   "fieldname": "average_payment_delay",
+   "fieldname": "loyalty_points",
    "fieldtype": "Int",
-   "label": "Retraso Promedio Pagos (días)",
+   "label": "Puntos de Lealtad",
    "read_only": 1
   },
   {
@@ -270,11 +315,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-13 10:00:00.000000",
+ "modified": "2025-01-13 12:00:00.000000",
  "modified_by": "Administrator",
  "app_name": "condominium_management",
  "module": "Financial Management",
- "name": "Property Account",
+ "name": "Resident Account",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -316,6 +361,10 @@
   {
    "read": 1,
    "role": "Condómino"
+  },
+  {
+   "read": 1,
+   "role": "Residente Propietario"
   }
  ],
  "quick_entry": 1,

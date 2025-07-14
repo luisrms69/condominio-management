@@ -3,5 +3,6 @@ Document Generation
 Community Contributions
 Physical Spaces
 Committee Management
+Financial Management
 API Documentation System
 Dashboard Consolidado
