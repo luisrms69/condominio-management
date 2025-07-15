@@ -147,7 +147,7 @@ class TestPropertyAccountLayer2BusinessLogic(FrappeTestCase):
 		self.assertEqual(self.doc.average_payment_delay, 0)
 
 	@patch("frappe.get_doc")
-	def test_calculate_monthly_fee_amount_with_fee_structure(self, mock_get_doc):
+	def test_calculate_monthly_fee_with_fee_structure(self, mock_get_doc):
 		"""Test monthly fee calculation with fee structure"""
 		# Mock fee structure document and calculation result
 		mock_fee_structure = MagicMock()
@@ -161,7 +161,7 @@ class TestPropertyAccountLayer2BusinessLogic(FrappeTestCase):
 		self.doc.property_registry = "MOCK_PROPERTY_001"
 
 		# EXPERIMENTAL: Test business logic with mocked DocType interaction
-		self.doc.calculate_monthly_fee_amount()
+		self.doc.calculate_monthly_fee()
 
 		# Verify calculation result
 		self.assertEqual(flt(self.doc.monthly_fee_amount), 3500.0)
@@ -171,23 +171,23 @@ class TestPropertyAccountLayer2BusinessLogic(FrappeTestCase):
 		mock_fee_structure.calculate_fee_for_property.assert_called_with("MOCK_PROPERTY_001")
 
 	@patch("frappe.get_doc")
-	def test_calculate_monthly_fee_amount_calculation_error(self, mock_get_doc):
+	def test_calculate_monthly_fee_calculation_error(self, mock_get_doc):
 		"""Test monthly fee calculation with error handling"""
 		# Mock fee structure that raises exception
 		mock_get_doc.side_effect = Exception("Fee structure not found")
 
 		self.doc.fee_structure = "INVALID_FEE_STRUCTURE"
 
-		self.doc.calculate_monthly_fee_amount()
+		self.doc.calculate_monthly_fee()
 
 		# Should handle error gracefully and set to 0
 		self.assertEqual(self.doc.monthly_fee_amount, 0)
 
-	def test_calculate_monthly_fee_amount_no_fee_structure(self):
+	def test_calculate_monthly_fee_no_fee_structure(self):
 		"""Test monthly fee calculation when no fee structure is set"""
 		self.doc.fee_structure = None
 
-		self.doc.calculate_monthly_fee_amount()
+		self.doc.calculate_monthly_fee()
 
 		# Should set to 0 when no fee structure
 		self.assertEqual(self.doc.monthly_fee_amount, 0)
@@ -251,7 +251,7 @@ class TestPropertyAccountLayer2BusinessLogic(FrappeTestCase):
 
 		# Execute business logic methods in sequence
 		self.doc.validate_property_registry()  # Should pass with mocked dependency
-		self.doc.calculate_monthly_fee_amount()
+		self.doc.calculate_monthly_fee()
 		self.doc.set_default_values()
 
 		# EXPERIMENTAL: Verify complex business logic integration
