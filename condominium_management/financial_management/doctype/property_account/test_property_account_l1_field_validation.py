@@ -129,6 +129,7 @@ class TestPropertyAccountLayer1FieldValidation(FrappeTestCase):
 		"""Test billing start date validation"""
 		self.doc.billing_frequency = "Mensual"
 		self.doc.billing_start_date = None
+		self.doc.billing_day = 1  # Set valid billing day to reach start_date validation
 
 		self.doc.validate_billing_configuration()
 
