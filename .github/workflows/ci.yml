@@ -136,7 +136,7 @@ jobs:
         run: |
           bench --site admin1.dev set-config allow_tests true
           bench --site admin1.dev set-config developer_mode true
-          bench --site admin1.dev run-tests --app condominium_management --coverage --failfast
+          bench --site admin1.dev run-tests --app condominium_management --coverage
         env:
           TYPE: server
           FRAPPE_DEVELOPER_MODE: 1
