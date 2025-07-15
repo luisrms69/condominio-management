@@ -101,10 +101,14 @@ class TestPropertyAccountLayer1FieldValidation(FrappeTestCase):
 		args, kwargs = mock_throw.call_args
 		self.assertIn("cliente", args[0].lower())
 
+	@patch("frappe.db.exists")
 	@patch("frappe.get_doc")
 	@patch("frappe.throw")
-	def test_validate_customer_link_with_mocked_customer(self, mock_throw, mock_get_doc):
+	def test_validate_customer_link_with_mocked_customer(self, mock_throw, mock_get_doc, mock_db_exists):
 		"""Test validation with mocked customer document"""
+		# Mock frappe.db.exists to return True
+		mock_db_exists.return_value = True
+
 		# Mock customer document
 		mock_customer = MagicMock()
 		mock_customer.customer_group = "Condóminos"
@@ -115,9 +119,10 @@ class TestPropertyAccountLayer1FieldValidation(FrappeTestCase):
 		# Should not throw with valid customer
 		self.doc.validate_customer_link()
 
-		# Verify frappe.throw was NOT called
-		mock_throw.assert_not_called()
+		# Verify validations
+		mock_db_exists.assert_called_with("Customer", "MOCK_CUSTOMER_001")
 		mock_get_doc.assert_called_with("Customer", "MOCK_CUSTOMER_001")
+		mock_throw.assert_not_called()
 
 	@patch("frappe.throw")
 	def test_validate_billing_configuration_missing_frequency(self, mock_throw):
