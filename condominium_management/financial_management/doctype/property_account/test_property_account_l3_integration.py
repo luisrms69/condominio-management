@@ -12,10 +12,14 @@ METODOLOGÍA EXPERIMENTAL: Integration testing con datos mínimos reales
 - Tests de integración controlada con Frappe Framework
 """
 
+import frappe
+
+# REGLA #43A: Skip automatic test records para evitar framework issues
+frappe.flags.skip_test_records = True
+
 import unittest
 from unittest.mock import patch
 
-import frappe
 from frappe.tests.utils import FrappeTestCase
 from frappe.utils import add_days, getdate
 
@@ -89,7 +93,7 @@ class TestPropertyAccountLayer3Integration(FrappeTestCase):
 
 	def test_property_account_creation_minimal(self):
 		"""Test basic Property Account creation with minimal required fields"""
-		# EXPERIMENTAL: Test real document creation without complex dependencies
+		# REGLA #43A: Test integración con skip_test_records flag
 		doc = frappe.get_doc(
 			{
 				"doctype": "Property Account",
@@ -115,6 +119,7 @@ class TestPropertyAccountLayer3Integration(FrappeTestCase):
 
 	def test_property_account_default_values_integration(self):
 		"""Test that default values are properly set during document creation"""
+		# REGLA #43A: Test defaults con skip_test_records flag
 		doc = frappe.get_doc(
 			{
 				"doctype": "Property Account",
