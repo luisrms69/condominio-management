@@ -241,9 +241,19 @@ class TestPropertyAccountLayer2BusinessLogic(FrappeTestCase):
 		# Setup mocks for complex scenario
 		mock_db_get_value.return_value = None  # No existing account
 
-		mock_fee_structure = MagicMock()
-		mock_fee_structure.calculate_fee_for_property.return_value = {"total_fee": 2800.0}
-		mock_get_doc.return_value = mock_fee_structure
+		# Configure mock_get_doc to return different objects based on DocType
+		def mock_get_doc_side_effect(doctype, name):
+			if doctype == "Property Registry":
+				mock_property = MagicMock()
+				mock_property.status = "Activa"
+				return mock_property
+			elif doctype == "Fee Structure":
+				mock_fee_structure = MagicMock()
+				mock_fee_structure.calculate_fee_for_property.return_value = {"total_fee": 2800.0}
+				return mock_fee_structure
+			return MagicMock()
+
+		mock_get_doc.side_effect = mock_get_doc_side_effect
 
 		# Setup document for complex flow
 		self.doc.property_registry = "MOCK_PROPERTY_COMPLEX"
