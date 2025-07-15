@@ -52,10 +52,14 @@ class TestPropertyAccountLayer1FieldValidation(FrappeTestCase):
 	@patch("frappe.throw")
 	def test_validate_property_registry_missing(self, mock_throw):
 		"""Test validation fails when property_registry is missing"""
+		# Configure mock to raise exception like real frappe.throw
+		mock_throw.side_effect = Exception("Mocked frappe.throw")
+
 		self.doc.property_registry = None
 
 		# EXPERIMENTAL: Test validation logic without DB dependencies
-		self.doc.validate_property_registry()
+		with self.assertRaises(Exception):
+			self.doc.validate_property_registry()
 
 		# Verify frappe.throw was called for missing property_registry
 		mock_throw.assert_called_once()
@@ -83,10 +87,14 @@ class TestPropertyAccountLayer1FieldValidation(FrappeTestCase):
 	@patch("frappe.throw")
 	def test_validate_customer_link_missing(self, mock_throw):
 		"""Test validation fails when customer is missing"""
+		# Configure mock to raise exception like real frappe.throw
+		mock_throw.side_effect = Exception("Mocked frappe.throw")
+
 		self.doc.customer = None
 
 		# EXPERIMENTAL: Test validation without dependencies
-		self.doc.validate_customer_link()
+		with self.assertRaises(Exception):
+			self.doc.validate_customer_link()
 
 		# Verify validation was triggered
 		mock_throw.assert_called_once()
@@ -114,11 +122,15 @@ class TestPropertyAccountLayer1FieldValidation(FrappeTestCase):
 	@patch("frappe.throw")
 	def test_validate_billing_configuration_missing_frequency(self, mock_throw):
 		"""Test billing configuration validation"""
+		# Configure mock to raise exception like real frappe.throw
+		mock_throw.side_effect = Exception("Mocked frappe.throw")
+
 		self.doc.billing_frequency = None
 		self.doc.billing_start_date = "2025-01-15"  # Set to avoid None comparison error
 		self.doc.billing_day = 1  # Set valid billing day to reach frequency validation
 
-		self.doc.validate_billing_configuration()
+		with self.assertRaises(Exception):
+			self.doc.validate_billing_configuration()
 
 		mock_throw.assert_called()
 		args, kwargs = mock_throw.call_args
@@ -127,11 +139,15 @@ class TestPropertyAccountLayer1FieldValidation(FrappeTestCase):
 	@patch("frappe.throw")
 	def test_validate_billing_configuration_missing_start_date(self, mock_throw):
 		"""Test billing start date validation"""
+		# Configure mock to raise exception like real frappe.throw
+		mock_throw.side_effect = Exception("Mocked frappe.throw")
+
 		self.doc.billing_frequency = "Mensual"
 		self.doc.billing_start_date = None
 		self.doc.billing_day = 1  # Set valid billing day to reach start_date validation
 
-		self.doc.validate_billing_configuration()
+		with self.assertRaises(Exception):
+			self.doc.validate_billing_configuration()
 
 		mock_throw.assert_called()
 		args, kwargs = mock_throw.call_args
@@ -140,9 +156,13 @@ class TestPropertyAccountLayer1FieldValidation(FrappeTestCase):
 	@patch("frappe.throw")
 	def test_validate_financial_data_negative_credit_balance(self, mock_throw):
 		"""Test financial data validation for negative credit balance"""
+		# Configure mock to raise exception like real frappe.throw
+		mock_throw.side_effect = Exception("Mocked frappe.throw")
+
 		self.doc.credit_balance = -500.0
 
-		self.doc.validate_financial_data()
+		with self.assertRaises(Exception):
+			self.doc.validate_financial_data()
 
 		mock_throw.assert_called()
 		args, kwargs = mock_throw.call_args
@@ -152,10 +172,14 @@ class TestPropertyAccountLayer1FieldValidation(FrappeTestCase):
 	@patch("frappe.throw")
 	def test_validate_financial_data_negative_payment_amount(self, mock_throw):
 		"""Test financial data validation for negative payment amount"""
+		# Configure mock to raise exception like real frappe.throw
+		mock_throw.side_effect = Exception("Mocked frappe.throw")
+
 		self.doc.last_payment_amount = -100.0
 		self.doc.last_payment_date = "2025-01-15"  # Set date to test negative amount validation
 
-		self.doc.validate_financial_data()
+		with self.assertRaises(Exception):
+			self.doc.validate_financial_data()
 
 		mock_throw.assert_called()
 		args, kwargs = mock_throw.call_args
@@ -165,10 +189,14 @@ class TestPropertyAccountLayer1FieldValidation(FrappeTestCase):
 	@patch("frappe.throw")
 	def test_validate_financial_data_missing_payment_date(self, mock_throw):
 		"""Test financial data validation for missing payment date when amount exists"""
+		# Configure mock to raise exception like real frappe.throw
+		mock_throw.side_effect = Exception("Mocked frappe.throw")
+
 		self.doc.last_payment_amount = 100.0
 		self.doc.last_payment_date = None
 
-		self.doc.validate_financial_data()
+		with self.assertRaises(Exception):
+			self.doc.validate_financial_data()
 
 		mock_throw.assert_called()
 		args, kwargs = mock_throw.call_args
