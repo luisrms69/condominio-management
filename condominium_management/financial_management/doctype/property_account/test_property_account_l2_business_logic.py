@@ -193,7 +193,7 @@ class TestPropertyAccountLayer2BusinessLogic(FrappeTestCase):
 		self.assertEqual(self.doc.monthly_fee_amount, 0)
 
 	@patch("frappe.session")
-	@patch("frappe.utils.now")
+	@patch("condominium_management.financial_management.doctype.property_account.property_account.now")
 	def test_update_audit_information_new_document(self, mock_now, mock_session):
 		"""Test audit information update for new document"""
 		# Mock session and current time
@@ -214,7 +214,7 @@ class TestPropertyAccountLayer2BusinessLogic(FrappeTestCase):
 			self.assertEqual(self.doc.last_modified_date, "2025-01-14 10:30:00")
 
 	@patch("frappe.session")
-	@patch("frappe.utils.now")
+	@patch("condominium_management.financial_management.doctype.property_account.property_account.now")
 	def test_update_audit_information_existing_document(self, mock_now, mock_session):
 		"""Test audit information update for existing document"""
 		# Mock session and current time
