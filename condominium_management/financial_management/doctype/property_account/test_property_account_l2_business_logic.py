@@ -200,17 +200,18 @@ class TestPropertyAccountLayer2BusinessLogic(FrappeTestCase):
 		mock_session.user = "test@example.com"
 		mock_now.return_value = "2025-01-14 10:30:00"
 
-		# New document scenario
-		self.doc.created_by = None
-		self.doc.creation_date = None
+		# New document scenario - mock is_new() to return True
+		with patch.object(self.doc, "is_new", return_value=True):
+			self.doc.created_by = None
+			self.doc.creation_date = None
 
-		self.doc.update_audit_information()
+			self.doc.update_audit_information()
 
-		# Verify audit fields for new document
-		self.assertEqual(self.doc.created_by, "test@example.com")
-		self.assertEqual(self.doc.creation_date, "2025-01-14 10:30:00")
-		self.assertEqual(self.doc.last_modified_by, "test@example.com")
-		self.assertEqual(self.doc.last_modified_date, "2025-01-14 10:30:00")
+			# Verify audit fields for new document
+			self.assertEqual(self.doc.created_by, "test@example.com")
+			self.assertEqual(self.doc.creation_date, "2025-01-14 10:30:00")
+			self.assertEqual(self.doc.last_modified_by, "test@example.com")
+			self.assertEqual(self.doc.last_modified_date, "2025-01-14 10:30:00")
 
 	@patch("frappe.session")
 	@patch("frappe.utils.now")
@@ -220,19 +221,20 @@ class TestPropertyAccountLayer2BusinessLogic(FrappeTestCase):
 		mock_session.user = "updater@example.com"
 		mock_now.return_value = "2025-01-14 15:45:00"
 
-		# Existing document scenario
-		self.doc.created_by = "creator@example.com"
-		self.doc.creation_date = "2025-01-01 09:00:00"
+		# Existing document scenario - mock is_new() to return False
+		with patch.object(self.doc, "is_new", return_value=False):
+			self.doc.created_by = "creator@example.com"
+			self.doc.creation_date = "2025-01-01 09:00:00"
 
-		self.doc.update_audit_information()
+			self.doc.update_audit_information()
 
-		# Verify audit fields for existing document
-		# Creation info should not change
-		self.assertEqual(self.doc.created_by, "creator@example.com")
-		self.assertEqual(self.doc.creation_date, "2025-01-01 09:00:00")
-		# Modification info should update
-		self.assertEqual(self.doc.last_modified_by, "updater@example.com")
-		self.assertEqual(self.doc.last_modified_date, "2025-01-14 15:45:00")
+			# Verify audit fields for existing document
+			# Creation info should not change
+			self.assertEqual(self.doc.created_by, "creator@example.com")
+			self.assertEqual(self.doc.creation_date, "2025-01-01 09:00:00")
+			# Modification info should update
+			self.assertEqual(self.doc.last_modified_by, "updater@example.com")
+			self.assertEqual(self.doc.last_modified_date, "2025-01-14 15:45:00")
 
 	@patch("frappe.get_doc")
 	@patch("frappe.db.get_value")
