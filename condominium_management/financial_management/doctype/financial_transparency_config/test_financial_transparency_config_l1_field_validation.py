@@ -12,9 +12,10 @@ class TestFinancialTransparencyConfigL1FieldValidation(FrappeTestCase):
 		"""Test that required fields are properly validated"""
 		transparency_config = frappe.new_doc("Financial Transparency Config")
 
-		# Test missing required fields
-		with self.assertRaises(frappe.MandatoryError):
+		# Test missing config_name validation (custom validation)
+		with self.assertRaises(frappe.ValidationError) as context:
 			transparency_config.insert()
+		self.assertIn("Nombre de Configuración es obligatorio", str(context.exception))
 
 		# Test each required field individually
 		required_fields = [

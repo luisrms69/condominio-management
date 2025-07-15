@@ -12,9 +12,10 @@ class TestPremiumServicesIntegrationL1FieldValidation(FrappeTestCase):
 		"""Test that required fields are properly validated"""
 		premium_services = frappe.new_doc("Premium Services Integration")
 
-		# Test missing required fields
-		with self.assertRaises(frappe.MandatoryError):
+		# Test missing service_name validation (custom validation)
+		with self.assertRaises(frappe.ValidationError) as context:
 			premium_services.insert()
+		self.assertIn("Nombre del Servicio es obligatorio", str(context.exception))
 
 		# Test each required field individually
 		required_fields = ["naming_series", "service_name", "service_category", "company", "service_status"]

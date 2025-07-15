@@ -15,9 +15,10 @@ class TestPaymentCollectionL1FieldValidation(FrappeTestCase):
 		"""Test that required fields are properly validated"""
 		payment_collection = frappe.new_doc("Payment Collection")
 
-		# Test missing required fields
-		with self.assertRaises(frappe.MandatoryError):
+		# Test missing account selection validation (custom validation)
+		with self.assertRaises(frappe.ValidationError) as context:
 			payment_collection.insert()
+		self.assertIn("Cuenta de Propiedad es obligatoria para pagos de propietarios", str(context.exception))
 
 		# Test each required field individually
 		required_fields = [

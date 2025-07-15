@@ -12,9 +12,10 @@ class TestFeeStructureL1FieldValidation(FrappeTestCase):
 		"""Test that required fields are properly validated"""
 		fee_structure = frappe.new_doc("Fee Structure")
 
-		# Test missing required fields
-		with self.assertRaises(frappe.MandatoryError):
+		# Test missing fee_structure_name validation (custom validation)
+		with self.assertRaises(frappe.ValidationError) as context:
 			fee_structure.insert()
+		self.assertIn("El nombre de la estructura es obligatorio", str(context.exception))
 
 		# Test each required field individually
 		required_fields = [

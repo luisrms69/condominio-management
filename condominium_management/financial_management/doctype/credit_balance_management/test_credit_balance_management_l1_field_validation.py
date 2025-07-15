@@ -15,9 +15,12 @@ class TestCreditBalanceManagementL1FieldValidation(FrappeTestCase):
 		"""Test that required fields are properly validated"""
 		credit_balance = frappe.new_doc("Credit Balance Management")
 
-		# Test missing required fields
-		with self.assertRaises(frappe.MandatoryError):
+		# Test missing account selection validation (custom validation)
+		with self.assertRaises(frappe.ValidationError) as context:
 			credit_balance.insert()
+		self.assertIn(
+			"Cuenta de Propiedad es obligatoria para créditos de propietarios", str(context.exception)
+		)
 
 		# Test each required field individually
 		required_fields = ["naming_series", "balance_date", "account_type", "credit_amount", "balance_status"]

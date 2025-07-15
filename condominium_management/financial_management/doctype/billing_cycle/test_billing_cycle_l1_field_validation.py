@@ -12,9 +12,10 @@ class TestBillingCycleL1FieldValidation(FrappeTestCase):
 		"""Test that required fields are properly validated"""
 		billing_cycle = frappe.new_doc("Billing Cycle")
 
-		# Test missing required fields
-		with self.assertRaises(frappe.MandatoryError):
+		# Test missing date configuration validation (custom validation)
+		with self.assertRaises(frappe.ValidationError) as context:
 			billing_cycle.insert()
+		self.assertIn("Las fechas de inicio y fin son obligatorias", str(context.exception))
 
 		# Test each required field individually
 		required_fields = [
