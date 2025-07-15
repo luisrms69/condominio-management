@@ -17,6 +17,9 @@ from frappe.utils import add_days, flt, getdate, nowdate
 
 from condominium_management.financial_management.test_base import FinancialTestBaseGranular
 
+# REGLA #43: Skip automatic test records para evitar framework issue
+frappe.flags.skip_test_records = True
+
 
 class TestFineManagement(FinancialTestBaseGranular):
 	"""Test Fine Management con REGLA #32 - Testing Granular"""

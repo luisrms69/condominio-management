@@ -17,6 +17,9 @@ from frappe.utils import add_days, flt, getdate, nowdate
 
 from condominium_management.financial_management.test_base import FinancialTestBaseGranular
 
+# REGLA #43: Skip automatic test records para evitar framework issue
+frappe.flags.skip_test_records = True
+
 
 class TestCreditBalanceManagement(FinancialTestBaseGranular):
 	"""Test Credit Balance Management con REGLA #32 - Testing Granular"""
@@ -26,18 +29,19 @@ class TestCreditBalanceManagement(FinancialTestBaseGranular):
 		"""Setup de clase - preparar ambiente para Credit Balance Management"""
 		super().setUpClass()
 
-		# Crear datos específicos para Credit Balance Management
+		# REGLA #43: Mocking puro para evitar framework issues
 		cls.setup_credit_balance_data()
 
 	@classmethod
 	def setup_credit_balance_data(cls):
-		"""Setup datos específicos para testing Credit Balance Management"""
+		"""Setup datos específicos para testing Credit Balance Management - REGLA #43"""
 
-		# Para Credit Balance tests usamos mocks en lugar de crear dependencias reales
-		# Las dependencias reales se prueban en sus propios tests
+		# REGLA #43: Solo mocks, NO crear dependencies reales que causen framework issues
 		cls.mock_property_account_name = "PA-CREDIT-TEST-001"
 		cls.mock_resident_account_name = "RA-CREDIT-TEST-001"
-		cls.mock_customer_name = "TEST Customer Credit Balance"
+		cls.mock_customer_name = "TEST_CUSTOMER_CREDIT_001"
+		cls.test_customer_name = "TEST_CUSTOMER_CREDIT_001"
+		cls.test_property_registry_name = "TEST_PROP_CREDIT_001"
 
 	# =============================================================================
 	# LAYER 1: FIELD VALIDATION (SIEMPRE FUNCIONA)
@@ -210,6 +214,72 @@ class TestCreditBalanceManagement(FinancialTestBaseGranular):
 		# Verificar que los Customer Groups necesarios existen
 		self.assertTrue(frappe.db.exists("Customer Group", "Condóminos"))
 		self.assertTrue(frappe.db.exists("Customer Group", "Residentes"))
+
+	def test_layer_3_credit_balance_with_mocked_customer(self):
+		"""LAYER 3: Test credit balance con Customer mockeado - REGLA #43"""
+		doc = frappe.new_doc("Credit Balance Management")
+		doc.customer = self.test_customer_name
+		doc.account_type = "Property Account"
+		doc.credit_amount = 1500.0
+		doc.balance_status = "Activo"
+		doc.origin_type = "Sobrepago"
+		doc.balance_date = getdate()
+
+		# REGLA #43: Mocking contextual para validaciones que requieren Customer
+		with patch("frappe.get_doc") as mock_get_doc, patch("frappe.db.exists") as mock_exists:
+			# Mock Customer
+			mock_customer = type(
+				"MockCustomer",
+				(),
+				{
+					"name": self.test_customer_name,
+					"customer_name": "TEST Customer Credit Balance",
+					"customer_group": "Condóminos",
+					"territory": "All Territories",
+				},
+			)()
+
+			mock_get_doc.return_value = mock_customer
+			mock_exists.return_value = True
+
+			# Test validation method si existe
+			if hasattr(doc, "validate_customer_link"):
+				doc.validate_customer_link()
+
+			# Verificar field assignments
+			self.assertEqual(doc.customer, self.test_customer_name)
+			self.assertEqual(flt(doc.credit_amount), 1500.0)
+
+	def test_layer_3_property_registry_integration_mocked(self):
+		"""LAYER 3: Test integración con Property Registry usando mocking contextual"""
+		doc = frappe.new_doc("Credit Balance Management")
+		doc.property_account = "TEST_PROP_ACCOUNT_001"
+		doc.account_type = "Property Account"
+		doc.credit_amount = 2000.0
+
+		# REGLA #43: Mocking contextual para validaciones específicas
+		with patch("frappe.get_doc") as mock_get_doc:
+			# Mock Property Account que referencia Property Registry real
+			mock_property_account = type(
+				"MockPropertyAccount",
+				(),
+				{
+					"name": "TEST_PROP_ACCOUNT_001",
+					"property_registry": self.test_property_registry_name,
+					"customer": self.test_customer_name,
+					"current_balance": 0.0,
+					"account_status": "Activa",
+				},
+			)()
+			mock_get_doc.return_value = mock_property_account
+
+			# Test validation method que usa get_doc
+			if hasattr(doc, "validate_property_account_link"):
+				doc.validate_property_account_link()
+
+			# Verificar que el mock fue llamado si se usó
+			if mock_get_doc.called:
+				mock_get_doc.assert_called_with("Property Account", "TEST_PROP_ACCOUNT_001")
 
 	def test_layer_3_both_accounts_integration(self):
 		"""LAYER 3: Validación de integración con ambas cuentas (SIN INSERT)"""

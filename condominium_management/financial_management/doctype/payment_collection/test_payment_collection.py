@@ -9,13 +9,21 @@ Tests para Payment Collection DocType siguiendo metodología
 granular de 4 capas para validación completa del sistema de recaudación.
 """
 
+import frappe
+
+# REGLA #43: Skip automatic test records para evitar framework issue
+# DEBE establecerse ANTES de cualquier otro import de Frappe
+frappe.flags.skip_test_records = True
+
 import unittest
 from unittest.mock import patch
 
-import frappe
 from frappe.utils import add_days, flt, getdate, nowdate
 
 from condominium_management.financial_management.test_base import FinancialTestBaseGranular
+
+# REGLA #43: Ignore problematic test dependencies
+test_ignore = ["Sales Invoice", "Item", "Customer", "Payment Entry"]
 
 
 class TestPaymentCollection(FinancialTestBaseGranular):
