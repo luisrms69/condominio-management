@@ -67,7 +67,7 @@ class PropertyAccount(Document):
 		if not self.billing_start_date:
 			frappe.throw(_("La fecha de inicio de facturación es obligatoria"))
 
-		if self.billing_start_date > getdate():
+		if getdate(self.billing_start_date) > getdate():
 			frappe.throw(_("La fecha de inicio no puede ser futura"))
 
 		# Validar día de facturación
