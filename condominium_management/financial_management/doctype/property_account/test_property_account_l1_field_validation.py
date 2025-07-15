@@ -15,9 +15,10 @@ class TestPropertyAccountL1FieldValidation(FrappeTestCase):
 		"""Test that required fields are properly validated"""
 		property_account = frappe.new_doc("Property Account")
 
-		# Test missing required fields
-		with self.assertRaises(frappe.MandatoryError):
+		# Test missing property_registry validation (custom validation)
+		with self.assertRaises(frappe.ValidationError) as context:
 			property_account.insert()
+		self.assertIn("El registro de propiedad es obligatorio", str(context.exception))
 
 		# Test each required field individually
 		required_fields = [

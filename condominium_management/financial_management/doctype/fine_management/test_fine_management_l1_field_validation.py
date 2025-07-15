@@ -15,9 +15,10 @@ class TestFineManagementL1FieldValidation(FrappeTestCase):
 		"""Test that required fields are properly validated"""
 		fine_management = frappe.new_doc("Fine Management")
 
-		# Test missing required fields
-		with self.assertRaises(frappe.MandatoryError):
+		# Test missing account selection validation (custom validation)
+		with self.assertRaises(frappe.ValidationError) as context:
 			fine_management.insert()
+		self.assertIn("Debe seleccionar Property Account o Resident Account", str(context.exception))
 
 		# Test each required field individually
 		required_fields = [

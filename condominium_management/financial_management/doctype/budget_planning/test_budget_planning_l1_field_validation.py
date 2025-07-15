@@ -12,9 +12,10 @@ class TestBudgetPlanningL1FieldValidation(FrappeTestCase):
 		"""Test that required fields are properly validated"""
 		budget_planning = frappe.new_doc("Budget Planning")
 
-		# Test missing required fields
-		with self.assertRaises(frappe.MandatoryError):
+		# Test missing budget_name validation (custom validation)
+		with self.assertRaises(frappe.ValidationError) as context:
 			budget_planning.insert()
+		self.assertIn("Nombre del Presupuesto es obligatorio", str(context.exception))
 
 		# Test each required field individually
 		required_fields = ["naming_series", "budget_name", "budget_period", "company", "budget_status"]
