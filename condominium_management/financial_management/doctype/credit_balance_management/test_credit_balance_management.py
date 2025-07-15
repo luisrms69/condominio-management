@@ -10,26 +10,23 @@ granular de 4 capas para validación completa del sistema de saldos a favor.
 """
 
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import frappe
+from frappe.tests.utils import FrappeTestCase
 from frappe.utils import add_days, flt, getdate, nowdate
-
-from condominium_management.financial_management.test_base import FinancialTestBaseGranular
 
 # REGLA #43: Skip automatic test records para evitar framework issue
 frappe.flags.skip_test_records = True
 
 
-class TestCreditBalanceManagement(FinancialTestBaseGranular):
+class TestCreditBalanceManagement(FrappeTestCase):
 	"""Test Credit Balance Management con REGLA #32 - Testing Granular"""
 
 	@classmethod
 	def setUpClass(cls):
-		"""Setup de clase - preparar ambiente para Credit Balance Management"""
-		super().setUpClass()
-
-		# REGLA #43: Mocking puro para evitar framework issues
+		"""Setup de clase - REGLA #43: Pure mocking approach"""
+		# REGLA #43: NO super().setUpClass() para evitar Company creation
 		cls.setup_credit_balance_data()
 
 	@classmethod
