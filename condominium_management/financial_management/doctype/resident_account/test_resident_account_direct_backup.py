@@ -13,13 +13,15 @@ from frappe.tests.utils import FrappeTestCase
 from frappe.utils import add_days, flt, getdate, nowdate
 
 
-class TestResidentAccountDirectFixed(FrappeTestCase):
-	"""Testing directo para Resident Account - REGLA #44 patterns fixed"""
+class TestResidentAccountDirect(FrappeTestCase):
+	"""Testing directo para Resident Account sin framework granular problemático"""
 
 	@classmethod
 	def setUpClass(cls):
 		"""Setup class para testing directo"""
 		super().setUpClass()
+
+		# Usar company existente en test database
 		cls.test_company = "_Test Company"
 
 	def setUp(self):
@@ -28,6 +30,7 @@ class TestResidentAccountDirectFixed(FrappeTestCase):
 
 	def tearDown(self):
 		"""Cleanup después de cada test"""
+		# Limpiar documentos creados en tests
 		frappe.db.rollback()
 
 	def test_resident_account_field_assignments(self):
@@ -57,17 +60,6 @@ class TestResidentAccountDirectFixed(FrappeTestCase):
 
 	def test_resident_account_validation_methods(self):
 		"""Test métodos de validación con mocks - REGLA #44 patterns"""
-		# REGLA #44: Crear documento ANTES de mocking para evitar corruption
-		doc = frappe.new_doc("Resident Account")
-		doc.property_account = "PROP-001"
-		doc.resident_name = "María García"
-		doc.resident_type = "Inquilino"
-		doc.current_balance = 1500.0
-		doc.credit_limit = 3000.0
-		doc.spending_limits = 800.0
-		doc.approval_required_amount = 1500.0
-
-		# AHORA aplicar mocks solo para validations
 		with (
 			patch("frappe.db.exists") as mock_db_exists,
 			patch("frappe.get_doc") as mock_get_doc,
@@ -92,6 +84,16 @@ class TestResidentAccountDirectFixed(FrappeTestCase):
 			# Mock count for sequence
 			mock_count.return_value = 0
 
+			# Crear documento REAL para testing
+			doc = frappe.new_doc("Resident Account")
+			doc.property_account = "PROP-001"
+			doc.resident_name = "María García"
+			doc.resident_type = "Inquilino"
+			doc.current_balance = 1500.0
+			doc.credit_limit = 3000.0
+			doc.spending_limits = 800.0
+			doc.approval_required_amount = 1500.0
+
 			# Execute validation methods
 			doc.validate_property_account()
 			doc.validate_resident_data()
@@ -110,19 +112,7 @@ class TestResidentAccountDirectFixed(FrappeTestCase):
 
 	def test_resident_account_business_logic_integration(self):
 		"""Test business logic integration - REGLA #44 pure mocking"""
-		# REGLA #44: Crear documento ANTES de mocking para evitar corruption
-		resident_account = frappe.new_doc("Resident Account")
-		resident_account.property_account = "PROP-TEST-001"
-		resident_account.resident_name = "Carlos Mendoza"
-		resident_account.resident_type = "Familiar"
-		resident_account.current_balance = -500.0  # Saldo negativo (debe dinero)
-		resident_account.credit_limit = 2000.0
-		resident_account.spending_limits = 600.0
-		resident_account.approval_required_amount = 1000.0
-		resident_account.auto_charge_enabled = 1
-		resident_account.notifications_enabled = 1
-
-		# AHORA aplicar mocks solo para validations
+		# REGLA #44: Pure mocking pattern para evitar LinkValidationError
 		with (
 			patch("frappe.db.exists") as mock_db_exists,
 			patch("frappe.get_doc") as mock_get_doc,
@@ -143,6 +133,18 @@ class TestResidentAccountDirectFixed(FrappeTestCase):
 			# Mock db queries
 			mock_get_value.return_value = None
 
+			# Crear Resident Account para testing business logic
+			resident_account = frappe.new_doc("Resident Account")
+			resident_account.property_account = "PROP-TEST-001"
+			resident_account.resident_name = "Carlos Mendoza"
+			resident_account.resident_type = "Familiar"
+			resident_account.current_balance = -500.0  # Saldo negativo (debe dinero)
+			resident_account.credit_limit = 2000.0
+			resident_account.spending_limits = 600.0
+			resident_account.approval_required_amount = 1000.0
+			resident_account.auto_charge_enabled = 1
+			resident_account.notifications_enabled = 1
+
 			# Execute business logic validations
 			resident_account.validate_property_account()
 			resident_account.validate_resident_data()
@@ -159,20 +161,7 @@ class TestResidentAccountDirectFixed(FrappeTestCase):
 
 	def test_api_methods_functionality(self):
 		"""Test métodos API principales - REGLA #44 comprehensive mocking"""
-		# REGLA #44: Crear documento ANTES de mocking para evitar corruption
-		resident_account = frappe.new_doc("Resident Account")
-		resident_account.account_code = "TEST-API-01"
-		resident_account.property_account = "MOCK-PROP-001"
-		resident_account.resident_name = "Ana Torres"
-		resident_account.resident_type = "Propietario"
-		resident_account.current_balance = 2000.0  # Saldo positivo
-		resident_account.credit_limit = 5000.0
-		resident_account.spending_limits = 1500.0
-		resident_account.approval_required_amount = 3000.0
-		resident_account.company = "_Test Company"
-		resident_account.account_status = "Activa"
-
-		# AHORA aplicar mocks solo para validations
+		# REGLA #44: Mock exhaustivo para evitar MagicMock corruption
 		with (
 			patch("frappe.db.exists") as mock_db_exists,
 			patch("frappe.get_doc") as mock_get_doc,
@@ -190,6 +179,19 @@ class TestResidentAccountDirectFixed(FrappeTestCase):
 
 			# Mock db.get_value para transaction queries
 			mock_get_value.return_value = None
+
+			# Crear Resident Account para testing API
+			resident_account = frappe.new_doc("Resident Account")
+			resident_account.account_code = "TEST-API-01"
+			resident_account.property_account = "MOCK-PROP-001"
+			resident_account.resident_name = "Ana Torres"
+			resident_account.resident_type = "Propietario"
+			resident_account.current_balance = 2000.0  # Saldo positivo
+			resident_account.credit_limit = 5000.0
+			resident_account.spending_limits = 1500.0
+			resident_account.approval_required_amount = 3000.0
+			resident_account.company = "_Test Company"
+			resident_account.account_status = "Activa"
 
 			# Test 1: add_transaction method - payment (positive)
 			result = resident_account.add_transaction(
@@ -252,38 +254,6 @@ class TestResidentAccountDirectFixed(FrappeTestCase):
 			with self.assertRaises(Exception):
 				doc.validate_resident_data()
 
-	def test_account_code_generation_with_mocks(self):
-		"""Test generación de código de cuenta con mocks - REGLA #44 patterns"""
-		# REGLA #44: Crear documento ANTES de mocking para evitar corruption
-		doc = frappe.new_doc("Resident Account")
-		doc.property_account = "TORRE-A-101"
-		doc.resident_name = "Juan Carlos Pérez"
-
-		# AHORA aplicar mocks solo para validations
-		with (
-			patch("frappe.db.exists") as mock_db_exists,
-			patch("frappe.get_doc") as mock_get_doc,
-			patch("frappe.db.count") as mock_count,
-		):
-			# REGLA #44: Mock exhaustivo de dependencies
-			mock_db_exists.return_value = True
-
-			# Mock Property Account con DocType específico
-			mock_property = MagicMock()
-			mock_property.doctype = "Property Account"
-			mock_property.name = "TORRE-A-101"
-			mock_property.account_name = "TORRE-A-101"
-			mock_get_doc.return_value = mock_property
-
-			# Mock count (first resident)
-			mock_count.return_value = 0
-
-			doc.generate_account_code()
-
-			# Verify code generation pattern
-			expected_code = "TORRE-A-101-RES01-JC"
-			self.assertEqual(doc.account_code, expected_code)
-
 	def test_credit_calculations_detailed(self):
 		"""Test detallado de cálculos de crédito"""
 		doc = frappe.new_doc("Resident Account")
@@ -340,6 +310,36 @@ class TestResidentAccountDirectFixed(FrappeTestCase):
 		doc.calculate_loyalty_points()
 
 		self.assertEqual(doc.loyalty_points, 0)
+
+	def test_account_code_generation_with_mocks(self):
+		"""Test generación de código de cuenta con mocks - REGLA #44 patterns"""
+		with (
+			patch("frappe.db.exists") as mock_db_exists,
+			patch("frappe.get_doc") as mock_get_doc,
+			patch("frappe.db.count") as mock_count,
+		):
+			# REGLA #44: Mock exhaustivo de dependencies
+			mock_db_exists.return_value = True
+
+			# Mock Property Account con DocType específico
+			mock_property = MagicMock()
+			mock_property.doctype = "Property Account"
+			mock_property.name = "TORRE-A-101"
+			mock_property.account_name = "TORRE-A-101"
+			mock_get_doc.return_value = mock_property
+
+			# Mock count (first resident)
+			mock_count.return_value = 0
+
+			doc = frappe.new_doc("Resident Account")
+			doc.property_account = "TORRE-A-101"
+			doc.resident_name = "Juan Carlos Pérez"
+
+			doc.generate_account_code()
+
+			# Verify code generation pattern
+			expected_code = "TORRE-A-101-RES01-JC"
+			self.assertEqual(doc.account_code, expected_code)
 
 	def test_diagnostic_fields_validation(self):
 		"""Test diagnóstico - verificar campos críticos"""
