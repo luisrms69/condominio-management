@@ -25,6 +25,7 @@ class TestBillingCycleL4BPerformance(FrappeTestCase):
 				"billing_frequency": "Monthly",
 				"start_date": frappe.utils.today(),
 				"end_date": frappe.utils.add_months(frappe.utils.today(), 1),
+				"due_date": frappe.utils.add_days(frappe.utils.add_months(frappe.utils.today(), 1), 15),
 				"cycle_status": "Draft",
 				"company": "_Test Company",
 			}
@@ -67,6 +68,7 @@ class TestBillingCycleL4BPerformance(FrappeTestCase):
 				"billing_frequency": "Monthly",
 				"start_date": frappe.utils.today(),
 				"end_date": frappe.utils.add_months(frappe.utils.today(), 1),
+				"due_date": frappe.utils.add_days(frappe.utils.add_months(frappe.utils.today(), 1), 15),
 				"cycle_status": "Active",
 				"company": "_Test Company",
 			}
@@ -138,6 +140,7 @@ class TestBillingCycleL4BPerformance(FrappeTestCase):
 				"billing_frequency": "Monthly",
 				"start_date": frappe.utils.today(),
 				"end_date": frappe.utils.add_months(frappe.utils.today(), 1),
+				"due_date": frappe.utils.add_days(frappe.utils.add_months(frappe.utils.today(), 1), 15),
 				"cycle_status": "Draft",
 				"company": "_Test Company",
 			}
@@ -232,6 +235,7 @@ class TestBillingCycleL4BPerformance(FrappeTestCase):
 				"billing_frequency": "Monthly",
 				"start_date": frappe.utils.today(),
 				"end_date": frappe.utils.add_months(frappe.utils.today(), 1),
+				"due_date": frappe.utils.add_days(frappe.utils.add_months(frappe.utils.today(), 1), 15),
 				"cycle_status": "Processing",
 				"total_billed_amount": 150000.0,
 				"company": "_Test Company",
@@ -300,6 +304,9 @@ class TestBillingCycleL4BPerformance(FrappeTestCase):
 						"billing_frequency": frequencies[i % len(frequencies)],
 						"start_date": frappe.utils.add_months(frappe.utils.today(), i),
 						"end_date": frappe.utils.add_months(frappe.utils.today(), i + 1),
+						"due_date": frappe.utils.add_days(
+							frappe.utils.add_months(frappe.utils.today(), i + 1), 15
+						),
 						"cycle_status": "Draft",
 						"company": "_Test Company",
 					}
@@ -383,6 +390,7 @@ class TestBillingCycleL4BPerformance(FrappeTestCase):
 				"billing_frequency": "Monthly",
 				"start_date": frappe.utils.today(),
 				"end_date": frappe.utils.add_months(frappe.utils.today(), 1),
+				"due_date": frappe.utils.add_days(frappe.utils.add_months(frappe.utils.today(), 1), 15),
 				"cycle_status": "Active",
 				"total_billed_amount": 75000.0,
 				"invoices_generated": 50,
