@@ -86,11 +86,11 @@ class TestFineManagementL4TypeBEscalationProcessing(FrappeTestCase):
 			for i in range(test_config["escalation_count"]):
 				# Simulate escalation processing operations
 				escalation_id = f"ESC-{i:04d}"
-				
+
 				# Fine baseline data
 				original_fine_amount = 100.0 + (i * 25)
 				fine_issue_date = frappe.utils.add_days(frappe.utils.today(), -60 + i)
-				
+
 				# Escalation levels and timing
 				escalation_levels = [
 					{"level": 1, "days": 7, "action": "First Notice", "fee_multiplier": 1.0},
@@ -99,7 +99,7 @@ class TestFineManagementL4TypeBEscalationProcessing(FrappeTestCase):
 					{"level": 4, "days": 30, "action": "Legal Action", "fee_multiplier": 2.0},
 					{"level": 5, "days": 45, "action": "Collection Agency", "fee_multiplier": 2.5},
 				]
-				
+
 				# Determine current escalation level
 				days_since_issue = (frappe.utils.today() - fine_issue_date).days
 				current_level = 1
@@ -108,70 +108,76 @@ class TestFineManagementL4TypeBEscalationProcessing(FrappeTestCase):
 						current_level = level["level"]
 					else:
 						break
-				
+
 				current_escalation = escalation_levels[current_level - 1]
-				
+
 				# Calculate escalated fine amount
 				escalated_amount = original_fine_amount * current_escalation["fee_multiplier"]
-				
+
 				# Interest calculations
 				daily_interest_rate = 0.001  # 0.1% daily interest
 				interest_amount = original_fine_amount * daily_interest_rate * days_since_issue
-				
+
 				# Administrative fees
 				admin_fee_base = 50.0
 				admin_fee_escalation = admin_fee_base * current_level
-				
+
 				# Legal fees (if applicable)
 				legal_fees = 0.0
 				if current_level >= 4:
 					legal_fees = 200.0 + (current_level - 4) * 150.0
-				
+
 				# Collection agency fees
 				collection_fees = 0.0
 				if current_level >= 5:
 					collection_fees = escalated_amount * 0.25  # 25% collection fee
-				
+
 				# Total amount calculation
-				total_amount = escalated_amount + interest_amount + admin_fee_escalation + legal_fees + collection_fees
-				
+				total_amount = (
+					escalated_amount + interest_amount + admin_fee_escalation + legal_fees + collection_fees
+				)
+
 				# Payment history simulation
 				payment_attempts = max(0, current_level - 1)
 				partial_payments = []
 				total_paid = 0.0
-				
+
 				for attempt in range(payment_attempts):
-					payment_amount = original_fine_amount * (0.2 + attempt * 0.1)  # Increasing partial payments
+					payment_amount = original_fine_amount * (
+						0.2 + attempt * 0.1
+					)  # Increasing partial payments
 					payment_date = frappe.utils.add_days(fine_issue_date, 7 * (attempt + 1))
-					partial_payments.append({
-						"amount": payment_amount,
-						"date": payment_date,
-						"method": "Partial Payment"
-					})
+					partial_payments.append(
+						{"amount": payment_amount, "date": payment_date, "method": "Partial Payment"}
+					)
 					total_paid += payment_amount
-				
+
 				outstanding_amount = total_amount - total_paid
-				
+
 				# Communication history
 				communications = []
 				for level in escalation_levels:
 					if current_level >= level["level"]:
 						comm_date = frappe.utils.add_days(fine_issue_date, level["days"])
-						communications.append({
-							"date": comm_date,
-							"type": level["action"],
-							"method": "Email" if level["level"] <= 3 else "Certified Mail",
-							"status": "Sent"
-						})
-				
+						communications.append(
+							{
+								"date": comm_date,
+								"type": level["action"],
+								"method": "Email" if level["level"] <= 3 else "Certified Mail",
+								"status": "Sent",
+							}
+						)
+
 				# Resolution tracking
-				resolution_probability = max(0.1, 0.9 - (current_level * 0.15))  # Decreasing resolution probability
+				resolution_probability = max(
+					0.1, 0.9 - (current_level * 0.15)
+				)  # Decreasing resolution probability
 				resolution_status = "Unresolved"
 				if i % 10 == 0:  # 10% resolution rate
 					resolution_status = "Resolved"
 				elif i % 5 == 0:  # 20% in progress
 					resolution_status = "In Progress"
-				
+
 				# Risk assessment
 				risk_factors = {
 					"escalation_level": current_level,
@@ -180,17 +186,17 @@ class TestFineManagementL4TypeBEscalationProcessing(FrappeTestCase):
 					"amount_outstanding": outstanding_amount,
 					"communication_failures": sum(1 for c in communications if c.get("status") == "Failed"),
 				}
-				
+
 				risk_score = (
-					risk_factors["escalation_level"] * 20 +
-					min(risk_factors["days_overdue"], 60) +
-					max(0, 50 - risk_factors["payment_history"] * 10) +
-					min(outstanding_amount / 100, 50) +
-					risk_factors["communication_failures"] * 15
+					risk_factors["escalation_level"] * 20
+					+ min(risk_factors["days_overdue"], 60)
+					+ max(0, 50 - risk_factors["payment_history"] * 10)
+					+ min(outstanding_amount / 100, 50)
+					+ risk_factors["communication_failures"] * 15
 				)
-				
+
 				risk_level = "Low" if risk_score < 100 else "Medium" if risk_score < 200 else "High"
-				
+
 				# Next action recommendations
 				next_actions = []
 				if current_level < 5 and resolution_status == "Unresolved":
@@ -199,7 +205,7 @@ class TestFineManagementL4TypeBEscalationProcessing(FrappeTestCase):
 					next_actions.append("Consider legal action")
 				if len(partial_payments) > 0:
 					next_actions.append("Negotiate payment plan")
-				
+
 				escalation_data = {
 					"escalation_id": escalation_id,
 					"original_fine_amount": original_fine_amount,
@@ -225,7 +231,7 @@ class TestFineManagementL4TypeBEscalationProcessing(FrappeTestCase):
 					"next_actions": next_actions,
 				}
 				escalation_results.append(escalation_data)
-			
+
 			# Generate escalation summary
 			total_escalations = len(escalation_results)
 			total_original_amount = sum(e["original_fine_amount"] for e in escalation_results)
@@ -233,19 +239,21 @@ class TestFineManagementL4TypeBEscalationProcessing(FrappeTestCase):
 			total_collected = sum(e["total_paid"] for e in escalation_results)
 			total_outstanding = sum(e["outstanding_amount"] for e in escalation_results)
 			avg_escalation_level = sum(e["current_level"] for e in escalation_results) / total_escalations
-			
+
 			level_distribution = {}
 			risk_distribution = {"Low": 0, "Medium": 0, "High": 0}
 			resolution_distribution = {"Resolved": 0, "In Progress": 0, "Unresolved": 0}
-			
+
 			for result in escalation_results:
 				level = result["current_level"]
 				level_distribution[level] = level_distribution.get(level, 0) + 1
 				risk_distribution[result["risk_level"]] += 1
 				resolution_distribution[result["resolution_status"]] += 1
-			
-			collection_rate = (total_collected / total_escalated_amount) * 100 if total_escalated_amount > 0 else 0
-			
+
+			collection_rate = (
+				(total_collected / total_escalated_amount) * 100 if total_escalated_amount > 0 else 0
+			)
+
 			return {
 				"status": "Escalation Processing Success",
 				"count": total_escalations,
@@ -281,12 +289,24 @@ class TestFineManagementL4TypeBEscalationProcessing(FrappeTestCase):
 		# Validate result structure if available
 		if result and result.get("status") == "Escalation Processing Success":
 			self.assertGreater(result["count"], 0, "Escalation processing must process escalations")
-			self.assertGreater(result["total_original_amount"], 0, "Escalation processing must track original amounts")
-			self.assertGreater(result["total_escalated_amount"], 0, "Escalation processing must calculate escalated amounts")
-			self.assertGreaterEqual(result["total_collected"], 0, "Escalation processing must track collections")
-			self.assertGreater(result["avg_escalation_level"], 0, "Escalation processing must track escalation levels")
-			self.assertIsInstance(result["level_distribution"], dict, "Escalation processing must track level distribution")
-			self.assertIsInstance(result["risk_distribution"], dict, "Escalation processing must track risk distribution")
+			self.assertGreater(
+				result["total_original_amount"], 0, "Escalation processing must track original amounts"
+			)
+			self.assertGreater(
+				result["total_escalated_amount"], 0, "Escalation processing must calculate escalated amounts"
+			)
+			self.assertGreaterEqual(
+				result["total_collected"], 0, "Escalation processing must track collections"
+			)
+			self.assertGreater(
+				result["avg_escalation_level"], 0, "Escalation processing must track escalation levels"
+			)
+			self.assertIsInstance(
+				result["level_distribution"], dict, "Escalation processing must track level distribution"
+			)
+			self.assertIsInstance(
+				result["risk_distribution"], dict, "Escalation processing must track risk distribution"
+			)
 
 	def tearDown(self):
 		"""Minimal cleanup"""

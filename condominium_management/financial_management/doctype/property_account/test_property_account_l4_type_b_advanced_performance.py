@@ -90,10 +90,10 @@ class TestPropertyAccountL4TypeBAdvancedPerformance(FrappeTestCase):
 				pending_charges = base_balance * 0.15
 				credits_applied = base_balance * 0.05 if i % 4 == 0 else 0
 				late_fees = base_balance * 0.02 if i % 6 == 0 else 0
-				
+
 				# Complex aggregation calculation
 				net_balance = base_balance + pending_charges - credits_applied + late_fees
-				
+
 				# Add account metadata
 				account_data = {
 					"account_id": f"ACC-{i:04d}",
@@ -102,15 +102,19 @@ class TestPropertyAccountL4TypeBAdvancedPerformance(FrappeTestCase):
 					"credits_applied": credits_applied,
 					"late_fees": late_fees,
 					"net_balance": net_balance,
-					"balance_category": "High" if net_balance > 1500 else "Medium" if net_balance > 800 else "Low",
+					"balance_category": "High"
+					if net_balance > 1500
+					else "Medium"
+					if net_balance > 800
+					else "Low",
 				}
 				aggregation_results.append(account_data)
-			
+
 			# Generate summary statistics
 			total_balance = sum(acc["net_balance"] for acc in aggregation_results)
 			avg_balance = total_balance / len(aggregation_results)
 			high_balance_count = sum(1 for acc in aggregation_results if acc["balance_category"] == "High")
-			
+
 			return {
 				"status": "Advanced Aggregation Success",
 				"count": len(aggregation_results),
@@ -140,8 +144,12 @@ class TestPropertyAccountL4TypeBAdvancedPerformance(FrappeTestCase):
 		# Validate result structure if available
 		if result and result.get("status") == "Advanced Aggregation Success":
 			self.assertGreater(result["count"], 0, "Advanced aggregation must process accounts")
-			self.assertGreater(result["total_balance"], 0, "Advanced aggregation must calculate total balance")
-			self.assertGreater(result["avg_balance"], 0, "Advanced aggregation must calculate average balance")
+			self.assertGreater(
+				result["total_balance"], 0, "Advanced aggregation must calculate total balance"
+			)
+			self.assertGreater(
+				result["avg_balance"], 0, "Advanced aggregation must calculate average balance"
+			)
 
 	def tearDown(self):
 		"""Minimal cleanup"""

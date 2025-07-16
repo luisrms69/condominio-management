@@ -42,9 +42,7 @@ class TestBudgetPlanningL4TypeBAnalyticsPerformance(FrappeTestCase):
 			self._validate_analytics_performance(result, execution_time)
 
 			# 5. Validate operation success
-			self.assertIsNotNone(
-				result, f"{self.doctype} Complex Analytics Performance must return result"
-			)
+			self.assertIsNotNone(result, f"{self.doctype} Complex Analytics Performance must return result")
 
 		except Exception as e:
 			end_time = time.perf_counter()
@@ -86,66 +84,94 @@ class TestBudgetPlanningL4TypeBAnalyticsPerformance(FrappeTestCase):
 			for i in range(test_config["analytics_count"]):
 				# Simulate complex analytics operations
 				budget_id = f"BUDGET-{i:04d}"
-				
+
 				# Budget baseline data
 				annual_budget = 1000000.0 + (i * 50000)  # Variable budget size
 				monthly_budget = annual_budget / 12
-				
+
 				# Expense categories
 				maintenance_budget = annual_budget * 0.4
 				utilities_budget = annual_budget * 0.25
 				administration_budget = annual_budget * 0.15
 				reserve_fund_budget = annual_budget * 0.15
 				contingency_budget = annual_budget * 0.05
-				
+
 				# Actual spending simulation (with variance)
 				months_elapsed = 6 + (i % 6)  # 6-11 months of data
 				spend_variance = 0.9 + (i * 0.01)  # Spending efficiency variance
-				
+
 				maintenance_actual = (maintenance_budget * months_elapsed / 12) * spend_variance
 				utilities_actual = (utilities_budget * months_elapsed / 12) * spend_variance
 				administration_actual = (administration_budget * months_elapsed / 12) * spend_variance
 				reserve_fund_actual = (reserve_fund_budget * months_elapsed / 12) * spend_variance
 				contingency_actual = (contingency_budget * months_elapsed / 12) * spend_variance
-				
-				total_actual = maintenance_actual + utilities_actual + administration_actual + reserve_fund_actual + contingency_actual
-				
+
+				total_actual = (
+					maintenance_actual
+					+ utilities_actual
+					+ administration_actual
+					+ reserve_fund_actual
+					+ contingency_actual
+				)
+
 				# Variance analysis
 				maintenance_variance = maintenance_actual - (maintenance_budget * months_elapsed / 12)
 				utilities_variance = utilities_actual - (utilities_budget * months_elapsed / 12)
-				administration_variance = administration_actual - (administration_budget * months_elapsed / 12)
+				administration_variance = administration_actual - (
+					administration_budget * months_elapsed / 12
+				)
 				reserve_fund_variance = reserve_fund_actual - (reserve_fund_budget * months_elapsed / 12)
 				contingency_variance = contingency_actual - (contingency_budget * months_elapsed / 12)
-				
+
 				total_variance = total_actual - (annual_budget * months_elapsed / 12)
 				variance_percentage = (total_variance / (annual_budget * months_elapsed / 12)) * 100
-				
+
 				# Forecasting calculations
-				remaining_months = 12 - months_elapsed
+				12 - months_elapsed
 				current_burn_rate = total_actual / months_elapsed
 				forecasted_total = current_burn_rate * 12
 				budget_surplus_deficit = annual_budget - forecasted_total
-				
+
 				# Trend analysis
 				monthly_trend = []
 				for month in range(months_elapsed):
 					month_spend = current_burn_rate * (1 + (month * 0.02))  # 2% monthly increase
 					monthly_trend.append(month_spend)
-				
+
 				# Performance metrics
 				budget_utilization = (total_actual / annual_budget) * 100
 				efficiency_score = 100 - abs(variance_percentage)
 				risk_score = abs(variance_percentage) + (50 if budget_surplus_deficit < 0 else 0)
-				
+
 				# Category performance analysis
 				category_performance = {
-					"maintenance": {"budget": maintenance_budget, "actual": maintenance_actual, "variance": maintenance_variance},
-					"utilities": {"budget": utilities_budget, "actual": utilities_actual, "variance": utilities_variance},
-					"administration": {"budget": administration_budget, "actual": administration_actual, "variance": administration_variance},
-					"reserve_fund": {"budget": reserve_fund_budget, "actual": reserve_fund_actual, "variance": reserve_fund_variance},
-					"contingency": {"budget": contingency_budget, "actual": contingency_actual, "variance": contingency_variance},
+					"maintenance": {
+						"budget": maintenance_budget,
+						"actual": maintenance_actual,
+						"variance": maintenance_variance,
+					},
+					"utilities": {
+						"budget": utilities_budget,
+						"actual": utilities_actual,
+						"variance": utilities_variance,
+					},
+					"administration": {
+						"budget": administration_budget,
+						"actual": administration_actual,
+						"variance": administration_variance,
+					},
+					"reserve_fund": {
+						"budget": reserve_fund_budget,
+						"actual": reserve_fund_actual,
+						"variance": reserve_fund_variance,
+					},
+					"contingency": {
+						"budget": contingency_budget,
+						"actual": contingency_actual,
+						"variance": contingency_variance,
+					},
 				}
-				
+
 				# Optimization recommendations
 				optimization_recommendations = []
 				if abs(maintenance_variance) > maintenance_budget * 0.1:
@@ -154,14 +180,14 @@ class TestBudgetPlanningL4TypeBAnalyticsPerformance(FrappeTestCase):
 					optimization_recommendations.append("Analyze utility consumption patterns")
 				if abs(administration_variance) > administration_budget * 0.05:
 					optimization_recommendations.append("Optimize administrative processes")
-				
+
 				# Alerting thresholds
 				alert_level = "Green"
 				if abs(variance_percentage) > 15:
 					alert_level = "Red"
 				elif abs(variance_percentage) > 10:
 					alert_level = "Yellow"
-				
+
 				analytics_data = {
 					"budget_id": budget_id,
 					"annual_budget": annual_budget,
@@ -181,7 +207,7 @@ class TestBudgetPlanningL4TypeBAnalyticsPerformance(FrappeTestCase):
 					"monthly_trend": monthly_trend,
 				}
 				analytics_results.append(analytics_data)
-			
+
 			# Generate analytics summary
 			total_budgets = len(analytics_results)
 			total_budget_amount = sum(a["annual_budget"] for a in analytics_results)
@@ -189,13 +215,13 @@ class TestBudgetPlanningL4TypeBAnalyticsPerformance(FrappeTestCase):
 			avg_variance_percentage = sum(a["variance_percentage"] for a in analytics_results) / total_budgets
 			avg_efficiency_score = sum(a["efficiency_score"] for a in analytics_results) / total_budgets
 			avg_risk_score = sum(a["risk_score"] for a in analytics_results) / total_budgets
-			
+
 			alert_distribution = {"Green": 0, "Yellow": 0, "Red": 0}
 			for result in analytics_results:
 				alert_distribution[result["alert_level"]] += 1
-			
+
 			total_surplus_deficit = sum(a["budget_surplus_deficit"] for a in analytics_results)
-			
+
 			return {
 				"status": "Analytics Performance Success",
 				"count": total_budgets,
@@ -229,10 +255,18 @@ class TestBudgetPlanningL4TypeBAnalyticsPerformance(FrappeTestCase):
 		# Validate result structure if available
 		if result and result.get("status") == "Analytics Performance Success":
 			self.assertGreater(result["count"], 0, "Analytics performance must process budgets")
-			self.assertGreater(result["total_budget_amount"], 0, "Analytics performance must calculate total budget")
-			self.assertGreaterEqual(result["total_actual_spend"], 0, "Analytics performance must track actual spend")
-			self.assertIsInstance(result["alert_distribution"], dict, "Analytics performance must track alert distribution")
-			self.assertGreaterEqual(result["avg_efficiency_score"], 0, "Analytics performance must calculate efficiency scores")
+			self.assertGreater(
+				result["total_budget_amount"], 0, "Analytics performance must calculate total budget"
+			)
+			self.assertGreaterEqual(
+				result["total_actual_spend"], 0, "Analytics performance must track actual spend"
+			)
+			self.assertIsInstance(
+				result["alert_distribution"], dict, "Analytics performance must track alert distribution"
+			)
+			self.assertGreaterEqual(
+				result["avg_efficiency_score"], 0, "Analytics performance must calculate efficiency scores"
+			)
 
 	def tearDown(self):
 		"""Minimal cleanup"""

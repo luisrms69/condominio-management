@@ -86,39 +86,44 @@ class TestFinancialTransparencyConfigL4TypeBReportingOptimization(FrappeTestCase
 			for i in range(test_config["report_count"]):
 				# Simulate complex reporting optimization operations
 				report_id = f"RPT-{i:04d}"
-				
+
 				# Report generation parameters
 				data_points = 1000 + (i * 100)  # Variable data complexity
 				filters_applied = 3 + (i % 5)  # Dynamic filter complexity
 				aggregation_levels = 2 + (i % 3)  # Hierarchical aggregation
-				
+
 				# Optimization techniques simulation
 				cache_hit_rate = 0.8 if i % 4 == 0 else 0.6  # Cache optimization
 				index_usage = 0.9 if i % 3 == 0 else 0.7  # Index optimization
 				query_optimization = 0.85 if i % 2 == 0 else 0.65  # Query optimization
-				
+
 				# Performance metrics calculation
 				base_execution_time = data_points * 0.001  # Base time per data point
 				cache_optimization_factor = 1 - (cache_hit_rate * 0.5)
 				index_optimization_factor = 1 - (index_usage * 0.3)
 				query_optimization_factor = 1 - (query_optimization * 0.2)
-				
-				optimized_time = base_execution_time * cache_optimization_factor * index_optimization_factor * query_optimization_factor
-				
+
+				optimized_time = (
+					base_execution_time
+					* cache_optimization_factor
+					* index_optimization_factor
+					* query_optimization_factor
+				)
+
 				# Report size and compression
 				raw_report_size = data_points * 0.5  # KB per data point
 				compression_ratio = 0.3 if i % 6 == 0 else 0.5  # Compression optimization
 				optimized_report_size = raw_report_size * compression_ratio
-				
+
 				# Access control and security
 				access_level = "Public" if i % 4 == 0 else "Restricted" if i % 4 == 1 else "Private"
 				encryption_enabled = access_level != "Public"
 				audit_trail_enabled = access_level == "Private"
-				
+
 				# Export format optimization
 				export_formats = ["PDF", "Excel", "CSV", "JSON"]
 				optimized_formats = export_formats[:2] if i % 2 == 0 else export_formats
-				
+
 				report_data = {
 					"report_id": report_id,
 					"data_points": data_points,
@@ -139,15 +144,19 @@ class TestFinancialTransparencyConfigL4TypeBReportingOptimization(FrappeTestCase
 					"export_formats": optimized_formats,
 				}
 				optimization_results.append(report_data)
-			
+
 			# Generate optimization summary
 			total_data_points = sum(r["data_points"] for r in optimization_results)
-			avg_performance_improvement = sum(r["performance_improvement"] for r in optimization_results) / len(optimization_results)
-			avg_size_reduction = sum(r["size_reduction"] for r in optimization_results) / len(optimization_results)
+			avg_performance_improvement = sum(
+				r["performance_improvement"] for r in optimization_results
+			) / len(optimization_results)
+			avg_size_reduction = sum(r["size_reduction"] for r in optimization_results) / len(
+				optimization_results
+			)
 			total_optimized_time = sum(r["optimized_time"] for r in optimization_results)
 			encrypted_reports = sum(1 for r in optimization_results if r["encryption_enabled"])
 			audit_enabled_reports = sum(1 for r in optimization_results if r["audit_trail_enabled"])
-			
+
 			return {
 				"status": "Reporting Optimization Success",
 				"count": len(optimization_results),
@@ -180,9 +189,15 @@ class TestFinancialTransparencyConfigL4TypeBReportingOptimization(FrappeTestCase
 		# Validate result structure if available
 		if result and result.get("status") == "Reporting Optimization Success":
 			self.assertGreater(result["count"], 0, "Reporting optimization must process reports")
-			self.assertGreater(result["total_data_points"], 0, "Reporting optimization must process data points")
-			self.assertGreaterEqual(result["avg_performance_improvement"], 0, "Reporting optimization must improve performance")
-			self.assertGreaterEqual(result["avg_size_reduction"], 0, "Reporting optimization must reduce size")
+			self.assertGreater(
+				result["total_data_points"], 0, "Reporting optimization must process data points"
+			)
+			self.assertGreaterEqual(
+				result["avg_performance_improvement"], 0, "Reporting optimization must improve performance"
+			)
+			self.assertGreaterEqual(
+				result["avg_size_reduction"], 0, "Reporting optimization must reduce size"
+			)
 
 	def tearDown(self):
 		"""Minimal cleanup"""
