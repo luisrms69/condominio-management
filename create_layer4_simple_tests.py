@@ -53,39 +53,39 @@ class Test{class_name}L4Simple(FrappeTestCase):
     def test_json_configuration_validation(self):
         """Test: Basic JSON schema and configuration validation (REGLA #49)"""
         # REGLA #49: Minimal operations only to avoid framework corruption
-        
+
         # 1. Verify JSON file exists and is valid
         doctype_path = self.doctype.lower().replace(" ", "_")
         json_path = os.path.join(
             frappe.get_app_path("condominium_management"),
             "financial_management", "doctype", doctype_path, f"{{doctype_path}}.json"
         )
-        
+
         self.assertTrue(os.path.exists(json_path), f"JSON file must exist: {{json_path}}")
-        
+
         # 2. Load and validate JSON structure
         with open(json_path, 'r', encoding='utf-8') as f:
             json_data = json.load(f)
-        
+
         # 3. Basic JSON validation
         self.assertEqual(json_data.get("doctype"), "DocType", "DocType field must be 'DocType'")
         self.assertEqual(json_data.get("name"), self.doctype, f"Name must match {{self.doctype}}")
-        
+
         # 4. Verify essential fields exist
         fields = json_data.get("fields", [])
         self.assertGreater(len(fields), 0, "DocType must have at least one field")
-        
+
         # Check critical fields for {doctype_name}
         field_names = [f.get("fieldname") for f in fields]
         critical_fields = {critical_fields}
         for field in critical_fields:
             if field in field_names:  # Only check if field exists
                 self.assertIn(field, field_names, f"Critical field {{field}} should exist")
-        
+
         # 5. Basic permissions validation (minimal check)
         permissions = json_data.get("permissions", [])
         self.assertGreater(len(permissions), 0, "DocType must have permissions configured")
-        
+
         # 6. Verify Spanish labels (REGLA CRÍTICA #1)
         for field in fields:
             if field.get("label"):
