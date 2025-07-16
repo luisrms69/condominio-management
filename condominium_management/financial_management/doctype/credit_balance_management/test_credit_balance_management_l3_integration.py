@@ -236,7 +236,7 @@ class TestCreditBalanceManagementL3Integration(FrappeTestCase):
 		)
 
 		# Validar consolidación
-		self.assertEqual(consolidated_credit.credit_amount, 650.00)  # 200+250+300
+		self.assertEqual(consolidated_credit.credit_amount, 750.00)  # 200+250+300 = 750
 		self.assertTrue(consolidated_credit.is_consolidated)
 		self.assertEqual(consolidated_credit.consolidated_count, 3)
 
