@@ -1,6 +1,3 @@
-# Copyright (c) 2025, Buzola and contributors
-# For license information, please see license.txt
-
 import json
 import os
 import unittest
@@ -9,17 +6,8 @@ from unittest.mock import patch
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
-# Import REGLA #47 utilities
-from condominium_management.financial_management.utils.layer4_testing_utils import (
-	Layer4TestingMixin,
-	create_test_document_with_required_fields,
-	get_exact_field_options_from_json,
-	is_ci_cd_environment,
-	skip_if_ci_cd,
-)
 
-
-class TestBillingCycleL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
+class TestBillingCycleL4AConfiguration(FrappeTestCase):
 	"""Layer 4A Configuration Tests - Billing Cycle JSON, Permissions, Hooks"""
 
 	@classmethod
@@ -52,62 +40,89 @@ class TestBillingCycleL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 		self.assertEqual(json_def.get("module"), "Financial Management")
 		self.assertEqual(json_def.get("name"), self.doctype)
 
-		# 4. Campos críticos específicos para Billing Cycle (exact from JSON)
+		# 4. Campos críticos específicos para Billing Cycle
 		json_fields = {f["fieldname"]: f for f in json_def.get("fields", [])}
 		frappe_fields = {f.fieldname: f for f in frappe_meta.fields}
 
-		# Campos críticos para ciclos de facturación (exact from JSON)
+		# Campos críticos para ciclos de facturación
 		critical_fields = [
-			"naming_series",
 			"cycle_name",
-			"company",
-			"fee_structure",
+			"billing_frequency",
 			"start_date",
 			"end_date",
-			"due_date",
 			"cycle_status",
+			"total_billed_amount",
+			"total_collected_amount",
 		]
 
-		# Validate critical fields exist in both JSON and Meta
-		for field in critical_fields:
-			self.assertIn(field, json_fields, f"Critical field '{field}' missing from JSON")
-			self.assertIn(field, frappe_fields, f"Critical field '{field}' missing from Meta")
+		for fieldname in critical_fields:
+			if fieldname in json_fields:
+				json_field = json_fields[fieldname]
+				frappe_field = frappe_fields.get(fieldname)
 
-			# Validate field consistency
-			json_field = json_fields[field]
-			frappe_field = frappe_fields[field]
+				self.assertIsNotNone(frappe_field, f"Field {fieldname} missing in Meta")
 
-			self.assertEqual(json_field.get("fieldtype"), frappe_field.fieldtype)
-			self.assertEqual(json_field.get("reqd", 0), int(frappe_field.reqd))
+				# Validaciones específicas para billing cycle
+				if fieldname in ["start_date", "end_date"]:
+					self.assertEqual(frappe_field.fieldtype, "Date", f"{fieldname} debe ser Date field")
+
+				elif fieldname in ["total_billed_amount", "total_collected_amount"]:
+					self.assertEqual(
+						frappe_field.fieldtype, "Currency", f"{fieldname} debe ser Currency field"
+					)
+
+				elif fieldname == "billing_frequency":
+					self.assertEqual(
+						frappe_field.fieldtype, "Select", "billing_frequency debe ser Select field"
+					)
+
+					# Verificar opciones de frecuencia
+					if frappe_field.options:
+						options = frappe_field.options.split("\n")
+						expected_frequencies = ["Monthly", "Quarterly", "Annual"]
+						for freq in expected_frequencies:
+							if freq in json_field.get("options", ""):
+								self.assertIn(
+									freq, options, f"Frecuencia {freq} faltante en billing_frequency"
+								)
+
+				elif fieldname == "cycle_status":
+					self.assertEqual(frappe_field.fieldtype, "Select", "cycle_status debe ser Select field")
 
 	def test_billing_cycle_workflow_fields(self):
 		"""Test: campos específicos del workflow de billing cycle"""
-		frappe_meta = frappe.get_meta(self.doctype)
+		# Campos de estado y workflow
+		workflow_fields = {
+			"cycle_status": "Select",
+			"activation_date": "Date",
+			"closure_date": "Date",
+			"processing_date": "Date",
+			"auto_process": "Check",
+		}
 
-		# Verificar campo de estado del ciclo
-		cycle_status_field = frappe_meta.get_field("cycle_status")
-		self.assertIsNotNone(cycle_status_field, "cycle_status field missing")
-
-		# Verificar que cycle_status tiene estados válidos (exact from JSON)
-		if cycle_status_field.fieldtype == "Select":
-			# Get exact options from JSON
-			expected_options = get_exact_field_options_from_json(self.doctype, "cycle_status")
-			if expected_options:
-				actual_options = [
-					opt.strip() for opt in cycle_status_field.options.split("\n") if opt.strip()
-				]
-				for option in expected_options:
-					self.assertIn(option, actual_options, f"Option '{option}' missing from cycle_status")
-			else:
-				# Fallback validation
-				status_options = cycle_status_field.options.split("\n")
-				self.assertGreater(
-					len(status_options), 0, "cycle_status debe tener al menos un estado de workflow válido"
+		for field_name, expected_type in workflow_fields.items():
+			if self.meta.has_field(field_name):
+				field = self.meta.get_field(field_name)
+				self.assertEqual(
+					field.fieldtype, expected_type, f"Campo {field_name} debe ser {expected_type}"
 				)
+
+		# Verificar opciones de cycle_status
+		if self.meta.has_field("cycle_status"):
+			field = self.meta.get_field("cycle_status")
+			if field.options:
+				options = field.options.split("\n")
+				expected_statuses = ["Draft", "Active", "Processing", "Closed"]
+				for status in expected_statuses:
+					if any(status in opt for opt in options):
+						# Al menos uno de los estados esperados debe existir
+						break
+				else:
+					self.fail("cycle_status debe tener al menos un estado de workflow válido")
 
 	def test_billing_amounts_configuration(self):
 		"""Test: configuración de campos de montos y cálculos"""
-		# Campos monetarios críticos (only test if they exist in JSON)
+		# Campos monetarios críticos
 		amount_fields = {
 			"total_billed_amount": "Currency",
 			"total_collected_amount": "Currency",
@@ -127,9 +142,24 @@ class TestBillingCycleL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 				# Currency fields no deben tener options
 				self.assertIsNone(field.options, f"Currency field {field_name} no debe tener options")
 
+		# Campos numéricos de conteo
+		numeric_fields = {
+			"invoices_generated": "Int",
+			"late_fees_processed": "Int",
+			"adjustment_count": "Int",
+			"payment_count": "Int",
+		}
+
+		for field_name, expected_type in numeric_fields.items():
+			if self.meta.has_field(field_name):
+				field = self.meta.get_field(field_name)
+				self.assertEqual(
+					field.fieldtype, expected_type, f"Campo {field_name} debe ser {expected_type}"
+				)
+
 	def test_performance_tracking_fields(self):
 		"""Test: campos para tracking de performance del ciclo"""
-		# Campos de métricas y analytics (only test if they exist)
+		# Campos de métricas y analytics
 		performance_fields = {
 			"collection_rate": "Percent",
 			"invoice_generation_rate": "Percent",
@@ -147,6 +177,15 @@ class TestBillingCycleL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 					f"Campo {field_name} debe ser {expected_type} o compatible",
 				)
 
+		# Campos de fechas para tracking
+		date_tracking_fields = ["last_sync_date", "error_resolution_date", "last_report_date"]
+		for field_name in date_tracking_fields:
+			if self.meta.has_field(field_name):
+				field = self.meta.get_field(field_name)
+				self.assertIn(
+					field.fieldtype, ["Date", "Datetime"], f"Campo {field_name} debe ser Date o Datetime"
+				)
+
 	def test_permissions_for_billing_operations(self):
 		"""Test: permisos específicos para operaciones de facturación"""
 		try:
@@ -158,6 +197,21 @@ class TestBillingCycleL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 				self.assertTrue(sm_perms.get("read"), "System Manager: read")
 				self.assertTrue(sm_perms.get("write"), "System Manager: write")
 
+			# Roles de facturación específicos
+			billing_roles = ["Accounts Manager", "Billing Manager", "Financial Manager"]
+			for role in billing_roles:
+				if role in all_perms:
+					role_perms = all_perms[role]
+					self.assertTrue(role_perms.get("read"), f"{role} debe tener read access")
+
+			# Roles que NO deben tener write access
+			restricted_roles = ["Guest", "Customer", "Supplier"]
+			for role in restricted_roles:
+				if role in all_perms:
+					role_perms = all_perms[role]
+					self.assertFalse(role_perms.get("write", True), f"{role} NO debe tener write access")
+					self.assertFalse(role_perms.get("delete", True), f"{role} NO debe tener delete access")
+
 		except Exception:
 			# Fallback a método alternativo
 			permissions = frappe.get_all(
@@ -168,36 +222,59 @@ class TestBillingCycleL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 
 			self.assertGreater(len(permissions), 0, "Billing Cycle debe tener permisos configurados")
 
-	@skip_if_ci_cd
 	def test_database_schema_for_billing_data(self):
-		"""Test: esquema de base de datos para datos de facturación - ONLY LOCAL"""
-		table_name = "tabBilling Cycle"
-
-		# This test ONLY runs in local environment
+		"""Test: esquema de base de datos para datos de facturación"""
+		table_name = f"tab{self.doctype.replace(' ', '')}"
 		table_columns = frappe.db.get_table_columns(table_name)
 
-		# Verificar columnas críticas para ciclos de facturación (from JSON)
-		expected_columns = [
-			"naming_series",
+		# Verificar campos críticos para facturación
+		billing_critical_fields = [
 			"cycle_name",
-			"company",
-			"fee_structure",
+			"billing_frequency",
 			"start_date",
 			"end_date",
-			"due_date",
+			"total_billed_amount",
+			"total_collected_amount",
 			"cycle_status",
 		]
 
-		# Verificar que las columnas críticas existen
-		for column in expected_columns:
-			self.assertIn(column, table_columns, f"Column {column} missing from {table_name}")
+		for field_name in billing_critical_fields:
+			if self.meta.has_field(field_name):
+				self.assertIn(
+					field_name, table_columns, f"Campo crítico de facturación {field_name} faltante en DB"
+				)
+
+		# Verificar índices para performance de facturación
+		try:
+			indexes = frappe.db.sql(
+				f"""
+				SHOW INDEX FROM `{table_name}`
+			""",
+				as_dict=True,
+			)
+
+			index_columns = [idx.Column_name for idx in indexes]
+
+			# Campos que deberían tener índices para performance
+			indexed_fields = ["cycle_status", "billing_frequency", "start_date", "end_date"]
+			for field_name in indexed_fields:
+				if self.meta.has_field(field_name):
+					# Verificar si está indexado (primary key cuenta)
+					is_indexed = field_name in index_columns or any(
+						field_name in idx.Key_name for idx in indexes
+					)
+					if not is_indexed:
+						frappe.log_error(f"Performance warning: {field_name} no está indexado")
+
+		except Exception as e:
+			frappe.log_error(f"Index validation failed: {e!s}")
 
 	def test_json_configuration_for_mass_operations(self):
 		"""Test: configuración JSON para operaciones masivas"""
 		with open(self.json_path, encoding="utf-8") as f:
 			json_config = json.load(f)
 
-		# Verificar configuración para batch processing (only if exists)
+		# Verificar configuración para batch processing
 		batch_fields = ["batch_size", "bulk_processing_enabled", "auto_process"]
 		for field_name in batch_fields:
 			field_config = None
@@ -210,31 +287,34 @@ class TestBillingCycleL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 				if field_name == "batch_size":
 					self.assertEqual(field_config.get("fieldtype"), "Int", "batch_size debe ser Int field")
 
+					# Verificar default value razonable
+					default_val = field_config.get("default")
+					if default_val:
+						try:
+							val = int(default_val)
+							self.assertGreater(val, 0, "batch_size default debe ser > 0")
+							self.assertLess(val, 10000, "batch_size default debe ser razonable")
+						except ValueError:
+							self.fail(f"batch_size default inválido: {default_val}")
+
 				elif field_name in ["bulk_processing_enabled", "auto_process"]:
 					self.assertEqual(
 						field_config.get("fieldtype"), "Check", f"{field_name} debe ser Check field"
 					)
 
-	def test_required_fields_validation(self):
-		"""Test: validación de campos obligatorios"""
-		frappe_meta = frappe.get_meta(self.doctype)
-
-		# Campos que deben ser obligatorios según JSON
-		required_fields = [
-			"naming_series",
-			"cycle_name",
-			"company",
-			"fee_structure",
-			"start_date",
-			"end_date",
-			"due_date",
-			"cycle_status",
-		]
-
-		for fieldname in required_fields:
-			field = frappe_meta.get_field(fieldname)
-			if field:  # Only test if field exists
-				self.assertEqual(field.reqd, 1, f"Campo {fieldname} debe ser obligatorio")
+		# Verificar que no hay configuraciones conflictivas
+		for field in json_config.get("fields", []):
+			if field.get("fieldtype") == "Currency":
+				# Currency fields no deben tener default negativo
+				default_val = field.get("default")
+				if default_val:
+					try:
+						val = float(default_val)
+						self.assertGreaterEqual(
+							val, 0, f"Currency field {field.get('fieldname')} default no debe ser negativo"
+						)
+					except ValueError:
+						pass  # Ignorar defaults no numéricos
 
 	def test_workflow_configuration_consistency(self):
 		"""Test: consistencia de configuración de workflow"""
@@ -263,7 +343,7 @@ class TestBillingCycleL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 
 	def test_automation_configuration(self):
 		"""Test: configuración de automatización del billing cycle"""
-		# Campos de automatización (only test if they exist)
+		# Campos de automatización
 		automation_fields = {
 			"auto_process": "Check",
 			"auto_invoice_generation": "Check",
@@ -280,6 +360,72 @@ class TestBillingCycleL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 					f"Campo de automatización {field_name} debe ser {expected_type}",
 				)
 
+		# Campos de configuración de automatización
+		config_fields = {
+			"processing_schedule": "Data",
+			"notification_emails": "Small Text",
+			"max_retries": "Int",
+		}
+
+		for field_name, expected_type in config_fields.items():
+			if self.meta.has_field(field_name):
+				field = self.meta.get_field(field_name)
+				self.assertIn(
+					field.fieldtype,
+					[expected_type, "Text", "Data"],
+					f"Campo {field_name} debe ser {expected_type} o compatible",
+				)
+
+	def test_reporting_integration_configuration(self):
+		"""Test: configuración de integración con reportes"""
+		# Campos para integración con reportes
+		reporting_fields = {
+			"report_formats": "Small Text",
+			"report_generated_count": "Int",
+			"last_report_date": "Date",
+			"external_sync_enabled": "Check",
+		}
+
+		for field_name, expected_type in reporting_fields.items():
+			if self.meta.has_field(field_name):
+				field = self.meta.get_field(field_name)
+				if field_name == "report_formats":
+					self.assertIn(
+						field.fieldtype, ["Small Text", "Text"], "report_formats debe ser Small Text o Text"
+					)
+				else:
+					self.assertEqual(
+						field.fieldtype, expected_type, f"Campo {field_name} debe ser {expected_type}"
+					)
+
+	def test_error_handling_configuration(self):
+		"""Test: configuración de manejo de errores"""
+		# Campos para error handling
+		error_fields = {
+			"error_count": "Int",
+			"last_error_date": "Date",
+			"error_recovery_enabled": "Check",
+			"errors_resolved": "Check",
+		}
+
+		for field_name, expected_type in error_fields.items():
+			if self.meta.has_field(field_name):
+				field = self.meta.get_field(field_name)
+				self.assertEqual(
+					field.fieldtype,
+					expected_type,
+					f"Campo de error handling {field_name} debe ser {expected_type}",
+				)
+
+		# Verificar defaults apropiados
+		if self.meta.has_field("error_count"):
+			field = self.meta.get_field("error_count")
+			# error_count debe default a 0
+			self.assertTrue(
+				field.default == "0" or field.default == 0 or not field.default,
+				"error_count debe default a 0 o no tener default",
+			)
+
 	def test_meta_caching_for_complex_doctype(self):
 		"""Test: Meta caching para DocType complejo como Billing Cycle"""
 		# Verificar caching consistente
@@ -292,7 +438,7 @@ class TestBillingCycleL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 		)
 
 		# Verificar campos críticos específicamente
-		critical_fields = ["cycle_name", "company", "fee_structure"]
+		critical_fields = ["cycle_name", "billing_frequency", "total_billed_amount"]
 		for field_name in critical_fields:
 			if meta1.has_field(field_name):
 				field1 = meta1.get_field(field_name)
@@ -307,6 +453,4 @@ class TestBillingCycleL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 
 	def tearDown(self):
 		"""Cleanup después de cada test"""
-		# Call parent tearDown for CI/CD compatibility
-		super().tearDown()
 		frappe.db.rollback()

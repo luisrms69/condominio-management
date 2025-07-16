@@ -6,20 +6,8 @@ from unittest.mock import patch
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
-# Import REGLA #47 utilities
-from condominium_management.financial_management.utils.layer4_testing_utils import (
-	Layer4TestingMixin,
-	create_test_document_with_required_fields,
-	get_exact_field_options_from_json,
-	get_performance_benchmark_time,
-	is_ci_cd_environment,
-	mock_sql_operations_in_ci_cd,
-	simulate_performance_test_in_ci_cd,
-	skip_if_ci_cd,
-)
 
-
-class TestPropertyAccountL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
+class TestPropertyAccountL4AConfiguration(FrappeTestCase):
 	"""Layer 4A Configuration Tests - JSON, Permissions, Hooks Validation"""
 
 	@classmethod
@@ -132,11 +120,7 @@ class TestPropertyAccountL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 				if field.options:
 					options = field.options.split("\n")
 					# Usar opciones que realmente existen en el sistema
-					expected_options = get_exact_field_options_from_json(self.doctype, field.fieldname) or [
-						"Activa",
-						"Suspendida",
-						"Cerrada",
-					]
+					expected_options = ["Activa", "Suspendida", "Cerrada"]
 					for option in expected_options:
 						if option in field.options:  # Solo verificar si está en las opciones del campo
 							self.assertIn(option, options, f"Opción {option} faltante en account_status")
@@ -183,7 +167,6 @@ class TestPropertyAccountL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 			roles_found = [p.role for p in permissions]
 			self.assertIn("System Manager", roles_found, "System Manager debe tener permisos configurados")
 
-	@skip_if_ci_cd
 	def test_database_schema_consistency(self):
 		"""Test: consistencia entre Meta y esquema de base de datos"""
 		table_name = f"tab{self.doctype.replace(' ', '')}"
@@ -383,6 +366,4 @@ class TestPropertyAccountL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 
 	def tearDown(self):
 		"""Cleanup después de cada test"""
-		# Call parent tearDown for CI/CD compatibility
-		super().tearDown()
 		frappe.db.rollback()

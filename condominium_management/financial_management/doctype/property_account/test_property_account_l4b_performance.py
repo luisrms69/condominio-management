@@ -3,20 +3,8 @@ import time
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
-# Import REGLA #47 utilities
-from condominium_management.financial_management.utils.layer4_testing_utils import (
-	Layer4TestingMixin,
-	create_test_document_with_required_fields,
-	get_exact_field_options_from_json,
-	get_performance_benchmark_time,
-	is_ci_cd_environment,
-	mock_sql_operations_in_ci_cd,
-	simulate_performance_test_in_ci_cd,
-	skip_if_ci_cd,
-)
 
-
-class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
+class TestPropertyAccountL4BPerformance(FrappeTestCase):
 	"""Layer 4B Performance Tests - Runtime Performance Validation"""
 
 	@classmethod
@@ -29,7 +17,17 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		"""Test: performance de inserción de documentos (Meta: < 300ms)"""
 		start_time = time.perf_counter()
 
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"account_name": "Performance Test " + frappe.utils.random_string(5),
+				"property_code": "PERF-" + frappe.utils.random_string(3),
+				"account_status": "Activa",
+				"current_balance": 0.0,
+				"property_registry": "REG-" + frappe.utils.random_string(5),
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			doc.insert(ignore_permissions=True)
@@ -72,7 +70,7 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		execution_time = end_time - start_time
 
 		# Meta de expertos: < 100ms
-		self.assert_performance_benchmark("query", execution_time)
+		self.assertLess(execution_time, 0.1, f"List view took {execution_time:.3f}s, expected < 0.1s")
 
 		# Verificar que retorna estructura correcta
 		if docs:
@@ -96,12 +94,22 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		execution_time = end_time - start_time
 
 		# Meta de expertos: < 500ms
-		self.assert_performance_benchmark("query", execution_time)
+		self.assertLess(execution_time, 0.5, f"Search took {execution_time:.3f}s, expected < 0.5s")
 
 	def test_document_load_performance(self):
 		"""Test: performance de carga de documento individual"""
 		# Primero crear un documento para cargar
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"account_name": "Load Test " + frappe.utils.random_string(5),
+				"property_code": "LOAD-" + frappe.utils.random_string(3),
+				"account_status": "Activa",
+				"current_balance": 1500.0,
+				"property_registry": "REG-" + frappe.utils.random_string(5),
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			doc.insert(ignore_permissions=True)
@@ -116,7 +124,7 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 			execution_time = end_time - start_time
 
 			# Meta: < 200ms para cargar documento individual
-			self.assert_performance_benchmark("query", execution_time)
+			self.assertLess(execution_time, 0.2, f"Document load took {execution_time:.3f}s, expected < 0.2s")
 
 			# Verificar que se cargó correctamente
 			self.assertEqual(loaded_doc.name, doc_name)
@@ -145,8 +153,18 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 
 		docs_created = []
 		try:
-			for _i in range(batch_size):
-				doc = create_test_document_with_required_fields(self.doctype)
+			for i in range(batch_size):
+				doc = frappe.get_doc(
+					{
+						"doctype": self.doctype,
+						"account_name": f"Batch Test {i}",
+						"property_code": f"BATCH-{i:03d}",
+						"account_status": "Activa",
+						"current_balance": 100.0 * i,
+						"property_registry": f"REG-BATCH-{i:03d}",
+						"company": "_Test Company",
+					}
+				)
 				doc.insert(ignore_permissions=True)
 				docs_created.append(doc.name)
 
@@ -180,7 +198,6 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		finally:
 			frappe.db.rollback()
 
-	@mock_sql_operations_in_ci_cd
 	def test_query_performance_complex_filters(self):
 		"""Test: performance de queries con filtros complejos"""
 		start_time = time.perf_counter()
@@ -198,7 +215,7 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		execution_time = end_time - start_time
 
 		# Meta: < 200ms para queries complejas
-		self.assert_performance_benchmark("query", execution_time)
+		self.assertLess(execution_time, 0.2, f"Complex query took {execution_time:.3f}s, expected < 0.2s")
 
 	def test_count_operation_performance(self):
 		"""Test: performance de operaciones de conteo"""
@@ -210,7 +227,7 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		execution_time = end_time - start_time
 
 		# Meta: < 50ms para count operations
-		self.assert_performance_benchmark("query", execution_time)
+		self.assertLess(execution_time, 0.05, f"Count operation took {execution_time:.3f}s, expected < 0.05s")
 
 		# Verificar que retorna número válido
 		self.assertIsInstance(count, int, "Count debe retornar entero")
@@ -227,7 +244,7 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		execution_time = end_time - start_time
 
 		# Meta: < 30ms para exists checks
-		self.assert_performance_benchmark("query", execution_time)
+		self.assertLess(execution_time, 0.03, f"Exists check took {execution_time:.3f}s, expected < 0.03s")
 
 		# Verificar resultado
 		self.assertIsNone(exists, "Exists check should return None for non-existent doc")
@@ -235,7 +252,17 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 	def test_update_operation_performance(self):
 		"""Test: performance de operaciones de actualización"""
 		# Crear documento para actualizar
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"account_name": "Update Test " + frappe.utils.random_string(5),
+				"property_code": "UPD-" + frappe.utils.random_string(3),
+				"account_status": "Activa",
+				"current_balance": 1000.0,
+				"property_registry": "REG-" + frappe.utils.random_string(5),
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			doc.insert(ignore_permissions=True)
@@ -274,7 +301,17 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 	def test_delete_operation_performance(self):
 		"""Test: performance de operaciones de eliminación"""
 		# Crear documento para eliminar
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"account_name": "Delete Test " + frappe.utils.random_string(5),
+				"property_code": "DEL-" + frappe.utils.random_string(3),
+				"account_status": "Activa",
+				"current_balance": 0.0,
+				"property_registry": "REG-" + frappe.utils.random_string(5),
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			doc.insert(ignore_permissions=True)
@@ -326,10 +363,10 @@ class TestPropertyAccountL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		execution_time = end_time - start_time
 
 		# Meta: < 50ms para 10 cargas de meta (caching debe ser efectivo)
-		self.assert_performance_benchmark("query", execution_time)
+		self.assertLess(
+			execution_time, 0.05, f"Meta loading (10x) took {execution_time:.3f}s, expected < 0.05s"
+		)
 
 	def tearDown(self):
 		"""Cleanup después de cada test"""
-		# Call parent tearDown for CI/CD compatibility
-		super().tearDown()
 		frappe.db.rollback()

@@ -3,20 +3,8 @@ import time
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
-# Import REGLA #47 utilities
-from condominium_management.financial_management.utils.layer4_testing_utils import (
-	Layer4TestingMixin,
-	create_test_document_with_required_fields,
-	get_exact_field_options_from_json,
-	get_performance_benchmark_time,
-	is_ci_cd_environment,
-	mock_sql_operations_in_ci_cd,
-	simulate_performance_test_in_ci_cd,
-	skip_if_ci_cd,
-)
 
-
-class TestFeeStructureL4BPerformance(Layer4TestingMixin, FrappeTestCase):
+class TestFeeStructureL4BPerformance(FrappeTestCase):
 	"""Layer 4B Performance Tests - Fee Structure Runtime Performance"""
 
 	@classmethod
@@ -29,7 +17,17 @@ class TestFeeStructureL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		"""Test: performance de creación de Fee Structure (Meta: < 300ms)"""
 		start_time = time.perf_counter()
 
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"fee_structure_name": "Performance Test Fee " + frappe.utils.random_string(5),
+				"calculation_method": "Monto Fijo",
+				"base_amount": 1500.00,
+				"effective_from": frappe.utils.today(),
+				"is_active": 1,
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			doc.insert(ignore_permissions=True)
@@ -60,7 +58,21 @@ class TestFeeStructureL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 	def test_fee_calculation_performance(self):
 		"""Test: performance de cálculos de fees complejos"""
 		# Crear fee structure para cálculos
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"fee_structure_name": "Calculation Test Fee " + frappe.utils.random_string(5),
+				"fee_type": "Utilities",
+				"calculation_method": "Por Indiviso",
+				"percentage_rate": 15.0,
+				"base_amount": 2000.00,
+				"minimum_amount": 50.00,
+				"maximum_amount": 5000.00,
+				"effective_from": frappe.utils.today(),
+				"is_active": 1,
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			doc.insert(ignore_permissions=True)
@@ -123,10 +135,23 @@ class TestFeeStructureL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		start_time = time.perf_counter()
 
 		docs_created = []
+		fee_types = ["Maintenance", "Utilities", "Security", "Cleaning", "Insurance"]
+		calculation_methods = ["Monto Fijo", "Por Indiviso", "Por M2"]
 
 		try:
-			for _i in range(batch_size):
-				doc = create_test_document_with_required_fields(self.doctype)
+			for i in range(batch_size):
+				doc = frappe.get_doc(
+					{
+						"doctype": self.doctype,
+						"fee_structure_name": f"Batch Fee {i}",
+						"fee_type": fee_types[i % len(fee_types)],
+						"calculation_method": calculation_methods[i % len(calculation_methods)],
+						"base_amount": 500.0 + (i * 50),
+						"effective_from": frappe.utils.today(),
+						"is_active": 1,
+						"company": "_Test Company",
+					}
+				)
 				doc.insert(ignore_permissions=True)
 				docs_created.append(doc.name)
 
@@ -158,34 +183,29 @@ class TestFeeStructureL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		finally:
 			frappe.db.rollback()
 
-	@mock_sql_operations_in_ci_cd
 	def test_complex_query_performance(self):
 		"""Test: performance de queries complejas para análisis financiero"""
 		start_time = time.perf_counter()
 
-		if is_ci_cd_environment():
-			# Mock query results for CI/CD
-			results, duration = simulate_performance_test_in_ci_cd("complex_query", 0.2)
-		else:
-			# Real query in local environment
-			frappe.db.sql(
-				f"""
-				SELECT
-					fee_type,
-					calculation_method,
-					COUNT(*) as count,
-					AVG(base_amount) as avg_amount,
-					SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_count
-				FROM `tab{self.doctype.replace(' ', '')}`
-				WHERE
-					is_active = 1
-					AND base_amount > 0
-				GROUP BY fee_type, calculation_method
-				ORDER BY avg_amount DESC
-				LIMIT 20
-				""",
-				as_dict=True,
-			)
+		# Query compleja que simula reporting financiero
+		_ = frappe.db.sql(
+			f"""
+			SELECT
+				fee_type,
+				calculation_method,
+				COUNT(*) as count,
+				AVG(base_amount) as avg_amount,
+				SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_count
+			FROM `tab{self.doctype.replace(' ', '')}`
+			WHERE
+				is_active = 1
+				AND base_amount > 0
+			GROUP BY fee_type, calculation_method
+			ORDER BY avg_amount DESC
+			LIMIT 20
+		""",
+			as_dict=True,
+		)
 
 		end_time = time.perf_counter()
 		execution_time = end_time - start_time
@@ -198,7 +218,18 @@ class TestFeeStructureL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 	def test_fee_structure_update_performance(self):
 		"""Test: performance de actualización de Fee Structures"""
 		# Crear fee structure para actualizar
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"fee_structure_name": "Update Test Fee " + frappe.utils.random_string(5),
+				"fee_type": "Maintenance",
+				"calculation_method": "Monto Fijo",
+				"base_amount": 1000.00,
+				"effective_from": frappe.utils.today(),
+				"is_active": 1,
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			doc.insert(ignore_permissions=True)
@@ -232,7 +263,21 @@ class TestFeeStructureL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		start_time = time.perf_counter()
 
 		# Crear fee structure con validaciones complejas
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"fee_structure_name": "Validation Test Fee " + frappe.utils.random_string(5),
+				"fee_type": "Maintenance",
+				"calculation_method": "Por Indiviso",
+				"percentage_rate": 15.0,
+				"base_amount": 2000.00,
+				"minimum_amount": 100.00,
+				"maximum_amount": 3000.00,
+				"effective_from": frappe.utils.today(),
+				"is_active": 1,
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			# Validar sin guardar (solo validations)
@@ -262,35 +307,30 @@ class TestFeeStructureL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 		finally:
 			frappe.db.rollback()
 
-	@mock_sql_operations_in_ci_cd
 	def test_fee_reporting_query_performance(self):
 		"""Test: performance de queries para reportes financieros"""
 		start_time = time.perf_counter()
 
-		if is_ci_cd_environment():
-			# Mock query results for CI/CD
-			results, duration = simulate_performance_test_in_ci_cd("reporting", 0.3)
-		else:
-			# Real query in local environment
-			frappe.db.sql(
-				f"""
-				SELECT
-					fee_type,
-					calculation_method,
-					COUNT(*) as total_fees,
-					SUM(CASE WHEN is_active = 1 THEN base_amount ELSE 0 END) as total_active_amount,
-					AVG(base_amount) as average_amount,
-					MIN(base_amount) as min_amount,
-					MAX(base_amount) as max_amount
-				FROM `tab{self.doctype.replace(' ', '')}`
-				WHERE
-					creation >= DATE_SUB(NOW(), INTERVAL 1 YEAR)
-				GROUP BY fee_type, calculation_method
-				HAVING total_fees > 0
-				ORDER BY total_active_amount DESC
-				""",
-				as_dict=True,
-			)
+		# Query que simula reporte de fees por tipo
+		_ = frappe.db.sql(
+			f"""
+			SELECT
+				fee_type,
+				calculation_method,
+				COUNT(*) as total_fees,
+				SUM(CASE WHEN is_active = 1 THEN base_amount ELSE 0 END) as total_active_amount,
+				AVG(base_amount) as average_amount,
+				MIN(base_amount) as min_amount,
+				MAX(base_amount) as max_amount
+			FROM `tab{self.doctype.replace(' ', '')}`
+			WHERE
+				creation >= DATE_SUB(NOW(), INTERVAL 1 YEAR)
+			GROUP BY fee_type, calculation_method
+			HAVING total_fees > 0
+			ORDER BY total_active_amount DESC
+		""",
+			as_dict=True,
+		)
 
 		end_time = time.perf_counter()
 		execution_time = end_time - start_time
@@ -346,6 +386,4 @@ class TestFeeStructureL4BPerformance(Layer4TestingMixin, FrappeTestCase):
 
 	def tearDown(self):
 		"""Cleanup después de cada test"""
-		# Call parent tearDown for CI/CD compatibility
-		super().tearDown()
 		frappe.db.rollback()
