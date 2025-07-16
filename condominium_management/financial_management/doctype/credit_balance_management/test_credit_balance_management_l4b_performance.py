@@ -3,20 +3,8 @@ import time
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
-# Import REGLA #47 utilities
-from condominium_management.financial_management.utils.layer4_testing_utils import (
-	Layer4TestingMixin,
-	create_test_document_with_required_fields,
-	get_exact_field_options_from_json,
-	get_performance_benchmark_time,
-	is_ci_cd_environment,
-	mock_sql_operations_in_ci_cd,
-	simulate_performance_test_in_ci_cd,
-	skip_if_ci_cd,
-)
 
-
-class TestCreditBalanceManagementL4BPerformance(Layer4TestingMixin, FrappeTestCase):
+class TestCreditBalanceManagementL4BPerformance(FrappeTestCase):
 	"""Layer 4B Performance Tests - Credit Balance Management Runtime Performance"""
 
 	@classmethod
@@ -29,7 +17,17 @@ class TestCreditBalanceManagementL4BPerformance(Layer4TestingMixin, FrappeTestCa
 		"""Test: performance de creación de Credit Balance (Meta: < 300ms)"""
 		start_time = time.perf_counter()
 
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"balance_date": frappe.utils.today(),
+				"account_type": "Property Account",
+				"credit_amount": 1500.00,
+				"balance_status": "Activo",
+				"expiration_date": frappe.utils.add_days(frappe.utils.today(), 30),
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			doc.insert(ignore_permissions=True)
@@ -60,7 +58,17 @@ class TestCreditBalanceManagementL4BPerformance(Layer4TestingMixin, FrappeTestCa
 	def test_credit_application_calculation_performance(self):
 		"""Test: performance de cálculos de aplicación de créditos"""
 		# Crear credit balance para cálculos
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"balance_date": frappe.utils.today(),
+				"account_type": "Property Account",
+				"credit_amount": 2500.00,
+				"balance_status": "Activo",
+				"remaining_balance": 2500.00,
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			doc.insert(ignore_permissions=True)
@@ -125,10 +133,21 @@ class TestCreditBalanceManagementL4BPerformance(Layer4TestingMixin, FrappeTestCa
 		start_time = time.perf_counter()
 
 		docs_created = []
+		statuses = ["Activo", "Aplicado Parcial", "Expirado"]
 
 		try:
-			for _i in range(batch_size):
-				doc = create_test_document_with_required_fields(self.doctype)
+			for i in range(batch_size):
+				doc = frappe.get_doc(
+					{
+						"doctype": self.doctype,
+						"balance_date": frappe.utils.today(),
+						"account_type": "Property Account",
+						"credit_amount": 800.0 + (i * 100),
+						"balance_status": statuses[i % len(statuses)],
+						"remaining_balance": 800.0 + (i * 100),
+						"company": "_Test Company",
+					}
+				)
 				doc.insert(ignore_permissions=True)
 				docs_created.append(doc.name)
 
@@ -160,34 +179,29 @@ class TestCreditBalanceManagementL4BPerformance(Layer4TestingMixin, FrappeTestCa
 		finally:
 			frappe.db.rollback()
 
-	@mock_sql_operations_in_ci_cd
 	def test_complex_credit_query_performance(self):
 		"""Test: performance de queries complejas para análisis de créditos"""
 		start_time = time.perf_counter()
 
-		if is_ci_cd_environment():
-			# Mock query results for CI/CD
-			results, duration = simulate_performance_test_in_ci_cd("complex_query", 0.2)
-		else:
-			# Real query in local environment
-			frappe.db.sql(
-				"""
-				SELECT
-					balance_status,
-					COUNT(*) as count,
-					SUM(credit_amount) as total_credit,
-					AVG(remaining_balance) as avg_available,
-					SUM(CASE WHEN balance_status = 'Activo' THEN credit_amount ELSE 0 END) as available_credit
-				FROM `tabCredit Balance Management`
-				WHERE
-					credit_amount > 0
-					AND creation >= DATE_SUB(NOW(), INTERVAL 6 MONTHS)
-				GROUP BY balance_status
-				ORDER BY total_credit DESC
-				LIMIT 15
-				""",
-				as_dict=True,
-			)
+		# Query compleja que simula reporting de créditos
+		_ = frappe.db.sql(
+			"""
+			SELECT
+				balance_status,
+				COUNT(*) as count,
+				SUM(credit_amount) as total_credit,
+				AVG(remaining_balance) as avg_available,
+				SUM(CASE WHEN balance_status = 'Activo' THEN credit_amount ELSE 0 END) as available_credit
+			FROM `tabCredit Balance Management`
+			WHERE
+				credit_amount > 0
+				AND creation >= DATE_SUB(NOW(), INTERVAL 6 MONTHS)
+			GROUP BY balance_status
+			ORDER BY total_credit DESC
+			LIMIT 15
+			""",
+			as_dict=True,
+		)
 
 		end_time = time.perf_counter()
 		execution_time = end_time - start_time
@@ -202,7 +216,17 @@ class TestCreditBalanceManagementL4BPerformance(Layer4TestingMixin, FrappeTestCa
 	def test_credit_balance_update_performance(self):
 		"""Test: performance de actualización de Credit Balance"""
 		# Crear credit balance para actualizar
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"balance_date": frappe.utils.today(),
+				"account_type": "Property Account",
+				"credit_amount": 1200.00,
+				"balance_status": "Activo",
+				"remaining_balance": 1200.00,
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			doc.insert(ignore_permissions=True)
@@ -235,7 +259,18 @@ class TestCreditBalanceManagementL4BPerformance(Layer4TestingMixin, FrappeTestCa
 		start_time = time.perf_counter()
 
 		# Crear credit balance con validaciones complejas
-		doc = create_test_document_with_required_fields(self.doctype)
+		doc = frappe.get_doc(
+			{
+				"doctype": self.doctype,
+				"balance_date": frappe.utils.today(),
+				"account_type": "Property Account",
+				"credit_amount": 3000.00,
+				"balance_status": "Activo",
+				"remaining_balance": 3000.00,
+				"expiration_date": frappe.utils.add_days(frappe.utils.today(), 60),
+				"company": "_Test Company",
+			}
+		)
 
 		try:
 			# Validar sin guardar (solo validations)
@@ -347,6 +382,4 @@ class TestCreditBalanceManagementL4BPerformance(Layer4TestingMixin, FrappeTestCa
 
 	def tearDown(self):
 		"""Cleanup después de cada test"""
-		# Call parent tearDown for CI/CD compatibility
-		super().tearDown()
 		frappe.db.rollback()
