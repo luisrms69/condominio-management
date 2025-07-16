@@ -86,23 +86,23 @@ class TestResidentAccountL4TypeBComplexOperations(FrappeTestCase):
 			for i in range(test_config["operation_count"]):
 				# Simulate complex multi-account operations
 				account_id = f"RES-{i:04d}"
-				
+
 				# Credit limit operations
 				credit_limit = 5000.0 + (i * 100)
 				current_usage = credit_limit * 0.3 if i % 3 == 0 else credit_limit * 0.6
 				available_credit = credit_limit - current_usage
-				
+
 				# Spending operations
 				spending_limit = 2000.0 + (i * 50)
 				current_spending = spending_limit * 0.4 if i % 2 == 0 else spending_limit * 0.7
 				available_spending = spending_limit - current_spending
-				
+
 				# Balance operations
 				current_balance = 1000.0 + (i * 25)
 				pending_charges = current_balance * 0.1
 				deposits = current_balance * 0.05 if i % 5 == 0 else 0
 				net_balance = current_balance + deposits - pending_charges
-				
+
 				# Account status analysis
 				status_score = 100
 				if available_credit < credit_limit * 0.2:
@@ -111,7 +111,7 @@ class TestResidentAccountL4TypeBComplexOperations(FrappeTestCase):
 					status_score -= 20
 				if net_balance < 0:
 					status_score -= 25
-				
+
 				account_data = {
 					"account_id": account_id,
 					"credit_limit": credit_limit,
@@ -126,13 +126,13 @@ class TestResidentAccountL4TypeBComplexOperations(FrappeTestCase):
 					"risk_level": "High" if status_score < 60 else "Medium" if status_score < 80 else "Low",
 				}
 				operation_results.append(account_data)
-			
+
 			# Generate operational summary
 			total_credit_used = sum(acc["current_usage"] for acc in operation_results)
 			total_spending = sum(acc["current_spending"] for acc in operation_results)
 			avg_status_score = sum(acc["status_score"] for acc in operation_results) / len(operation_results)
 			high_risk_count = sum(1 for acc in operation_results if acc["risk_level"] == "High")
-			
+
 			return {
 				"status": "Complex Operations Success",
 				"count": len(operation_results),
@@ -163,8 +163,12 @@ class TestResidentAccountL4TypeBComplexOperations(FrappeTestCase):
 		# Validate result structure if available
 		if result and result.get("status") == "Complex Operations Success":
 			self.assertGreater(result["count"], 0, "Complex operations must process accounts")
-			self.assertGreater(result["total_credit_used"], 0, "Complex operations must calculate credit usage")
-			self.assertGreaterEqual(result["avg_status_score"], 0, "Complex operations must calculate status scores")
+			self.assertGreater(
+				result["total_credit_used"], 0, "Complex operations must calculate credit usage"
+			)
+			self.assertGreaterEqual(
+				result["avg_status_score"], 0, "Complex operations must calculate status scores"
+			)
 
 	def tearDown(self):
 		"""Minimal cleanup"""

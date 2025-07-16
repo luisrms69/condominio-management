@@ -86,16 +86,16 @@ class TestCreditBalanceManagementL4TypeBMassTransfer(FrappeTestCase):
 			for i in range(test_config["transfer_count"]):
 				# Simulate mass credit transfer operations
 				transfer_id = f"TRF-{i:04d}"
-				
+
 				# Source account details
 				source_balance = 1000.0 + (i * 50)
 				transfer_amount = min(source_balance * 0.2, 500.0)  # Max 20% or 500
-				
+
 				# Transfer validations
 				transfer_fee = transfer_amount * 0.01  # 1% fee
 				min_balance_required = 100.0
 				available_for_transfer = source_balance - min_balance_required
-				
+
 				# Validate transfer limits
 				transfer_status = "Valid"
 				if transfer_amount > available_for_transfer:
@@ -105,22 +105,22 @@ class TestCreditBalanceManagementL4TypeBMassTransfer(FrappeTestCase):
 					transfer_status = "Below Minimum"
 				elif transfer_amount > 1000.0:
 					transfer_status = "Requires Approval"
-				
+
 				# Calculate final amounts
 				net_transfer_amount = transfer_amount - transfer_fee
 				source_final_balance = source_balance - transfer_amount
-				
+
 				# Destination account calculations
 				destination_balance = 500.0 + (i * 20)
 				destination_final_balance = destination_balance + net_transfer_amount
-				
+
 				# Transfer audit trail
 				transfer_timestamp = frappe.utils.now_datetime()
-				
+
 				# Credit application logic
 				credit_applied = net_transfer_amount * 0.95  # 5% held for verification
 				credit_pending = net_transfer_amount - credit_applied
-				
+
 				transfer_data = {
 					"transfer_id": transfer_id,
 					"source_balance": source_balance,
@@ -136,15 +136,17 @@ class TestCreditBalanceManagementL4TypeBMassTransfer(FrappeTestCase):
 					"transfer_timestamp": transfer_timestamp,
 				}
 				transfer_results.append(transfer_data)
-			
+
 			# Generate mass transfer summary
 			total_transferred = sum(t["net_transfer_amount"] for t in transfer_results)
 			total_fees = sum(t["transfer_fee"] for t in transfer_results)
 			successful_transfers = sum(1 for t in transfer_results if t["transfer_status"] == "Valid")
-			failed_transfers = sum(1 for t in transfer_results if t["transfer_status"] == "Insufficient Balance")
+			failed_transfers = sum(
+				1 for t in transfer_results if t["transfer_status"] == "Insufficient Balance"
+			)
 			pending_approval = sum(1 for t in transfer_results if t["transfer_status"] == "Requires Approval")
 			total_credit_applied = sum(t["credit_applied"] for t in transfer_results)
-			
+
 			return {
 				"status": "Mass Transfer Success",
 				"count": len(transfer_results),
@@ -177,8 +179,12 @@ class TestCreditBalanceManagementL4TypeBMassTransfer(FrappeTestCase):
 		# Validate result structure if available
 		if result and result.get("status") == "Mass Transfer Success":
 			self.assertGreater(result["count"], 0, "Mass transfer must process transfers")
-			self.assertGreaterEqual(result["total_transferred"], 0, "Mass transfer must calculate total amount")
-			self.assertGreaterEqual(result["successful_transfers"], 0, "Mass transfer must track successful transfers")
+			self.assertGreaterEqual(
+				result["total_transferred"], 0, "Mass transfer must calculate total amount"
+			)
+			self.assertGreaterEqual(
+				result["successful_transfers"], 0, "Mass transfer must track successful transfers"
+			)
 			self.assertGreaterEqual(result["total_credit_applied"], 0, "Mass transfer must apply credits")
 
 	def tearDown(self):

@@ -85,14 +85,14 @@ class TestPaymentCollectionL4TypeBBatchProcessing(FrappeTestCase):
 			for i in range(test_config["batch_size"]):
 				# Simulate batch payment processing
 				payment_id = f"PAY-{i:04d}"
-				
+
 				# Payment amount calculations
 				base_amount = 500.0 + (i * 25)
 				service_fee = base_amount * 0.03
 				discount = base_amount * 0.05 if i % 8 == 0 else 0
 				taxes = base_amount * 0.16
 				net_amount = base_amount + service_fee - discount + taxes
-				
+
 				# Payment method processing
 				processing_fee = 0
 				if i % 3 == 0:  # Credit card
@@ -100,20 +100,20 @@ class TestPaymentCollectionL4TypeBBatchProcessing(FrappeTestCase):
 				elif i % 3 == 1:  # Bank transfer
 					processing_fee = 15.0
 				# Cash = no processing fee
-				
+
 				final_amount = net_amount + processing_fee
-				
+
 				# Payment validation
 				validation_status = "Valid"
 				if final_amount > 10000:
 					validation_status = "Requires Approval"
 				elif final_amount < 50:
 					validation_status = "Below Minimum"
-				
+
 				# Commission calculations
 				commission_rate = 0.02 if final_amount > 1000 else 0.015
 				commission = final_amount * commission_rate
-				
+
 				payment_data = {
 					"payment_id": payment_id,
 					"base_amount": base_amount,
@@ -127,14 +127,16 @@ class TestPaymentCollectionL4TypeBBatchProcessing(FrappeTestCase):
 					"net_to_merchant": final_amount - commission,
 				}
 				batch_results.append(payment_data)
-			
+
 			# Generate batch summary
 			total_amount = sum(pay["final_amount"] for pay in batch_results)
 			total_commission = sum(pay["commission"] for pay in batch_results)
 			total_fees = sum(pay["processing_fee"] for pay in batch_results)
 			valid_payments = sum(1 for pay in batch_results if pay["validation_status"] == "Valid")
-			approval_required = sum(1 for pay in batch_results if pay["validation_status"] == "Requires Approval")
-			
+			approval_required = sum(
+				1 for pay in batch_results if pay["validation_status"] == "Requires Approval"
+			)
+
 			return {
 				"status": "Batch Processing Success",
 				"count": len(batch_results),
@@ -167,7 +169,9 @@ class TestPaymentCollectionL4TypeBBatchProcessing(FrappeTestCase):
 		if result and result.get("status") == "Batch Processing Success":
 			self.assertGreater(result["count"], 0, "Batch processing must process payments")
 			self.assertGreater(result["total_amount"], 0, "Batch processing must calculate total amount")
-			self.assertGreaterEqual(result["total_commission"], 0, "Batch processing must calculate commission")
+			self.assertGreaterEqual(
+				result["total_commission"], 0, "Batch processing must calculate commission"
+			)
 			self.assertGreaterEqual(result["valid_payments"], 0, "Batch processing must validate payments")
 
 	def tearDown(self):
