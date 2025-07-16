@@ -68,6 +68,7 @@ class TestFeeStructureL4BPerformance(FrappeTestCase):
 				"base_amount": 2000.00,
 				"minimum_amount": 50.00,
 				"maximum_amount": 5000.00,
+				"effective_from": frappe.utils.today(),
 				"is_active": 1,
 				"company": "_Test Company",
 			}
@@ -146,6 +147,7 @@ class TestFeeStructureL4BPerformance(FrappeTestCase):
 						"fee_type": fee_types[i % len(fee_types)],
 						"calculation_method": calculation_methods[i % len(calculation_methods)],
 						"base_amount": 500.0 + (i * 50),
+						"effective_from": frappe.utils.today(),
 						"is_active": 1,
 						"company": "_Test Company",
 					}
@@ -223,6 +225,7 @@ class TestFeeStructureL4BPerformance(FrappeTestCase):
 				"fee_type": "Maintenance",
 				"calculation_method": "Monto Fijo",
 				"base_amount": 1000.00,
+				"effective_from": frappe.utils.today(),
 				"is_active": 1,
 				"company": "_Test Company",
 			}
@@ -270,6 +273,7 @@ class TestFeeStructureL4BPerformance(FrappeTestCase):
 				"base_amount": 2000.00,
 				"minimum_amount": 100.00,
 				"maximum_amount": 3000.00,
+				"effective_from": frappe.utils.today(),
 				"is_active": 1,
 				"company": "_Test Company",
 			}
