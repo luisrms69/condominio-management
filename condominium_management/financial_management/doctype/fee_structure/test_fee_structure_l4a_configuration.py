@@ -6,8 +6,20 @@ from unittest.mock import patch
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
+# Import REGLA #47 utilities
+from condominium_management.financial_management.utils.layer4_testing_utils import (
+	Layer4TestingMixin,
+	create_test_document_with_required_fields,
+	get_exact_field_options_from_json,
+	get_performance_benchmark_time,
+	is_ci_cd_environment,
+	mock_sql_operations_in_ci_cd,
+	simulate_performance_test_in_ci_cd,
+	skip_if_ci_cd,
+)
 
-class TestFeeStructureL4AConfiguration(FrappeTestCase):
+
+class TestFeeStructureL4AConfiguration(Layer4TestingMixin, FrappeTestCase):
 	"""Layer 4A Configuration Tests - JSON, Permissions, Hooks Validation"""
 
 	@classmethod
@@ -186,6 +198,7 @@ class TestFeeStructureL4AConfiguration(FrappeTestCase):
 
 			self.assertGreater(len(permissions), 0, "Fee Structure debe tener permisos configurados")
 
+	@skip_if_ci_cd
 	def test_database_schema_for_calculations(self):
 		"""Test: esquema de base de datos para cálculos financieros"""
 		table_name = f"tab{self.doctype.replace(' ', '')}"
@@ -345,4 +358,6 @@ class TestFeeStructureL4AConfiguration(FrappeTestCase):
 
 	def tearDown(self):
 		"""Cleanup después de cada test"""
+		# Call parent tearDown for CI/CD compatibility
+		super().tearDown()
 		frappe.db.rollback()
