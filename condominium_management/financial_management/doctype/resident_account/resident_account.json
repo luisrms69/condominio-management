@@ -1,0 +1,375 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:account_code",
+ "creation": "2025-01-13 12:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "account_code",
+  "resident_name",
+  "property_account",
+  "column_break_basic",
+  "company",
+  "resident_type",
+  "account_status",
+  "financial_information_section",
+  "current_balance",
+  "credit_limit",
+  "column_break_financial",
+  "deposit_amount",
+  "last_transaction_date",
+  "last_transaction_amount",
+  "credit_management_section",
+  "available_credit",
+  "pending_charges",
+  "column_break_credit",
+  "credit_utilization_percentage",
+  "credit_payment_due_date",
+  "credit_payment_status",
+  "transaction_history_section",
+  "transaction_summary",
+  "services_configuration_section",
+  "allowed_services",
+  "spending_limits",
+  "column_break_services",
+  "approval_required_amount",
+  "auto_charge_enabled",
+  "notifications_enabled",
+  "account_summary_section",
+  "monthly_average_spending",
+  "ytd_charges",
+  "column_break_summary",
+  "ytd_payments",
+  "total_savings",
+  "loyalty_points",
+  "audit_information_section",
+  "created_by",
+  "creation_date",
+  "column_break_audit",
+  "last_modified_by",
+  "last_modified_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "account_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Código de Cuenta",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "resident_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Residente",
+   "reqd": 1
+  },
+  {
+   "fieldname": "property_account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Cuenta de Propiedad",
+   "options": "Property Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "resident_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Residente",
+   "options": "Propietario\nInquilino\nFamiliar\nHuésped\nEmpleado Doméstico",
+   "reqd": 1
+  },
+  {
+   "fieldname": "account_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado de Cuenta",
+   "options": "Activa\nSuspendida\nBloqueada\nCerrada",
+   "reqd": 1
+  },
+  {
+   "fieldname": "financial_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Financiera"
+  },
+  {
+   "fieldname": "current_balance",
+   "fieldtype": "Currency",
+   "label": "Saldo Actual",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "credit_limit",
+   "fieldtype": "Currency",
+   "label": "Límite de Crédito",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_financial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "deposit_amount",
+   "fieldtype": "Currency",
+   "label": "Monto de Depósito",
+   "precision": "2"
+  },
+  {
+   "fieldname": "last_transaction_date",
+   "fieldtype": "Date",
+   "label": "Fecha Última Transacción"
+  },
+  {
+   "fieldname": "last_transaction_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Última Transacción",
+   "precision": "2"
+  },
+  {
+   "fieldname": "credit_management_section",
+   "fieldtype": "Section Break",
+   "label": "Gestión de Crédito"
+  },
+  {
+   "fieldname": "available_credit",
+   "fieldtype": "Currency",
+   "label": "Crédito Disponible",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "pending_charges",
+   "fieldtype": "Currency",
+   "label": "Cargos Pendientes",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_credit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "credit_utilization_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje Utilización Crédito",
+   "read_only": 1
+  },
+  {
+   "fieldname": "credit_payment_due_date",
+   "fieldtype": "Date",
+   "label": "Fecha Vencimiento Pago"
+  },
+  {
+   "fieldname": "credit_payment_status",
+   "fieldtype": "Select",
+   "label": "Estado Pago Crédito",
+   "options": "Al Día\nVencido\nMoroso\nPagado"
+  },
+  {
+   "fieldname": "transaction_history_section",
+   "fieldtype": "Section Break",
+   "label": "Historial de Transacciones"
+  },
+  {
+   "fieldname": "transaction_summary",
+   "fieldtype": "Long Text",
+   "label": "Resumen de Transacciones",
+   "read_only": 1
+  },
+  {
+   "fieldname": "services_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Servicios"
+  },
+  {
+   "fieldname": "allowed_services",
+   "fieldtype": "Small Text",
+   "label": "Servicios Permitidos"
+  },
+  {
+   "fieldname": "spending_limits",
+   "fieldtype": "Currency",
+   "label": "Límite de Gastos Diarios",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_services",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approval_required_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Requiere Aprobación",
+   "precision": "2"
+  },
+  {
+   "fieldname": "auto_charge_enabled",
+   "fieldtype": "Check",
+   "label": "Auto-cargo Habilitado"
+  },
+  {
+   "fieldname": "notifications_enabled",
+   "fieldtype": "Check",
+   "label": "Notificaciones Habilitadas"
+  },
+  {
+   "fieldname": "account_summary_section",
+   "fieldtype": "Section Break",
+   "label": "Resumen de Cuenta"
+  },
+  {
+   "fieldname": "monthly_average_spending",
+   "fieldtype": "Currency",
+   "label": "Gasto Promedio Mensual",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ytd_charges",
+   "fieldtype": "Currency",
+   "label": "Cargos Este Año",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_summary",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ytd_payments",
+   "fieldtype": "Currency",
+   "label": "Pagos Este Año",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_savings",
+   "fieldtype": "Currency",
+   "label": "Ahorros Totales",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "loyalty_points",
+   "fieldtype": "Int",
+   "label": "Puntos de Lealtad",
+   "read_only": 1
+  },
+  {
+   "fieldname": "audit_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Auditoría"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_audit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha Modificación",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-13 12:00:00.000000",
+ "modified_by": "Administrator",
+ "app_name": "condominium_management",
+ "module": "Financial Management",
+ "name": "Resident Account",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrador Financiero",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Contador Condominio"
+  },
+  {
+   "read": 1,
+   "role": "Comité Administración"
+  },
+  {
+   "read": 1,
+   "role": "Condómino"
+  },
+  {
+   "read": 1,
+   "role": "Residente Propietario"
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

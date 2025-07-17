@@ -1,0 +1,274 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-01-13 08:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "fee_structure_name",
+  "company",
+  "fiscal_year",
+  "column_break_basic",
+  "effective_from",
+  "effective_to",
+  "is_active",
+  "section_break_calculation",
+  "calculation_method",
+  "base_amount",
+  "column_break_calculation",
+  "include_reserve_fund",
+  "reserve_fund_percentage",
+  "section_break_components",
+  "fee_components",
+  "section_break_adjustments",
+  "early_payment_discount",
+  "early_payment_days",
+  "column_break_adjustments",
+  "late_payment_charge",
+  "grace_period_days",
+  "section_break_approval",
+  "requires_committee_approval",
+  "approval_status",
+  "column_break_approval",
+  "approved_by",
+  "approval_date",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie de Nomenclatura",
+   "options": "FS-.YYYY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fee_structure_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre de Estructura",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "label": "Año Fiscal",
+   "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "effective_from",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Vigente Desde",
+   "reqd": 1
+  },
+  {
+   "fieldname": "effective_to",
+   "fieldtype": "Date",
+   "label": "Vigente Hasta"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "default": 1,
+   "in_list_view": 1,
+   "label": "Activa"
+  },
+  {
+   "fieldname": "section_break_calculation",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Cálculo"
+  },
+  {
+   "fieldname": "calculation_method",
+   "fieldtype": "Select",
+   "label": "Método de Cálculo",
+   "options": "Por Indiviso\nMonto Fijo\nPor M2\nMixto",
+   "reqd": 1,
+   "default": "Por Indiviso"
+  },
+  {
+   "fieldname": "base_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Base Mensual",
+   "precision": 2,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_calculation",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "include_reserve_fund",
+   "fieldtype": "Check",
+   "label": "Incluir Fondo de Reserva"
+  },
+  {
+   "fieldname": "reserve_fund_percentage",
+   "fieldtype": "Percent",
+   "depends_on": "include_reserve_fund",
+   "label": "Porcentaje Fondo Reserva",
+   "precision": 2
+  },
+  {
+   "fieldname": "section_break_components",
+   "fieldtype": "Section Break",
+   "label": "Componentes de la Cuota"
+  },
+  {
+   "fieldname": "fee_components",
+   "fieldtype": "Table",
+   "label": "Componentes",
+   "options": "Fee Component"
+  },
+  {
+   "fieldname": "section_break_adjustments",
+   "fieldtype": "Section Break",
+   "label": "Descuentos y Recargos"
+  },
+  {
+   "fieldname": "early_payment_discount",
+   "fieldtype": "Percent",
+   "label": "Descuento Pronto Pago",
+   "precision": 2
+  },
+  {
+   "fieldname": "early_payment_days",
+   "fieldtype": "Int",
+   "depends_on": "early_payment_discount",
+   "label": "Días para Descuento"
+  },
+  {
+   "fieldname": "column_break_adjustments",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "late_payment_charge",
+   "fieldtype": "Percent",
+   "label": "Recargo por Mora",
+   "precision": 2
+  },
+  {
+   "fieldname": "grace_period_days",
+   "fieldtype": "Int",
+   "label": "Días de Gracia",
+   "default": 5
+  },
+  {
+   "fieldname": "section_break_approval",
+   "fieldtype": "Section Break",
+   "label": "Aprobación del Comité"
+  },
+  {
+   "fieldname": "requires_committee_approval",
+   "fieldtype": "Check",
+   "label": "Requiere Aprobación Comité"
+  },
+  {
+   "fieldname": "approval_status",
+   "fieldtype": "Select",
+   "depends_on": "requires_committee_approval",
+   "label": "Estado de Aprobación",
+   "options": "Pendiente\nAprobado\nRechazado",
+   "default": "Pendiente"
+  },
+  {
+   "fieldname": "column_break_approval",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "depends_on": "eval:doc.approval_status=='Aprobado'",
+   "label": "Aprobado Por",
+   "options": "User"
+  },
+  {
+   "fieldname": "approval_date",
+   "fieldtype": "Date",
+   "depends_on": "eval:doc.approval_status=='Aprobado'",
+   "label": "Fecha de Aprobación"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Enmendado Desde",
+   "no_copy": 1,
+   "options": "Fee Structure",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-01-13 08:00:00.000000",
+ "modified_by": "Administrator",
+ "app_name": "condominium_management",
+ "module": "Financial Management",
+ "name": "Fee Structure",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrador Financiero",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Comité Administración",
+   "submit": 1
+  },
+  {
+   "read": 1,
+   "role": "Contador Condominio"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "fee_structure_name",
+ "track_changes": 1
+}

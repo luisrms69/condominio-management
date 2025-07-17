@@ -1,0 +1,389 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-01-14 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "naming_series",
+  "payment_date",
+  "account_type",
+  "column_break_basic",
+  "payment_amount",
+  "payment_method",
+  "reference_number",
+  "account_details_section",
+  "property_account",
+  "resident_account",
+  "column_break_account",
+  "billing_cycle",
+  "invoice_reference",
+  "payment_for",
+  "payment_processing_section",
+  "payment_status",
+  "reconciliation_status",
+  "column_break_processing",
+  "processed_date",
+  "processed_by",
+  "confirmation_number",
+  "financial_details_section",
+  "original_amount",
+  "applied_amount",
+  "column_break_financial",
+  "discount_amount",
+  "late_fee_amount",
+  "credit_applied",
+  "bank_details_section",
+  "bank_name",
+  "account_number",
+  "column_break_bank",
+  "transaction_reference",
+  "bank_confirmation",
+  "verification_section",
+  "requires_verification",
+  "verified_by",
+  "column_break_verification",
+  "verification_date",
+  "verification_notes",
+  "audit_information_section",
+  "created_by",
+  "creation_date",
+  "column_break_audit",
+  "last_modified_by",
+  "last_modified_date",
+  "payment_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie de Numeración",
+   "options": "PC-.YYYY.-.MM.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "payment_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Fecha de Pago",
+   "reqd": 1
+  },
+  {
+   "fieldname": "account_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Cuenta",
+   "options": "Propietario\nResidente\nAmbos",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payment_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Monto del Pago",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "payment_method",
+   "fieldtype": "Select",
+   "label": "Método de Pago",
+   "options": "Transferencia Bancaria\nDepósito\nEfectivo\nCheque\nTarjeta de Crédito\nTarjeta de Débito\nPago en Línea",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reference_number",
+   "fieldtype": "Data",
+   "label": "Número de Referencia",
+   "unique": 1
+  },
+  {
+   "fieldname": "account_details_section",
+   "fieldtype": "Section Break",
+   "label": "Detalles de la Cuenta"
+  },
+  {
+   "fieldname": "property_account",
+   "fieldtype": "Link",
+   "label": "Cuenta de Propiedad",
+   "options": "Property Account"
+  },
+  {
+   "fieldname": "resident_account",
+   "fieldtype": "Link",
+   "label": "Cuenta de Residente",
+   "options": "Resident Account"
+  },
+  {
+   "fieldname": "column_break_account",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "billing_cycle",
+   "fieldtype": "Link",
+   "label": "Ciclo de Facturación",
+   "options": "Billing Cycle"
+  },
+  {
+   "fieldname": "invoice_reference",
+   "fieldtype": "Link",
+   "label": "Factura de Referencia",
+   "options": "Sales Invoice"
+  },
+  {
+   "fieldname": "payment_for",
+   "fieldtype": "Select",
+   "label": "Pago Para",
+   "options": "Cuota Mensual\nFondo de Reserva\nServicios Premium\nMultas\nOtros Conceptos"
+  },
+  {
+   "fieldname": "payment_processing_section",
+   "fieldtype": "Section Break",
+   "label": "Procesamiento del Pago"
+  },
+  {
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado del Pago",
+   "options": "Pendiente\nEn Proceso\nProcesado\nRechazado\nCancelado",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reconciliation_status",
+   "fieldtype": "Select",
+   "label": "Estado de Conciliación",
+   "options": "Pendiente\nConciliado\nDiscrepancia\nRequiere Revisión"
+  },
+  {
+   "fieldname": "column_break_processing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "processed_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Procesamiento",
+   "read_only": 1
+  },
+  {
+   "fieldname": "processed_by",
+   "fieldtype": "Link",
+   "label": "Procesado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "confirmation_number",
+   "fieldtype": "Data",
+   "label": "Número de Confirmación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "financial_details_section",
+   "fieldtype": "Section Break",
+   "label": "Detalles Financieros"
+  },
+  {
+   "fieldname": "original_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Original",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "applied_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Aplicado",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_financial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "discount_amount",
+   "fieldtype": "Currency",
+   "label": "Descuento Aplicado",
+   "precision": "2"
+  },
+  {
+   "fieldname": "late_fee_amount",
+   "fieldtype": "Currency",
+   "label": "Recargo por Mora",
+   "precision": "2"
+  },
+  {
+   "fieldname": "credit_applied",
+   "fieldtype": "Currency",
+   "label": "Crédito Aplicado",
+   "precision": "2"
+  },
+  {
+   "fieldname": "bank_details_section",
+   "fieldtype": "Section Break",
+   "label": "Detalles Bancarios"
+  },
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Data",
+   "label": "Nombre del Banco"
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Número de Cuenta"
+  },
+  {
+   "fieldname": "column_break_bank",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "transaction_reference",
+   "fieldtype": "Data",
+   "label": "Referencia de Transacción"
+  },
+  {
+   "fieldname": "bank_confirmation",
+   "fieldtype": "Data",
+   "label": "Confirmación Bancaria"
+  },
+  {
+   "fieldname": "verification_section",
+   "fieldtype": "Section Break",
+   "label": "Verificación"
+  },
+  {
+   "fieldname": "requires_verification",
+   "fieldtype": "Check",
+   "label": "Requiere Verificación"
+  },
+  {
+   "fieldname": "verified_by",
+   "fieldtype": "Link",
+   "label": "Verificado Por",
+   "options": "User"
+  },
+  {
+   "fieldname": "column_break_verification",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "verification_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Verificación"
+  },
+  {
+   "fieldname": "verification_notes",
+   "fieldtype": "Text",
+   "label": "Notas de Verificación"
+  },
+  {
+   "fieldname": "audit_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Auditoría"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_audit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha Modificación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_notes",
+   "fieldtype": "Long Text",
+   "label": "Notas del Pago"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-14 10:00:00.000000",
+ "modified_by": "Administrator",
+ "app_name": "condominium_management",
+ "module": "Financial Management",
+ "name": "Payment Collection",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrador Financiero",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Contador Condominio",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Comité Administración"
+  },
+  {
+   "read": 1,
+   "role": "Residente Propietario"
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

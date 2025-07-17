@@ -124,8 +124,7 @@ def validate_requirements_consistency(doc):
 	# Validar que los requisitos tengan sentido para el tipo de categoría
 	if doc.category_type == "Estructura" and not doc.requires_dimensions:
 		frappe.msgprint(
-			"Recomendación: Las categorías de tipo 'Estructura' "
-			"normalmente requieren especificar dimensiones"
+			"Recomendación: Las categorías de tipo 'Estructura' normalmente requieren especificar dimensiones"
 		)
 
 
@@ -137,5 +136,5 @@ def validate_business_logic(doc):
 		pass
 	elif doc.category_type == "Equipamiento" and not doc.requires_components:
 		frappe.msgprint(
-			"Advertencia: Las categorías de 'Equipamiento' " "normalmente requieren especificar componentes"
+			"Advertencia: Las categorías de 'Equipamiento' normalmente requieren especificar componentes"
 		)

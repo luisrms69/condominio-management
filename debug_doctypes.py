@@ -37,7 +37,7 @@ def main():
 	for i, cmd in enumerate(commands):
 		result = run_bench_command(cmd)
 		if result:
-			results[f"query_{i+1}"] = result
+			results[f"query_{i + 1}"] = result
 
 	# Mostrar resultados
 	sys.stdout.write("=== DEBUG RESULTS ===\n")

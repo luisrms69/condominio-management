@@ -1,0 +1,326 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:account_name",
+ "creation": "2025-01-13 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "account_name",
+  "property_registry",
+  "customer",
+  "column_break_setup",
+  "company",
+  "billing_frequency",
+  "account_status",
+  "financial_information_section",
+  "current_balance",
+  "credit_balance",
+  "column_break_financial",
+  "pending_amount",
+  "last_payment_date",
+  "last_payment_amount",
+  "billing_configuration_section",
+  "fee_structure",
+  "billing_start_date",
+  "column_break_billing",
+  "billing_day",
+  "auto_generate_invoices",
+  "discount_eligibility",
+  "payment_history_section",
+  "payment_history_summary",
+  "account_summary_section",
+  "monthly_fee_amount",
+  "ytd_paid_amount",
+  "column_break_summary",
+  "total_invoiced_ytd",
+  "payment_success_rate",
+  "average_payment_delay",
+  "audit_information_section",
+  "created_by",
+  "creation_date",
+  "column_break_audit",
+  "last_modified_by",
+  "last_modified_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "account_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre de Cuenta",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "property_registry",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Registro de Propiedad",
+   "options": "Property Registry",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Cliente ERPNext",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_setup",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "billing_frequency",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Frecuencia de Facturación",
+   "options": "Mensual\nBimestral\nTrimestral\nSemestral\nAnual",
+   "reqd": 1
+  },
+  {
+   "fieldname": "account_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado de Cuenta",
+   "options": "Activa\nSuspendida\nMorosa\nCerrada",
+   "reqd": 1
+  },
+  {
+   "fieldname": "financial_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Financiera"
+  },
+  {
+   "fieldname": "current_balance",
+   "fieldtype": "Currency",
+   "label": "Saldo Actual",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "credit_balance",
+   "fieldtype": "Currency",
+   "label": "Saldo a Favor",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_financial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pending_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Pendiente",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_payment_date",
+   "fieldtype": "Date",
+   "label": "Fecha Último Pago"
+  },
+  {
+   "fieldname": "last_payment_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Último Pago",
+   "precision": "2"
+  },
+  {
+   "fieldname": "billing_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Facturación"
+  },
+  {
+   "fieldname": "fee_structure",
+   "fieldtype": "Link",
+   "label": "Estructura de Cuotas",
+   "options": "Fee Structure"
+  },
+  {
+   "fieldname": "billing_start_date",
+   "fieldtype": "Date",
+   "label": "Fecha Inicio Facturación",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_billing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "billing_day",
+   "fieldtype": "Int",
+   "label": "Día de Facturación",
+   "reqd": 1
+  },
+  {
+   "fieldname": "auto_generate_invoices",
+   "fieldtype": "Check",
+   "label": "Auto-generar Facturas"
+  },
+  {
+   "fieldname": "discount_eligibility",
+   "fieldtype": "Check",
+   "label": "Elegible para Descuentos"
+  },
+  {
+   "fieldname": "payment_history_section",
+   "fieldtype": "Section Break",
+   "label": "Historial de Pagos"
+  },
+  {
+   "fieldname": "payment_history_summary",
+   "fieldtype": "Long Text",
+   "label": "Resumen Historial Pagos",
+   "read_only": 1
+  },
+  {
+   "fieldname": "account_summary_section",
+   "fieldtype": "Section Break",
+   "label": "Resumen de Cuenta"
+  },
+  {
+   "fieldname": "monthly_fee_amount",
+   "fieldtype": "Currency",
+   "label": "Cuota Mensual",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ytd_paid_amount",
+   "fieldtype": "Currency",
+   "label": "Pagado Este Año",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_summary",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_invoiced_ytd",
+   "fieldtype": "Currency",
+   "label": "Total Facturado Este Año",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_success_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa Éxito Pagos",
+   "read_only": 1
+  },
+  {
+   "fieldname": "average_payment_delay",
+   "fieldtype": "Int",
+   "label": "Retraso Promedio Pagos (días)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "audit_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Auditoría"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_audit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha Modificación",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-13 10:00:00.000000",
+ "modified_by": "Administrator",
+ "app_name": "condominium_management",
+ "module": "Financial Management",
+ "name": "Property Account",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrador Financiero",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Contador Condominio"
+  },
+  {
+   "read": 1,
+   "role": "Comité Administración"
+  },
+  {
+   "read": 1,
+   "role": "Condómino"
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

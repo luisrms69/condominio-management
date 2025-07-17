@@ -1,0 +1,551 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-01-14 14:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "naming_series",
+  "budget_name",
+  "budget_period",
+  "column_break_basic",
+  "company",
+  "fiscal_year",
+  "budget_status",
+  "budget_configuration_section",
+  "budget_type",
+  "planning_method",
+  "column_break_config",
+  "approval_required",
+  "auto_adjustment_enabled",
+  "budget_template",
+  "income_planning_section",
+  "total_income_budgeted",
+  "maintenance_fees_budget",
+  "column_break_income",
+  "special_assessments_budget",
+  "other_income_budget",
+  "reserve_fund_contribution",
+  "expense_planning_section",
+  "total_expenses_budgeted",
+  "administrative_expenses",
+  "column_break_expenses",
+  "maintenance_expenses",
+  "utilities_expenses",
+  "insurance_expenses",
+  "reserve_allocations_section",
+  "emergency_reserve_allocation",
+  "maintenance_reserve_allocation",
+  "column_break_reserves",
+  "replacement_reserve_allocation",
+  "capital_improvement_allocation",
+  "variance_analysis_section",
+  "actual_vs_budget_enabled",
+  "variance_threshold_percentage",
+  "column_break_variance",
+  "alert_on_overspending",
+  "monthly_review_required",
+  "performance_metrics_section",
+  "total_actual_income",
+  "total_actual_expenses",
+  "column_break_metrics",
+  "income_variance_percentage",
+  "expense_variance_percentage",
+  "budget_utilization_rate",
+  "reporting_configuration_section",
+  "generate_monthly_reports",
+  "quarterly_review_enabled",
+  "column_break_reporting",
+  "annual_summary_required",
+  "stakeholder_distribution",
+  "approval_workflow_section",
+  "requires_committee_approval",
+  "committee_decision",
+  "column_break_approval",
+  "approved_by",
+  "approval_date",
+  "approval_notes",
+  "physical_spaces_integration_section",
+  "space_based_allocation",
+  "allocation_method",
+  "column_break_spaces",
+  "common_areas_percentage",
+  "individual_units_percentage",
+  "audit_information_section",
+  "created_by",
+  "creation_date",
+  "column_break_audit",
+  "last_modified_by",
+  "last_modified_date",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie de Numeración",
+   "options": "BP-.YYYY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "budget_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre del Presupuesto",
+   "reqd": 1
+  },
+  {
+   "fieldname": "budget_period",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Período Presupuestal",
+   "options": "Anual\nSemestral\nTrimestral\nMensual",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "label": "Año Fiscal",
+   "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "budget_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado del Presupuesto",
+   "options": "Borrador\nEn Revisión\nAprobado\nActivo\nCerrado\nCancelado",
+   "reqd": 1
+  },
+  {
+   "fieldname": "budget_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración del Presupuesto"
+  },
+  {
+   "fieldname": "budget_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Presupuesto",
+   "options": "Operativo\nCapital\nEmergencia\nEspecial\nMixto"
+  },
+  {
+   "fieldname": "planning_method",
+   "fieldtype": "Select",
+   "label": "Método de Planeación",
+   "options": "Base Cero\nIncremental\nHistórico\nPor Actividades"
+  },
+  {
+   "fieldname": "column_break_config",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approval_required",
+   "fieldtype": "Check",
+   "label": "Requiere Aprobación"
+  },
+  {
+   "fieldname": "auto_adjustment_enabled",
+   "fieldtype": "Check",
+   "label": "Ajuste Automático Habilitado"
+  },
+  {
+   "fieldname": "budget_template",
+   "fieldtype": "Link",
+   "label": "Plantilla de Presupuesto",
+   "options": "Budget Planning"
+  },
+  {
+   "fieldname": "income_planning_section",
+   "fieldtype": "Section Break",
+   "label": "Planeación de Ingresos"
+  },
+  {
+   "fieldname": "total_income_budgeted",
+   "fieldtype": "Currency",
+   "label": "Total Ingresos Presupuestados",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "maintenance_fees_budget",
+   "fieldtype": "Currency",
+   "label": "Presupuesto Cuotas de Mantenimiento",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_income",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "special_assessments_budget",
+   "fieldtype": "Currency",
+   "label": "Presupuesto Cuotas Especiales",
+   "precision": "2"
+  },
+  {
+   "fieldname": "other_income_budget",
+   "fieldtype": "Currency",
+   "label": "Otros Ingresos Presupuestados",
+   "precision": "2"
+  },
+  {
+   "fieldname": "reserve_fund_contribution",
+   "fieldtype": "Currency",
+   "label": "Contribución Fondo de Reserva",
+   "precision": "2"
+  },
+  {
+   "fieldname": "expense_planning_section",
+   "fieldtype": "Section Break",
+   "label": "Planeación de Gastos"
+  },
+  {
+   "fieldname": "total_expenses_budgeted",
+   "fieldtype": "Currency",
+   "label": "Total Gastos Presupuestados",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "administrative_expenses",
+   "fieldtype": "Currency",
+   "label": "Gastos Administrativos",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_expenses",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "maintenance_expenses",
+   "fieldtype": "Currency",
+   "label": "Gastos de Mantenimiento",
+   "precision": "2"
+  },
+  {
+   "fieldname": "utilities_expenses",
+   "fieldtype": "Currency",
+   "label": "Gastos de Servicios Públicos",
+   "precision": "2"
+  },
+  {
+   "fieldname": "insurance_expenses",
+   "fieldtype": "Currency",
+   "label": "Gastos de Seguros",
+   "precision": "2"
+  },
+  {
+   "fieldname": "reserve_allocations_section",
+   "fieldtype": "Section Break",
+   "label": "Asignaciones de Reserva"
+  },
+  {
+   "fieldname": "emergency_reserve_allocation",
+   "fieldtype": "Currency",
+   "label": "Asignación Reserva de Emergencia",
+   "precision": "2"
+  },
+  {
+   "fieldname": "maintenance_reserve_allocation",
+   "fieldtype": "Currency",
+   "label": "Asignación Reserva de Mantenimiento",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_reserves",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "replacement_reserve_allocation",
+   "fieldtype": "Currency",
+   "label": "Asignación Reserva de Reposición",
+   "precision": "2"
+  },
+  {
+   "fieldname": "capital_improvement_allocation",
+   "fieldtype": "Currency",
+   "label": "Asignación Mejoras de Capital",
+   "precision": "2"
+  },
+  {
+   "fieldname": "variance_analysis_section",
+   "fieldtype": "Section Break",
+   "label": "Análisis de Variaciones"
+  },
+  {
+   "fieldname": "actual_vs_budget_enabled",
+   "fieldtype": "Check",
+   "label": "Análisis Real vs Presupuesto Habilitado"
+  },
+  {
+   "fieldname": "variance_threshold_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje Umbral de Variación"
+  },
+  {
+   "fieldname": "column_break_variance",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "alert_on_overspending",
+   "fieldtype": "Check",
+   "label": "Alerta por Sobregasto"
+  },
+  {
+   "fieldname": "monthly_review_required",
+   "fieldtype": "Check",
+   "label": "Revisión Mensual Requerida"
+  },
+  {
+   "fieldname": "performance_metrics_section",
+   "fieldtype": "Section Break",
+   "label": "Métricas de Desempeño"
+  },
+  {
+   "fieldname": "total_actual_income",
+   "fieldtype": "Currency",
+   "label": "Total Ingresos Reales",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_actual_expenses",
+   "fieldtype": "Currency",
+   "label": "Total Gastos Reales",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_metrics",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "income_variance_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje Variación Ingresos",
+   "read_only": 1
+  },
+  {
+   "fieldname": "expense_variance_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje Variación Gastos",
+   "read_only": 1
+  },
+  {
+   "fieldname": "budget_utilization_rate",
+   "fieldtype": "Percent",
+   "label": "Tasa de Utilización del Presupuesto",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reporting_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Reportes"
+  },
+  {
+   "fieldname": "generate_monthly_reports",
+   "fieldtype": "Check",
+   "label": "Generar Reportes Mensuales"
+  },
+  {
+   "fieldname": "quarterly_review_enabled",
+   "fieldtype": "Check",
+   "label": "Revisión Trimestral Habilitada"
+  },
+  {
+   "fieldname": "column_break_reporting",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "annual_summary_required",
+   "fieldtype": "Check",
+   "label": "Resumen Anual Requerido"
+  },
+  {
+   "fieldname": "stakeholder_distribution",
+   "fieldtype": "Select",
+   "label": "Distribución a Interesados",
+   "options": "Automática\nManual\nSolo Aprobación\nNo Distribuir"
+  },
+  {
+   "fieldname": "approval_workflow_section",
+   "fieldtype": "Section Break",
+   "label": "Flujo de Aprobación"
+  },
+  {
+   "fieldname": "requires_committee_approval",
+   "fieldtype": "Check",
+   "label": "Requiere Aprobación del Comité"
+  },
+  {
+   "fieldname": "committee_decision",
+   "fieldtype": "Select",
+   "label": "Decisión del Comité",
+   "options": "Pendiente\nAprobado\nRechazado\nModificaciones Requeridas"
+  },
+  {
+   "fieldname": "column_break_approval",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Aprobado Por",
+   "options": "User"
+  },
+  {
+   "fieldname": "approval_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Aprobación"
+  },
+  {
+   "fieldname": "approval_notes",
+   "fieldtype": "Text",
+   "label": "Notas de Aprobación"
+  },
+  {
+   "fieldname": "physical_spaces_integration_section",
+   "fieldtype": "Section Break",
+   "label": "Integración con Espacios Físicos"
+  },
+  {
+   "fieldname": "space_based_allocation",
+   "fieldtype": "Check",
+   "label": "Asignación Basada en Espacios"
+  },
+  {
+   "fieldname": "allocation_method",
+   "fieldtype": "Select",
+   "label": "Método de Asignación",
+   "options": "Por Metros Cuadrados\nPor Indiviso\nPor Tipo de Espacio\nProporcional\nMixto"
+  },
+  {
+   "fieldname": "column_break_spaces",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "common_areas_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje Áreas Comunes"
+  },
+  {
+   "fieldname": "individual_units_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje Unidades Individuales"
+  },
+  {
+   "fieldname": "audit_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Auditoría"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_audit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha Modificación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Long Text",
+   "label": "Notas Adicionales"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-14 14:00:00.000000",
+ "modified_by": "Administrator",
+ "app_name": "condominium_management",
+ "module": "Financial Management",
+ "name": "Budget Planning",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrador Financiero",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Comité Administración",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Contador Condominio"
+  },
+  {
+   "read": 1,
+   "role": "Residente Propietario"
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

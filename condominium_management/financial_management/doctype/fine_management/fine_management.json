@@ -1,0 +1,489 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-01-14 12:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "naming_series",
+  "fine_date",
+  "fine_type",
+  "column_break_basic",
+  "fine_amount",
+  "fine_status",
+  "due_date",
+  "target_information_section",
+  "property_account",
+  "resident_account",
+  "customer",
+  "column_break_target",
+  "violator_type",
+  "violator_name",
+  "violator_contact",
+  "violation_details_section",
+  "violation_category",
+  "violation_description",
+  "column_break_violation",
+  "violation_date",
+  "violation_location",
+  "evidence_attached",
+  "fine_calculation_section",
+  "base_fine_amount",
+  "recurring_violation",
+  "column_break_calculation",
+  "recurrence_multiplier",
+  "discount_percentage",
+  "final_amount",
+  "payment_tracking_section",
+  "payment_method",
+  "payment_date",
+  "column_break_payment",
+  "payment_amount",
+  "outstanding_amount",
+  "payment_reference",
+  "approval_workflow_section",
+  "requires_committee_approval",
+  "committee_decision",
+  "column_break_approval",
+  "approved_by",
+  "approval_date",
+  "approval_notes",
+  "appeal_section",
+  "appeal_submitted",
+  "appeal_date",
+  "column_break_appeal",
+  "appeal_reason",
+  "appeal_status",
+  "appeal_resolution",
+  "enforcement_section",
+  "enforcement_level",
+  "collection_attempts",
+  "column_break_enforcement",
+  "last_reminder_date",
+  "escalation_date",
+  "legal_action_date",
+  "audit_information_section",
+  "created_by",
+  "creation_date",
+  "column_break_audit",
+  "last_modified_by",
+  "last_modified_date",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie de Numeración",
+   "options": "FM-.YYYY.-.MM.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fine_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Fecha de la Multa",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fine_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Tipo de Multa",
+   "options": "Reglamento Interno\nUso de Áreas Comunes\nRuido Excesivo\nMascotas\nEstacionamiento\nBasura\nAlteraciones\nSeguridad\nOtras",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fine_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Monto de la Multa",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fine_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado de la Multa",
+   "options": "Pendiente\nNotificada\nApelada\nConfirmada\nPagada\nVencida\nCancelada",
+   "reqd": 1
+  },
+  {
+   "fieldname": "due_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Vencimiento",
+   "reqd": 1
+  },
+  {
+   "fieldname": "target_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información del Sancionado"
+  },
+  {
+   "fieldname": "property_account",
+   "fieldtype": "Link",
+   "label": "Cuenta de Propiedad",
+   "options": "Property Account"
+  },
+  {
+   "fieldname": "resident_account",
+   "fieldtype": "Link",
+   "label": "Cuenta de Residente",
+   "options": "Resident Account"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Cliente ERPNext",
+   "options": "Customer",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_target",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "violator_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Infractor",
+   "options": "Propietario\nResidente\nVisitante\nProveedor\nContratista"
+  },
+  {
+   "fieldname": "violator_name",
+   "fieldtype": "Data",
+   "label": "Nombre del Infractor"
+  },
+  {
+   "fieldname": "violator_contact",
+   "fieldtype": "Data",
+   "label": "Contacto del Infractor"
+  },
+  {
+   "fieldname": "violation_details_section",
+   "fieldtype": "Section Break",
+   "label": "Detalles de la Infracción"
+  },
+  {
+   "fieldname": "violation_category",
+   "fieldtype": "Select",
+   "label": "Categoría de Infracción",
+   "options": "Leve\nModerada\nGrave\nMuy Grave"
+  },
+  {
+   "fieldname": "violation_description",
+   "fieldtype": "Long Text",
+   "label": "Descripción de la Infracción",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_violation",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "violation_date",
+   "fieldtype": "Date",
+   "label": "Fecha de la Infracción"
+  },
+  {
+   "fieldname": "violation_location",
+   "fieldtype": "Data",
+   "label": "Ubicación de la Infracción"
+  },
+  {
+   "fieldname": "evidence_attached",
+   "fieldtype": "Check",
+   "label": "Evidencia Adjunta"
+  },
+  {
+   "fieldname": "fine_calculation_section",
+   "fieldtype": "Section Break",
+   "label": "Cálculo de la Multa"
+  },
+  {
+   "fieldname": "base_fine_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Base de la Multa",
+   "precision": "2"
+  },
+  {
+   "fieldname": "recurring_violation",
+   "fieldtype": "Check",
+   "label": "Infracción Recurrente"
+  },
+  {
+   "fieldname": "column_break_calculation",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "recurrence_multiplier",
+   "fieldtype": "Float",
+   "label": "Multiplicador por Reincidencia",
+   "precision": "2"
+  },
+  {
+   "fieldname": "discount_percentage",
+   "fieldtype": "Percent",
+   "label": "Porcentaje de Descuento"
+  },
+  {
+   "fieldname": "final_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Final",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_tracking_section",
+   "fieldtype": "Section Break",
+   "label": "Seguimiento de Pago"
+  },
+  {
+   "fieldname": "payment_method",
+   "fieldtype": "Select",
+   "label": "Método de Pago",
+   "options": "Transferencia Bancaria\nDepósito\nEfectivo\nCheque\nTarjeta de Crédito\nTarjeta de Débito\nDescuento en Cuota"
+  },
+  {
+   "fieldname": "payment_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Pago"
+  },
+  {
+   "fieldname": "column_break_payment",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payment_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Pagado",
+   "precision": "2"
+  },
+  {
+   "fieldname": "outstanding_amount",
+   "fieldtype": "Currency",
+   "label": "Monto Pendiente",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_reference",
+   "fieldtype": "Data",
+   "label": "Referencia de Pago"
+  },
+  {
+   "fieldname": "approval_workflow_section",
+   "fieldtype": "Section Break",
+   "label": "Flujo de Aprobación"
+  },
+  {
+   "fieldname": "requires_committee_approval",
+   "fieldtype": "Check",
+   "label": "Requiere Aprobación del Comité"
+  },
+  {
+   "fieldname": "committee_decision",
+   "fieldtype": "Select",
+   "label": "Decisión del Comité",
+   "options": "Pendiente\nAprobada\nRechazada\nModificada"
+  },
+  {
+   "fieldname": "column_break_approval",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Aprobado Por",
+   "options": "User"
+  },
+  {
+   "fieldname": "approval_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Aprobación"
+  },
+  {
+   "fieldname": "approval_notes",
+   "fieldtype": "Text",
+   "label": "Notas de Aprobación"
+  },
+  {
+   "fieldname": "appeal_section",
+   "fieldtype": "Section Break",
+   "label": "Proceso de Apelación"
+  },
+  {
+   "fieldname": "appeal_submitted",
+   "fieldtype": "Check",
+   "label": "Apelación Presentada"
+  },
+  {
+   "fieldname": "appeal_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Apelación"
+  },
+  {
+   "fieldname": "column_break_appeal",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "appeal_reason",
+   "fieldtype": "Long Text",
+   "label": "Razón de la Apelación"
+  },
+  {
+   "fieldname": "appeal_status",
+   "fieldtype": "Select",
+   "label": "Estado de la Apelación",
+   "options": "No Aplica\nEn Revisión\nAprobada\nRechazada"
+  },
+  {
+   "fieldname": "appeal_resolution",
+   "fieldtype": "Text",
+   "label": "Resolución de la Apelación"
+  },
+  {
+   "fieldname": "enforcement_section",
+   "fieldtype": "Section Break",
+   "label": "Gestión de Cobranza"
+  },
+  {
+   "fieldname": "enforcement_level",
+   "fieldtype": "Select",
+   "label": "Nivel de Cobranza",
+   "options": "Recordatorio Amigable\nNotificación Formal\nUltima Advertencia\nAcción Legal"
+  },
+  {
+   "fieldname": "collection_attempts",
+   "fieldtype": "Int",
+   "label": "Intentos de Cobranza",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_enforcement",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_reminder_date",
+   "fieldtype": "Date",
+   "label": "Fecha Último Recordatorio"
+  },
+  {
+   "fieldname": "escalation_date",
+   "fieldtype": "Date",
+   "label": "Fecha de Escalación"
+  },
+  {
+   "fieldname": "legal_action_date",
+   "fieldtype": "Date",
+   "label": "Fecha Acción Legal"
+  },
+  {
+   "fieldname": "audit_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Auditoría"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_audit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha Modificación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Long Text",
+   "label": "Notas Adicionales"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-14 12:00:00.000000",
+ "modified_by": "Administrator",
+ "app_name": "condominium_management",
+ "module": "Financial Management",
+ "name": "Fine Management",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrador Financiero",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Comité Administración",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Contador Condominio"
+  },
+  {
+   "read": 1,
+   "role": "Residente Propietario"
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

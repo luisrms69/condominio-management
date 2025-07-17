@@ -113,7 +113,7 @@ class ClaudeFrameworkConfig:
 		try:
 			return json.loads(config_str)
 		except json.JSONDecodeError as e:
-			print(f"Error JSON en posición {e.pos}: {config_str[max(0, e.pos-50):e.pos+50]}")
+			print(f"Error JSON en posición {e.pos}: {config_str[max(0, e.pos - 50) : e.pos + 50]}")
 			raise
 
 	def save_config(self, config: dict) -> str:

@@ -1,0 +1,517 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-01-14 16:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_information_section",
+  "naming_series",
+  "config_name",
+  "company",
+  "column_break_basic",
+  "effective_from",
+  "config_status",
+  "transparency_level",
+  "role_access_configuration_section",
+  "enable_role_based_access",
+  "default_access_level",
+  "column_break_roles",
+  "restrict_sensitive_data",
+  "audit_trail_required",
+  "financial_data_visibility_section",
+  "income_transparency_level",
+  "expense_transparency_level",
+  "column_break_financial",
+  "budget_transparency_level",
+  "balance_transparency_level",
+  "reserve_transparency_level",
+  "document_access_control_section",
+  "invoices_access_level",
+  "payments_access_level",
+  "column_break_documents",
+  "contracts_access_level",
+  "reports_access_level",
+  "committee_decisions_access",
+  "resident_portal_configuration_section",
+  "enable_resident_portal",
+  "portal_access_level",
+  "column_break_portal",
+  "show_individual_balance",
+  "show_community_financials",
+  "allow_document_download",
+  "committee_transparency_section",
+  "committee_decisions_public",
+  "meeting_minutes_access",
+  "column_break_committee",
+  "voting_results_transparency",
+  "agenda_items_visibility",
+  "committee_communications",
+  "reporting_and_notifications_section",
+  "automatic_financial_reports",
+  "monthly_transparency_report",
+  "column_break_reporting",
+  "quarterly_summary_enabled",
+  "annual_report_generation",
+  "stakeholder_notifications",
+  "compliance_and_audit_section",
+  "regulatory_compliance_level",
+  "external_audit_access",
+  "column_break_compliance",
+  "data_retention_period",
+  "privacy_protection_level",
+  "confidentiality_agreements",
+  "custom_access_rules_section",
+  "enable_custom_rules",
+  "property_type_restrictions",
+  "column_break_custom",
+  "ownership_percentage_rules",
+  "payment_status_restrictions",
+  "special_access_grants",
+  "audit_information_section",
+  "created_by",
+  "creation_date",
+  "column_break_audit",
+  "last_modified_by",
+  "last_modified_date",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información Básica"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Serie de Numeración",
+   "options": "FTC-.YYYY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "config_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nombre de Configuración",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_basic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "effective_from",
+   "fieldtype": "Date",
+   "label": "Efectivo Desde",
+   "reqd": 1
+  },
+  {
+   "fieldname": "config_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Estado de Configuración",
+   "options": "Borrador\nEn Revisión\nAprobado\nActivo\nInactivo\nCancelado",
+   "reqd": 1
+  },
+  {
+   "fieldname": "transparency_level",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Nivel de Transparencia",
+   "options": "Básico\nEstándar\nAvanzado\nCompleto\nPersonalizado",
+   "reqd": 1
+  },
+  {
+   "fieldname": "role_access_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración de Acceso por Rol"
+  },
+  {
+   "fieldname": "enable_role_based_access",
+   "fieldtype": "Check",
+   "label": "Habilitar Acceso por Rol"
+  },
+  {
+   "fieldname": "default_access_level",
+   "fieldtype": "Select",
+   "label": "Nivel de Acceso por Defecto",
+   "options": "Solo Lectura\nLectura Limitada\nLectura Completa\nSin Acceso"
+  },
+  {
+   "fieldname": "column_break_roles",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "restrict_sensitive_data",
+   "fieldtype": "Check",
+   "label": "Restringir Datos Sensibles"
+  },
+  {
+   "fieldname": "audit_trail_required",
+   "fieldtype": "Check",
+   "label": "Auditoría Requerida"
+  },
+  {
+   "fieldname": "financial_data_visibility_section",
+   "fieldtype": "Section Break",
+   "label": "Visibilidad de Datos Financieros"
+  },
+  {
+   "fieldname": "income_transparency_level",
+   "fieldtype": "Select",
+   "label": "Nivel Transparencia Ingresos",
+   "options": "Oculto\nResumen\nDetallado\nCompleto"
+  },
+  {
+   "fieldname": "expense_transparency_level",
+   "fieldtype": "Select",
+   "label": "Nivel Transparencia Gastos",
+   "options": "Oculto\nResumen\nDetallado\nCompleto"
+  },
+  {
+   "fieldname": "column_break_financial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "budget_transparency_level",
+   "fieldtype": "Select",
+   "label": "Nivel Transparencia Presupuesto",
+   "options": "Oculto\nResumen\nDetallado\nCompleto"
+  },
+  {
+   "fieldname": "balance_transparency_level",
+   "fieldtype": "Select",
+   "label": "Nivel Transparencia Saldos",
+   "options": "Oculto\nResumen\nDetallado\nCompleto"
+  },
+  {
+   "fieldname": "reserve_transparency_level",
+   "fieldtype": "Select",
+   "label": "Nivel Transparencia Reservas",
+   "options": "Oculto\nResumen\nDetallado\nCompleto"
+  },
+  {
+   "fieldname": "document_access_control_section",
+   "fieldtype": "Section Break",
+   "label": "Control de Acceso a Documentos"
+  },
+  {
+   "fieldname": "invoices_access_level",
+   "fieldtype": "Select",
+   "label": "Nivel Acceso Facturas",
+   "options": "Sin Acceso\nSolo Propias\nTodas Resumen\nTodas Detalladas"
+  },
+  {
+   "fieldname": "payments_access_level",
+   "fieldtype": "Select",
+   "label": "Nivel Acceso Pagos",
+   "options": "Sin Acceso\nSolo Propios\nTodos Resumen\nTodos Detallados"
+  },
+  {
+   "fieldname": "column_break_documents",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contracts_access_level",
+   "fieldtype": "Select",
+   "label": "Nivel Acceso Contratos",
+   "options": "Sin Acceso\nSolo Públicos\nTodos Resumen\nTodos Detallados"
+  },
+  {
+   "fieldname": "reports_access_level",
+   "fieldtype": "Select",
+   "label": "Nivel Acceso Reportes",
+   "options": "Sin Acceso\nSolo Resumen\nReportes Básicos\nTodos los Reportes"
+  },
+  {
+   "fieldname": "committee_decisions_access",
+   "fieldtype": "Select",
+   "label": "Acceso Decisiones Comité",
+   "options": "Sin Acceso\nSolo Resultados\nDecisiones Completas\nTodo el Proceso"
+  },
+  {
+   "fieldname": "resident_portal_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuración Portal de Residentes"
+  },
+  {
+   "fieldname": "enable_resident_portal",
+   "fieldtype": "Check",
+   "label": "Habilitar Portal de Residentes"
+  },
+  {
+   "fieldname": "portal_access_level",
+   "fieldtype": "Select",
+   "label": "Nivel de Acceso Portal",
+   "options": "Básico\nEstándar\nAvanzado\nCompleto"
+  },
+  {
+   "fieldname": "column_break_portal",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "show_individual_balance",
+   "fieldtype": "Check",
+   "label": "Mostrar Saldo Individual"
+  },
+  {
+   "fieldname": "show_community_financials",
+   "fieldtype": "Check",
+   "label": "Mostrar Finanzas Comunitarias"
+  },
+  {
+   "fieldname": "allow_document_download",
+   "fieldtype": "Check",
+   "label": "Permitir Descarga de Documentos"
+  },
+  {
+   "fieldname": "committee_transparency_section",
+   "fieldtype": "Section Break",
+   "label": "Transparencia del Comité"
+  },
+  {
+   "fieldname": "committee_decisions_public",
+   "fieldtype": "Check",
+   "label": "Decisiones del Comité Públicas"
+  },
+  {
+   "fieldname": "meeting_minutes_access",
+   "fieldtype": "Select",
+   "label": "Acceso Minutas de Reuniones",
+   "options": "Sin Acceso\nSolo Resumen\nMinutas Completas\nTodo el Historial"
+  },
+  {
+   "fieldname": "column_break_committee",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "voting_results_transparency",
+   "fieldtype": "Select",
+   "label": "Transparencia Resultados Votación",
+   "options": "Oculto\nSolo Resultado\nVotos Anónimos\nVotos Identificados"
+  },
+  {
+   "fieldname": "agenda_items_visibility",
+   "fieldtype": "Select",
+   "label": "Visibilidad Agenda",
+   "options": "Privada\nSolo Títulos\nAgenda Completa\nAgenda + Documentos"
+  },
+  {
+   "fieldname": "committee_communications",
+   "fieldtype": "Select",
+   "label": "Comunicaciones del Comité",
+   "options": "Solo Oficiales\nTodas Públicas\nConsentimiento Requerido\nTransparencia Total"
+  },
+  {
+   "fieldname": "reporting_and_notifications_section",
+   "fieldtype": "Section Break",
+   "label": "Reportes y Notificaciones"
+  },
+  {
+   "fieldname": "automatic_financial_reports",
+   "fieldtype": "Check",
+   "label": "Reportes Financieros Automáticos"
+  },
+  {
+   "fieldname": "monthly_transparency_report",
+   "fieldtype": "Check",
+   "label": "Reporte Mensual de Transparencia"
+  },
+  {
+   "fieldname": "column_break_reporting",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "quarterly_summary_enabled",
+   "fieldtype": "Check",
+   "label": "Resumen Trimestral Habilitado"
+  },
+  {
+   "fieldname": "annual_report_generation",
+   "fieldtype": "Check",
+   "label": "Generación Reporte Anual"
+  },
+  {
+   "fieldname": "stakeholder_notifications",
+   "fieldtype": "Select",
+   "label": "Notificaciones a Interesados",
+   "options": "Deshabilitadas\nSolo Críticas\nTodas Importantes\nTodas las Notificaciones"
+  },
+  {
+   "fieldname": "compliance_and_audit_section",
+   "fieldtype": "Section Break",
+   "label": "Cumplimiento y Auditoría"
+  },
+  {
+   "fieldname": "regulatory_compliance_level",
+   "fieldtype": "Select",
+   "label": "Nivel Cumplimiento Regulatorio",
+   "options": "Mínimo\nEstándar\nElevado\nMáximo"
+  },
+  {
+   "fieldname": "external_audit_access",
+   "fieldtype": "Check",
+   "label": "Acceso Auditoría Externa"
+  },
+  {
+   "fieldname": "column_break_compliance",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "data_retention_period",
+   "fieldtype": "Int",
+   "label": "Período Retención Datos (años)"
+  },
+  {
+   "fieldname": "privacy_protection_level",
+   "fieldtype": "Select",
+   "label": "Nivel Protección Privacidad",
+   "options": "Básico\nEstándar\nAlto\nMáximo"
+  },
+  {
+   "fieldname": "confidentiality_agreements",
+   "fieldtype": "Check",
+   "label": "Acuerdos de Confidencialidad"
+  },
+  {
+   "fieldname": "custom_access_rules_section",
+   "fieldtype": "Section Break",
+   "label": "Reglas de Acceso Personalizadas"
+  },
+  {
+   "fieldname": "enable_custom_rules",
+   "fieldtype": "Check",
+   "label": "Habilitar Reglas Personalizadas"
+  },
+  {
+   "fieldname": "property_type_restrictions",
+   "fieldtype": "Text",
+   "label": "Restricciones por Tipo de Propiedad"
+  },
+  {
+   "fieldname": "column_break_custom",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ownership_percentage_rules",
+   "fieldtype": "Text",
+   "label": "Reglas por Porcentaje de Propiedad"
+  },
+  {
+   "fieldname": "payment_status_restrictions",
+   "fieldtype": "Text",
+   "label": "Restricciones por Estado de Pago"
+  },
+  {
+   "fieldname": "special_access_grants",
+   "fieldtype": "Long Text",
+   "label": "Otorgamientos de Acceso Especial"
+  },
+  {
+   "fieldname": "audit_information_section",
+   "fieldtype": "Section Break",
+   "label": "Información de Auditoría"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Creado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha de Creación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_audit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_modified_by",
+   "fieldtype": "Link",
+   "label": "Modificado Por",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_modified_date",
+   "fieldtype": "Datetime",
+   "label": "Fecha Modificación",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Long Text",
+   "label": "Notas Adicionales"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-14 16:00:00.000000",
+ "modified_by": "Administrator",
+ "app_name": "condominium_management",
+ "module": "Financial Management",
+ "name": "Financial Transparency Config",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrador Financiero",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Comité Administración",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Contador Condominio"
+  },
+  {
+   "read": 1,
+   "role": "Residente Propietario"
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
