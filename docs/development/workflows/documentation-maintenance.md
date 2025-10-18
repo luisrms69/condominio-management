@@ -5,6 +5,7 @@
 **Audiencia:** Claude Code, desarrolladores, mantenedores del proyecto.
 
 **Fecha creación:** 2025-10-17
+**Última actualización:** 2025-10-18
 
 ---
 
@@ -475,19 +476,19 @@ Descripción detallada.
 
 ### instructions/
 
-**Propósito:** Instrucciones temporales para comunicación con Claude Code (NO se commitea).
+**Propósito:** Instrucciones temporales para comunicación con Claude Code.
 
 **Contenido:**
 - Archivos .md temporales para instrucciones específicas
 - Borradores de documentación
 - Notas de trabajo en progreso
-- Comunicación directa con Claude Code
+- Comunicación directa con Claude Code usando @ mentions
 
 **IMPORTANTE:**
-- ✅ Este directorio está en .gitignore
-- ❌ NO commitear archivos de este directorio
+- ⚠️ NO commitear archivos de este directorio (excepto README si es necesario)
 - ✅ Usar para trabajo temporal y comunicación
 - ✅ Borrar archivos una vez incorporados a documentación oficial
+- ✅ Archivos aquí son visibles para @ mentions en Claude Code
 
 **Ubicación documentación de mantenimiento:**
 - Ver: `docs/development/workflows/documentation-maintenance.md` (este archivo)
