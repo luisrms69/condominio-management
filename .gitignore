@@ -68,8 +68,16 @@ DOCUMENTACION_*.md
 ARCHITECTURE_*.md
 TECHNICAL_*.md
 COMPANIES_MODULE_*.md
-docs/
 docs.backup/
+
+# MkDocs build output (NO COMMITEAR)
+site/
+
+# Backup files
+*.bak
+
+# Instrucciones temporales (NO COMMITEAR)
+docs/instructions/
 
 # Archivos de arquitectura externa (NO COMMITEAR)
 *_architecture*.md

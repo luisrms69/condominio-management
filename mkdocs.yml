@@ -1,0 +1,75 @@
+site_name: Condominium Management System
+site_description: Sistema integral de gestión de condominios construido sobre Frappe Framework v15
+site_url: https://github.com/buzola-tm/condominium_management
+
+theme:
+  name: material
+  language: es
+  palette:
+    primary: indigo
+    accent: indigo
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+
+plugins:
+  - search:
+      lang: es
+  - redirects:
+      redirect_maps:
+        # Archivos raíz migrados a docs/
+        'physical_spaces_architecture.md': 'development/architecture/physical-spaces.md'
+        'LAYER3_TESTING_GUIDE.md': 'development/testing/layer3-guide.md'
+        'LAYER4_TESTING_BEST_PRACTICES.md': 'development/testing/layer4-guide.md'
+        'SECURITY.md': 'admin-guide/security.md'
+  - include-markdown
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+
+nav:
+  - Inicio: index.md
+  - Inicio Rápido:
+    - Instalación: getting-started/installation.md
+    - Guía Rápida: getting-started/quick-start.md
+    - Arquitectura (visión): getting-started/architecture-overview.md
+  - Guía Usuario:
+    - Physical Spaces: user-guide/physical-spaces.md
+    - Companies: user-guide/companies.md
+  - Guía Administrador:
+    - Configuración: admin-guide/configuration.md
+    - Seguridad: admin-guide/security.md
+    - Mantenimiento: admin-guide/maintenance.md
+  - Desarrollo:
+    - Setup Dev: development/setup.md
+    - Arquitectura:
+      - Overview: development/architecture/overview.md
+      - Modelo de Dominio: development/architecture/domain-model.md
+      - Physical Spaces: development/architecture/physical-spaces.md
+      - Companies: development/architecture/companies.md
+      - Committee Management: development/architecture/committee-management.md
+    - Testing:
+      - Overview: development/testing/overview.md
+      - Layer 3 Guide: development/testing/layer3-guide.md
+      - Layer 4 Guide: development/testing/layer4-guide.md
+      - Best Practices: development/testing/best-practices.md
+    - Framework Knowledge:
+      - Known Issues: development/framework-knowledge/known-issues.md
+      - Workarounds: development/framework-knowledge/workarounds.md
+    - Workflows:
+      - Git Workflow: development/workflows/git-workflow.md
+      - CI/CD: development/workflows/ci-cd.md
+      - Troubleshooting: development/workflows/troubleshooting.md
+      - Documentation Maintenance: development/workflows/documentation-maintenance.md
+  - Referencia:
+    - README: reference/README.md
+  - Changelog: changelog/CHANGELOG.md
