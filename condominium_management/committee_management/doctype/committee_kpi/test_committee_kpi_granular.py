@@ -83,7 +83,7 @@ class TestCommitteeKPIGranular(CommitteeTestBaseGranular):
 		doc.period_year = 2025
 		self.assertEqual(doc.period_year, 2025)
 
-		doc.period_month = 7
+		doc.period_month = self.get_current_month()
 		self.assertEqual(doc.period_month, self.get_current_month())
 
 		# Test optional fields
