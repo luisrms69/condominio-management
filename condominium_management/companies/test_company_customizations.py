@@ -1,6 +1,22 @@
 # Copyright (c) 2025, Buzola and contributors
 # For license information, please see license.txt
 
+# ============================================================================
+# ⚠️ ARCHIVO OBSOLETO - NO USAR
+# ============================================================================
+# Fecha deprecación: 2025-10-20
+# Razón: Custom fields migrados a fixtures (RG-009 compliance)
+# Ver: docs/instructions/CUSTOM-FIELDS-AUDIT-REPORT.md
+#
+# Este test validaba instalación programática de custom fields.
+# Custom fields ahora se instalan automáticamente via fixtures.
+#
+# NO ejecutar este test - fallará porque install_company_customizations()
+# ya no debe usarse (causaría duplicados).
+#
+# Preservado solo como referencia histórica.
+# ============================================================================
+
 from datetime import datetime, timedelta
 
 import frappe

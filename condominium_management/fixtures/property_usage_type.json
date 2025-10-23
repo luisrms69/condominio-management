@@ -1,32 +1,42 @@
 [
  {
+  "docstatus": 0,
   "doctype": "Property Usage Type",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.601203",
   "name": "Residencial",
-  "usage_name": "Residencial",
-  "is_active": 1
+  "usage_name": "Residencial"
  },
  {
+  "docstatus": 0,
   "doctype": "Property Usage Type",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.608998",
   "name": "Comercial",
-  "usage_name": "Comercial",
-  "is_active": 1
+  "usage_name": "Comercial"
  },
  {
+  "docstatus": 0,
   "doctype": "Property Usage Type",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.613284",
   "name": "Mixto",
-  "usage_name": "Mixto",
-  "is_active": 1
+  "usage_name": "Mixto"
  },
  {
+  "docstatus": 0,
   "doctype": "Property Usage Type",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.618936",
   "name": "Industrial",
-  "usage_name": "Industrial",
-  "is_active": 1
+  "usage_name": "Industrial"
  },
  {
+  "docstatus": 0,
   "doctype": "Property Usage Type",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.626697",
   "name": "Oficinas",
-  "usage_name": "Oficinas",
-  "is_active": 1
+  "usage_name": "Oficinas"
  }
 ]

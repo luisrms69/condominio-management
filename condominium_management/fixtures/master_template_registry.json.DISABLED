@@ -1,0 +1,88 @@
+[
+ {
+  "auto_assignment_rules": [
+   {
+    "entity_subtype": "Pool Area",
+    "entity_type": "Physical Space",
+    "is_active": 1,
+    "parent": "Master Template Registry",
+    "parentfield": "auto_assignment_rules",
+    "parenttype": "Master Template Registry",
+    "priority": 5,
+    "target_template": "SWIMMING_POOL"
+   },
+   {
+    "entity_subtype": "Gym",
+    "entity_type": "Physical Space",
+    "is_active": 1,
+    "parent": "Master Template Registry",
+    "parentfield": "auto_assignment_rules",
+    "parenttype": "Master Template Registry",
+    "priority": 5,
+    "target_template": "GYM_AREA"
+   },
+   {
+    "entity_subtype": "Parking",
+    "entity_type": "Physical Space",
+    "is_active": 1,
+    "parent": "Master Template Registry",
+    "parentfield": "auto_assignment_rules",
+    "parenttype": "Master Template Registry",
+    "priority": 5,
+    "target_template": "PARKING_SPACE"
+   }
+  ],
+  "company": "Condominio Test LLC",
+  "docstatus": 0,
+  "doctype": "Master Template Registry",
+  "infrastructure_templates": [
+   {
+    "infrastructure_subtype": "Pool",
+    "infrastructure_type": "Amenity",
+    "is_active": 1,
+    "parent": "Master Template Registry",
+    "parentfield": "infrastructure_templates",
+    "parenttype": "Master Template Registry",
+    "target_document": "Manual Operativo",
+    "target_section": "Amenidades",
+    "template_code": "SWIMMING_POOL",
+    "template_content": "Template para configuración de áreas de piscina en condominios",
+    "template_fields": [],
+    "template_name": "Piscina"
+   },
+   {
+    "infrastructure_subtype": "Gym",
+    "infrastructure_type": "Amenity",
+    "is_active": 1,
+    "parent": "Master Template Registry",
+    "parentfield": "infrastructure_templates",
+    "parenttype": "Master Template Registry",
+    "target_document": "Manual Operativo",
+    "target_section": "Amenidades",
+    "template_code": "GYM_AREA",
+    "template_content": "Template para configuración de áreas de gimnasio",
+    "template_fields": [],
+    "template_name": "Gimnasio"
+   },
+   {
+    "infrastructure_subtype": "Standard",
+    "infrastructure_type": "Parking",
+    "is_active": 1,
+    "parent": "Master Template Registry",
+    "parentfield": "infrastructure_templates",
+    "parenttype": "Master Template Registry",
+    "target_document": "Reglamento",
+    "target_section": "Estacionamiento",
+    "template_code": "PARKING_SPACE",
+    "template_content": "Template para configuración de espacios de estacionamiento",
+    "template_fields": [],
+    "template_name": "Espacio de Estacionamiento"
+   }
+  ],
+  "last_update": "2025-10-07 14:02:36.483028",
+  "modified": "2025-10-07 14:02:36.479712",
+  "name": "Master Template Registry",
+  "template_version": "1.0",
+  "update_propagation_status": "En Progreso"
+ }
+]

@@ -1,46 +1,54 @@
 [
  {
-  "doctype": "Jurisdiction Level",
-  "name": "Nacional",
-  "level_name": "Nacional",
-  "hierarchy_order": 1,
-  "geographic_scope": "Nacional",
-  "can_issue_permits": 1,
   "can_enforce_laws": 1,
+  "can_issue_permits": 1,
   "contact_info": "Gobierno Nacional de Colombia",
-  "is_active": 1
+  "docstatus": 0,
+  "doctype": "Jurisdiction Level",
+  "geographic_scope": "Nacional",
+  "hierarchy_order": 1,
+  "is_active": 1,
+  "level_name": "Nacional",
+  "modified": "2025-10-07 14:02:36.387322",
+  "name": "Nacional"
  },
  {
-  "doctype": "Jurisdiction Level",
-  "name": "Departamental",
-  "level_name": "Departamental",
-  "hierarchy_order": 2,
-  "geographic_scope": "Departamental",
-  "can_issue_permits": 1,
   "can_enforce_laws": 1,
+  "can_issue_permits": 1,
   "contact_info": "Gobernación Departamental",
-  "is_active": 1
+  "docstatus": 0,
+  "doctype": "Jurisdiction Level",
+  "geographic_scope": "Departamental",
+  "hierarchy_order": 2,
+  "is_active": 1,
+  "level_name": "Departamental",
+  "modified": "2025-10-07 14:02:36.392440",
+  "name": "Departamental"
  },
  {
-  "doctype": "Jurisdiction Level",
-  "name": "Municipal",
-  "level_name": "Municipal",
-  "hierarchy_order": 3,
-  "geographic_scope": "Municipal",
-  "can_issue_permits": 1,
   "can_enforce_laws": 1,
+  "can_issue_permits": 1,
   "contact_info": "Alcaldía Municipal",
-  "is_active": 1
+  "docstatus": 0,
+  "doctype": "Jurisdiction Level",
+  "geographic_scope": "Municipal",
+  "hierarchy_order": 3,
+  "is_active": 1,
+  "level_name": "Municipal",
+  "modified": "2025-10-07 14:02:36.396509",
+  "name": "Municipal"
  },
  {
-  "doctype": "Jurisdiction Level",
-  "name": "Local",
-  "level_name": "Local",
-  "hierarchy_order": 4,
-  "geographic_scope": "Local",
-  "can_issue_permits": 0,
   "can_enforce_laws": 0,
+  "can_issue_permits": 0,
   "contact_info": "Junta de Acción Comunal",
-  "is_active": 1
+  "docstatus": 0,
+  "doctype": "Jurisdiction Level",
+  "geographic_scope": "Local",
+  "hierarchy_order": 4,
+  "is_active": 1,
+  "level_name": "Local",
+  "modified": "2025-10-07 14:02:36.400893",
+  "name": "Local"
  }
 ]

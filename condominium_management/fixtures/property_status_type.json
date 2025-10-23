@@ -1,38 +1,50 @@
 [
  {
+  "docstatus": 0,
   "doctype": "Property Status Type",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.549402",
   "name": "Activo",
-  "status_name": "Activo",
-  "is_active": 1
+  "status_name": "Activo"
  },
  {
+  "docstatus": 0,
   "doctype": "Property Status Type",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.554346",
   "name": "Inactivo",
-  "status_name": "Inactivo",
-  "is_active": 1
+  "status_name": "Inactivo"
  },
  {
+  "docstatus": 0,
   "doctype": "Property Status Type",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.558730",
   "name": "En Venta",
-  "status_name": "En Venta",
-  "is_active": 1
+  "status_name": "En Venta"
  },
  {
+  "docstatus": 0,
   "doctype": "Property Status Type",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.564326",
   "name": "En Arriendo",
-  "status_name": "En Arriendo",
-  "is_active": 1
+  "status_name": "En Arriendo"
  },
  {
+  "docstatus": 0,
   "doctype": "Property Status Type",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.570803",
   "name": "En Construcción",
-  "status_name": "En Construcción",
-  "is_active": 1
+  "status_name": "En Construcción"
  },
  {
+  "docstatus": 0,
   "doctype": "Property Status Type",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.578209",
   "name": "Abandonado",
-  "status_name": "Abandonado",
-  "is_active": 1
+  "status_name": "Abandonado"
  }
 ]

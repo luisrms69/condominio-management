@@ -311,25 +311,84 @@ before_tests = "condominium_management.utils.before_tests"
 # Fixtures
 # --------
 # Global fixtures that will be updated via bench update across all sites
+#
+# NOTA: Fixtures temporalmente deshabilitados tras audit export-fixtures (2025-10-20)
+# Ver: docs/instructions/EXPORT-FIXTURES-INVESTIGATION.md
+# Ver: docs/development/fixtures_auditoria.md
+#
 fixtures = [
-	"Master Template Registry",
-	"Entity Type Configuration",
+	# ============================================================================
+	# DESHABILITADOS - Requieren corrección antes de migrar (7/14)
+	# ============================================================================
+	# "Master Template Registry",     # ⚠️ DISABLED - Nested child tables vacíos (análisis arquitectónico pendiente)
+	# "Entity Type Configuration",    # ⚠️ DISABLED - Requiere revertir + validación (bloqueaba migrate)
+	# "Company Type",                 # ⚠️ DISABLED - Autoname inconsistency (decisión usuario pendiente)
+	# "Acquisition Type",             # ⚠️ DISABLED - Requiere script restauración document_checklist
+	# "Policy Category",              # ⚠️ DISABLED - Requiere script restauración chapter_mapping
+	# "User Type",                    # ⚠️ DISABLED - Requiere filtros para evitar contaminación framework/HRMS
+	# {                               # ⚠️ DISABLED - Contaminado con 136 test records
+	# 	"doctype": "Contribution Category",
+	# 	"filters": {"module_name": ["in", ["Document Generation", "Maintenance", "Contracts"]]},
+	# },
+	# ============================================================================
+	# HABILITADOS - Fixtures válidos listos para migrar (7/14)
+	# ============================================================================
+	# Companies Module Masters - Solo fixtures verificados como válidos
+	"Property Usage Type",  # ✅ VÁLIDO - Cosmético (5 registros íntegros: Residencial, Comercial, Mixto, Industrial, Oficinas)
+	"Property Status Type",  # ✅ VÁLIDO - Cosmético (6 registros íntegros: Activo, Inactivo, En Venta, En Arriendo, En Construcción, Abandonado)
+	"Enforcement Level",  # ✅ VÁLIDO - Cosmético (4 registros íntegros)
+	"Document Template Type",  # ✅ VÁLIDO - Cosmético (registros íntegros)
+	"Jurisdiction Level",  # ✅ VÁLIDO - Cosmético (4 registros íntegros)
+	"Compliance Requirement Type",  # ✅ VÁLIDO - Cosmético (5 registros íntegros)
+	# Companies Module Custom Fields (Company DocType)
 	{
-		"doctype": "Contribution Category",
-		"filters": {"module_name": ["in", ["Document Generation", "Maintenance", "Contracts"]]},
+		"dt": "Custom Field",
+		"filters": [
+			["dt", "=", "Company"],
+			[
+				"fieldname",
+				"in",
+				[
+					# Sección Información Condominio (10 campos)
+					"condominium_section",
+					"company_type",
+					"property_usage_type",
+					"acquisition_type",
+					"property_status_type",
+					"cb_condominium_1",
+					"total_units",
+					"total_area_sqm",
+					"construction_year",
+					"floors_count",
+					# Sección Administración (5 campos)
+					"management_section",
+					"management_company",
+					"management_start_date",
+					"management_contract_end_date",
+					"managed_properties",
+					# Sección Legal (6 campos)
+					"legal_section",
+					"legal_representative",
+					"legal_representative_id",
+					"cb_legal_1",
+					"registration_chamber_commerce",
+					"registration_date",
+					# Sección Financiera (6 campos)
+					"financial_section",
+					"monthly_admin_fee",
+					"reserve_fund",
+					"cb_financial_1",
+					"insurance_policy_number",
+					"insurance_expiry_date",
+				],
+			],
+		],
 	},
-	# Companies Module Masters
-	"Company Type",
-	"Property Usage Type",
-	"Acquisition Type",
-	"Property Status Type",
-	"Policy Category",
-	"Enforcement Level",
-	"User Type",
-	"Document Template Type",
-	"Jurisdiction Level",
-	"Compliance Requirement Type",
 ]
+
+# NOTA IMPORTANTE: Los archivos .json de fixtures deshabilitados NO se borran
+# Se mantienen en fixtures/ como referencia para correcciones futuras
+# Ver plan corrección completo en: docs/instructions/EXPORT-FIXTURES-INVESTIGATION.md
 
 # Overriding Methods
 # ------------------------------
