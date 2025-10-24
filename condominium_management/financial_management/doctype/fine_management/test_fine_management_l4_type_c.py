@@ -7,40 +7,13 @@ Categoría C: < 500ms API calls
 import json
 import os
 import time
+import unittest
 from unittest.mock import MagicMock, patch
 
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
-"""
-⚠️ TESTS DESHABILITADOS TEMPORALMENTE (PR #24)
 
-RAZÓN:
-- Entity Type Configuration fixture deshabilitado por contaminación
-- Causa que 10 DocTypes de financial_management no instalen tablas en CI
-- Tests fallan con: Error in query: DESCRIBE `tab{doctype}`
-
-CONTEXTO:
-- PR #24 deshabilita Entity Type Configuration (fixture corrupto)
-- Financial Management tiene dependencia implícita no documentada
-- Tablas NO se crean durante migrate en CI
-
-DOCUMENTACIÓN:
-- Investigación completa: docs/instructions/EXPORT-FIXTURES-INVESTIGATION.md
-- Issue tracking: Dependencia Entity Type Config → Financial Management
-
-SOLUCIÓN FUTURA:
-1. Arreglar Entity Type Configuration fixture
-2. Documentar dependencia explícitamente
-3. Re-habilitar tests
-
-FECHA: 2025-10-23
-"""
-
-import unittest
-
-
-@unittest.skip("Financial Management tests disabled - Entity Type Configuration issue (PR #24)")
 class TestFineManagementL4TypeC(FrappeTestCase):
 	"""Layer 4 Type C Advanced Integration Test - REGLA #56 Categoría C"""
 
