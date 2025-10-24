@@ -1,6 +1,27 @@
 # Copyright (c) 2025, Buzola and contributors
 # For license information, please see license.txt
 
+# ============================================================================
+# ⚠️ ARCHIVO OBSOLETO - NO USAR
+# ============================================================================
+# Fecha deprecación: 2025-10-20
+# Razón: Custom fields migrados a fixtures (RG-009 compliance)
+# Reemplazo: condominium_management/fixtures/custom_field.json
+# Ver: docs/instructions/CUSTOM-FIELDS-AUDIT-REPORT.md
+# Ver: docs/instructions/EXPORT-FIXTURES-INVESTIGATION.md
+#
+# Este archivo definía 27 custom fields que se creaban programáticamente,
+# violando RG-009 de zero-config deployment.
+#
+# Los custom fields ahora se instalan automáticamente via fixtures.
+#
+# NO llamar create_company_custom_fields() - causará duplicados
+# NO usar en instalación
+# NO ejecutar manualmente
+#
+# Preservado solo como referencia histórica.
+# ============================================================================
+
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 

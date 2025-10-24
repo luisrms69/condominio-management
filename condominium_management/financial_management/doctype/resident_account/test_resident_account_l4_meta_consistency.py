@@ -6,6 +6,7 @@ Conservative approach: JSON vs Frappe Meta validation
 
 import json
 import os
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

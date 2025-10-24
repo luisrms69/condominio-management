@@ -5,6 +5,7 @@ Categoría B: Service Activation Performance validation - Target: < 100ms
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

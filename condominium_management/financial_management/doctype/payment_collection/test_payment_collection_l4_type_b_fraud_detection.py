@@ -5,6 +5,7 @@ Fraud Detection: < 200ms for fraud detection operations (65 transaction analyses
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

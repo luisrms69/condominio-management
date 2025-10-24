@@ -7,6 +7,7 @@ Compliance Automation: < 180ms for compliance automation operations (80 complian
 import random
 import string
 import time
+import unittest
 from datetime import datetime
 
 import frappe

@@ -5,6 +5,7 @@ Categoría B: Invoice Generation Performance validation - Target: < 500ms
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

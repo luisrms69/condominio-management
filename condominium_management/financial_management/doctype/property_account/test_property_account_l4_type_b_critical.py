@@ -5,6 +5,7 @@ Critical Performance: < 200ms for complex queries
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

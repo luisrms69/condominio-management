@@ -11,12 +11,18 @@ y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 - Sistema de documentación con MkDocs
 - Estructura base de carpetas docs/
 - Configuración inicial del proyecto
+- Fixture custom_field.json con 27 custom fields Company (migración de código programático)
+- Documentación auditoría: CUSTOM-FIELDS-AUDIT-REPORT.md
+- Documentación investigación: EXPORT-FIXTURES-INVESTIGATION.md
 
 ### Changed
-- N/A
+- Fixtures Companies: 7 habilitados (válidos), 7 deshabilitados (contaminados/errores)
+- Scripts obsoletos marcados con headers OBSOLETO (install.py, company_custom_fields.py)
 
 ### Fixed
-- N/A
+- Violación RG-009: Custom fields Company ahora migran automáticamente vía fixtures
+- Contaminación export-fixtures: 7 fixtures problemáticos protegidos con extensión .DISABLED
+- Zero-config deployment: Nuevos sitios instalarán custom fields automáticamente
 
 ## [0.1.0] - 2025-10-17
 

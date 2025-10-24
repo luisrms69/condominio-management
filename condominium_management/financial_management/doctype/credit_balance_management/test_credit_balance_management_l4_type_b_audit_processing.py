@@ -5,6 +5,7 @@ Audit Processing: < 160ms for credit audit processing operations (50 audit revie
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

@@ -5,6 +5,7 @@ Escalation Processing: < 130ms for fine escalation operations (35 escalations)
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

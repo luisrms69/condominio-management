@@ -7,6 +7,7 @@ Advanced Analytics: < 190ms for advanced analytics operations (80 analytics proc
 import random
 import string
 import time
+import unittest
 from datetime import datetime
 
 import frappe

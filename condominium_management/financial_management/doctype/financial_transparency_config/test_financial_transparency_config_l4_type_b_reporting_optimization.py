@@ -5,6 +5,7 @@ Reporting Optimization: < 220ms for complex reporting operations (35 reports)
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

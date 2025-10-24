@@ -5,6 +5,7 @@ Financial Operations Priority: Balance Update Performance < 80ms
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

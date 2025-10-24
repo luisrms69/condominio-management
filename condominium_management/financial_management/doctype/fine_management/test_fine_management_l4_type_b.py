@@ -5,6 +5,7 @@ Categoría B: Fine Calculation Performance validation - Target: < 150ms
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

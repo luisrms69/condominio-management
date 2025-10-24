@@ -5,6 +5,7 @@ Reporting & Analytics Priority: Fine Calculation Performance < 120ms
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

@@ -5,6 +5,7 @@ Critical Performance: < 50ms for complex structures
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

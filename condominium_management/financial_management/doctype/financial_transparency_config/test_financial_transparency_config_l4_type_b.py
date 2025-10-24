@@ -5,6 +5,7 @@ Categoría B: Config Activation Performance validation - Target: < 50ms
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

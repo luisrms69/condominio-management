@@ -6,6 +6,7 @@ Conservative approach: Permissions configuration validation
 
 import json
 import os
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

@@ -5,6 +5,7 @@ Critical Performance: < 18ms for 75 calculations
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

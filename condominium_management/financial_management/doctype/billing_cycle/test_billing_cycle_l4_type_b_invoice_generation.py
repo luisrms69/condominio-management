@@ -5,6 +5,7 @@ Financial Operations Priority: Invoice Generation Performance < 200ms
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

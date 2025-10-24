@@ -5,6 +5,7 @@ Critical Performance: < 30ms per doc for 30 applications
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

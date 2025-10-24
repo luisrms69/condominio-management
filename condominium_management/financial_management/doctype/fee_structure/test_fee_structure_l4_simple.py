@@ -6,6 +6,7 @@ Conservative approach: Only basic JSON configuration validation
 
 import json
 import os
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

@@ -5,6 +5,7 @@ Limit Management: < 140ms for credit limit management operations (55 limit revie
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

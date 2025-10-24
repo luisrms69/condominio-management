@@ -5,6 +5,7 @@ Mass Transfer: < 140ms for credit mass transfer operations (55 transfers)
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

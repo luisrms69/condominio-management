@@ -4,6 +4,8 @@ REGLA #52 - Financial Transparency Config Layer 4 Database Schema Consistency Te
 Categoría A: Validar que campos Meta existen en DB schema
 """
 
+import unittest
+
 import frappe
 from frappe.tests.utils import FrappeTestCase
 

@@ -7,6 +7,7 @@ Enterprise Scaling: < 240ms for enterprise scaling operations (90 scaling proces
 import random
 import string
 import time
+import unittest
 from datetime import datetime
 
 import frappe

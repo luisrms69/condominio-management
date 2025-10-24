@@ -4,6 +4,8 @@ REGLA #52 - Credit Balance Management Layer 4 Database Schema Consistency Test
 Categoría A: Validar que campos Meta existen en DB schema
 """
 
+import unittest
+
 import frappe
 from frappe.tests.utils import FrappeTestCase
 

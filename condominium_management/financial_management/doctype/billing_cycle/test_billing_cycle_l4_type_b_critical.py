@@ -5,6 +5,7 @@ Critical Performance: < 3s for 1000 invoices
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

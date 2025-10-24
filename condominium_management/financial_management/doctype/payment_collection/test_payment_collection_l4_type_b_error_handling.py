@@ -7,6 +7,7 @@ Error Handling: < 150ms for error handling operations (90 error scenarios)
 import random
 import string
 import time
+import unittest
 from datetime import datetime
 
 import frappe

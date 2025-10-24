@@ -5,6 +5,7 @@ Advanced Performance: < 150ms for complex balance aggregation (60 accounts)
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

@@ -7,6 +7,7 @@ Metaverse Integration: < 220ms for metaverse integration operations (85 metavers
 import random
 import string
 import time
+import unittest
 from datetime import datetime
 
 import frappe

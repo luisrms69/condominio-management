@@ -5,6 +5,7 @@ Mass Processing: < 200ms for mass billing operations (50 cycles)
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

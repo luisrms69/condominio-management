@@ -1,0 +1,82 @@
+[
+ {
+  "applies_to_estatuto": 0,
+  "applies_to_manual": 1,
+  "applies_to_reglamento": 0,
+  "auto_detect_on_create": 1,
+  "conflict_detection_enabled": 0,
+  "conflict_fields": [],
+  "detection_field": null,
+  "docstatus": 0,
+  "doctype": "Entity Type Configuration",
+  "entity_doctype": "User",
+  "entity_name": "Usuario",
+  "entity_name_plural": "Usuarios",
+  "is_active": 1,
+  "modified": "2025-07-09 19:16:29.823505",
+  "name": "User",
+  "owning_module": "Document Generation",
+  "requires_configuration": 1
+ },
+ {
+  "applies_to_estatuto": 1,
+  "applies_to_manual": 1,
+  "applies_to_reglamento": 1,
+  "auto_detect_on_create": 1,
+  "conflict_detection_enabled": 1,
+  "conflict_fields": [
+   {
+    "conflict_type": "Horario",
+    "field_label": "Inicio del Contrato",
+    "field_name": "contract_start",
+    "is_active": 1,
+    "parent": "Service Contract Configuration",
+    "parentfield": "conflict_fields",
+    "parenttype": "Entity Type Configuration",
+    "severity": "Alta",
+    "validation_rule": null
+   },
+   {
+    "conflict_type": "Recurso",
+    "field_label": "Nivel de Compartición de Datos",
+    "field_name": "data_sharing_level",
+    "is_active": 1,
+    "parent": "Service Contract Configuration",
+    "parentfield": "conflict_fields",
+    "parenttype": "Entity Type Configuration",
+    "severity": "Media",
+    "validation_rule": null
+   }
+  ],
+  "detection_field": null,
+  "docstatus": 0,
+  "doctype": "Entity Type Configuration",
+  "entity_doctype": "Service Contract Configuration",
+  "entity_name": "Contrato de Gestión de Servicios",
+  "entity_name_plural": "Contratos de Gestión de Servicios",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.338003",
+  "name": "Service Contract Configuration",
+  "owning_module": "Companies",
+  "requires_configuration": 1
+ },
+ {
+  "applies_to_estatuto": 0,
+  "applies_to_manual": 0,
+  "applies_to_reglamento": 0,
+  "auto_detect_on_create": 0,
+  "conflict_detection_enabled": 0,
+  "conflict_fields": [],
+  "detection_field": null,
+  "docstatus": 0,
+  "doctype": "Entity Type Configuration",
+  "entity_doctype": "Document Configuration",
+  "entity_name": "Documento del Sistema",
+  "entity_name_plural": "Documentos del Sistema",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.366651",
+  "name": "Document Configuration",
+  "owning_module": "Document Generation",
+  "requires_configuration": 0
+ }
+]

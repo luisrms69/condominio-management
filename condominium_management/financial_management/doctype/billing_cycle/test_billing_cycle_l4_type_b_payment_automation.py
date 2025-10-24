@@ -5,6 +5,7 @@ Payment Automation: < 210ms for automated payment processing operations (55 auto
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

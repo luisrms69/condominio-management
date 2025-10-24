@@ -5,6 +5,7 @@ Integration Stress: < 190ms for integration stress operations (45 integrations)
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

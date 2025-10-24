@@ -5,6 +5,7 @@ Compliance Tracking: < 150ms for compliance tracking operations (60 compliance c
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

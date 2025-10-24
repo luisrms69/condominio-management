@@ -5,6 +5,7 @@ Optimization Engine: < 190ms for fee optimization operations (45 optimization ru
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

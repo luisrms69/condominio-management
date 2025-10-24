@@ -5,6 +5,7 @@ Critical Performance: < 40ms per doc for 25 fines
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

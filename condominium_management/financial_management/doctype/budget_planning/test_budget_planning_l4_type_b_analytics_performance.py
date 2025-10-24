@@ -5,6 +5,7 @@ Analytics Performance: < 240ms for complex analytics operations (40 budgets)
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

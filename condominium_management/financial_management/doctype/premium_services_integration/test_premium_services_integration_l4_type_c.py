@@ -7,6 +7,7 @@ Categoría C: < 800ms form loading
 import json
 import os
 import time
+import unittest
 from unittest.mock import MagicMock, patch
 
 import frappe

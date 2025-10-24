@@ -4,6 +4,8 @@ REGLA #52 - Fee Structure Layer 4 Hooks Registration Validation Test
 Categoría A: Verificar hooks registrados y funcionales
 """
 
+import unittest
+
 import frappe
 from frappe.tests.utils import FrappeTestCase
 

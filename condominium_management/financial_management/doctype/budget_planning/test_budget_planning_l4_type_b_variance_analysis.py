@@ -5,6 +5,7 @@ Reporting & Analytics Priority: Variance Analysis Performance < 250ms
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

@@ -1,57 +1,67 @@
 [
  {
-  "doctype": "Document Template Type",
-  "name": "Memorando",
-  "template_type_name": "Memorando",
   "category": "Administrativo",
-  "requires_signature": 1,
-  "requires_notarization": 0,
+  "docstatus": 0,
+  "doctype": "Document Template Type",
+  "is_active": 1,
   "is_legal_document": 0,
+  "modified": "2025-10-07 14:02:36.188193",
+  "name": "Memorando",
+  "requires_notarization": 0,
+  "requires_signature": 1,
   "retention_period_days": 365,
-  "is_active": 1
+  "template_type_name": "Memorando"
  },
  {
-  "doctype": "Document Template Type",
-  "name": "Contrato",
-  "template_type_name": "Contrato",
   "category": "Legal",
-  "requires_signature": 1,
-  "requires_notarization": 1,
+  "docstatus": 0,
+  "doctype": "Document Template Type",
+  "is_active": 1,
   "is_legal_document": 1,
+  "modified": "2025-10-07 14:02:36.193325",
+  "name": "Contrato",
+  "requires_notarization": 1,
+  "requires_signature": 1,
   "retention_period_days": 1825,
-  "is_active": 1
+  "template_type_name": "Contrato"
  },
  {
-  "doctype": "Document Template Type",
-  "name": "Factura",
-  "template_type_name": "Factura",
   "category": "Financiero",
-  "requires_signature": 1,
-  "requires_notarization": 0,
+  "docstatus": 0,
+  "doctype": "Document Template Type",
+  "is_active": 1,
   "is_legal_document": 0,
+  "modified": "2025-10-07 14:02:36.197203",
+  "name": "Factura",
+  "requires_notarization": 0,
+  "requires_signature": 1,
   "retention_period_days": 1095,
-  "is_active": 1
+  "template_type_name": "Factura"
  },
  {
-  "doctype": "Document Template Type",
-  "name": "Informe Técnico",
-  "template_type_name": "Informe Técnico",
   "category": "Técnico",
-  "requires_signature": 1,
-  "requires_notarization": 0,
+  "docstatus": 0,
+  "doctype": "Document Template Type",
+  "is_active": 1,
   "is_legal_document": 0,
+  "modified": "2025-10-07 14:02:36.200953",
+  "name": "Informe Técnico",
+  "requires_notarization": 0,
+  "requires_signature": 1,
   "retention_period_days": 730,
-  "is_active": 1
+  "template_type_name": "Informe Técnico"
  },
  {
-  "doctype": "Document Template Type",
-  "name": "Carta",
-  "template_type_name": "Carta",
   "category": "Correspondencia",
-  "requires_signature": 1,
-  "requires_notarization": 0,
+  "docstatus": 0,
+  "doctype": "Document Template Type",
+  "is_active": 1,
   "is_legal_document": 0,
+  "modified": "2025-10-07 14:02:36.205461",
+  "name": "Carta",
+  "requires_notarization": 0,
+  "requires_signature": 1,
   "retention_period_days": 365,
-  "is_active": 1
+  "template_type_name": "Carta"
  }
 ]

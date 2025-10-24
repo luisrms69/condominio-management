@@ -5,6 +5,7 @@ Access Analytics: < 180ms for access analytics operations (40 access analyses)
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

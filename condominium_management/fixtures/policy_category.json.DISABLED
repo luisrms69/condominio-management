@@ -1,0 +1,47 @@
+[
+ {
+  "category_name": "Convivencia",
+  "chapter_mapping": null,
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.518640",
+  "name": "Convivencia"
+ },
+ {
+  "category_name": "Seguridad",
+  "chapter_mapping": null,
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.524249",
+  "name": "Seguridad"
+ },
+ {
+  "category_name": "Mantenimiento",
+  "chapter_mapping": null,
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.528550",
+  "name": "Mantenimiento"
+ },
+ {
+  "category_name": "Uso de Espacios Comunes",
+  "chapter_mapping": null,
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.532254",
+  "name": "Uso de Espacios Comunes"
+ },
+ {
+  "category_name": "Administración",
+  "chapter_mapping": null,
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-07 14:02:36.536063",
+  "name": "Administración"
+ }
+]

@@ -5,6 +5,7 @@ Categoría B: Document Creation Performance validation - Target: < 200ms
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

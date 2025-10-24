@@ -4,6 +4,8 @@ REGLA #52 - Premium Services Integration Layer 4 Database Schema Consistency Tes
 Categoría A: Validar que campos Meta existen en DB schema
 """
 
+import unittest
+
 import frappe
 from frappe.tests.utils import FrappeTestCase
 

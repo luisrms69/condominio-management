@@ -5,6 +5,7 @@ Predictive Modeling: < 230ms for budget prediction operations (35 prediction mod
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

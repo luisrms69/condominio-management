@@ -5,6 +5,7 @@ Critical Performance: < 300ms for reporting queries
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

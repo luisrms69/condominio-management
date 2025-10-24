@@ -4,6 +4,8 @@ REGLA #52 - Credit Balance Management Layer 4 Field Configuration Integrity Deep
 Categoría A: Validar opciones Select, reqd/mandatory consistency
 """
 
+import unittest
+
 import frappe
 from frappe.tests.utils import FrappeTestCase
 

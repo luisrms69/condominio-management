@@ -5,6 +5,7 @@ Complex Business Logic Priority: Service Activation Performance < 160ms
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

@@ -5,6 +5,7 @@ Calculation Intensive: < 160ms for intensive fee calculations (65 calculations)
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

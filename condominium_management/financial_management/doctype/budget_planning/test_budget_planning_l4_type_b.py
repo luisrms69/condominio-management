@@ -5,6 +5,7 @@ Categoría B: Budget Calculation Performance validation - Target: < 250ms
 """
 
 import time
+import unittest
 
 import frappe
 from frappe.tests.utils import FrappeTestCase

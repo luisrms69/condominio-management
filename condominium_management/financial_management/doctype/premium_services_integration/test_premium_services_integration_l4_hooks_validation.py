@@ -4,6 +4,8 @@ REGLA #52 - Premium Services Integration Layer 4 Hooks Registration Validation T
 Categoría A: Verificar hooks registrados y funcionales
 """
 
+import unittest
+
 import frappe
 from frappe.tests.utils import FrappeTestCase
 
