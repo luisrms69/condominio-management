@@ -16,13 +16,14 @@ y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 - Documentación investigación: EXPORT-FIXTURES-INVESTIGATION.md
 
 ### Changed
-- Fixtures Companies: 7 habilitados (válidos), 7 deshabilitados (contaminados/errores)
+- Fixtures Companies: 8 habilitados (7 válidos + 1 reparado), 6 deshabilitados (contaminados/errores)
 - Scripts obsoletos marcados con headers OBSOLETO (install.py, company_custom_fields.py)
 
 ### Fixed
 - Violación RG-009: Custom fields Company ahora migran automáticamente vía fixtures
 - Contaminación export-fixtures: 7 fixtures problemáticos protegidos con extensión .DISABLED
 - Zero-config deployment: Nuevos sitios instalarán custom fields automáticamente
+- **company_type.json: Reparado con códigos cortos (ADMIN, CONDO, PROV, CONTR) para compatibilidad test suite**
 
 ## [0.1.0] - 2025-10-17
 

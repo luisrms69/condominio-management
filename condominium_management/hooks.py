@@ -318,11 +318,11 @@ before_tests = "condominium_management.utils.before_tests"
 #
 fixtures = [
 	# ============================================================================
-	# DESHABILITADOS - Requieren corrección antes de migrar (7/14)
+	# DESHABILITADOS - Requieren corrección antes de migrar (6/14)
 	# ============================================================================
 	# "Master Template Registry",     # ⚠️ DISABLED - Nested child tables vacíos (análisis arquitectónico pendiente)
 	# "Entity Type Configuration",    # ⚠️ DISABLED - Requiere revertir + validación (bloqueaba migrate)
-	# "Company Type",                 # ⚠️ DISABLED - Autoname inconsistency (decisión usuario pendiente)
+	"Company Type",  # ✅ ENABLED - Autoname normalizado (name == type_code)
 	# "Acquisition Type",             # ⚠️ DISABLED - Requiere script restauración document_checklist
 	# "Policy Category",              # ⚠️ DISABLED - Requiere script restauración chapter_mapping
 	# "User Type",                    # ⚠️ DISABLED - Requiere filtros para evitar contaminación framework/HRMS
