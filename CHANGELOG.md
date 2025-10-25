@@ -14,6 +14,10 @@ y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 - Fixture custom_field.json con 27 custom fields Company (migración de código programático)
 - Documentación auditoría: CUSTOM-FIELDS-AUDIT-REPORT.md
 - Documentación investigación: EXPORT-FIXTURES-INVESTIGATION.md
+- Plan testing sistema completo: Sección J (Manuales usuario/administrador post-testing)
+- Plan testing: Checkpoint técnico integridad fixtures post A-C
+- Plan testing: Item A7 con tabla fixtures críticos P0-P2
+- Reporte testing Secciones A+I+B1: REPORTE-TESTING-A-C.md (85% completitud, 13/24 items)
 
 ### Changed
 - Fixtures Companies: 8 habilitados (7 válidos + 1 reparado), 6 deshabilitados (contaminados/errores)
@@ -24,6 +28,13 @@ y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 - Contaminación export-fixtures: 7 fixtures problemáticos protegidos con extensión .DISABLED
 - Zero-config deployment: Nuevos sitios instalarán custom fields automáticamente
 - **company_type.json: Reparado con códigos cortos (ADMIN, CONDO, PROV, CONTR) para compatibilidad test suite**
+
+### Testing
+- Ejecución testing Sección A (Preparación entorno): 8/8 items completados
+- Ejecución testing Sección I (Roles migrables): 3/4 checks (75%), fixture roles faltante identificado
+- Ejecución testing Sección B1 (Company test): 100% éxito, company_type.json reparación verificada
+- Scripts automatización testing: verificar_roles_i1_i4.py, crear_company_test_b1.py, verificar_b2_b4_anticipado.py
+- Testing programático anticipado B2-B4: Dashboard Consolidado faltante identificado (CRÍTICO)
 
 ## [0.1.0] - 2025-10-17
 

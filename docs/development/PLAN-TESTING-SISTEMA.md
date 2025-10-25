@@ -52,7 +52,7 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 
 ---
 
-## 🧩 A. Preparación del entorno (16 min)
+## 🧩 A. Preparación del entorno (18 min)
 
 | Ítem | Descripción | Resultado esperado | Estado | Tiempo |
 |------|-------------|-------------------|--------|--------|
@@ -63,6 +63,19 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 | A4 | Confirmar módulos instalados | ls -d + find DocTypes count >10 | ☐ | 3 min |
 | A5 | Verificar roles base existen | frappe.db.exists() Property Manager y Maintenance Staff | ☐ | 2 min |
 | A6 | Crear usuarios prueba por rol | 1 Property Manager (solo si rol existe) | ☐ | 3 min |
+| A7 | Registro fixtures críticos | Documentar fixtures activos/pendientes con impacto | ☐ | 2 min |
+
+**A7 - Tabla de fixtures críticos:**
+
+| Fixture | Estado | Impacto | Comentario |
+|---------|--------|---------|------------|
+| company_type.json | ✅ ENABLED | P1 | Reparado (2025-10-24), códigos cortos ADMIN/CONDO/PROV/CONTR |
+| acquisition_type.json | ❌ DISABLED | P0 | Bloquea Committee Management flows |
+| policy_category.json | ❌ DISABLED | P1 | Afecta Document Generation |
+| master_template_registry.json | ❌ DISABLED | P1 | Plantillas base sistema |
+| entity_type_configuration.json | ❌ DISABLED | P2 | Clasificaciones auxiliares |
+| contribution_category.json | ❌ DISABLED | P2 | Módulos contribuciones |
+| user_type.json | ❌ DISABLED | P2 | Perfiles secundarios |
 
 **Comandos verificación:**
 ```bash
@@ -87,7 +100,7 @@ grep "fixtures =" condominium_management/hooks.py  # Verificar lista no comentad
 - SOLO verificar estado fixtures por archivos (.DISABLED) y hooks.py
 - Custom fields Company: Fixture tiene 27, BD puede tener más (contaminación)
 
-**✅ Salida:** Entorno listo, fixtures DESHABILITADOS confirmados (7), roles verificados, usuario prueba creado
+**✅ Salida:** Entorno listo, fixtures críticos documentados (A7), roles verificados, usuario prueba creado
 
 ---
 
@@ -125,6 +138,30 @@ grep "fixtures =" condominium_management/hooks.py  # Verificar lista no comentad
 | C7 | Probar Print/Email/Attach | Acciones ejecutan sin excepción | ☐ | 3 min |
 
 **✅ Salida:** Navegación funcional, UX básica verificada, labels español compliant
+
+### 🔍 Checkpoint Técnico - Integridad Fixtures (Post A-C)
+
+**Objetivo:** Validar que fixtures habilitados no generen errores de exportación (test integridad técnica)
+
+**Comando:**
+```bash
+bench --site admin1.dev export-fixtures --app condominium_management
+echo "Exit code: $?"
+```
+
+**Criterio éxito:** Exit code = 0 (sin errores)
+
+**⚠️ IMPORTANTE:**
+- Este checkpoint NO requiere commitear cambios en JSONs
+- Solo verifica que export-fixtures ejecute sin errores
+- Si falla, registrar como "Fixture-Integrity Issue" en reporte
+- Timestamps/reordenamiento son esperados, NO son errores
+
+**Si falla:**
+1. Capturar error exacto
+2. Documentar en REPORTE-TESTING-A-C.md
+3. NO intentar corregir fixtures
+4. Continuar con Fase 2 (decisión sobre D)
 
 ---
 
@@ -641,6 +678,12 @@ wc -l docs/development/TESTING-EXECUTION.md
 
 **Objetivo:** Verificar que todos los roles utilizados en este plan de testing sean migrables automáticamente a instalaciones de producción, garantizando que no sean específicos del site de desarrollo.
 
+**⚠️ ACCIÓN REQUERIDA POST-TESTING:**
+Una vez completada esta sección, crear documentación específica de roles en:
+- **Ubicación:** `docs/reference/roles.md`
+- **Contenido:** Lista de roles del sistema, descripción, permisos, y proceso de creación automática
+- **Formato:** Tabla con columnas: Rol, Descripción, Permisos principales, Creación (fixture/hook/manual), Estado migración
+
 ### Roles a verificar
 
 | Rol | Usado en sección | Debe ser migrable | Verificación requerida |
@@ -751,6 +794,90 @@ cat condominium_management/install.py 2>/dev/null || echo "No existe install.py"
 ```
 
 **✅ Salida I:** Roles verificados como migrables, issues documentados si aplica, garantía de portabilidad a producción
+
+---
+
+## 📚 J. Documentación Usuario/Administrador Post-Testing
+
+**Objetivo:** Al completar la implementación del plan de testing y corrección de fixtures, crear documentación completa para usuarios finales y administradores del sistema.
+
+**⚠️ ACCIÓN REQUERIDA POST-IMPLEMENTACIÓN:**
+
+### J1: Manual de Usuario (`docs/user-guide/`)
+
+Crear estructura de documentación para usuarios finales:
+
+```
+docs/user-guide/
+├── README.md                          # Índice general del manual de usuario
+├── getting-started/
+│   ├── login-navigation.md           # Acceso y navegación básica
+│   └── dashboard-overview.md         # Dashboard Consolidado
+├── modules/
+│   ├── companies.md                  # Gestión de empresas (Administradora/Condominio)
+│   ├── physical-spaces.md            # Gestión de espacios físicos
+│   ├── committee-management.md       # Comités y acuerdos
+│   ├── community-contributions.md    # Contribuciones comunitarias
+│   ├── financial-management.md       # Gestión financiera
+│   └── document-generation.md        # Generación de documentos
+└── workflows/
+    ├── create-company.md             # Workflow: Crear nueva empresa
+    ├── manage-physical-space.md      # Workflow: Gestionar espacios
+    └── generate-reports.md           # Workflow: Generar reportes
+```
+
+**Contenido mínimo cada módulo:**
+- Descripción funcionalidad
+- Screenshots UI principales
+- Pasos workflows comunes
+- Casos de uso típicos
+- Troubleshooting básico
+
+### J2: Manual Administrador Sistema (`docs/admin-guide/`)
+
+Crear estructura de documentación para administradores:
+
+```
+docs/admin-guide/
+├── README.md                          # Índice general del manual admin
+├── installation/
+│   ├── requirements.md               # Prerequisitos sistema
+│   ├── fresh-install.md              # Instalación desde cero
+│   └── migration.md                  # Migración desde versiones anteriores
+├── configuration/
+│   ├── fixtures-management.md        # Gestión de fixtures
+│   ├── custom-fields.md              # Custom fields Company y otros
+│   ├── roles-permissions.md          # Roles y permisos del sistema
+│   └── company-types.md              # Configuración tipos de empresa
+├── maintenance/
+│   ├── backup-restore.md             # Backups y restauración
+│   ├── troubleshooting.md            # Resolución problemas comunes
+│   └── performance-tuning.md         # Optimización rendimiento
+└── fixtures/
+    ├── overview.md                    # Overview sistema fixtures
+    ├── enabled-fixtures.md            # Fixtures habilitados (8 actuales)
+    ├── disabled-fixtures.md           # Fixtures deshabilitados (6 actuales)
+    └── repair-guide.md                # Guía reparación fixtures rotos
+```
+
+**Contenido mínimo:**
+- Procedimientos instalación/actualización
+- Gestión fixtures (export, import, repair)
+- Configuración roles y permisos
+- Troubleshooting técnico
+- Best practices mantenimiento
+
+### J3: Criterios Completitud Documentación
+
+| Criterio | Meta |
+|----------|------|
+| Módulos documentados | 6/6 (100%) |
+| Workflows documentados | ≥5 workflows críticos |
+| Screenshots UI | ≥10 capturas representativas |
+| Fixtures documentados | 14/14 (100% - habilitados + deshabilitados) |
+| Troubleshooting cases | ≥10 problemas comunes |
+
+**✅ Salida J:** Documentación completa usuario/administrador, sistema autocontenido para producción
 
 ---
 
