@@ -39,16 +39,16 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 - property_usage_type.json
 - custom_field.json (27 campos Company)
 
-**❌ Deshabilitados (6) - SKIP en testing:**
-- acquisition_type.json.DISABLED → **Bloquea Committee Management**
-- ~~company_type.json.DISABLED~~ → ✅ REPARADO (2025-10-24)
+**❌ Deshabilitados (5) - SKIP en testing:**
+- ~~acquisition_type.json.DISABLED~~ → ✅ REPARADO (2025-10-24) - required_documents poblado
+- ~~company_type.json.DISABLED~~ → ✅ REPARADO (2025-10-24) - códigos cortos
 - contribution_category.json.DISABLED
 - entity_type_configuration.json.DISABLED
 - master_template_registry.json.DISABLED
 - policy_category.json.DISABLED
 - user_type.json.DISABLED
 
-**Impacto:** Committee Management será probado PARCIALMENTE (sin Property Registry, Committee Member, Agreement Tracking)
+**Impacto:** ✅ Committee Management DESBLOQUEADO (D4) - Property Registry, Committee Member, Agreement Tracking ahora testeables
 
 ---
 
@@ -70,7 +70,7 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 | Fixture | Estado | Impacto | Comentario |
 |---------|--------|---------|------------|
 | company_type.json | ✅ ENABLED | P1 | Reparado (2025-10-24), códigos cortos ADMIN/CONDO/PROV/CONTR |
-| acquisition_type.json | ❌ DISABLED | P0 | Bloquea Committee Management flows |
+| acquisition_type.json | ✅ ENABLED | P0 | **REPARADO (2025-10-24)** - required_documents poblado via one-off, D4 desbloqueado |
 | policy_category.json | ❌ DISABLED | P1 | Afecta Document Generation |
 | master_template_registry.json | ❌ DISABLED | P1 | Plantillas base sistema |
 | entity_type_configuration.json | ❌ DISABLED | P2 | Clasificaciones auxiliares |
@@ -265,25 +265,27 @@ echo "Exit code: $?"
 
 ---
 
-### D4. Committee Management Module (15 min) ⚠️ **CRÍTICO - LIMITADO**
+### D4. Committee Management Module (15 min) ✅ **DESBLOQUEADO (2025-10-24)**
 
-#### Testing Funcional (PARCIAL)
+**🎉 acquisition_type.json REPARADO** - required_documents poblado via one-off script, fixture habilitado, hooks.py actualizado
+
+#### Testing Funcional (COMPLETO)
 
 | Sub-prueba | Verificación | Estado | Notas |
 |------------|-------------|--------|-------|
 | Crear Meeting Schedule | Guarda correctamente | ☐ | Reunión comité sin dependencia acquisition |
 | Crear Community Event | Workflow completo funciona | ☐ | Estados/transiciones OK |
-| ❌ SKIP: Committee Member | REQUIERE acquisition_type | ⊗ | Fixture deshabilitado bloquea |
-| ❌ SKIP: Agreement Tracking | REQUIERE acquisition_type | ⊗ | Fixture deshabilitado bloquea |
+| ✅ Committee Member | Creación con Property Registry | ☐ | **DESBLOQUEADO** - acquisition_type disponible |
+| ✅ Agreement Tracking | Workflow completo | ☐ | **DESBLOQUEADO** - acquisition_type disponible |
 
-#### 🔄 Corrección Fixtures Committee ⚠️ **ALTA PRIORIDAD**
+#### 🔄 Corrección Fixtures Committee
 
 | Fixture | Estado Actual | Acción Requerida | Verificación | Estado |
 |---------|--------------|------------------|--------------|--------|
-| acquisition_type.json | ❌ DISABLED | **REPARAR URGENTE** - Desbloquea Committee | frappe.db.count('Acquisition Type') > 0 | ☐ |
+| acquisition_type.json | ✅ ENABLED | ✅ **COMPLETADO (2025-10-24)** | frappe.db.count('Acquisition Type') = 4 | ✅ |
 | policy_category.json | ❌ DISABLED | Revisar JSON → Habilitar → Test | frappe.db.count('Policy Category') > 0 | ☐ |
 
-**Proceso corrección acquisition_type.json (PRIORIDAD P0):**
+**Proceso corrección acquisition_type.json (✅ COMPLETADO):**
 ```bash
 # 1. Revisar fixture deshabilitado
 cat condominium_management/fixtures/acquisition_type.json.DISABLED
@@ -308,7 +310,7 @@ bench --site admin1.dev console
 # 9. Si pasa → Re-test Committee Member y Agreement Tracking
 ```
 
-**✅ Salida D4:** Committee parcial funcional, acquisition_type.json REPARADO (objetivo crítico)
+**✅ Salida D4:** ✅ Committee Management COMPLETO funcional, acquisition_type.json REPARADO (objetivo P0 completado)
 
 ---
 

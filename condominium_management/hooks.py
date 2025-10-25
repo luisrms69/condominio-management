@@ -323,7 +323,7 @@ fixtures = [
 	# "Master Template Registry",     # ⚠️ DISABLED - Nested child tables vacíos (análisis arquitectónico pendiente)
 	# "Entity Type Configuration",    # ⚠️ DISABLED - Requiere revertir + validación (bloqueaba migrate)
 	"Company Type",  # ✅ ENABLED - Autoname normalizado (name == type_code)
-	# "Acquisition Type",             # ⚠️ DISABLED - Requiere script restauración document_checklist
+	"Acquisition Type",  # ✅ ENABLED - required_documents poblado via one-off script
 	# "Policy Category",              # ⚠️ DISABLED - Requiere script restauración chapter_mapping
 	# "User Type",                    # ⚠️ DISABLED - Requiere filtros para evitar contaminación framework/HRMS
 	# {                               # ⚠️ DISABLED - Contaminado con 136 test records

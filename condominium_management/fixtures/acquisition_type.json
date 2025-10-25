@@ -1,0 +1,42 @@
+[
+ {
+  "acquisition_name": "Compra",
+  "docstatus": 0,
+  "doctype": "Acquisition Type",
+  "is_active": 1,
+  "modified": "2025-10-25 01:32:13.161073",
+  "name": "Compra",
+  "required_documents": "Escritura pública\nCertificado de libertad y tradición\nPaz y salvo predial\nCertificado de valorización",
+  "requires_notary": 1
+ },
+ {
+  "acquisition_name": "Herencia",
+  "docstatus": 0,
+  "doctype": "Acquisition Type",
+  "is_active": 1,
+  "modified": "2025-10-25 01:32:13.280418",
+  "name": "Herencia",
+  "required_documents": "Registro civil de defunción\nTestamento\nSentencia de sucesión\nCertificado de libertad y tradición",
+  "requires_notary": 1
+ },
+ {
+  "acquisition_name": "Donación",
+  "docstatus": 0,
+  "doctype": "Acquisition Type",
+  "is_active": 1,
+  "modified": "2025-10-25 01:32:13.283300",
+  "name": "Donación",
+  "required_documents": "Escritura pública de donación\nCertificado de libertad y tradición\nCertificado de no estar en proceso de divorcio",
+  "requires_notary": 1
+ },
+ {
+  "acquisition_name": "Adjudicación",
+  "docstatus": 0,
+  "doctype": "Acquisition Type",
+  "is_active": 1,
+  "modified": "2025-10-25 01:32:13.285484",
+  "name": "Adjudicación",
+  "required_documents": "Sentencia judicial\nCertificado de libertad y tradición\nActa de remate",
+  "requires_notary": 0
+ }
+]

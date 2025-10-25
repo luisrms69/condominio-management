@@ -18,9 +18,10 @@ y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 - Plan testing: Checkpoint técnico integridad fixtures post A-C
 - Plan testing: Item A7 con tabla fixtures críticos P0-P2
 - Reporte testing Secciones A+I+B1: REPORTE-TESTING-A-C.md (85% completitud, 13/24 items)
+- Diagnóstico completo acquisition_type.json: DIAGNOSTICO-ACQUISITION-TYPE.md (causa raíz, comparación diagnósticos, 3 opciones solución)
 
 ### Changed
-- Fixtures Companies: 8 habilitados (7 válidos + 1 reparado), 6 deshabilitados (contaminados/errores)
+- Fixtures Companies: 8 habilitados (58%), 6 deshabilitados (42%) - acquisition_type + company_type reparados
 - Scripts obsoletos marcados con headers OBSOLETO (install.py, company_custom_fields.py)
 
 ### Fixed
@@ -28,6 +29,7 @@ y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 - Contaminación export-fixtures: 7 fixtures problemáticos protegidos con extensión .DISABLED
 - Zero-config deployment: Nuevos sitios instalarán custom fields automáticamente
 - **company_type.json: Reparado con códigos cortos (ADMIN, CONDO, PROV, CONTR) para compatibilidad test suite**
+- **acquisition_type.json (P0): Reparado con required_documents poblados** - Script one-off idempotente, fixture habilitado, Committee Management desbloqueado
 
 ### Testing
 - Ejecución testing Sección A (Preparación entorno): 8/8 items completados
