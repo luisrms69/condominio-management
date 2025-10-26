@@ -52,7 +52,6 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		"""Test creación básica del Master Template Registry."""
 		# Obtener el Single DocType
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = self.test_company.company_name
 		registry.template_version = "1.0.0"
 		registry.update_propagation_status = "Completado"
 
@@ -60,7 +59,6 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		registry.save()
 
 		# Validaciones básicas
-		self.assertEqual(registry.company, "Test Admin Company")
 		self.assertTrue(registry.template_version.startswith("1.0."))  # Allow auto-increment
 		self.assertIn(
 			registry.update_propagation_status, ["Completado", "En Progreso"]
@@ -71,29 +69,15 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		meta = frappe.get_meta("Master Template Registry")
 
 		# Verificar labels en español de campos principales
-		company_field = meta.get_field("company")
-		self.assertEqual(company_field.label, "Empresa Administradora")
-
 		infrastructure_templates_field = meta.get_field("infrastructure_templates")
 		self.assertEqual(infrastructure_templates_field.label, "Templates de Infraestructura")
 
 		template_version_field = meta.get_field("template_version")
 		self.assertEqual(template_version_field.label, "Versión de Templates")
 
-	def test_required_fields_validation(self):
-		"""Test validación de campos requeridos."""
-		registry = frappe.get_single("Master Template Registry")
-
-		# Test que company es requerido
-		registry.company = ""
-
-		with self.assertRaises(frappe.ValidationError):
-			registry.save()
-
 	def test_template_code_uniqueness(self):
 		"""Test que códigos de templates sean únicos."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = self.test_company.company_name
 
 		# Limpiar templates existentes
 		registry.infrastructure_templates = []
@@ -125,7 +109,6 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 	def test_version_increment(self):
 		"""Test incremento automático de versión."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = self.test_company.company_name
 		registry.template_version = "1.0.5"
 		registry.infrastructure_templates = []
 		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados
@@ -157,7 +140,6 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 	def test_get_template_by_code(self):
 		"""Test obtener template por código."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = self.test_company.company_name
 		registry.infrastructure_templates = []
 		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados
 		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados
@@ -185,7 +167,6 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 	def test_assignment_rule_validation(self):
 		"""Test validación de reglas de asignación."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = self.test_company.company_name
 		registry.infrastructure_templates = []
 		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados  # Limpiar templates
 		registry.auto_assignment_rules = []
@@ -207,7 +188,6 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 	def test_get_assignment_rule_for_entity(self):
 		"""Test obtener regla de asignación para entidad."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = self.test_company.company_name
 		registry.infrastructure_templates = []
 		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados
 		registry.auto_assignment_rules = []
@@ -235,16 +215,16 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 		self.assertEqual(registry1.name, registry2.name)
 
 		# Modificación en uno debe reflejarse en el otro después de reload
-		registry1.company = "Test Admin Company"
+		registry1.infrastructure_templates = []
 		registry1.save()
 
 		registry2.reload()
-		self.assertEqual(registry2.company, self.test_company.company_name)
+		# Verificar que el cambio se reflejó (ambos Singletons apuntan al mismo registro)
+		self.assertEqual(registry2.infrastructure_templates, [])
 
 	def test_propagation_status_update(self):
 		"""Test actualización de estado de propagación."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = self.test_company.company_name
 		registry.infrastructure_templates = []
 		registry.auto_assignment_rules = []  # ✅ También limpiar reglas para evitar referencias a templates eliminados
 		registry.update_propagation_status = "Completado"
@@ -276,7 +256,6 @@ class TestMasterTemplateRegistry(FrappeTestCase):
 	def test_production_propagation_status_behavior(self):
 		"""Test que en producción update_propagation_status no se sobrescribe erróneamente."""
 		registry = frappe.get_single("Master Template Registry")
-		registry.company = self.test_company.company_name
 		registry.infrastructure_templates = []
 		registry.auto_assignment_rules = []
 		registry.update_propagation_status = "Completado"

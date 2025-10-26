@@ -320,7 +320,7 @@ fixtures = [
 	# ============================================================================
 	# DESHABILITADOS - Requieren corrección antes de migrar (6/14)
 	# ============================================================================
-	# "Master Template Registry",     # ⚠️ DISABLED - Nested child tables vacíos (análisis arquitectónico pendiente)
+	"Master Template Registry",  # ✅ ENABLED - Single DocType sin campo company (multi-sitio safe)
 	# "Entity Type Configuration",    # ⚠️ DISABLED - Requiere revertir + validación (bloqueaba migrate)
 	"Company Type",  # ✅ ENABLED - Autoname normalizado (name == type_code)
 	"Acquisition Type",  # ✅ ENABLED - required_documents poblado via one-off script

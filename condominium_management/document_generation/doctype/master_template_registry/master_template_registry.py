@@ -29,7 +29,7 @@ class MasterTemplateRegistry(Document):
 
 	Ejemplo de uso:
 	    registry = frappe.get_single("Master Template Registry")
-	    registry.company = "Empresa Admin"
+	    # Configurar templates y reglas
 	    registry.save()
 	"""
 
