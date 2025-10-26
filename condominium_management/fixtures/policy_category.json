@@ -1,0 +1,192 @@
+[
+ {
+  "category_name": "Convivencia",
+  "chapter_mapping": null,
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 16:28:26.415420",
+  "name": "Convivencia"
+ },
+ {
+  "category_name": "Seguridad",
+  "chapter_mapping": null,
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 16:28:26.561462",
+  "name": "Seguridad"
+ },
+ {
+  "category_name": "Mantenimiento",
+  "chapter_mapping": null,
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 16:28:26.565471",
+  "name": "Mantenimiento"
+ },
+ {
+  "category_name": "Uso de Espacios Comunes",
+  "chapter_mapping": null,
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 16:28:26.568408",
+  "name": "Uso de Espacios Comunes"
+ },
+ {
+  "category_name": "Administración",
+  "chapter_mapping": "IX-XI",
+  "description": "Órganos de gobierno, facultades del administrador, rendición de cuentas. Incluye estructura administrativa, poderes, responsabilidades y obligaciones de reporte.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.173060",
+  "name": "Administración"
+ },
+ {
+  "category_name": "Asambleas y Votaciones",
+  "chapter_mapping": "X",
+  "description": "Convocatorias, quórum, procedimientos de votación, elaboración de actas. Regula asambleas ordinarias/extraordinarias, mayorías requeridas y documentación oficial.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.333181",
+  "name": "Asambleas y Votaciones"
+ },
+ {
+  "category_name": "Comités y Comisiones",
+  "chapter_mapping": "XI",
+  "description": "Comité de vigilancia, comisiones especiales, grupos de trabajo. Define composición, funciones y alcance de órganos auxiliares de gobierno.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.335968",
+  "name": "Comités y Comisiones"
+ },
+ {
+  "category_name": "Cuotas y Aportaciones",
+  "chapter_mapping": "XII",
+  "description": "Cuotas ordinarias, cuotas extraordinarias, criterios de cálculo y distribución. Regula montos, periodicidad, ajustes y obligaciones de pago de propietarios.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.337142",
+  "name": "Cuotas y Aportaciones"
+ },
+ {
+  "category_name": "Fondos y Presupuestos",
+  "chapter_mapping": "XIII",
+  "description": "Fondo de administración, fondo de reserva, presupuestos anuales, manejo financiero. Establece creación, administración, inversión y uso de recursos económicos del condominio.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.338408",
+  "name": "Fondos y Presupuestos"
+ },
+ {
+  "category_name": "Morosidad y Cobro",
+  "chapter_mapping": "XIV",
+  "description": "Intereses moratorios, procedimientos de cobro, suspensión de servicios. Define consecuencias del incumplimiento de pagos y mecanismos de recuperación de cartera.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.340008",
+  "name": "Morosidad y Cobro"
+ },
+ {
+  "category_name": "Seguridad y Vigilancia",
+  "chapter_mapping": "XV",
+  "description": "Control de accesos, sistemas de videovigilancia, protocolos de emergencia. Regula medidas de seguridad, personal de vigilancia, visitantes y prevención de riesgos.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.341196",
+  "name": "Seguridad y Vigilancia"
+ },
+ {
+  "category_name": "Mantenimiento y Conservación",
+  "chapter_mapping": "XVI",
+  "description": "Mantenimiento preventivo, correctivo, contratación de proveedores. Establece responsabilidades, programas de mantenimiento y estándares de conservación.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.342374",
+  "name": "Mantenimiento y Conservación"
+ },
+ {
+  "category_name": "Servicios Comunes",
+  "chapter_mapping": "XVII",
+  "description": "Servicios básicos (agua, luz, gas), elevadores, estacionamientos, recolección de basura. Regula provisión, mantenimiento y uso de servicios compartidos del condominio.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.343962",
+  "name": "Servicios Comunes"
+ },
+ {
+  "category_name": "Uso de Amenidades",
+  "chapter_mapping": "XX",
+  "description": "Alberca, gimnasio, salón de eventos, áreas deportivas, espacios recreativos. Define horarios, reservaciones, capacidad máxima y reglas específicas por amenidad.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.344998",
+  "name": "Uso de Amenidades"
+ },
+ {
+  "category_name": "Convivencia y Relaciones Vecinales",
+  "chapter_mapping": "XVIII",
+  "description": "Horarios de silencio, niveles de ruido permitidos, relaciones entre vecinos. Promueve armonía comunitaria mediante normas de convivencia y respeto mutuo.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.345917",
+  "name": "Convivencia y Relaciones Vecinales"
+ },
+ {
+  "category_name": "Políticas Específicas",
+  "chapter_mapping": "XIX",
+  "description": "Mascotas, mudanzas, fiestas, decoración exterior, manejo de basura. Regula actividades particulares que requieren normativa detallada y específica.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.346836",
+  "name": "Políticas Específicas"
+ },
+ {
+  "category_name": "Aspectos Legales y Compliance",
+  "chapter_mapping": "XXIII-XXV",
+  "description": "Seguros obligatorios, obligaciones fiscales, protección civil, normativa ambiental. Asegura cumplimiento de requerimientos legales, regulatorios y de autoridades.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.347972",
+  "name": "Aspectos Legales y Compliance"
+ },
+ {
+  "category_name": "Régimen Disciplinario",
+  "chapter_mapping": "XXI-XXII",
+  "description": "Clasificación de faltas (leves, graves, muy graves), sanciones, procedimiento sancionador. Establece infracciones, consecuencias y proceso formal para aplicación de sanciones.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.348910",
+  "name": "Régimen Disciplinario"
+ },
+ {
+  "category_name": "Modificaciones y Obras",
+  "chapter_mapping": "III-IV",
+  "description": "Obras internas en unidades, cambios de fachadas, autorizaciones requeridas. Regula modificaciones estructurales, estéticas y funcionales que afectan el condominio.",
+  "docstatus": 0,
+  "doctype": "Policy Category",
+  "is_active": 1,
+  "modified": "2025-10-25 15:53:20.349825",
+  "name": "Modificaciones y Obras"
+ }
+]

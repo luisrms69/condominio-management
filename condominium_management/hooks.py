@@ -324,7 +324,7 @@ fixtures = [
 	# "Entity Type Configuration",    # ⚠️ DISABLED - Requiere revertir + validación (bloqueaba migrate)
 	"Company Type",  # ✅ ENABLED - Autoname normalizado (name == type_code)
 	"Acquisition Type",  # ✅ ENABLED - required_documents poblado via one-off script
-	# "Policy Category",              # ⚠️ DISABLED - Requiere script restauración chapter_mapping
+	"Policy Category",  # ✅ ENABLED - 15 categorías profesionales completas
 	# "User Type",                    # ⚠️ DISABLED - Requiere filtros para evitar contaminación framework/HRMS
 	# {                               # ⚠️ DISABLED - Contaminado con 136 test records
 	# 	"doctype": "Contribution Category",

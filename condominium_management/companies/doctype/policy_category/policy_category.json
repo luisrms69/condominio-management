@@ -9,6 +9,7 @@
  "field_order": [
   "category_name",
   "chapter_mapping",
+  "description",
   "is_active"
  ],
  "fields": [
@@ -25,6 +26,11 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Capítulos Relacionados"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Descripción"
   },
   {
    "default": "1",

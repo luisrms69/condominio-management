@@ -39,13 +39,13 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 - property_usage_type.json
 - custom_field.json (27 campos Company)
 
-**❌ Deshabilitados (5) - SKIP en testing:**
+**❌ Deshabilitados (4) - SKIP en testing:**
 - ~~acquisition_type.json.DISABLED~~ → ✅ REPARADO (2025-10-24) - required_documents poblado
 - ~~company_type.json.DISABLED~~ → ✅ REPARADO (2025-10-24) - códigos cortos
+- ~~policy_category.json.DISABLED~~ → ✅ REPARADO (2025-10-25) - 19 categorías profesionales completas
 - contribution_category.json.DISABLED
 - entity_type_configuration.json.DISABLED
 - master_template_registry.json.DISABLED
-- policy_category.json.DISABLED
 - user_type.json.DISABLED
 
 **Impacto:** ✅ Committee Management DESBLOQUEADO (D4) - Property Registry, Committee Member, Agreement Tracking ahora testeables
@@ -71,7 +71,7 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 |---------|--------|---------|------------|
 | company_type.json | ✅ ENABLED | P1 | Reparado (2025-10-24), códigos cortos ADMIN/CONDO/PROV/CONTR |
 | acquisition_type.json | ✅ ENABLED | P0 | **REPARADO (2025-10-24)** - required_documents poblado via one-off, D4 desbloqueado |
-| policy_category.json | ❌ DISABLED | P1 | Afecta Document Generation |
+| policy_category.json | ✅ ENABLED | P1 | **REPARADO (2025-10-25)** - 19 categorías con chapter_mapping y descriptions |
 | master_template_registry.json | ❌ DISABLED | P1 | Plantillas base sistema |
 | entity_type_configuration.json | ❌ DISABLED | P2 | Clasificaciones auxiliares |
 | contribution_category.json | ❌ DISABLED | P2 | Módulos contribuciones |
@@ -171,7 +171,7 @@ echo "Exit code: $?"
 |-----------|-------------------|---------------------|------------------|
 | **P0** | acquisition_type.json | Desbloquea flows dependientes (Committee) | Reparar antes de correr D1–D2 |
 | ~~**P1**~~ | ~~company_type.json~~ | ~~Impacta Company y validaciones~~ | ✅ **REPARADO** (2025-10-24) |
-| **P1** | policy_category.json | Requerido en configuraciones de políticas | Pendiente reparación |
+| ~~**P1**~~ | ~~policy_category.json~~ | ~~Requerido en configuraciones de políticas~~ | ✅ **COMPLETADO** - 19 categorías profesionales |
 | **P1** | master_template_registry.json | Plantillas base del sistema | Requerido para generación docs |
 | **P2** | contribution_category.json | Afecta módulos de contribuciones | Post flujos principales |
 | **P2** | entity_type_configuration.json | Clasificaciones auxiliares | Sin bloquear flujos críticos |
@@ -283,7 +283,7 @@ echo "Exit code: $?"
 | Fixture | Estado Actual | Acción Requerida | Verificación | Estado |
 |---------|--------------|------------------|--------------|--------|
 | acquisition_type.json | ✅ ENABLED | ✅ **COMPLETADO (2025-10-24)** | frappe.db.count('Acquisition Type') = 4 | ✅ |
-| policy_category.json | ❌ DISABLED | Revisar JSON → Habilitar → Test | frappe.db.count('Policy Category') > 0 | ☐ |
+| policy_category.json | ✅ ENABLED | ✅ **COMPLETADO (2025-10-25)** | frappe.db.count('Policy Category') = 19 | ✅ |
 
 **Proceso corrección acquisition_type.json (✅ COMPLETADO):**
 ```bash
@@ -528,13 +528,13 @@ gh issue create --title "[FIXTURE] acquisition_type.json error migrate" --label 
 
 | Fixture | Estado Inicial | Estado Final | Issue # |
 |---------|---------------|--------------|---------|
-| acquisition_type.json | ❌ DISABLED | ⏳ PENDIENTE | #XX |
+| acquisition_type.json | ❌ DISABLED | ✅ **ENABLED** | ✅ COMPLETADO (2025-10-24) |
 | company_type.json | ❌ DISABLED | ✅ **ENABLED** | ✅ COMPLETADO (2025-10-24) |
+| policy_category.json | ❌ DISABLED | ✅ **ENABLED** | ✅ COMPLETADO (2025-10-25) |
 | contribution_category.json | ❌ DISABLED | ⏳ PENDIENTE | #XX |
 | entity_type_configuration.json | ❌ DISABLED | ❌ FAILED | #XX |
-| master_template_registry.json | ❌ DISABLED | ✅ ENABLED | #XX |
-| policy_category.json | ❌ DISABLED | ✅ ENABLED | #XX |
-| user_type.json | ❌ DISABLED | ✅ ENABLED | #XX |
+| master_template_registry.json | ❌ DISABLED | ⏳ PENDIENTE | #XX |
+| user_type.json | ❌ DISABLED | ⏳ PENDIENTE | #XX |
 
 **Total reparados:** X/7 (Y%)
 
