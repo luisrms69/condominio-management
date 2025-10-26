@@ -30,7 +30,7 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 
 ## ⚠️ Contexto Crítico - Fixtures Post PR #24
 
-**✅ Habilitados (7):**
+**✅ Habilitados (11):**
 - compliance_requirement_type.json
 - document_template_type.json
 - enforcement_level.json
@@ -38,15 +38,17 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 - property_status_type.json
 - property_usage_type.json
 - custom_field.json (27 campos Company)
+- ~~acquisition_type.json~~ → ✅ REPARADO (2025-10-24) - required_documents poblado
+- ~~company_type.json~~ → ✅ REPARADO (2025-10-24) - códigos cortos
+- ~~policy_category.json~~ → ✅ REPARADO (2025-10-25) - 19 categorías profesionales completas
+- ~~master_template_registry.json~~ → ✅ REPARADO (2025-10-25) - campo company eliminado
 
-**❌ Deshabilitados (4) - SKIP en testing:**
-- ~~acquisition_type.json.DISABLED~~ → ✅ REPARADO (2025-10-24) - required_documents poblado
-- ~~company_type.json.DISABLED~~ → ✅ REPARADO (2025-10-24) - códigos cortos
-- ~~policy_category.json.DISABLED~~ → ✅ REPARADO (2025-10-25) - 19 categorías profesionales completas
+**❌ Deshabilitados (2) - SKIP en testing:**
 - contribution_category.json.DISABLED
 - entity_type_configuration.json.DISABLED
-- master_template_registry.json.DISABLED
-- user_type.json.DISABLED
+
+**❌ Eliminados permanentemente (1):**
+- ~~user_type.json~~ → 🗑️ ELIMINADO (2025-10-26) - DocType legacy sin uso, override incorrecto de Frappe core
 
 **Impacto:** ✅ Committee Management DESBLOQUEADO (D4) - Property Registry, Committee Member, Agreement Tracking ahora testeables
 
@@ -72,10 +74,9 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 | company_type.json | ✅ ENABLED | P1 | Reparado (2025-10-24), códigos cortos ADMIN/CONDO/PROV/CONTR |
 | acquisition_type.json | ✅ ENABLED | P0 | **REPARADO (2025-10-24)** - required_documents poblado via one-off, D4 desbloqueado |
 | policy_category.json | ✅ ENABLED | P1 | **REPARADO (2025-10-25)** - 19 categorías con chapter_mapping y descriptions |
-| master_template_registry.json | ❌ DISABLED | P1 | Plantillas base sistema |
+| master_template_registry.json | ✅ ENABLED | P1 | **REPARADO (2025-10-25)** - campo company eliminado (multi-sitio safe) |
 | entity_type_configuration.json | ❌ DISABLED | P2 | Clasificaciones auxiliares |
 | contribution_category.json | ❌ DISABLED | P2 | Módulos contribuciones |
-| user_type.json | ❌ DISABLED | P2 | Perfiles secundarios |
 
 **Comandos verificación:**
 ```bash
@@ -169,13 +170,13 @@ echo "Exit code: $?"
 
 | Prioridad | Fixture / recurso | Motivo de prioridad | Nota operacional |
 |-----------|-------------------|---------------------|------------------|
-| **P0** | acquisition_type.json | Desbloquea flows dependientes (Committee) | Reparar antes de correr D1–D2 |
+| ~~**P0**~~ | ~~acquisition_type.json~~ | ~~Desbloquea flows dependientes (Committee)~~ | ✅ **REPARADO** (2025-10-24) |
 | ~~**P1**~~ | ~~company_type.json~~ | ~~Impacta Company y validaciones~~ | ✅ **REPARADO** (2025-10-24) |
-| ~~**P1**~~ | ~~policy_category.json~~ | ~~Requerido en configuraciones de políticas~~ | ✅ **COMPLETADO** - 19 categorías profesionales |
-| **P1** | master_template_registry.json | Plantillas base del sistema | Requerido para generación docs |
+| ~~**P1**~~ | ~~policy_category.json~~ | ~~Requerido en configuraciones de políticas~~ | ✅ **REPARADO** (2025-10-25) |
+| ~~**P1**~~ | ~~master_template_registry.json~~ | ~~Plantillas base del sistema~~ | ✅ **REPARADO** (2025-10-25) |
 | **P2** | contribution_category.json | Afecta módulos de contribuciones | Post flujos principales |
 | **P2** | entity_type_configuration.json | Clasificaciones auxiliares | Sin bloquear flujos críticos |
-| **P2** | user_type.json | Perfiles secundarios | Ejecutar al final |
+| ~~**P2**~~ | ~~user_type.json~~ | ~~Perfiles secundarios~~ | 🗑️ **ELIMINADO** (2025-10-26) - DocType legacy sin uso |
 
 **Regla simple:** No avanzar a la siguiente prioridad hasta que la anterior esté operativa en migrate.
 
@@ -367,9 +368,7 @@ bench --site admin1.dev console
 
 #### 🔄 Corrección Fixtures Roles
 
-| Fixture | Estado Actual | Acción Requerida | Verificación | Estado |
-|---------|--------------|------------------|--------------|--------|
-| user_type.json | ❌ DISABLED | Revisar JSON → Habilitar (si aplica) | frappe.db.count('User Type') > 0 | ☐ |
+~~No hay fixtures de roles pendientes~~ - user_type.json fue eliminado (no era fixture de roles, era DocType legacy).
 
 **✅ Salida E:** Permisos funcionan correctamente, roles verificados
 
@@ -526,17 +525,17 @@ gh issue create --title "[FIXTURE] acquisition_type.json error migrate" --label 
 
 ## Fixtures Reparados ✅
 
-| Fixture | Estado Inicial | Estado Final | Issue # |
-|---------|---------------|--------------|---------|
-| acquisition_type.json | ❌ DISABLED | ✅ **ENABLED** | ✅ COMPLETADO (2025-10-24) |
-| company_type.json | ❌ DISABLED | ✅ **ENABLED** | ✅ COMPLETADO (2025-10-24) |
-| policy_category.json | ❌ DISABLED | ✅ **ENABLED** | ✅ COMPLETADO (2025-10-25) |
-| contribution_category.json | ❌ DISABLED | ⏳ PENDIENTE | #XX |
-| entity_type_configuration.json | ❌ DISABLED | ❌ FAILED | #XX |
-| master_template_registry.json | ❌ DISABLED | ⏳ PENDIENTE | #XX |
-| user_type.json | ❌ DISABLED | ⏳ PENDIENTE | #XX |
+| Fixture | Estado Inicial | Estado Final | Fecha |
+|---------|---------------|--------------|-------|
+| acquisition_type.json | ❌ DISABLED | ✅ **ENABLED** | 2025-10-24 |
+| company_type.json | ❌ DISABLED | ✅ **ENABLED** | 2025-10-24 |
+| policy_category.json | ❌ DISABLED | ✅ **ENABLED** | 2025-10-25 |
+| master_template_registry.json | ❌ DISABLED | ✅ **ENABLED** | 2025-10-25 |
+| user_type.json | ❌ DISABLED | 🗑️ **ELIMINADO** | 2025-10-26 |
 
-**Total reparados:** X/7 (Y%)
+**Total reparados:** 4/6 fixtures deshabilitados (67%)
+**Total habilitados:** 11/14 total fixtures (79%)
+**Pendientes:** contribution_category.json, entity_type_configuration.json
 
 ---
 

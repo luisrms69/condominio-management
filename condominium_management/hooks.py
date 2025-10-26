@@ -318,20 +318,22 @@ before_tests = "condominium_management.utils.before_tests"
 #
 fixtures = [
 	# ============================================================================
-	# DESHABILITADOS - Requieren corrección antes de migrar (6/14)
+	# DESHABILITADOS - Requieren corrección antes de migrar (2/14)
 	# ============================================================================
 	"Master Template Registry",  # ✅ ENABLED - Single DocType sin campo company (multi-sitio safe)
 	# "Entity Type Configuration",    # ⚠️ DISABLED - Requiere revertir + validación (bloqueaba migrate)
 	"Company Type",  # ✅ ENABLED - Autoname normalizado (name == type_code)
 	"Acquisition Type",  # ✅ ENABLED - required_documents poblado via one-off script
 	"Policy Category",  # ✅ ENABLED - 15 categorías profesionales completas
-	# "User Type",                    # ⚠️ DISABLED - Requiere filtros para evitar contaminación framework/HRMS
+	# "User Type",                    # ❌ ELIMINADO (2025-10-26) - DocType legacy que hacía override incorrecto de Frappe core
+	#                                   # Sin implementación real (0 referencias código), conflicto arquitectónico (duplica Roles)
+	#                                   # DocType nativo Frappe restaurado. Ver commit para detalles completos.
 	# {                               # ⚠️ DISABLED - Contaminado con 136 test records
 	# 	"doctype": "Contribution Category",
 	# 	"filters": {"module_name": ["in", ["Document Generation", "Maintenance", "Contracts"]]},
 	# },
 	# ============================================================================
-	# HABILITADOS - Fixtures válidos listos para migrar (7/14)
+	# HABILITADOS - Fixtures válidos listos para migrar (11/14)
 	# ============================================================================
 	# Companies Module Masters - Solo fixtures verificados como válidos
 	"Property Usage Type",  # ✅ VÁLIDO - Cosmético (5 registros íntegros: Residencial, Comercial, Mixto, Industrial, Oficinas)
