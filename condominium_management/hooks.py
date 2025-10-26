@@ -318,10 +318,10 @@ before_tests = "condominium_management.utils.before_tests"
 #
 fixtures = [
 	# ============================================================================
-	# DESHABILITADOS - Requieren corrección antes de migrar (2/14)
+	# DESHABILITADOS - Requieren corrección antes de migrar (1/14)
 	# ============================================================================
 	"Master Template Registry",  # ✅ ENABLED - Single DocType sin campo company (multi-sitio safe)
-	# "Entity Type Configuration",    # ⚠️ DISABLED - Requiere revertir + validación (bloqueaba migrate)
+	"Entity Type Configuration",  # ✅ ENABLED (2025-10-26) - Corregido entity_doctype, solo Service Management Contract (mínimo viable)
 	"Company Type",  # ✅ ENABLED - Autoname normalizado (name == type_code)
 	"Acquisition Type",  # ✅ ENABLED - required_documents poblado via one-off script
 	"Policy Category",  # ✅ ENABLED - 15 categorías profesionales completas
@@ -333,7 +333,7 @@ fixtures = [
 	# 	"filters": {"module_name": ["in", ["Document Generation", "Maintenance", "Contracts"]]},
 	# },
 	# ============================================================================
-	# HABILITADOS - Fixtures válidos listos para migrar (11/14)
+	# HABILITADOS - Fixtures válidos listos para migrar (12/14)
 	# ============================================================================
 	# Companies Module Masters - Solo fixtures verificados como válidos
 	"Property Usage Type",  # ✅ VÁLIDO - Cosmético (5 registros íntegros: Residencial, Comercial, Mixto, Industrial, Oficinas)

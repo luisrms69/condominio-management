@@ -17,7 +17,7 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 
 **Entregables:**
 1. Checklist completado con ✅/⚠️/❌
-2. **Fixtures corregidos** y exportados (objetivo: 7 deshabilitados → habilitados)
+2. **Fixtures corregidos** y exportados (progreso: 5/6 reparados - 83%)
 3. GitHub Issues (5-15) por hallazgos reales
 4. Reporte ejecutivo resumen con fixtures reparados
 
@@ -30,7 +30,7 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 
 ## ⚠️ Contexto Crítico - Fixtures Post PR #24
 
-**✅ Habilitados (11):**
+**✅ Habilitados (12):**
 - compliance_requirement_type.json
 - document_template_type.json
 - enforcement_level.json
@@ -42,10 +42,10 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 - ~~company_type.json~~ → ✅ REPARADO (2025-10-24) - códigos cortos
 - ~~policy_category.json~~ → ✅ REPARADO (2025-10-25) - 19 categorías profesionales completas
 - ~~master_template_registry.json~~ → ✅ REPARADO (2025-10-25) - campo company eliminado
+- ~~entity_type_configuration.json~~ → ✅ REPARADO (2025-10-26) - entity_doctype corregido, mínimo viable (Service Management Contract)
 
-**❌ Deshabilitados (2) - SKIP en testing:**
+**❌ Deshabilitados (1) - SKIP en testing:**
 - contribution_category.json.DISABLED
-- entity_type_configuration.json.DISABLED
 
 **❌ Eliminados permanentemente (1):**
 - ~~user_type.json~~ → 🗑️ ELIMINADO (2025-10-26) - DocType legacy sin uso, override incorrecto de Frappe core
@@ -75,7 +75,7 @@ Validar sistema completo en admin1.dev mediante ejecución práctica de workflow
 | acquisition_type.json | ✅ ENABLED | P0 | **REPARADO (2025-10-24)** - required_documents poblado via one-off, D4 desbloqueado |
 | policy_category.json | ✅ ENABLED | P1 | **REPARADO (2025-10-25)** - 19 categorías con chapter_mapping y descriptions |
 | master_template_registry.json | ✅ ENABLED | P1 | **REPARADO (2025-10-25)** - campo company eliminado (multi-sitio safe) |
-| entity_type_configuration.json | ❌ DISABLED | P2 | Clasificaciones auxiliares |
+| entity_type_configuration.json | ⚠️ ENABLED | P2 | **REPARADO (2025-10-26)** - entity_doctype corregido (Service Management Contract). **FALLA UI:** Validación rechaza documento temporal en after_insert (entity_configuration.py:75) |
 | contribution_category.json | ❌ DISABLED | P2 | Módulos contribuciones |
 
 **Comandos verificación:**
@@ -473,10 +473,19 @@ Fixture actualmente deshabilitado (.DISABLED) bloquea módulo [X]
 
 | # | Tipo | Descripción | Módulo | Prioridad | Issue # | Estado |
 |---|------|-------------|--------|-----------|---------|--------|
-| 1 | Bug | ... | Companies | P0 | #XX | ☐ |
-| 2 | Enhancement | ... | Physical Spaces | P1 | #XX | ☐ |
-| 3 | Fixture | acquisition_type.json error | Committee | P0 | #XX | ☐ |
-| 4 | Docs | ... | User Guide | P2 | #XX | ☐ |
+| 1 | Bug | Entity Configuration valida source_docname antes de commit BD | Document Generation | P2 | Pendiente | ☐ |
+| 2 | Bug | ... | Companies | P0 | #XX | ☐ |
+| 3 | Enhancement | ... | Physical Spaces | P1 | #XX | ☐ |
+| 4 | Fixture | acquisition_type.json error | Committee | P0 | #XX | ☐ |
+| 5 | Docs | ... | User Guide | P2 | #XX | ☐ |
+
+**Detalle Issue #1:**
+- **Error:** "Could not find Documento Origen: b4mroutolc"
+- **Archivo:** `entity_configuration.py:75-78` (validate_source_document)
+- **Causa:** Validación ejecuta `frappe.db.exists()` en hook `after_insert` cuando documento temporal aún no ha sido committed
+- **Reproducción:** Crear Service Management Contract desde UI → Auto-detección falla
+- **Workaround:** Desactivar fixture entity_type_configuration.json
+- **Solución:** Modificar validación para skipear en contexto `in_insert` o usar `try/except` en lugar de `frappe.throw()`
 
 **Comandos creación Issues:**
 ```bash
