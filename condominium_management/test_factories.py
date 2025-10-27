@@ -34,6 +34,19 @@ class TestDataFactory:
 			abbr = "".join([word[0].upper() for word in company_name.split()[:3]])
 
 		if not frappe.db.exists("Company", company_name):
+			# Limpiar datos huérfanos de tests previos fallidos
+			frappe.db.sql(
+				"""DELETE FROM tabWarehouse
+				   WHERE company = %s OR name LIKE %s""",
+				(company_name, f"%{abbr}%"),
+			)
+			frappe.db.sql(
+				"""DELETE FROM `tabCost Center`
+				   WHERE company = %s OR name LIKE %s""",
+				(company_name, f"%{abbr}%"),
+			)
+			frappe.db.commit()
+
 			company = frappe.get_doc(
 				{
 					"doctype": "Company",

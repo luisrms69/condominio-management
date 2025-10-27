@@ -41,13 +41,15 @@ class TestServiceManagementContract(FrappeTestCase):
 	def setUp(self):
 		"""Set up test data before each test method."""
 		frappe.set_user("Administrator")
+		# Generate unique test ID for this test run
+		self.test_id = frappe.generate_hash()[:6]
 
 	def test_contract_creation(self):
 		"""Test basic creation of Service Management Contract."""
 		doc = frappe.get_doc(
 			{
 				"doctype": "Service Management Contract",
-				"contract_name": "Test Contract",
+				"contract_name": f"Test Contract {self.test_id}",
 				"service_provider": "Provider Co",
 				"client_condominium": "Client Co",
 				"contract_start": today(),
@@ -57,7 +59,7 @@ class TestServiceManagementContract(FrappeTestCase):
 			}
 		)
 		doc.insert(ignore_permissions=True)
-		self.assertEqual(doc.contract_name, "Test Contract")
+		self.assertEqual(doc.contract_name, f"Test Contract {self.test_id}")
 		# Currency should be MXN for Mexican companies
 		expected_currency = "MXN"
 		if doc.currency != expected_currency:
@@ -71,7 +73,7 @@ class TestServiceManagementContract(FrappeTestCase):
 		doc = frappe.get_doc(
 			{
 				"doctype": "Service Management Contract",
-				"contract_name": "Invalid Date Contract",
+				"contract_name": f"Invalid Date Contract {self.test_id}",
 				"service_provider": "Provider Co",
 				"client_condominium": "Client Co",
 				"contract_start": add_days(today(), 10),
@@ -87,7 +89,7 @@ class TestServiceManagementContract(FrappeTestCase):
 		doc = frappe.get_doc(
 			{
 				"doctype": "Service Management Contract",
-				"contract_name": "Same Company Contract",
+				"contract_name": f"Same Company Contract {self.test_id}",
 				"service_provider": "Provider Co",
 				"client_condominium": "Provider Co",  # Same as provider
 				"contract_start": today(),
@@ -116,7 +118,7 @@ class TestServiceManagementContract(FrappeTestCase):
 			doc = frappe.get_doc(
 				{
 					"doctype": "Service Management Contract",
-					"contract_name": f"Test Contract {status}",
+					"contract_name": f"Test Contract {status} {self.test_id}",
 					"service_provider": "Provider Co",
 					"client_condominium": "Client Co",
 					"contract_start": today(),
@@ -136,7 +138,7 @@ class TestServiceManagementContract(FrappeTestCase):
 			doc = frappe.get_doc(
 				{
 					"doctype": "Service Management Contract",
-					"contract_name": f"Test Contract {cycle}",
+					"contract_name": f"Test Contract {cycle} {self.test_id}",
 					"service_provider": "Provider Co",
 					"client_condominium": "Client Co",
 					"contract_start": today(),
@@ -156,7 +158,7 @@ class TestServiceManagementContract(FrappeTestCase):
 			doc = frappe.get_doc(
 				{
 					"doctype": "Service Management Contract",
-					"contract_name": f"Test Contract {level}",
+					"contract_name": f"Test Contract {level} {self.test_id}",
 					"service_provider": "Provider Co",
 					"client_condominium": "Client Co",
 					"contract_start": today(),
@@ -176,7 +178,7 @@ class TestServiceManagementContract(FrappeTestCase):
 			doc = frappe.get_doc(
 				{
 					"doctype": "Service Management Contract",
-					"contract_name": f"Test Contract {frequency}",
+					"contract_name": f"Test Contract {frequency} {self.test_id}",
 					"service_provider": "Provider Co",
 					"client_condominium": "Client Co",
 					"contract_start": today(),
@@ -221,7 +223,7 @@ class TestServiceManagementContract(FrappeTestCase):
 			{
 				"doctype": "Service Management Contract",
 				"naming_series": "SMC-.YYYY.-",
-				"contract_name": "Test Naming Series",
+				"contract_name": f"Test Naming Series {self.test_id}",
 				"service_provider": "Provider Co",
 				"client_condominium": "Client Co",
 				"contract_start": today(),

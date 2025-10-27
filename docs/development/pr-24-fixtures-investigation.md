@@ -23,7 +23,7 @@
 **ESTADO INVESTIGACIÓN:**
 
 1. 📝 acquisition_type.json - **DOCUMENTADO** (🔴 CRÍTICO - pérdida datos → SÍ REVERTIR)
-2. 📝 company_type.json - **DOCUMENTADO** (⚠️ AUTONAME INCONSISTENTE → 3 OPCIONES PROPUESTAS)
+2. ✅ company_type.json - **✅ REPARADO** (Normalizado BD + códigos cortos ADMIN/CONDO/PROV/CONTR)
 3. 📝 compliance_requirement_type.json - **DOCUMENTADO** (🟢 COSMÉTICO → DEJAR COMO ESTÁ)
 4. 📝 document_template_type.json - **DOCUMENTADO** (🟢 COSMÉTICO → DEJAR COMO ESTÁ)
 5. 📝 enforcement_level.json - **DOCUMENTADO** (🟢 COSMÉTICO → DEJAR COMO ESTÁ)
@@ -107,7 +107,7 @@
 
 ## FIXTURE 2/12: company_type.json
 
-### Estado: ❌ CAMBIO NO INTENCIONAL - BUG DETECTADO - REVERTIR REQUERIDO
+### Estado: ✅ REPARADO (2025-10-24) - BD normalizada + códigos cortos restaurados
 
 ### Cambios Detectados
 
@@ -248,6 +248,22 @@ Name: Contratista    | type_code: Contratista    ← CONSISTENTE con autoname
 
 - [ ] ¿Tests están fallando actualmente por esto?
 - [ ] Ejecutar: `bench --site admin1.dev run-tests --app condominium_management --module tests.test_company_customizations`
+
+### ✅ RESOLUCIÓN APLICADA (2025-10-24)
+
+**Acciones ejecutadas:**
+1. ✅ Normalización BD: Renombrado documentos a códigos cortos (Administradora→ADMIN, Condominio→CONDO, Proveedor→PROV, Contratista→CONTR)
+2. ✅ Actualizado campo type_code en cada documento
+3. ✅ Fixture revertido a valores PR #16 con códigos cortos
+4. ✅ Export-fixtures ejecutado: Verificada idempotencia (0 cambios en 2do export)
+5. ✅ Migrate ejecutado sin errores
+6. ✅ Fixture habilitado en hooks.py línea 325
+
+**Estado final:**
+- BD: name=ADMIN, type_code=ADMIN, type_name=Administradora ✅
+- Fixture: Códigos cortos ADMIN, CONDO, PROV, CONTR ✅
+- Compatible con test suite ✅
+- hooks.py: "Company Type" descomentado ✅
 
 ---
 
@@ -1741,10 +1757,10 @@ git checkout HEAD~1 -- condominium_management/fixtures/user_type.json
 6. **property_usage_type.json** - Cosmético (5 registros)
 7. **custom_field.json** - 27 custom fields Company (RG-009 compliance)
 
-**🔴 DESHABILITADOS (7/14)** - Requieren corrección o contaminados:
+**🔴 DESHABILITADOS (6/14)** - Requieren corrección o contaminados:
 8. **acquisition_type.json.DISABLED** - Pérdida datos `document_checklist`
-9. **company_type.json.DISABLED** - Autoname inconsistency
-10. **entity_type_configuration.json.DISABLED** - Bloqueador migrate, DocTypes inválidos
+9. ~~**company_type.json.DISABLED**~~ - ✅ REPARADO (2025-10-24)
+10. **entity_type.json.DISABLED** - Bloqueador migrate, DocTypes inválidos
 11. **master_template_registry.json.DISABLED** - Nested child tables vacíos
 12. **policy_category.json.DISABLED** - Pérdida datos `chapter_mapping`
 13. **user_type.json.DISABLED** - Contaminación framework/HRMS
@@ -2318,12 +2334,12 @@ git status
 
 **Razón**: Cambios puramente cosméticos, datos íntegros, funcionalidad completa.
 
-## 🔴 DESHABILITADOS - Requieren corrección (6/12)
+## 🔴 DESHABILITADOS - Requieren corrección (5/12)
 
 | Fixture | Estado hooks.py | Problema | Acción Requerida |
 |---------|----------------|----------|------------------|
 | acquisition_type.json | 🔴 DISABLED | Pérdida datos `document_checklist` | Script restauración |
-| company_type.json | 🔴 DISABLED | Autoname inconsistency | Decisión usuario (3 opciones) |
+| ~~company_type.json~~ | ✅ **ENABLED** | ~~Autoname inconsistency~~ | ✅ REPARADO (2025-10-24) |
 | entity_type_configuration.json | 🔴 DISABLED | DocTypes inválidos (bloqueaba migrate) | Revertir a versión original |
 | master_template_registry.json | 🔴 DISABLED | Nested child tables vacíos | Análisis arquitectónico 66 DocTypes |
 | policy_category.json | 🔴 DISABLED | Pérdida datos `chapter_mapping` | Script restauración |
@@ -2333,19 +2349,20 @@ git status
 
 ## 📊 RESUMEN
 
-- **✅ Habilitados (migran)**: 6/12 (50%)
-- **🔴 Deshabilitados (requieren fix)**: 6/12 (50%)
+- **✅ Habilitados (migran)**: 7/12 (58%) - +1 company_type.json reparado
+- **🔴 Deshabilitados (requieren fix)**: 5/12 (42%)
 - **📁 Archivos preservados**: 12/12 (100%)
+- **🔧 Reparados**: 1/12 - company_type.json (2025-10-24)
 
 ## 🎯 ESTADO ACTUAL
 
-**hooks.py**: `condominium_management/hooks.py:311-370`
-- 6 fixtures comentados (DISABLED)
-- 6 fixtures activos (ENABLED)
+**hooks.py**: `condominium_management/hooks.py:319-366`
+- 5 fixtures comentados (DISABLED) - entity_type_configuration excluido
+- 7 fixtures activos (ENABLED) - +1 Company Type habilitado (2025-10-24)
 
 **bench migrate**: ✅ Funcional (solo usa fixtures habilitados)
 
-**Próxima acción**: Validar migrate + corregir fixtures deshabilitados individualmente
+**Próxima acción**: Continuar con reparación fixtures P0/P1 según PLAN-TESTING-SISTEMA.md
 
 ## 📚 REFERENCIA
 
@@ -2503,7 +2520,7 @@ fixtures = [
 ```
 condominium_management/fixtures/
 ├── acquisition_type.json.DISABLED           # 🔴 EXPORT-FIXTURES - DESHABILITADO (pérdida datos)
-├── company_type.json.DISABLED               # 🔴 EXPORT-FIXTURES - DESHABILITADO (autoname bug)
+├── company_type.json                        # ✅ REPARADO (2025-10-24) - Códigos cortos ADMIN/CONDO/PROV/CONTR
 ├── compliance_requirement_type.json         # 🟢 EXPORT-FIXTURES - Válido (cosmético)
 ├── contribution_category.json.DISABLED      # 🔴 EXPORT-FIXTURES - DESHABILITADO (136 test records)
 ├── custom_field.json                        # 🟢 EXPORT-FIXTURES - Válido (27 custom fields Company)
@@ -2520,7 +2537,8 @@ condominium_management/fixtures/
 
 **Leyenda**:
 - 🟢 **7 VÁLIDOS** del export-fixtures (6 cosmetic + 1 custom_field, habilitados)
-- 🔴 **7 PROBLEMÁTICOS** del export-fixtures (deshabilitados con .DISABLED)
+- ✅ **1 REPARADO** - company_type.json (2025-10-24)
+- 🔴 **6 PROBLEMÁTICOS** del export-fixtures (deshabilitados con .DISABLED)
 
 
 **Beneficios de esta estrategia**:

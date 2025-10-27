@@ -4,9 +4,9 @@
   "doctype": "Company Type",
   "is_active": 1,
   "is_management_type": 1,
-  "modified": "2025-10-07 14:02:36.120090",
-  "name": "Administradora",
-  "type_code": "Administradora",
+  "modified": "2025-10-24 22:31:09.201347",
+  "name": "ADMIN",
+  "type_code": "ADMIN",
   "type_name": "Administradora"
  },
  {
@@ -14,9 +14,9 @@
   "doctype": "Company Type",
   "is_active": 1,
   "is_management_type": 0,
-  "modified": "2025-10-07 14:02:36.125696",
-  "name": "Condominio",
-  "type_code": "Condominio",
+  "modified": "2025-10-24 22:31:09.540718",
+  "name": "CONDO",
+  "type_code": "CONDO",
   "type_name": "Condominio"
  },
  {
@@ -24,9 +24,9 @@
   "doctype": "Company Type",
   "is_active": 1,
   "is_management_type": 0,
-  "modified": "2025-10-07 14:02:36.130090",
-  "name": "Proveedor",
-  "type_code": "Proveedor",
+  "modified": "2025-10-24 22:31:09.878103",
+  "name": "PROV",
+  "type_code": "PROV",
   "type_name": "Proveedor"
  },
  {
@@ -34,9 +34,9 @@
   "doctype": "Company Type",
   "is_active": 1,
   "is_management_type": 0,
-  "modified": "2025-10-07 14:02:36.133975",
-  "name": "Contratista",
-  "type_code": "Contratista",
+  "modified": "2025-10-24 22:31:10.213104",
+  "name": "CONTR",
+  "type_code": "CONTR",
   "type_name": "Contratista"
  }
 ]

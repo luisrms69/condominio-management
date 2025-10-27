@@ -1,0 +1,74 @@
+[
+ {
+  "doctype": "Contribution Category",
+  "name": "Document Generation-Infrastructure Template",
+  "module_name": "Document Generation",
+  "contribution_type": "Infrastructure Template",
+  "description": "Plantillas de infraestructura para generación de documentos",
+  "export_doctype": "Master Template Registry",
+  "required_fields": "[\"template_code\", \"template_name\", \"infrastructure_type\"]",
+  "is_active": 1,
+  "approval_workflow": null,
+  "validation_rules": null
+ },
+ {
+  "doctype": "Contribution Category",
+  "name": "Maintenance-Maintenance Template",
+  "module_name": "Maintenance",
+  "contribution_type": "Maintenance Template",
+  "description": "Plantillas de mantenimiento",
+  "export_doctype": "Maintenance Template",
+  "required_fields": "[\"template_code\", \"template_name\"]",
+  "is_active": 1,
+  "approval_workflow": null,
+  "validation_rules": null
+ },
+ {
+  "doctype": "Contribution Category",
+  "name": "Physical Spaces-Space Template",
+  "module_name": "Physical Spaces",
+  "contribution_type": "Space Template",
+  "description": "Plantillas de espacios físicos",
+  "export_doctype": "Space Template",
+  "required_fields": "[\"template_code\", \"template_name\"]",
+  "is_active": 1,
+  "approval_workflow": null,
+  "validation_rules": null
+ },
+ {
+  "doctype": "Contribution Category",
+  "name": "Contracts-Contract Template",
+  "module_name": "Contracts",
+  "contribution_type": "Contract Template",
+  "description": "Plantillas de contratos",
+  "export_doctype": "Contract Template",
+  "required_fields": "[\"template_code\", \"template_name\"]",
+  "is_active": 1,
+  "approval_workflow": null,
+  "validation_rules": null
+ },
+ {
+  "doctype": "Contribution Category",
+  "name": "Financial Management-Financial Template",
+  "module_name": "Financial Management",
+  "contribution_type": "Financial Template",
+  "description": "Plantillas financieras",
+  "export_doctype": "Financial Template",
+  "required_fields": "[\"template_code\", \"template_name\"]",
+  "is_active": 1,
+  "approval_workflow": null,
+  "validation_rules": null
+ },
+ {
+  "doctype": "Contribution Category",
+  "name": "Security-Security Template",
+  "module_name": "Security",
+  "contribution_type": "Security Template",
+  "description": "Plantillas de seguridad",
+  "export_doctype": "Security Template",
+  "required_fields": "[\"template_code\", \"template_name\"]",
+  "is_active": 1,
+  "approval_workflow": null,
+  "validation_rules": null
+ }
+]
