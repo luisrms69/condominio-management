@@ -30,55 +30,14 @@ class TestDataFactory:
 		Returns:
 		    frappe.Document: Documento Company creado o existente
 		"""
+		# Delegar a la función helper que crea empresas dummy necesarias para ERPNext
+		from condominium_management.companies.test_utils import create_test_company_with_default_fallback
+
 		if not abbr:
 			abbr = "".join([word[0].upper() for word in company_name.split()[:3]])
 
-		if not frappe.db.exists("Company", company_name):
-			# Limpiar datos huérfanos de tests previos fallidos
-			frappe.db.sql(
-				"""DELETE FROM tabWarehouse
-				   WHERE company = %s OR name LIKE %s""",
-				(company_name, f"%{abbr}%"),
-			)
-			frappe.db.sql(
-				"""DELETE FROM `tabCost Center`
-				   WHERE company = %s OR name LIKE %s""",
-				(company_name, f"%{abbr}%"),
-			)
-			frappe.db.commit()
-
-			company = frappe.get_doc(
-				{
-					"doctype": "Company",
-					"company_name": company_name,
-					"abbr": abbr,
-					"default_currency": "MXN",
-					"country": "Mexico",
-					"is_group": 1,
-				}
-			)
-			try:
-				company.insert(ignore_permissions=True)
-				return company
-			except Exception as e:
-				# Si falla, intentar con configuración básica
-				if "Row #11: Company: Test Company Default" in str(e):
-					# Crear empresa básica sin campos ERPNext complicados
-					basic_company = frappe.get_doc(
-						{
-							"doctype": "Company",
-							"company_name": company_name,
-							"abbr": abbr,
-							"default_currency": "USD",
-							"country": "United States",
-						}
-					)
-					basic_company.insert(ignore_permissions=True)
-					return basic_company
-				else:
-					raise e
-		else:
-			return frappe.get_doc("Company", company_name)
+		# Usar función helper que crea "Test Company Default" y otras empresas dummy
+		return create_test_company_with_default_fallback(company_name, abbr, "MXN", "Mexico")
 
 	@staticmethod
 	def create_test_user(email="test@example.com", full_name="Test User"):
