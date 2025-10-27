@@ -45,6 +45,7 @@ y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 - **PR #26: master_template_registry.json (P1)** - Eliminado campo company (multi-sitio compatible, zero-config deployment)
 - **PR #26: entity_type_configuration.json (P2)** - Corregido entity_doctype a DocTypes reales, export-fixtures exportaba campo name incorrecto
 - **PR #26: contribution_category.json (P2)** - KeyError 'name' resuelto, 142 registros test eliminados de BD
+- **PR #27: Error CI test_service_management_contract y test_master_template_registry** - Tests ahora usan create_test_company_with_default_fallback() que crea empresas dummy necesarias para ERPNext
 
 ### Removed
 - **PR #26: user_type.json fixture eliminado** - DocType legacy sin uso, 0 referencias funcionales, simplificación arquitectura
