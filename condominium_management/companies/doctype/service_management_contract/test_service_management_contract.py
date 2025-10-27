@@ -23,18 +23,12 @@ class TestServiceManagementContract(FrappeTestCase):
 		if getattr(frappe.flags, "test_companies_created", False):
 			return
 
+		# Importar función helper que crea empresas dummy necesarias para ERPNext
+		from condominium_management.companies.test_utils import create_test_company_with_default_fallback
+
 		for company_name, abbr in [("Provider Co", "PC"), ("Client Co", "CC")]:
-			if not frappe.db.exists("Company", company_name):
-				company = frappe.get_doc(
-					{
-						"doctype": "Company",
-						"company_name": company_name,
-						"abbr": abbr,
-						"default_currency": "MXN",
-						"country": "Mexico",
-					}
-				)
-				company.insert(ignore_permissions=True)
+			# Usar función helper que crea "Test Company Default" y otras empresas dummy
+			create_test_company_with_default_fallback(company_name, abbr, "MXN", "Mexico")
 
 		frappe.flags.test_companies_created = True
 
