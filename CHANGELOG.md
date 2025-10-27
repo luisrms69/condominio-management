@@ -23,9 +23,15 @@ y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 - Fixture policy_category.json: 19 categorías profesionales completas con chapter_mapping y descriptions
 - Diagnóstico policy_category.json: DIAGNOSTICO-POLICY-CATEGORY.md (análisis fixture P1, 15 categorías profesionales)
 - Reporte Dashboard Consolidado: REPORTE-DASHBOARD-CONSOLIDADO.md (falso positivo script testing corregido)
+- **PR #26: Diagnóstico entity_type_configuration: DIAGNOSTICO-ENTITY-TYPE-CONFIGURATION-FIXTURE.md** (análisis export-fixtures error, entity_doctype incorrecto)
+- **PR #26: Diagnóstico master_template_registry: DIAGNOSTICO-MASTER-TEMPLATE-REGISTRY.md** (violación multi-sitio, campo company)
+- **PR #26: Fixture entity_type_configuration.json habilitado** (1 registro: Service Management Contract, auto-detection funcional)
+- **PR #26: Fixture contribution_category.json habilitado** (6 categorías productivas alineadas con module_paths)
+- **Reporte análisis fixtures sobrescritura: REPORTE-FIXTURES-SOBRESCRITURA.md** (verificación 13 fixtures, ningún script generador activo, sistema seguro)
 
 ### Changed
-- Fixtures Companies: 9 habilitados (64%), 5 deshabilitados (36%) - acquisition_type + company_type + policy_category reparados
+- **PR #26: Fixtures system 13/14 habilitados (93%)** - De 6/14 (43%) a 13/14, zero-config deployment funcional
+- **PR #26: Test Service Management Contract** - Nombres únicos con frappe.generate_hash() para prevenir UniqueValidationError
 - Scripts obsoletos marcados con headers OBSOLETO (install.py, company_custom_fields.py)
 
 ### Fixed
@@ -36,6 +42,15 @@ y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 - **acquisition_type.json (P0): Reparado con required_documents poblados** - Script one-off idempotente, fixture habilitado, Committee Management desbloqueado
 - **policy_category.json (P1): Habilitado con 19 categorías profesionales** - Campo description añadido, 15 categorías nuevas con chapter_mapping completo, 4 originales actualizadas
 - **Script verificar_b2_b4_anticipado.py**: Corregido check B4 Dashboard Consolidado (buscaba DocType inexistente, ahora verifica 3 DocTypes módulo)
+- **PR #26: master_template_registry.json (P1)** - Eliminado campo company (multi-sitio compatible, zero-config deployment)
+- **PR #26: entity_type_configuration.json (P2)** - Corregido entity_doctype a DocTypes reales, export-fixtures exportaba campo name incorrecto
+- **PR #26: contribution_category.json (P2)** - KeyError 'name' resuelto, 142 registros test eliminados de BD
+
+### Removed
+- **PR #26: user_type.json fixture eliminado** - DocType legacy sin uso, 0 referencias funcionales, simplificación arquitectura
+- **companies/install.py** - Script obsoleto instalación custom fields (reemplazo: fixtures/custom_field.json)
+- **companies/custom_fields/company_custom_fields.py** - Definición programática custom fields (violaba RG-009)
+- **companies/test_company_customizations.py** - Test obsoleto instalación programática custom fields
 
 ### Testing
 - Ejecución testing Sección A (Preparación entorno): 8/8 items completados
@@ -43,6 +58,7 @@ y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 - Ejecución testing Sección B1 (Company test): 100% éxito, company_type.json reparación verificada
 - Scripts automatización testing: verificar_roles_i1_i4.py, crear_company_test_b1.py, verificar_b2_b4_anticipado.py
 - Script testing B2-B4 corregido: Dashboard Consolidado check ahora verifica DocTypes correctos del módulo
+- **PR #26: Test suite completo** - 957/957 tests passing (82 skipped), 0 errors después de corrección fixtures
 
 ## [0.1.0] - 2025-10-17
 
