@@ -28,6 +28,8 @@ y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 - **PR #26: Fixture entity_type_configuration.json habilitado** (1 registro: Service Management Contract, auto-detection funcional)
 - **PR #26: Fixture contribution_category.json habilitado** (6 categorías productivas alineadas con module_paths)
 - **Reporte análisis fixtures sobrescritura: REPORTE-FIXTURES-SOBRESCRITURA.md** (verificación 13 fixtures, ningún script generador activo, sistema seguro)
+- Auditoría UX/UI: REPORTE-UX-TESTING-2025-10-27.md (validación operativa sistema completo, secciones A-F ejecutadas, 9 hallazgos críticos documentados: 3 P0 arquitectura, 1 P1, 5 P2-P3)
+- Hallazgo crítico P0: HALLAZGO-ROLES-SIN-FIXTURE.md (22 roles custom sin fixture detectados, zero-config deployment comprometido, propuesta implementación completa con investigación requerida)
 
 ### Changed
 - **PR #26: Fixtures system 13/14 habilitados (93%)** - De 6/14 (43%) a 13/14, zero-config deployment funcional
