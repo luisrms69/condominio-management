@@ -62,7 +62,6 @@ act-cache/
 # Documentación sensible (movida a repo privado)
 *_INTERNO.md
 *_CONFIDENCIAL.md
-CLAUDE.md
 REPORTE_*.md
 DOCUMENTACION_*.md
 ARCHITECTURE_*.md
