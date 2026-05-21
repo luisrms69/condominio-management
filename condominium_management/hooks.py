@@ -339,6 +339,40 @@ fixtures = [
 	"Document Template Type",  # ✅ VÁLIDO - Cosmético (registros íntegros)
 	"Jurisdiction Level",  # ✅ VÁLIDO - Cosmético (4 registros íntegros)
 	"Compliance Requirement Type",  # ✅ VÁLIDO - Cosmético (5 registros íntegros)
+	# Sistema de Roles custom del sistema (22 roles requeridos por DocType permissions)
+	{
+		"dt": "Role",
+		"filters": [
+			[
+				"name",
+				"in",
+				[
+					"Administrador Financiero",
+					"Administrator Condominio",
+					"API Manager",
+					"API User",
+					"Assembly Participant",
+					"Comité Administración",
+					"Committee Member",
+					"Committee President",
+					"Committee Secretary",
+					"Company Administrator",
+					"Condominium Manager",
+					"Condómino",
+					"Configuration Approver",
+					"Configuration Manager",
+					"Contador Condominio",
+					"Event Organizer",
+					"Gestor de Dashboards",
+					"Master Template Manager",
+					"Property Administrator",
+					"Property Manager",
+					"Residente Propietario",
+					"Usuario de Dashboards",
+				],
+			]
+		],
+	},  # ✅ ENABLED (2026-05-21) - Bloqueante para v16 clean install
 	# Companies Module Custom Fields (Company DocType)
 	{
 		"dt": "Custom Field",
