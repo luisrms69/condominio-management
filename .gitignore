@@ -85,3 +85,9 @@ CLAUDE_OLD.md
 
 # Local private repo clone
 buzola-internal/
+
+# MkDocs build output (artefacto generado, no commitear)
+site/
+
+# Notas de sesión de Claude Code (instrucciones temporales, no commitear)
+docs/instructions/

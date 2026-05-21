@@ -1,300 +1,249 @@
-# ADR-0000: Estado Real de la App — Pre-migración
+# ADR-0000: Estado Real de la App — Pre-migración v15→v16
 
-**Fecha:** 2026-04-26  
-**Estado:** Informativo (snapshot)  
-**Autor:** Auditoría automatizada vía Claude Code
+**Fecha:** 2026-05-20
+**Estado:** Informativo (snapshot)
+**Autor:** Auditoría vía Claude Code — verificado contra filesystem y git history
 
 ---
 
 ## Contexto
 
-Este documento registra el estado real observado de la app `condominium_management` antes de cualquier refactorización mayor. Su propósito es establecer una línea base objetiva: qué existe, qué funciona, qué está roto y qué no debería estar.
+Este documento registra el estado real observado de la app `condominium_management` antes de iniciar
+la migración v15→v16. Establece la línea base objetiva: qué existe, qué funciona, qué está roto y
+qué deuda técnica hay. Fue auditado directamente contra el código en `origin/main` commit `e0676aa`.
+
+Ver ADR-0001 para la reconciliación de branches previa a la migración.
 
 ---
 
-## 1. Módulos declarados
+## 1. Versión y entorno
+
+| Campo | Valor |
+|-------|-------|
+| Versión declarada | `0.0.1` (en `__init__.py` — no refleja el estado real) |
+| Branch baseline | `origin/main` commit `e0676aa` |
+| Frappe bench | v15 — `/home/erpnext/frappe-bench` |
+| Frappe versión | 15.97.0 |
+| ERPNext versión | 15.95.0 |
+| Python | 3.12.3 |
+| Sitio de desarrollo | `admin1.dev` (principal), `condo1.dev`, `condo2.dev`, `domika.dev` |
+
+---
+
+## 2. Módulos declarados
 
 `modules.txt` declara 8 módulos:
 
-| Módulo | Directorio |
-|--------|-----------|
-| Companies | `companies/` |
-| Document Generation | `document_generation/` |
-| Community Contributions | `community_contributions/` |
-| Physical Spaces | `physical_spaces/` |
-| Committee Management | `committee_management/` |
-| Financial Management | `financial_management/` |
-| API Documentation System | `api_documentation_system/` |
-| Dashboard Consolidado | `dashboard_consolidado/` |
+| Módulo | Directorio | Estado |
+|--------|-----------|--------|
+| Companies | `companies/` | Funcional — hooks activos sobre `Company` de ERPNext |
+| Committee Management | `committee_management/` | Funcional |
+| Financial Management | `financial_management/` | Núcleo implementado |
+| Document Generation | `document_generation/` | Hooks desactivados — ISSUE #7 |
+| Physical Spaces | `physical_spaces/` | Funcional |
+| Community Contributions | `community_contributions/` | Declarado, no verificado en entorno real |
+| API Documentation System | `api_documentation_system/` | Meta-módulo funcional |
+| Dashboard Consolidado | `dashboard_consolidado/` | Estado incierto |
 
 ---
 
-## 2. DocTypes custom — inventario completo
+## 3. DocTypes custom — inventario
 
-**Total: 87 DocTypes** (todos con controller Python, ninguno con JS propio).
+**Total: 87 DocTypes** — todos con controller Python, ninguno con JS propio de DocType.
 
-### Companies (23 DocTypes)
-`access_point_detail`, `acquisition_type`, `company_type`, `compliance_requirement_type`, `condominium_information`, `contact_information`, `contract_service_item`, `document_template_type`, `enforcement_level`, `jurisdiction_level`, `master_data_sync_configuration`, `nearby_reference`, `operating_hours`, `policy_category`, `property_copropiedad`, `property_registry`, `property_status_type`, `property_usage_type`, `public_transport_option`, `service_information`, `service_management_contract`, `sync_data_type`, `target_company_sync`
+### Por módulo
 
-### Committee Management (21 DocTypes)
-`agreement_tracking`, `assembly_agenda`, `assembly_management`, `committee_kpi`, `committee_meeting`, `committee_member`, `committee_poll`, `community_event`, `event_activity`, `event_expense`, `event_organizer`, `event_registration`, `meeting_agenda_item`, `meeting_attendee`, `meeting_schedule`, `poll_option`, `progress_update`, `quorum_record`, `scheduled_meeting_item`, `vote_record`, `voting_system`
-
-### Financial Management (13 DocTypes)
-`billing_cycle`, `budget_planning`, `credit_balance_management`, `fee_component`, `fee_structure`, `financial_transparency_config`, `fine_management`, `payment_collection`, `premium_services_integration`, `property_account`, `property_type_filter`, `resident_account`
-
-### Document Generation (8 DocTypes)
-`configuration_field`, `conflict_detection_field`, `entity_configuration`, `entity_type_configuration`, `infrastructure_template_definition`, `master_template_registry`, `template_auto_assignment_rule`, `template_field_definition`
-
-### Dashboard Consolidado (8 DocTypes)
-`alert_channel`, `alert_configuration`, `dashboard_configuration`, `dashboard_snapshot`, `dashboard_widget_config`, `kpi_data_source`, `kpi_definition`, `module_monitor`
-
-### API Documentation System (4 DocTypes)
-`api_code_example`, `api_documentation`, `api_parameter`, `api_response_code`
-
-### Physical Spaces (6 DocTypes)
-`allowed_child_category`, `allowed_parent_category`, `component_type`, `physical_space`, `space_category`, `space_component`
-
-### Community Contributions (3 DocTypes)
-`contribution_category`, `contribution_request`, `registered_contributor_site`
+| Módulo | Cantidad | DocTypes |
+|--------|---------|---------|
+| Companies | 23 | `access_point_detail`, `acquisition_type`, `company_type`, `compliance_requirement_type`, `condominium_information`, `contact_information`, `contract_service_item`, `document_template_type`, `enforcement_level`, `jurisdiction_level`, `master_data_sync_configuration`, `nearby_reference`, `operating_hours`, `policy_category`, `property_copropiedad`, `property_registry`, `property_status_type`, `property_usage_type`, `public_transport_option`, `service_information`, `service_management_contract`, `sync_data_type`, `target_company_sync` |
+| Committee Management | 21 | `agreement_tracking`, `assembly_agenda`, `assembly_management`, `committee_kpi`, `committee_meeting`, `committee_member`, `committee_poll`, `community_event`, `event_activity`, `event_expense`, `event_organizer`, `event_registration`, `meeting_agenda_item`, `meeting_attendee`, `meeting_schedule`, `poll_option`, `progress_update`, `quorum_record`, `scheduled_meeting_item`, `vote_record`, `voting_system` |
+| Financial Management | 13 | `billing_cycle`, `budget_planning`, `credit_balance_management`, `fee_component`, `fee_structure`, `financial_transparency_config`, `fine_management`, `payment_collection`, `premium_services_integration`, `property_account`, `property_type_filter`, `resident_account` |
+| Document Generation | 8 | `configuration_field`, `conflict_detection_field`, `entity_configuration`, `entity_type_configuration`, `infrastructure_template_definition`, `master_template_registry`, `template_auto_assignment_rule`, `template_field_definition` |
+| Dashboard Consolidado | 8 | `alert_channel`, `alert_configuration`, `dashboard_configuration`, `dashboard_snapshot`, `dashboard_widget_config`, `kpi_data_source`, `kpi_definition`, `module_monitor` |
+| API Documentation System | 4 | `api_code_example`, `api_documentation`, `api_parameter`, `api_response_code` |
+| Physical Spaces | 6 | `allowed_child_category`, `allowed_parent_category`, `component_type`, `physical_space`, `space_category`, `space_component` |
+| Community Contributions | 3 | `contribution_category`, `contribution_request`, `registered_contributor_site` |
 
 ---
 
-## 3. Fixtures exportados
+## 4. Fixtures exportados
 
-**Ubicación:** `condominium_management/fixtures/`  
-**Total:** 13 archivos JSON — todos activos en `hooks.py`
+**Total: 13 archivos JSON** — todos activos en `hooks.py`.
 
-| Archivo | Contenido |
+| Fixture | Contenido |
 |---------|-----------|
-| `custom_field.json` | 32 custom fields en DocType `Company` (4 secciones) |
+| `custom_field.json` | 32 custom fields sobre DocType `Company` de ERPNext |
 | `master_template_registry.json` | Plantillas de infraestructura |
-| `policy_category.json` | 15+ categorías de políticas |
-| `contribution_category.json` | 6 categorías de contribuciones |
-| `compliance_requirement_type.json` | Tipos de requerimientos de cumplimiento |
-| `document_template_type.json` | Tipos de plantillas de documentos |
-| `jurisdiction_level.json` | 4 niveles (Municipal, Estatal, Federal, Internacional) |
-| `property_status_type.json` | 6 estados de propiedad |
-| `property_usage_type.json` | 5 tipos de uso |
+| `policy_category.json` | 15+ categorías |
+| `contribution_category.json` | 6 categorías |
+| `compliance_requirement_type.json` | Tipos de requerimientos |
+| `document_template_type.json` | Tipos de plantillas |
+| `jurisdiction_level.json` | 4 niveles |
+| `property_status_type.json` | 6 estados |
+| `property_usage_type.json` | 5 tipos |
 | `acquisition_type.json` | Tipos de adquisición |
 | `company_type.json` | Tipos de empresa |
-| `enforcement_level.json` | 4 niveles de enforcement |
-| `entity_type_configuration.json` | Configuración de tipo de entidad |
+| `enforcement_level.json` | 4 niveles |
+| `entity_type_configuration.json` | Configuración de entidad |
 
-**Brecha crítica de fixtures:** 87 DocTypes existen en código, pero solo 13 fixtures cubren datos de catálogo. Los 74 DocTypes restantes no tienen fixtures. Cualquier instalación nueva queda sin datos de referencia para la mayoría de los módulos.
-
----
-
-## 4. Lógica de negocio implementada
-
-### Financial Management — núcleo funcional real
-
-**`billing_cycle`**: Ciclos de facturación con máquina de estados (Borrador → Programado → Activo → Facturado → Completado). Genera `Sales Invoice` automáticas por propiedad. Soporta 4 métodos de cálculo: Monto Fijo, Por Indiviso (%), Por M2, Mixto.
-
-**`fee_structure`**: Estructura de cuotas con validación de solapamiento, fondo de reserva (0-50%), descuentos pronto pago (0-20%), recargos mora (0-10%), componentes por porcentaje o monto fijo. Previene estructuras activas superpuestas.
-
-**`property_account`**: Vincula `Property Registry` con `Customer` de ERPNext. Calcula saldo pendiente desde `Sales Invoice`, métricas YTD, retraso promedio de pagos. Crea Customer automáticamente si no existe.
-
-**`fine_management`**: Gestión de multas con escalamiento y seguimiento de cumplimiento.
-
-**`payment_collection`**: Registro de cobros con reconciliación.
-
-**`credit_balance_management`**: Gestión de saldos a favor.
-
-**`budget_planning`**: Planificación presupuestal (lógica básica, sin integración financiera ERPNext verificada).
-
-**`resident_account`**: Cuenta de residente (relación con property_account no completamente clara en código).
-
-**`premium_services_integration`**: Integración servicios premium (estado de implementación real desconocido sin revisar el controller).
-
-**`financial_transparency_config`**: Configuración de transparencia (parece ser configuración, no lógica operativa).
-
-### Committee Management — funcional
-
-Gestión completa de reuniones, asambleas, votaciones, acuerdos y KPIs de comité. Incluye programación de reuniones y seguimiento de asistencia/quórum.
-
-### Companies — funcional con hooks activos
-
-`company_hooks.py` extiende el DocType `Company` de ERPNext con validaciones específicas de condominio. Tiene hooks para `after_insert`, `on_update`, `on_save`, `on_trash`.
-
-### Physical Spaces — funcional
-
-Jerarquía de espacios físicos con categorías, componentes y tipos. Hooks activos para validación y detección.
-
-### Community Contributions — parcialmente implementado
-
-API para contribuciones cross-site (`cross_site_api.py`, `contribution_manager.py`). La arquitectura multi-site (contribuyentes → domika.dev) está definida pero no verificada como funcional.
-
-### Document Generation — hooks desactivados (ROTO)
-
-Sistema de plantillas de documentos con auto-detección de entidades. **Los hooks universales están comentados** (ver sección 5). El sistema no detecta nuevas entidades automáticamente.
-
-### Dashboard Consolidado — estado incierto
-
-`api.py`, `kpi_engine.py`, `data_aggregators.py` existen. Sin revisión de si las queries funcionan con los datos reales del sistema.
-
-### API Documentation System — meta-módulo
-
-Sistema que auto-documenta los endpoints de la app. Incluye scanner, parser, generador de esquemas y decorador. Parece funcional como herramienta de desarrollo.
+**Brecha:** 74 de 87 DocTypes no tienen fixture. Instalación nueva queda sin datos de referencia
+para la mayoría de módulos.
 
 ---
 
 ## 5. Dependencias
 
-### Apps Frappe requeridas
-- `erpnext` — declarado en `hooks.py` como `required_apps = ["erpnext"]`
-- `frappe` — implícito (framework base)
-
-### Dependencias Python externas
-**Ninguna.** `pyproject.toml` no declara dependencias propias. El código usa exclusivamente la API de Frappe.
-
-### Dependencias implícitas detectadas en código
-- `frappe.utils` (datetime, hashing, etc.)
-- `erpnext.accounts` (balance de cuentas, Sales Invoice)
-- `erpnext.setup.doctype.company` (extensión vía custom fields)
+- **Frappe apps requeridas:** `erpnext` (declarado en `hooks.py`)
+- **Dependencias Python externas:** Ninguna — código puro Frappe
+- **Import directo de erpnext detectado:** `from erpnext.setup.utils import enable_all_roles_and_domains` en `utils.py:45` — potencial bloqueante en v16
 
 ---
 
-## 6. Problemas conocidos y cosas rotas
+## 6. Lógica de negocio implementada
 
-### CRÍTICO: ISSUE #7 — Hooks universales desactivados
+### Financial Management — núcleo funcional real
 
-**Archivo:** `hooks.py` líneas 190-198  
-**Estado:** Comentado intencionalmente, marcado como CRÍTICA
+- **`billing_cycle`:** Máquina de estados, generación de `Sales Invoice` automática por propiedad. 4 métodos: Monto Fijo, Por Indiviso (%), Por M2, Mixto.
+- **`fee_structure`:** Estructura de cuotas con validación de solapamiento, fondo de reserva (0-50%), descuentos y recargos.
+- **`property_account`:** Vincula `Property Registry` con `Customer` de ERPNext. Calcula saldo pendiente desde facturas activas.
+- **`fine_management`:** Multas con escalamiento.
+- **`payment_collection`:** Registro de cobros.
+
+### Committee Management — funcional
+
+Gestión completa de reuniones, asambleas, votaciones, KPIs y eventos comunitarios.
+
+### Companies — funcional con hooks activos
+
+`company_hooks.py` extiende `Company` de ERPNext con validaciones de condominio.
+32 custom fields distribuidos en 4 secciones.
+
+### Document Generation — hooks desactivados (ISSUE #7)
+
+Framework implementado pero auto-detección de entidades no operativa. Ver sección de problemas.
+
+### Physical Spaces — funcional
+
+Jerarquía de espacios con categorías, componentes y tipos.
+
+### Community Contributions — no verificado en entorno real
+
+API cross-site definida pero arquitectura multi-site no validada operativamente.
+
+---
+
+## 7. Problemas críticos conocidos
+
+### ISSUE #7 — Hooks universales de Document Generation desactivados (CRÍTICO)
+
+**Archivo:** `hooks.py` líneas ~190-198
 
 ```python
-# TEMPORALMENTE DESACTIVADOS: Los hooks universales ("*") interfieren con el setup wizard de ERPNext
-# causando errores de validación de enlaces durante CI.
-# ISSUE #7: Reactivar hooks universales con verificaciones de contexto
-# PRIORIDAD: CRÍTICA - Debe resolverse inmediatamente después del merge
+# TEMPORALMENTE DESACTIVADOS: Interfieren con setup wizard de ERPNext
+# ISSUE #7: Reactivar con verificaciones de contexto
+# PRIORIDAD: CRÍTICA
 # "*": {
 #     "after_insert": "...auto_detection.on_document_insert",
 #     "on_update": "...auto_detection.on_document_update",
 # },
 ```
 
-El módulo Document Generation no puede detectar automáticamente nuevas entidades. La funcionalidad de auto-asignación de plantillas no está operativa.
+El módulo Document Generation no puede detectar automáticamente nuevas entidades.
+Contexto técnico completo: `docs/development/issue7-hooks-universales-contexto.md`
 
-### ADVERTENCIA: Versión no actualizada
+### 22 roles custom sin fixture (BLOQUEANTE para v16)
 
-`__init__.py` reporta `__version__ = "0.0.1"` a pesar de que el sistema es sustancialmente más avanzado. El CHANGELOG no está sincronizado con el estado real del código.
+Los DocTypes referencian 22 roles custom en sus permisos, pero **no existe fixture de Roles**.
+Existen en `admin1.dev` pero no en código. Instalación limpia (incluyendo v16) queda con permisos rotos.
 
-### ADVERTENCIA: Fixtures insuficientes
+Roles afectados:
+```
+Administrador Financiero, Administrator Condominio, API Manager, API User,
+Assembly Participant, Comité Administración, Committee Member, Committee President,
+Committee Secretary, Company Administrator, Condominium Manager, Condómino,
+Configuration Approver, Configuration Manager, Contador Condominio, Event Organizer,
+Gestor de Dashboards, Master Template Manager, Property Administrator,
+Property Manager, Residente Propietario, Usuario de Dashboards
+```
 
-Solo 13 de los 87 DocTypes tienen cobertura de fixtures. Una instalación nueva no tendrá datos de catálogo para: todos los DocTypes de Committee Management, Financial Management, Physical Spaces, Dashboard, Community Contributions, y la mayoría de Companies.
+Documentación del hallazgo: `docs/audit/hallazgo-roles-sin-fixture.md`
 
-### ADVERTENCIA: `property_type_filter` sin uso claro
+### CI desactivado
 
-DocType en Financial Management cuyo propósito en el flujo operativo no está documentado.
+`ci.yml` renombrado a `ci.yml.disabled` en commit `3a9f2cc`. No hay gate de validación automática.
+Se reactivará con configuración v16 como parte de la migración.
 
-### ADVERTENCIA: `premium_services_integration` — implementación incierta
+### Import de módulo interno de ERPNext
 
-El nombre sugiere integración con servicios externos, pero no hay dependencias externas en el código. Podría ser un DocType de configuración con funcionalidad futura.
+`utils.py:45`: `from erpnext.setup.utils import enable_all_roles_and_domains`
+Debe verificarse que esta función existe en ERPNext v16 antes de instalar.
 
----
+### Brecha de fixtures (74 DocTypes sin cobertura)
 
-## 7. Archivos sueltos que no deberían estar
-
-### En la raíz del repositorio (fuera del paquete Python)
-
-**`layer4_complex_tests_backup/`** — Directorio con 14 archivos de test en la raíz del repo (`/apps/condominium_management/layer4_complex_tests_backup/`). No está dentro del paquete Python, no tiene `__init__.py`, no puede ejecutarse con `bench run-tests`. Es un directorio huérfano de backup.
-
-### En la raíz del módulo Python (`condominium_management/`)
-
-Los siguientes archivos son legítimos y esperados en Frappe:
-- `__init__.py` ✅
-- `hooks.py` ✅
-- `install.py` ✅
-- `modules.txt` ✅
-- `patches.txt` ✅
-
-Los siguientes son cuestionables:
-- **`test_factories.py`** — Factory de datos para tests ubicada en la raíz del módulo en lugar de un directorio `tests/` o `utils/`. No es un problema funcional pero es inconsistente con la estructura de los otros módulos.
-- **`utils.py`** — Contiene `before_tests()` y helpers. Mezcla setup de tests con utilities de producción.
-
-### Directorio vacío/vestigial
-- `companies/custom_fields/` — Solo tiene `__init__.py`. El contenido real (custom fields) está en `fixtures/custom_field.json`. Este directorio no tiene propósito activo.
-- `config/` — Solo tiene `__init__.py`. En Frappe v15 la configuración de módulos se maneja diferente. Directorio posiblemente heredado de una versión anterior.
-- `committee_management/report/` — Solo tiene `__init__.py`. No hay reports implementados.
-- `templates/pages/` — Solo tiene `__init__.py`. No hay páginas web implementadas.
+Una instalación nueva no tendrá datos de catálogo para la mayoría de módulos.
+Solo 13 de 87 DocTypes tienen fixture.
 
 ---
 
-## 8. Estado de los tests
+## 8. Deuda técnica de tests
 
-### Volumen total
-
-El número de archivos de test es desproporcionadamente alto. Conteo aproximado por módulo:
-
-| Módulo | Archivos test |
-|--------|--------------|
-| financial_management (12 doctypes × ~15 tests) | ~180 |
-| committee_management | ~20 |
-| community_contributions | ~5 |
-| dashboard_consolidado | ~3 |
-| api_documentation_system | ~2 |
-| layer4_complex_tests_backup (raíz repo) | 14 |
-| **Total estimado** | **~224** |
-
-### Capas de tests (nomenclatura L1-L4)
-
-Los tests siguen una estratificación:
-- **L1**: Validación de campos
-- **L2**: Lógica de negocio
-- **L3**: Integración
-- **L4**: Tests avanzados (database schema, field config, hooks, meta consistency, permissions, simple)
-
-### Tests L4 Type B y C — señal de alerta
-
-Los archivos L4 Type B incluyen nombres como:
-- `test_fee_structure_l4_type_b_quantum_computing.py`
-- `test_billing_cycle_l4_type_b_metaverse_integration.py`
-- `test_financial_transparency_config_l4_type_b_blockchain_integration.py`
-- `test_credit_balance_management_l4_type_b_ai_optimization.py`
-
-Estos nombres no corresponden a funcionalidades reales de la app. Son archivos generados automáticamente que probablemente no prueban comportamiento real del sistema. **Representan deuda técnica de testing que infla el conteo sin agregar valor.**
-
-### Infraestructura de tests
-
-- `test_factories.py` en raíz del módulo: `TestDataFactory` class para crear datos de prueba
-- `companies/test_utils.py`: helpers adicionales
-- `hooks.py` registra `before_tests` que configura Company, roles y registros básicos
-- `frappe.flags.skip_test_records = True` en `tests/__init__.py` (según audit)
+- **~224 archivos de test estimados** distribuidos en los módulos.
+- Tests **L4 Type B con nombres ficticios** que no prueban funcionalidad real:
+  `test_fee_structure_l4_type_b_quantum_computing.py`,
+  `test_billing_cycle_l4_type_b_metaverse_integration.py`,
+  `test_financial_transparency_config_l4_type_b_blockchain_integration.py`, etc.
+- **`layer4_complex_tests_backup/`** en raíz del repo — directorio huérfano no ejecutable con bench.
+- Tests L1–L3 y L4 básicos sí prueban funcionalidad real.
 
 ---
 
-## 9. Arquitectura multi-site (estado declarado vs verificado)
+## 9. Archivos y directorios anómalos
 
-El sistema declara una arquitectura donde:
-- `admin1.dev` es el site principal de desarrollo
-- `condo1.dev`, `condo2.dev` son sites contribuyentes independientes
-- `domika.dev` es la matriz receptora de contribuciones
-
-La lógica de `community_contributions/api/cross_site_api.py` implementa la API para esto. **No hay evidencia en este audit de que los sites contribuyentes existan o que la sincronización esté probada.**
-
----
-
-## 10. Resumen ejecutivo
-
-| Dimensión | Estado | Notas |
-|-----------|--------|-------|
-| DocTypes | 87 creados | Todos con controller Python |
-| Fixtures | 13/87 con cobertura | Brecha importante |
-| Lógica financiera core | Implementada | BillingCycle, FeeStructure, PropertyAccount |
-| Document Generation | Roto (hooks off) | ISSUE #7 pendiente |
-| Tests unitarios | Exceso patológico | ~224 archivos, muchos sin valor real |
-| Dependencias externas | Ninguna | Solo Frappe + ERPNext |
-| Versión declarada | 0.0.1 | No refleja estado real |
-| Archivos huérfanos | layer4_complex_tests_backup/ | En raíz del repo, no ejecutable |
-| Directorios vestigiales | 4 directorios vacíos | custom_fields/, config/, report/, templates/pages/ |
+| Elemento | Ubicación | Problema |
+|----------|-----------|---------|
+| `layer4_complex_tests_backup/` | Raíz del repo | Directorio huérfano, no ejecutable |
+| `companies/custom_fields/` | Módulo companies | Solo `__init__.py`, sin contenido |
+| `config/` | Módulo raíz | Solo `__init__.py`, vestigial |
+| `committee_management/report/` | Módulo committee | Solo `__init__.py`, sin reports |
+| `templates/pages/` | Módulo raíz | Solo `__init__.py`, sin páginas |
+| `test_factories.py` | Raíz del módulo Python | Debería estar en `tests/` |
 
 ---
 
-## Decisiones pendientes que este audit sugiere
+## 10. Arquitectura multi-site (estado declarado vs verificado)
 
-1. **Eliminar `layer4_complex_tests_backup/`** de la raíz del repo.
-2. **Purgar tests L4 Type B con nombres ficticios** (quantum, blockchain, metaverse, AI optimization).
-3. **Resolver ISSUE #7** o documentar formalmente que Document Generation no es funcional.
-4. **Completar fixtures** para los módulos sin cobertura si se necesita zero-config deployment.
-5. **Actualizar `__version__`** a algo que refleje el estado real.
-6. **Limpiar directorios vacíos** vestigiales.
-7. **Verificar `community_contributions` cross-site** en un entorno real antes de considerar esa funcionalidad como operativa.
+- `admin1.dev` — site principal de desarrollo
+- `condo1.dev`, `condo2.dev` — sites contribuyentes
+- `domika.dev` — matriz receptora
+
+La API cross-site existe en código (`community_contributions/api/cross_site_api.py`) pero
+**no está verificada como funcional en entorno real**. Validación operativa de oct-2025 confirmó
+sistema operacional con 9 hallazgos; ver `docs/audit/reporte-ux-testing-2025-10-27.md`.
+
+---
+
+## 11. Branches — estado post-reconciliación
+
+Ver ADR-0001 para el análisis completo. Resumen:
+
+- **Baseline:** `origin/main` commit `e0676aa` — código consolidado completo
+- **Historia reescrita:** commit `3d2c046` es grafted (filter-branch rewrite)
+- **Conservadas con historia:** `feature/financial-management` (73 commits), `feature/committee-management-clean` (48 commits)
+- **Autorizadas para eliminar:** 8 branches — ver ADR-0001
+
+---
+
+## 12. Resumen ejecutivo
+
+| Dimensión | Estado |
+|-----------|--------|
+| DocTypes | 87 — todos con controller Python |
+| Fixtures | 13/87 — brecha importante |
+| Lógica financiera core | Implementada (BillingCycle, FeeStructure, PropertyAccount) |
+| Document Generation | Roto — hooks ISSUE #7 |
+| CI | Desactivado — se reescribe para v16 |
+| Tests | ~224 archivos — muchos ficticios, deuda técnica alta |
+| Roles | 22 roles sin fixture — BLOQUEANTE para v16 |
+| Dependencias externas | Ninguna — solo Frappe + ERPNext |
+| Import erpnext directo | 1 — `enable_all_roles_and_domains` en `utils.py` |
+| Versión declarada | 0.0.1 — no refleja estado real |
