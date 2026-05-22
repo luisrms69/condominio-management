@@ -320,15 +320,37 @@ fixtures = [
 	# ============================================================================
 	# DESHABILITADOS - Requieren corrección antes de migrar (0/14)
 	# ============================================================================
-	"Master Template Registry",  # ✅ ENABLED - Single DocType sin campo company (multi-sitio safe)
-	"Entity Type Configuration",  # ✅ ENABLED (2025-10-26) - Corregido entity_doctype, solo Service Management Contract (mínimo viable)
+	"Master Template Registry",  # ✅ ENABLED - Single DocType. NOTA: campo last_update es volátil
+	#                              (se actualiza al usar el sistema). Revertir master_template_registry.json
+	#                              después de export-fixtures hasta diseñar solución definitiva.
+	{
+		"dt": "Entity Type Configuration",
+		"filters": [["name", "in", ["Service Management Contract"]]],
+	},  # ✅ ENABLED (2026-05-21) - Filtro explícito. Registro 'User' excluido hasta decisión humana
+	#     sobre si es configuración funcional o artefacto de desarrollo.
 	"Company Type",  # ✅ ENABLED - Autoname normalizado (name == type_code)
 	"Acquisition Type",  # ✅ ENABLED - required_documents poblado via one-off script
 	"Policy Category",  # ✅ ENABLED - 15 categorías profesionales completas
 	# "User Type",                    # ❌ ELIMINADO (2025-10-26) - DocType legacy que hacía override incorrecto de Frappe core
 	#                                   # Sin implementación real (0 referencias código), conflicto arquitectónico (duplica Roles)
 	#                                   # DocType nativo Frappe restaurado. Ver commit para detalles completos.
-	"Contribution Category",  # ✅ ENABLED (2025-10-26) - Fixture mínimo productivo (6 categorías base), test records eliminados
+	{
+		"dt": "Contribution Category",
+		"filters": [
+			[
+				"name",
+				"in",
+				[
+					"Contracts-Contract Template",
+					"Document Generation-Infrastructure Template",
+					"Financial Management-Financial Template",
+					"Maintenance-Maintenance Template",
+					"Physical Spaces-Space Template",
+					"Security-Security Template",
+				],
+			]
+		],
+	},  # ✅ ENABLED (2026-05-21) - Filtro explícito. 55 registros de test en admin1.dev excluidos.
 	# ============================================================================
 	# HABILITADOS - Fixtures válidos listos para migrar (13/14)
 	# ============================================================================

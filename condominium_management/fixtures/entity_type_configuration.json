@@ -1,18 +1,21 @@
 [
  {
+  "applies_to_estatuto": 0,
+  "applies_to_manual": 1,
+  "applies_to_reglamento": 0,
+  "auto_detect_on_create": 1,
+  "conflict_detection_enabled": 0,
+  "conflict_fields": [],
+  "detection_field": null,
+  "docstatus": 0,
   "doctype": "Entity Type Configuration",
-  "name": "Service Management Contract",
   "entity_doctype": "Service Management Contract",
   "entity_name": "Contrato de Gestión de Servicios",
   "entity_name_plural": "Contratos de Gestión de Servicios",
-  "owning_module": "Companies",
-  "requires_configuration": 1,
-  "auto_detect_on_create": 1,
-  "auto_detect_on_update": 0,
-  "priority": 5,
   "is_active": 1,
-  "applies_to_manual": 1,
-  "applies_to_estatuto": 0,
-  "applies_to_reglamento": 0
+  "modified": "2026-01-24 00:45:25.431957",
+  "name": "Service Management Contract",
+  "owning_module": "Companies",
+  "requires_configuration": 1
  }
 ]
