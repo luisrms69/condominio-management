@@ -15,7 +15,8 @@ class TestSpaceComponent(FrappeTestCase):
 					"doctype": "Company",
 					"company_name": "Test Company",
 					"abbr": "TCOMP",
-					"default_currency": "USD",
+					"default_currency": "MXN",
+					"country": "Mexico",
 				}
 			).insert()
 

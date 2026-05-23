@@ -15,7 +15,8 @@ class TestPhysicalSpace(FrappeTestCase):
 					"doctype": "Company",
 					"company_name": "Test Condominium",
 					"abbr": "TC",
-					"default_currency": "USD",
+					"default_currency": "MXN",
+					"country": "Mexico",
 				}
 			).insert()
 
