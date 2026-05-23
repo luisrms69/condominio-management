@@ -91,3 +91,6 @@ site/
 
 # Notas de sesión de Claude Code (instrucciones temporales, no commitear)
 docs/instructions/
+
+# Scripts temporales locales (no commitear — ver CLAUDE.md global)
+/one_offs/
