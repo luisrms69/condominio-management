@@ -6,6 +6,7 @@
 - **En producción:** No — en desarrollo activo
 - **Branch activo:** main
 - **Versión:** 0.0.1
+- **Avance migración:** 97% — campaña de tests v16 completa (802 OK / 75 skipped / 0 errores, 2026-05-24)
 
 ## Sites
 
@@ -14,7 +15,7 @@
 | Site | Propósito | Estado |
 |---|---|---|
 | `condo-v16.dev` | Desarrollo activo v16 | ✅ Instalado — frappe 16.18.2 + erpnext 16.18.3 + condominium_management 0.0.1 |
-| `test-condominium.localhost` | Tests unitarios aislados | ⏳ Pendiente de crear |
+| `test-condominium.localhost` | Tests unitarios aislados | ✅ Creado y funcional — `_Test Company` como default_company en Global Defaults |
 
 ### v15 (referencia histórica — no tocar sin autorización)
 
@@ -67,10 +68,10 @@ Sistema de administración de condominios sobre ERPNext. Gestiona propiedades, f
 | Companies | 23 | ✅ Funcional — extiende Company de ERPNext |
 | Committee Management | 21 | ✅ Funcional — reuniones, asambleas, votaciones |
 | Financial Management | 12 | ✅ Núcleo funcional implementado |
-| Document Generation | 8 | ❌ Hooks desactivados — ISSUE #7 |
-| Dashboard Consolidado | 8 | ⚠️ Estado incierto |
+| Document Generation | 8 | ⚠️ Tests CRUD OK — auto-detección desactivada (ISSUE #7, deuda funcional) |
+| Dashboard Consolidado | 8 | ✅ Funcional — 40/40 tests OK |
 | Physical Spaces | 6 | ✅ Funcional |
-| Community Contributions | 3 | ⚠️ No verificado en entorno real |
+| Community Contributions | 3 | ✅ Tests OK — arquitectura multi-site no verificada en entorno real |
 | API Documentation System | 4 | ✅ Meta-módulo funcional |
 
 ### DocTypes críticos de Financial Management
@@ -148,9 +149,10 @@ bench --site test-condominium.localhost run-tests --app condominium_management
 pytest apps/condominium_management/ -v --tb=short
 ```
 
-**Site de tests:** `test-condominium.localhost` (pendiente de crear — ver CONTINUITY.md)
+**Site de tests:** `test-condominium.localhost` — operativo. Seed: `_Test Company` como `default_company`.
 
-~224 archivos de test estimados. Muchos L4 Type B son ficticios y no prueban funcionalidad real. Tests reales en módulos individuales bajo `[modulo]/tests/`.
+Campaña v16 completada: 802 OK / 75 skipped / 0 errores (todos los módulos validados, 2026-05-24).
+Muchos L4 Type B son ficticios y no prueban funcionalidad real. Tests reales bajo `[modulo]/doctype/[doctype]/test_*.py`.
 
 ---
 
