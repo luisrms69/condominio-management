@@ -1,7 +1,7 @@
 # Documento de Continuidad — condominium_management
 
-**Fecha:** 2026-05-24
-**Sesión:** Campaña de tests v16 — COMPLETA — 802 OK / 75 skipped / 0 errores
+**Fecha:** 2026-05-26
+**Sesión:** Retoma de desarrollo post-campaña de tests v16
 
 ---
 
@@ -23,6 +23,7 @@ comités, asambleas y contribuciones entre sitios (arquitectura multi-site).
 |---|---|
 | `condo-v16.dev` | ✅ frappe 16.18.2 + erpnext 16.18.3 + condominium_management 0.0.1 |
 | `bench migrate` en condo-v16.dev | ✅ Limpio |
+| Setup wizard en condo-v16.dev | ✅ Completado — `CONDOV16/CV16`, MXN, Mexico, `setup_complete=1` |
 | `test-condominium.localhost` | ✅ Creado y funcional con `allow_tests: true` |
 | Seed en test site | ✅ `_Test Company` (_TC, México, MXN) como `default_company` en Global Defaults |
 | Tests Financial Management | ✅ 458/458 OK — 9 skipped (database_schema deuda técnica) |
@@ -158,11 +159,25 @@ Tests cubren CRUD y validaciones de campos. **ISSUE #7 no bloquea estos tests.**
 
 ---
 
+## Workflow documental vigente (desde 2026-05-26)
+
+**Decisión:** No se reorganiza `docs/` con movimientos masivos.
+Se construye `docs_new/` como destino de documentación validada.
+
+Regla: un fragmento pasa a `docs_new/` solo cuando:
+1. fue encontrado en `docs/` (o identificado como faltante),
+2. fue revisado contra el estado real del app,
+3. fue validado durante una tarea real ejecutada.
+
+Ver `docs_new/README.md` para el workflow completo y la estructura destino.
+
+---
+
 ## Próximos pasos post-migración
 
 La campaña de tests v16 está completa. Los pasos siguientes son de calidad y funcionalidad:
 
-1. **Mergear PR #33** — fix Physical Spaces tests (ya validado).
+1. **Configurar condo-v16.dev** — setup wizard + Company inicial + datos mínimos. ← wizard ✅, datos mínimos pendiente
 2. **Resolver I-1/I-2** — corregir nombres de tabla en 10 archivos `_l4_database_schema`.
 3. **Decidir I-3** — 63 archivos Type B ficticios: eliminar o marcar con skip explícito.
 4. **Analizar ISSUE #7** — plan para reactivar hooks universales de Document Generation sin romper el setup wizard de ERPNext.

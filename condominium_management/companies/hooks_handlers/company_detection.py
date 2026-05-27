@@ -17,7 +17,7 @@ def after_insert(doc, method):
 	"""
 	try:
 		# Verificar si es una empresa administradora
-		if doc.get("company_type") == "Administradora" or "administradora" in doc.company_name.lower():
+		if doc.get("company_type") == "ADMIN" or "administradora" in doc.company_name.lower():
 			# Buscar configuración de entidad para Company
 			entity_config = frappe.db.get_value(
 				"Entity Type Configuration", {"entity_doctype": "Company"}, "name"
@@ -56,7 +56,7 @@ def on_update(doc, method):
 		# Verificar si cambió el tipo de empresa
 		if doc.has_value_changed("company_type") or doc.has_value_changed("company_name"):
 			# Re-evaluar configuración si cambió a/desde administradora
-			if doc.get("company_type") == "Administradora" or "administradora" in doc.company_name.lower():
+			if doc.get("company_type") == "ADMIN" or "administradora" in doc.company_name.lower():
 				entity_config = frappe.db.get_value(
 					"Entity Type Configuration", {"entity_doctype": "Company"}, "name"
 				)

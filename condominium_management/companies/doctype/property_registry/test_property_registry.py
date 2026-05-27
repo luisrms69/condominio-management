@@ -19,7 +19,7 @@ class TestPropertyRegistry(FrappeTestCase):
 	def create_test_data(self):
 		"""Crear datos de prueba necesarios"""
 		# Crear Company Type si no existe
-		if not frappe.db.exists("Company Type", "Condominio"):
+		if not frappe.db.exists("Company Type", "CONDO"):
 			company_type = frappe.get_doc(
 				{"doctype": "Company Type", "type_name": "Condominio", "type_code": "CONDO"}
 			)
