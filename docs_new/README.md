@@ -77,9 +77,10 @@ fragmento validado al completar la primera tarea que los requiera.
 
 | Archivo | Estado | Tarea que lo crea |
 |---|---|---|
-| `usuario/instalacion-y-configuracion.md` | Pendiente | Configuración inicial condo-v16.dev (wizard) |
-| `tecnico/desarrollo-local.md` | Pendiente | Configuración inicial condo-v16.dev (wizard) |
-| `tecnico/hooks.md` | Pendiente | Configuración inicial condo-v16.dev (wizard — Company hooks) |
+| `usuario/instalacion-y-configuracion.md` | ✅ En construcción | Configuración inicial condo-v16.dev (wizard + company_type) |
+| `tecnico/hooks.md` | ✅ En construcción | Configuración inicial condo-v16.dev (wizard — Company hooks) |
+| `tecnico/fixtures.md` | ✅ En construcción | Fix Company Type IDs (bug depends_on + insert_after) |
+| `tecnico/desarrollo-local.md` | Pendiente | Configuración inicial condo-v16.dev |
 | `tecnico/deuda-tecnica.md` | Pendiente | Próxima tarea: ISSUE #7 |
 | Resto | Pendiente | Tareas futuras |
 

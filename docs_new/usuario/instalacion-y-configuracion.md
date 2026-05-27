@@ -57,14 +57,55 @@ La Company creada por el wizard no tiene `company_type` (campo custom del app),
 por lo que el hook sale inmediatamente sin validar. **El wizard es seguro.**
 
 Los hooks universales `"*"` de Document Generation están desactivados (ISSUE #7).
-No interfieren con el wizard.
+No interfieren con el wizard. Ver: `docs_new/tecnico/hooks.md`.
+
+## Configurar Company como Condominio
+
+Con el wizard completo, la Company creada es el punto de partida para el site de desarrollo.
+
+**En `condo-v16.dev`:** La Company creada por el wizard es `CONDOV16`. Esta Company
+se usa como condominio real de prueba para este site.
+
+> **Nota:** Los pasos con nombre `CONDOV16` aplican solo a `condo-v16.dev`. En otros
+> sites, la Company creada por el wizard tendrá el nombre que se ingresó en el wizard
+> ("Nombre de empresa"). El procedimiento es el mismo; solo cambia el nombre de la
+> Company a seleccionar. En cada site nuevo, verificar que la Company creada por el
+> wizard es la que se quiere configurar como condominio.
+
+### Pasos
+
+1. Ir a **Setup > Company > CONDOV16**
+2. En el campo **Tipo de Empresa**, seleccionar **Condominio**
+3. Guardar
+
+Al guardar con `Tipo de Empresa = Condominio`, aparecen las secciones:
+- **Información de Condominio** — unidades, área, años, pisos
+- **Información de Administración** — empresa administradora, contrato
+- **Información Legal** — representante legal, registro
+- **Información Financiera** — cuota mensual, fondo de reserva, seguro
+
+4. Seleccionar **Tipo de Uso de Propiedad = Residencial**
+5. Guardar nuevamente
+
+### Estado esperado
+
+La Company `CONDOV16` queda con:
+- `company_type = CONDO`
+- Secciones de condominio visibles y completables
+
+### Nota técnica
+
+El campo `Tipo de Empresa` almacena el ID técnico `CONDO`, no el texto "Condominio".
+Las secciones condicionales usan `depends_on: eval: doc.company_type == 'CONDO'`.
+Ver: `docs_new/tecnico/fixtures.md` para la explicación completa.
+
+---
 
 ## Siguiente paso
 
-Con el wizard completo, el site está listo para configurar datos maestros del app:
+Con CONDOV16 configurada como condominio, el site está listo para datos maestros:
 - Space Categories
 - Component Types
-- Primera Company tipo "Condominio" (opcional — el wizard ya creó una Company base)
 
 Ver: `docs_new/usuario/flujo-operativo.md` (pendiente de crear).
 
