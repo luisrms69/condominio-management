@@ -80,6 +80,7 @@ fragmento validado al completar la primera tarea que los requiera.
 | `usuario/instalacion-y-configuracion.md` | ✅ En construcción | Configuración inicial condo-v16.dev (wizard + company_type) |
 | `tecnico/hooks.md` | ✅ En construcción | Configuración inicial condo-v16.dev (wizard — Company hooks) |
 | `tecnico/fixtures.md` | ✅ En construcción | Fix Company Type IDs (bug depends_on + insert_after) |
+| `tecnico/arquitectura.md` | ✅ En construcción | Diagnóstico multi-company 2026-05-27 — **fuente vigente del modelo "un site por administradora, una Company por condominio"** |
 | `tecnico/desarrollo-local.md` | Pendiente | Configuración inicial condo-v16.dev |
 | `tecnico/deuda-tecnica.md` | Pendiente | Próxima tarea: ISSUE #7 |
 | Resto | Pendiente | Tareas futuras |

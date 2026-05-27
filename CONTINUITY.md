@@ -2,25 +2,23 @@
 
 **Fecha:** 2026-05-27
 **Rama activa:** `feature/docs-new-workflow`
-**Tarea actual:** Configuración inicial de condo-v16.dev — Company CONDOV16 como CONDO
+**Tarea actual:** Documentación de arquitectura multi-company completada
 
 ---
 
 ## Recuperación rápida
 
 Estoy trabajando en:
-Configurar condo-v16.dev como primer entorno funcional de condominium_management v16.
-El setup wizard está completo. El bug de Company Type IDs fue corregido y commiteado.
-El formulario de Company ya muestra Tipo de Empresa y secciones condicionales correctamente.
+Cierre de la rama `feature/docs-new-workflow` para abrir PR a `main`.
 
 Plan que estoy siguiendo:
-CONTINUITY.md sección "Próximos pasos post-migración" → ítem 1 en progreso.
+CONTINUITY.md sección "Pendiente inmediato" → ítems 1 y 2 completados, falta PR.
 
 Objetivo inmediato:
-Abrir PR de `feature/docs-new-workflow` → `main`.
+Push de `feature/docs-new-workflow` + abrir PR a `main`.
 
 Criterio de avance:
-PR mergeado, condo-v16.dev con migrate limpio post-merge.
+PR mergeado y main actualizado. Si el PR incluye cambios de fixtures/código ya aplicados localmente, validar después el estado de condo-v16.dev.
 
 ---
 
@@ -28,39 +26,45 @@ PR mergeado, condo-v16.dev con migrate limpio post-merge.
 
 ### Ya cerrado
 - Setup wizard condo-v16.dev ✅ (CONDOV16/CV16, MXN, Mexico)
-- Bug Company Type IDs corregido: `'Condominio'`→`'CONDO'`, `'Administradora'`→`'ADMIN'` en fixtures, hooks y tests
+- Bug Company Type IDs corregido: `'Condominio'`→`'CONDO'`, `'Administradora'`→`'ADMIN'`
 - insert_after de custom_field.json corregido — company_type visible en form
-- docs_new/ creado con workflow documental, instalacion-y-configuracion.md, tecnico/hooks.md
-- Commit `ec362de` en `feature/docs-new-workflow`, sin push
+- CONDOV16 guardada con `company_type=CONDO` + `property_usage_type=Residencial` ✅
+- Registro Condominium Information creado para CONDOV16 (`bj34hq8a92`) ✅
+- docs_new/ creado: instalacion-y-configuracion.md, hooks.md, fixtures.md, arquitectura.md
+- Diagnóstico multi-company completo: clasificación de todos los DocTypes documentada
 
 ### En progreso
-- PR de `feature/docs-new-workflow` → pendiente de autorización para push + PR
+- PR de `feature/docs-new-workflow` → pendiente de push + autorización para crear PR
 
 ### Pendiente inmediato
-1. Push + PR de `feature/docs-new-workflow`
-2. Guardar CONDOV16 con `company_type = CONDO` desde la UI (no por consola)
-3. Datos mínimos de referencia: Space Categories, Component Types
+1. Push de `feature/docs-new-workflow`
+2. Crear PR `feature/docs-new-workflow` → `main`
+3. Post-merge: Space Categories en condo-v16.dev (catálogo para Physical Spaces)
 
 ### No repetir
 - No mover `insert_after` de `company_type` — ya está en `"reporting_currency"` y funciona
-- No intentar diagnosticar con `site_config.json` ni SQL directo — usar `bench execute` con expresiones simples
-- No crear sección nueva para company_type — el campo ya es visible sin sección propia
+- No reiniciar servidor fuera de `/server-restart`
+- No intentar diagnosticar con SQL directo — usar `bench execute`
+- No crear sección nueva para company_type
+- No tomar decisión sobre Condominium Information sin caso de uso concreto
 
 ---
 
 ## Decisiones vigentes
-- `company_type.insert_after = "reporting_currency"` — último campo de la sección `details` (siempre visible, sin depends_on). No cambiar.
-- `docs_new/` se construye progresivamente tarea por tarea — no hacer movimientos masivos de `docs/`
-- `one_offs/` nunca se commitea (CLAUDE.md global)
-- Branch única `feature/docs-new-workflow` cubre docs + fix Company Type IDs — son parte del mismo arranque
+- `company_type.insert_after = "reporting_currency"` — no cambiar
+- `docs_new/` se construye progresivamente — no hacer movimientos masivos de `docs/`
+- `one_offs/` nunca se commitea
+- Condominium Information: decisión diferida hasta caso de uso real
+- Committee Management gaps: no son bloqueantes — diferidos
+- ISSUE #7 (hooks universales): no reactivar sin análisis
 
 ---
 
 ## Archivos relevantes ahora
 
 ### Leer primero
-- `condominium_management/fixtures/custom_field.json` — cadena insert_after corregida
-- `condominium_management/fixtures/company_type.json` — IDs reales: CONDO, ADMIN, PROV, CONTR
+- `docs_new/tecnico/arquitectura.md` — modelo multi-company confirmado
+- `docs_new/tecnico/fixtures.md` — Company Type IDs y cadena insert_after
 
 ### Probablemente editar
 - `CONTINUITY.md` — actualizar tras merge del PR
@@ -73,11 +77,11 @@ PR mergeado, condo-v16.dev con migrate limpio post-merge.
 ---
 
 ## Riesgos / cuidados
-- `bench migrate` aplica custom_field.json al site — si se revierte el fixture sin migrate, la BD queda desincronizada
-- ISSUE #7 (hooks universales) sigue sin resolver — Document Generation no detecta entidades automáticamente
-- 72 de 85 DocTypes sin fixtures — instalación nueva queda incompleta
+- `bench migrate` aplica custom_field.json al site — no revertir sin migrate
+- ISSUE #7 sigue sin resolver
+- Committee Poll, Agreement Tracking, Community Event, Voting System — company no verificada
 
 ---
 
 ## Información faltante
-- Validación pendiente: confirmar que CONDOV16 guardado con company_type=CONDO no dispara errores de validación en company_hooks.py (property_usage_type requerido)
+- Verificar DocTypes de Committee Management sin company confirmada (Poll, Agreement Tracking, Community Event, Voting System)
