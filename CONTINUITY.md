@@ -2,60 +2,65 @@
 
 **Fecha:** 2026-05-27
 **Rama activa:** `feature/docs-new-workflow`
-**Tarea actual:** Documentación de arquitectura multi-company completada
+**Tarea actual:** Space Category v1 implementado — commit autorizado, pendiente push + PR
 
 ---
 
 ## Recuperación rápida
 
 Estoy trabajando en:
-Cierre de la rama `feature/docs-new-workflow` para abrir PR a `main`.
+Space Category v1 como catálogo de sistema controlado (Capa 1: permisos + allow_rename=0).
+El commit incluye 51 fixtures, 8 category_types, permisos read-only para System Manager.
 
 Plan que estoy siguiendo:
-CONTINUITY.md sección "Pendiente inmediato" → ítems 1 y 2 completados, falta PR.
+Autorización explícita del usuario en sesión 2026-05-27. Sin issue ni ADR formal — decisiones en CONTINUITY.
 
 Objetivo inmediato:
-Push de `feature/docs-new-workflow` + abrir PR a `main`.
+Revisión documental de Physical Spaces (siguiente tarea después del commit).
 
 Criterio de avance:
-PR mergeado y main actualizado. Si el PR incluye cambios de fixtures/código ya aplicados localmente, validar después el estado de condo-v16.dev.
+PR `feature/docs-new-workflow` → `main` mergeado con Space Category v1 incluido.
 
 ---
 
 ## Estado actual
 
 ### Ya cerrado
-- Setup wizard condo-v16.dev ✅ (CONDOV16/CV16, MXN, Mexico)
-- Bug Company Type IDs corregido: `'Condominio'`→`'CONDO'`, `'Administradora'`→`'ADMIN'`
-- insert_after de custom_field.json corregido — company_type visible en form
-- CONDOV16 guardada con `company_type=CONDO` + `property_usage_type=Residencial` ✅
-- Registro Condominium Information creado para CONDOV16 (`bj34hq8a92`) ✅
-- docs_new/ creado: instalacion-y-configuracion.md, hooks.md, fixtures.md, arquitectura.md
-- Diagnóstico multi-company completo: clasificación de todos los DocTypes documentada
+- Setup wizard condo-v16.dev ✅
+- Bug Company Type IDs corregido ✅
+- docs_new/ creado: instalacion-y-configuracion.md, hooks.md, fixtures.md, arquitectura.md ✅
+- Diagnóstico multi-company completo ✅
+- Space Category v1 Capa 1 implementada: 5 archivos, 7/7 tests OK ✅
 
 ### En progreso
-- PR de `feature/docs-new-workflow` → pendiente de push + autorización para crear PR
+- PR `feature/docs-new-workflow` → `main` (pendiente push + apertura)
 
 ### Pendiente inmediato
 1. Push de `feature/docs-new-workflow`
 2. Crear PR `feature/docs-new-workflow` → `main`
-3. Post-merge: Space Categories en condo-v16.dev (catálogo para Physical Spaces)
+3. Validar Space Category con usuario no-Administrator: confirmar que es solo lectura
+4. Si no queda bloqueado con Capa 1 → diseñar Capa 2 (before_save guard sin romper fixture import)
+5. Revisión documental de Physical Spaces
 
 ### No repetir
-- No mover `insert_after` de `company_type` — ya está en `"reporting_currency"` y funciona
+- No reactivar hooks universales (ISSUE #7) sin análisis
 - No reiniciar servidor fuera de `/server-restart`
+- No mover `insert_after` de `company_type`
 - No intentar diagnosticar con SQL directo — usar `bench execute`
-- No crear sección nueva para company_type
-- No tomar decisión sobre Condominium Information sin caso de uso concreto
+- No commitear one_offs/
 
 ---
 
 ## Decisiones vigentes
+- Space Category = catálogo controlado del sistema. Usuarios no pueden crear/editar registros.
+- Capa 2 (before_save guard) diferida: evidencia requerida antes de autorizar.
+  Flags confirmados activos durante migrate: `frappe.flags.in_fixtures`, `frappe.flags.in_import`.
+  Validate hooks SÍ corren durante fixture loading (data_import=True no suprime validate).
+- Administrator bypassa permisos nativamente — no necesita bloque explícito en DocType JSON.
 - `company_type.insert_after = "reporting_currency"` — no cambiar
-- `docs_new/` se construye progresivamente — no hacer movimientos masivos de `docs/`
+- `docs_new/` se construye progresivamente
 - `one_offs/` nunca se commitea
-- Condominium Information: decisión diferida hasta caso de uso real
-- Committee Management gaps: no son bloqueantes — diferidos
+- Condominium Information: diferida hasta caso de uso real
 - ISSUE #7 (hooks universales): no reactivar sin análisis
 
 ---
@@ -63,11 +68,12 @@ PR mergeado y main actualizado. Si el PR incluye cambios de fixtures/código ya 
 ## Archivos relevantes ahora
 
 ### Leer primero
-- `docs_new/tecnico/arquitectura.md` — modelo multi-company confirmado
-- `docs_new/tecnico/fixtures.md` — Company Type IDs y cadena insert_after
+- `physical_spaces/doctype/space_category/space_category.json` — DocType con Capa 1
+- `fixtures/space_category.json` — 51 registros del catálogo
 
 ### Probablemente editar
-- `CONTINUITY.md` — actualizar tras merge del PR
+- `physical_spaces/doctype/space_category/space_category.py` — si se autoriza Capa 2
+- `CONTINUITY.md` — tras PR mergeado
 
 ### No tocar
 - `hooks.py` líneas ~190-198 — hooks universales comentados (ISSUE #7)
@@ -77,11 +83,12 @@ PR mergeado y main actualizado. Si el PR incluye cambios de fixtures/código ya 
 ---
 
 ## Riesgos / cuidados
+- Space Category Capa 1 NO bloquea a Administrator en GUI — validación pendiente con usuario funcional
 - `bench migrate` aplica custom_field.json al site — no revertir sin migrate
 - ISSUE #7 sigue sin resolver
-- Committee Poll, Agreement Tracking, Community Event, Voting System — company no verificada
 
 ---
 
 ## Información faltante
 - Verificar DocTypes de Committee Management sin company confirmada (Poll, Agreement Tracking, Community Event, Voting System)
+- Resultado de validación GUI de Space Category con usuario no-Administrator
