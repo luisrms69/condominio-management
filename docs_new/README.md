@@ -78,11 +78,12 @@ fragmento validado al completar la primera tarea que los requiera.
 | Archivo | Estado | Tarea que lo crea |
 |---|---|---|
 | `usuario/instalacion-y-configuracion.md` | ✅ En construcción | Configuración inicial condo-v16.dev (wizard + company_type) |
+| `usuario/espacios-fisicos.md` | ✅ En construcción | **Space Category v1 (commit `f1c9c77`) — fuente vigente de Physical Spaces y Space Category** |
 | `tecnico/hooks.md` | ✅ En construcción | Configuración inicial condo-v16.dev (wizard — Company hooks) |
-| `tecnico/fixtures.md` | ✅ En construcción | Fix Company Type IDs (bug depends_on + insert_after) |
+| `tecnico/fixtures.md` | ✅ En construcción | Fix Company Type IDs + Space Category v1 |
 | `tecnico/arquitectura.md` | ✅ En construcción | Diagnóstico multi-company 2026-05-27 — **fuente vigente del modelo "un site por administradora, una Company por condominio"** |
+| `tecnico/deuda-tecnica.md` | ✅ En construcción | **Space Category v1 — registro vigente de pendientes técnicos del app** |
 | `tecnico/desarrollo-local.md` | Pendiente | Configuración inicial condo-v16.dev |
-| `tecnico/deuda-tecnica.md` | Pendiente | Próxima tarea: ISSUE #7 |
 | Resto | Pendiente | Tareas futuras |
 
 ---

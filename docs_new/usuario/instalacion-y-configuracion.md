@@ -103,11 +103,17 @@ Ver: `docs_new/tecnico/fixtures.md` para la explicación completa.
 
 ## Siguiente paso
 
-Con CONDOV16 configurada como condominio, el site está listo para datos maestros:
-- Space Categories
-- Component Types
+Con CONDOV16 configurada como condominio, el site está listo para crear Physical Spaces.
 
-Ver: `docs_new/usuario/flujo-operativo.md` (pendiente de crear).
+**Space Categories ya están precargadas.** Al ejecutar `bench migrate` con el app instalado,
+se cargan automáticamente 51 categorías base desde el fixture del app. No es necesario
+crearlas manualmente.
+
+El siguiente paso operativo es crear Physical Spaces usando las categorías precargadas.
+Ver: `docs_new/usuario/espacios-fisicos.md` — fuente vigente del flujo de Physical Spaces.
+
+`docs_new/usuario/flujo-operativo.md` (pendiente de crear — cubrirá el flujo completo
+de datos maestros y operación diaria).
 
 ---
 

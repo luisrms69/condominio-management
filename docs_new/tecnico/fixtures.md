@@ -134,6 +134,48 @@ Archivos corregidos:
 
 ---
 
+## Space Category — catálogo controlado del app
+
+### Fixture
+
+```
+condominium_management/fixtures/space_category.json
+```
+
+Registrado en `hooks.py` fixtures list (sin filtro adicional — exporta todos los registros activos).
+
+### Contenido
+
+- **51 registros base** cubriendo condominios residenciales y de uso mixto
+- Precargados automáticamente al ejecutar `bench migrate` con el app instalado
+
+### category_type — 8 valores vigentes (v1)
+
+| Valor | Cantidad de registros |
+|---|---|
+| Circulación y Acceso | 6 |
+| Área Residencial | 5 |
+| Amenidades | 19 |
+| Área Técnica | 6 |
+| Área Administrativa | 3 |
+| Vialidad | 4 |
+| Servicios Comunes | 7 |
+| Uso Comercial | 1 |
+
+### Propiedades del catálogo
+
+- Catálogo compartido del site — sin campo `company`
+- Permisos: System Manager read-only (`allow_rename=0`, sin create/write/delete)
+- El usuario no debe crear ni editar Space Categories manualmente
+- Capa 2 de bloqueo técnico: pendiente (ver `docs_new/tecnico/deuda-tecnica.md`)
+
+### Component Type
+
+No incluido en fixtures todavía. Sin restricción de permisos en v1. Pendiente decisión
+equivalente a Space Category. Ver `docs_new/tecnico/deuda-tecnica.md`.
+
+---
+
 ## Referencias históricas
 
 Los reportes de investigación que documentan el origen del problema y la migración a fixtures:
