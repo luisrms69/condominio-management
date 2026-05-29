@@ -1,95 +1,85 @@
 # CONTINUITY.md — condominium_management
 
-**Fecha:** 2026-05-27
+**Fecha:** 2026-05-29
 **Rama activa:** `feature/docs-new-workflow`
-**Tarea actual:** Documentación Physical Spaces v1 commiteada — pendiente push + PR
+**Tarea actual:** Ejecutando /ship commit — dos commits separados en progreso
 
 ---
 
 ## Recuperación rápida
 
 Estoy trabajando en:
-Cierre de la rama `feature/docs-new-workflow` para PR a `main`.
-Incluye: Company Type fix, docs_new/ arquitectura multi-company, Space Category v1 (código + docs).
+Cierre de la implementación de Property Declared Owner + limpieza de Property Registry.
+Dos commits listos para ejecutar, luego PR hacia main.
 
 Plan que estoy siguiendo:
-Autorización explícita del usuario en sesión 2026-05-27. Sin issue ni ADR formal — decisiones en CONTINUITY.
+`docs_new/arquitectura/property_registry_ownership_mvp.md` — v1.1 ya actualizado.
 
 Objetivo inmediato:
-Push de `feature/docs-new-workflow` + abrir PR a `main`.
+Ejecutar commit 1 (Property Registry / Declared Owner) → commit 2 (Property Account) → PR.
 
 Criterio de avance:
-PR mergeado. `main` actualizado con Space Category v1 y documentación validada.
+Dos commits creados + git status limpio + PR abierto.
 
 ---
 
 ## Estado actual
 
 ### Ya cerrado
-- Setup wizard condo-v16.dev ✅
-- Bug Company Type IDs corregido ✅
-- docs_new/: instalacion-y-configuracion.md, hooks.md, fixtures.md, arquitectura.md ✅
-- Diagnóstico multi-company completo ✅
-- Space Category v1 Capa 1: 5 archivos código, 7/7 tests OK (commit `f1c9c77`) ✅
-- Documentación Physical Spaces v1: espacios-fisicos.md, deuda-tecnica.md, fixtures.md actualizado ✅
+- Space Category v1 + docs Physical Spaces commiteados (`b1f62e3`) ✅
+- Property Declared Owner implementado (rename completo desde Property Copropiedad) ✅
+- Property Registry limpio (23 campos obsoletos eliminados) ✅
+- Patches: `remove_property_registry_deprecated_fields` + `migrate_property_copropiedad_to_declared_owner` ✅
+- bench migrate limpio en test-condominium.localhost y condo-v16.dev ✅
+- Tests: 4/4 + 12/12 + 11/11 OK post-linter ✅
+- Validación GUI completada en condo-v16.dev ✅
 
 ### En progreso
-- PR `feature/docs-new-workflow` → `main` (pendiente push + apertura)
+- /ship commit — preparando commit 1 y commit 2
 
 ### Pendiente inmediato
-1. Push de `feature/docs-new-workflow`
-2. Crear PR `feature/docs-new-workflow` → `main`
-3. Validar Space Category con usuario no-Administrator (confirmar solo lectura)
-4. Si Capa 1 no bloquea → diseñar Capa 2 (before_save guard sin romper fixture import)
+1. Commit 1: `feat(companies): implement declared owners and clean property registry`
+2. Commit 2: `feat(financial): add billing relationship type to property account`
+3. PR hacia main
 
 ### No repetir
-- No reactivar hooks universales (ISSUE #7) sin análisis
-- No reiniciar servidor fuera de `/server-restart`
-- No mover `insert_after` de `company_type`
-- No intentar diagnosticar con SQL directo — usar `bench execute`
+- No hacer DROP TABLE tabProperty Copropiedad hasta validar PR mergeado
+- No reactivar ISSUE #7 (hooks universales)
+- No agregar tower/floor/unit_number a Property Registry
 - No commitear one_offs/
-- No mover ni archivar docs/ viejo hasta tener reemplazos en docs_new/ completos
+- No tocar Billing Cycle / Fee Structure (tienen deuda de ownership_percentage preexistente)
 
 ---
 
 ## Decisiones vigentes
-- Space Category = catálogo controlado del sistema. Usuarios no pueden crear/editar registros.
-- Capa 2 diferida: flags `frappe.flags.in_fixtures` / `frappe.flags.in_import` confirmados activos
-  durante migrate. Validate hooks SÍ corren con data_import=True.
-- Administrator bypassa permisos nativamente — no necesita bloque explícito en DocType JSON.
-- `company_type.insert_after = "reporting_currency"` — no cambiar
-- `docs_new/` se construye progresivamente — un fragmento a la vez, solo lo validado
-- `one_offs/` nunca se commitea
-- Condominium Information: diferida hasta caso de uso real
-- ISSUE #7 (hooks universales): no reactivar sin análisis
+- Property Registry = expediente de unidad privativa. Dirección/compliance/seguros → Company.
+- `tabProperty Copropiedad` conservada como respaldo hasta PR mergeado — sin DROP todavía.
+- `total_copropiedades_percentage` sigue en BD como columna legacy; `current_owners_total_percentage` es la activa.
+- Tests usan `UnitTestCase` / `IntegrationTestCase` (Frappe 16) — no `FrappeTestCase` deprecado.
+- `billing_cycle.py:382` y `fee_structure.py:201` leen `ownership_percentage`/`area_sqm` inexistentes — deuda preexistente, fuera de alcance.
 
 ---
 
 ## Archivos relevantes ahora
 
 ### Leer primero
-- `docs_new/tecnico/deuda-tecnica.md` — registro vigente de pendientes técnicos
-- `docs_new/usuario/espacios-fisicos.md` — fuente vigente de Physical Spaces / Space Category
+- `docs_new/arquitectura/property_registry_ownership_mvp.md` — decisiones v1.1
 
 ### Probablemente editar
-- `physical_spaces/doctype/space_category/space_category.py` — si se autoriza Capa 2
-- `CONTINUITY.md` — tras PR mergeado
+- `CONTINUITY.md` — post-PR
 
 ### No tocar
-- `hooks.py` líneas ~190-198 — hooks universales comentados (ISSUE #7)
-- `docs/` — no mover ni archivar sin reemplazo validado en docs_new/
-- Sites v15 (`admin1.dev`, etc.)
-- `test-condominium.localhost` — solo para tests
+- `hooks.py` líneas ~190-198 — ISSUE #7
+- `financial_management/doctype/billing_cycle/` y `fee_structure/`
+- Sites v15
 
 ---
 
 ## Riesgos / cuidados
-- Space Category Capa 1 NO bloquea a Administrator en GUI — validación pendiente
-- `bench migrate` aplica custom_field.json al site — no revertir sin migrate
-- ISSUE #7 sigue sin resolver
+- `billing_cycle.py:382` y `fee_structure.py:201` fallarán cuando se active cálculo real de cuotas.
+- Space Category Capa 1: validación con usuario no-Administrator aún pendiente.
 
 ---
 
 ## Información faltante
-- Resultado de validación GUI de Space Category con usuario no-Administrator
-- DocTypes Committee Management sin company verificada (Poll, Agreement Tracking, Community Event, Voting System)
+- Número de PR (aún no creado)

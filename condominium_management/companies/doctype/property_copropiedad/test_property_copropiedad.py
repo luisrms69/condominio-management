@@ -8,13 +8,12 @@ from frappe.tests.utils import FrappeTestCase
 class TestPropertyCopropiedad(FrappeTestCase):
 	def test_copropiedad_validation(self):
 		"""Test validaciones básicas de copropiedad"""
-		# Test porcentaje negativo
+		# Porcentaje negativo
 		copropiedad = frappe.get_doc(
 			{
 				"doctype": "Property Copropiedad",
 				"owner_name": "Juan Pérez",
-				"owner_id": "12345678",
-				"owner_type": "Persona Natural",
+				"owner_type": "Persona Física",
 				"copropiedad_percentage": -10.0,
 			}
 		)
@@ -22,13 +21,12 @@ class TestPropertyCopropiedad(FrappeTestCase):
 		with self.assertRaises(frappe.ValidationError):
 			copropiedad.validate()
 
-		# Test porcentaje mayor a 100%
+		# Porcentaje mayor a 100%
 		copropiedad2 = frappe.get_doc(
 			{
 				"doctype": "Property Copropiedad",
 				"owner_name": "María González",
-				"owner_id": "87654321",
-				"owner_type": "Persona Natural",
+				"owner_type": "Persona Física",
 				"copropiedad_percentage": 110.0,
 			}
 		)
@@ -38,13 +36,12 @@ class TestPropertyCopropiedad(FrappeTestCase):
 
 	def test_owner_info_validation(self):
 		"""Test validación de información del propietario"""
-		# Nombre vacío
+		# Nombre vacío debe fallar
 		copropiedad = frappe.get_doc(
 			{
 				"doctype": "Property Copropiedad",
 				"owner_name": "",
-				"owner_id": "12345678",
-				"owner_type": "Persona Natural",
+				"owner_type": "Persona Física",
 				"copropiedad_percentage": 50.0,
 			}
 		)
@@ -52,82 +49,101 @@ class TestPropertyCopropiedad(FrappeTestCase):
 		with self.assertRaises(frappe.ValidationError):
 			copropiedad.validate()
 
-		# ID vacío
+		# owner_id vacío es válido — no debe bloquear
 		copropiedad2 = frappe.get_doc(
 			{
 				"doctype": "Property Copropiedad",
 				"owner_name": "Juan Pérez",
 				"owner_id": "",
-				"owner_type": "Persona Natural",
+				"owner_type": "Persona Física",
 				"copropiedad_percentage": 50.0,
 			}
 		)
 
-		with self.assertRaises(frappe.ValidationError):
-			copropiedad2.validate()
+		copropiedad2.validate()
 
 	def test_owner_id_format_validation(self):
-		"""Test validación de formato de identificación"""
-		# ID muy corto para persona natural
+		"""ID inválido emite advertencia pero no bloquea"""
+		# Formato incorrecto para RFC/CURP — no debe bloquear
 		copropiedad = frappe.get_doc(
 			{
 				"doctype": "Property Copropiedad",
 				"owner_name": "Juan Pérez",
-				"owner_id": "123",  # Muy corto
-				"owner_type": "Persona Natural",
+				"owner_id": "123",
+				"owner_type": "Persona Física",
 				"copropiedad_percentage": 50.0,
 			}
 		)
 
-		with self.assertRaises(frappe.ValidationError):
-			copropiedad.validate()
+		copropiedad.validate()
 
-		# ID válido para persona natural
+		# RFC válido Persona Física — no debe arrojar error
 		copropiedad2 = frappe.get_doc(
 			{
 				"doctype": "Property Copropiedad",
 				"owner_name": "Juan Pérez",
-				"owner_id": "12345678",
-				"owner_type": "Persona Natural",
+				"owner_id": "PERJ850101AB3",
+				"owner_type": "Persona Física",
 				"copropiedad_percentage": 50.0,
 			}
 		)
 
-		# No debe arrojar error
 		copropiedad2.validate()
+
+		# RFC válido Persona Moral — no debe arrojar error
+		copropiedad3 = frappe.get_doc(
+			{
+				"doctype": "Property Copropiedad",
+				"owner_name": "Empresa ABC S.A. de C.V.",
+				"owner_id": "ABC850101AB3",
+				"owner_type": "Persona Moral",
+				"copropiedad_percentage": 100.0,
+			}
+		)
+
+		copropiedad3.validate()
 
 	def test_display_methods(self):
 		"""Test métodos de display"""
-		# Persona Natural
+		# Persona Física con ID
 		copropiedad = frappe.get_doc(
 			{
 				"doctype": "Property Copropiedad",
 				"owner_name": "Juan Pérez",
-				"owner_id": "12345678",
-				"owner_type": "Persona Natural",
+				"owner_id": "PERJ850101AB3",
+				"owner_type": "Persona Física",
 				"copropiedad_percentage": 60.0,
 			}
 		)
 
-		display_name = copropiedad.get_owner_display_name()
-		self.assertEqual(display_name, "Juan Pérez (C.C. 12345678)")
+		self.assertEqual(copropiedad.get_owner_display_name(), "Juan Pérez (PERJ850101AB3)")
+		self.assertEqual(copropiedad.get_ownership_display(), "Juan Pérez (PERJ850101AB3) - 60.0%")
 
-		ownership_display = copropiedad.get_ownership_display()
-		self.assertEqual(ownership_display, "Juan Pérez (C.C. 12345678) - 60.0%")
-
-		# Persona Jurídica
+		# Persona Moral con ID
 		copropiedad2 = frappe.get_doc(
 			{
 				"doctype": "Property Copropiedad",
-				"owner_name": "Empresa ABC S.A.S.",
-				"owner_id": "900123456",
-				"owner_type": "Persona Jurídica",
+				"owner_name": "Empresa ABC S.A. de C.V.",
+				"owner_id": "ABC850101AB3",
+				"owner_type": "Persona Moral",
 				"copropiedad_percentage": 40.0,
 			}
 		)
 
-		display_name2 = copropiedad2.get_owner_display_name()
-		self.assertEqual(display_name2, "Empresa ABC S.A.S. (NIT 900123456)")
+		self.assertEqual(copropiedad2.get_owner_display_name(), "Empresa ABC S.A. de C.V. (ABC850101AB3)")
+		self.assertEqual(
+			copropiedad2.get_ownership_display(), "Empresa ABC S.A. de C.V. (ABC850101AB3) - 40.0%"
+		)
 
-		ownership_display2 = copropiedad2.get_ownership_display()
-		self.assertEqual(ownership_display2, "Empresa ABC S.A.S. (NIT 900123456) - 40.0%")
+		# Sin owner_id — solo nombre
+		copropiedad3 = frappe.get_doc(
+			{
+				"doctype": "Property Copropiedad",
+				"owner_name": "Propietario Sin ID",
+				"owner_type": "Persona Física",
+				"copropiedad_percentage": 100.0,
+			}
+		)
+
+		self.assertEqual(copropiedad3.get_owner_display_name(), "Propietario Sin ID")
+		self.assertEqual(copropiedad3.get_ownership_display(), "Propietario Sin ID - 100.0%")

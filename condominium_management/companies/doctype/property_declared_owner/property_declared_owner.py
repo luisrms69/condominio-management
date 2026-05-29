@@ -8,16 +8,16 @@ from frappe import _
 from frappe.model.document import Document
 
 
-class PropertyCopropiedad(Document):
+class PropertyDeclaredOwner(Document):
 	def validate(self):
 		self.validate_percentage()
 		self.validate_owner_info()
 
 	def validate_percentage(self):
-		if self.copropiedad_percentage <= 0:
-			frappe.throw(_("El porcentaje de copropiedad debe ser mayor a 0"))
-		if self.copropiedad_percentage > 100:
-			frappe.throw(_("El porcentaje de copropiedad no puede exceder 100%"))
+		if self.ownership_percentage <= 0:
+			frappe.throw(_("El porcentaje de titularidad debe ser mayor a 0"))
+		if self.ownership_percentage > 100:
+			frappe.throw(_("El porcentaje de titularidad no puede exceder 100%"))
 
 	def validate_owner_info(self):
 		if not self.owner_name or not self.owner_name.strip():
@@ -51,4 +51,4 @@ class PropertyCopropiedad(Document):
 		return self.owner_name
 
 	def get_ownership_display(self):
-		return f"{self.get_owner_display_name()} - {self.copropiedad_percentage}%"
+		return f"{self.get_owner_display_name()} - {self.ownership_percentage}%"
