@@ -11,6 +11,7 @@
   "account_name",
   "property_registry",
   "customer",
+  "billing_relationship_type",
   "column_break_setup",
   "company",
   "billing_frequency",
@@ -73,6 +74,13 @@
    "in_list_view": 1,
    "label": "Cliente ERPNext",
    "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "billing_relationship_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Relación de Cobro",
+   "options": "Propietario\nCopropietario\nArrendatario\nPersona Moral\nFideicomiso\nDesarrollador\nSucesión / Herencia\nGobierno\nRepresentante Legal",
    "reqd": 1
   },
   {
@@ -270,7 +278,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-13 10:00:00.000000",
+ "modified": "2026-05-27 00:00:00.000000",
  "modified_by": "Administrator",
  "app_name": "condominium_management",
  "module": "Financial Management",
