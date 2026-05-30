@@ -2,10 +2,10 @@
 # See license.txt
 
 import frappe
-from frappe.tests.utils import FrappeTestCase
+from frappe.tests import UnitTestCase
 
 
-class TestPhysicalSpace(FrappeTestCase):
+class TestPhysicalSpace(UnitTestCase):
 	def setUp(self):
 		"""Configurar datos de prueba"""
 		# Crear company de prueba si no existe
@@ -134,15 +134,15 @@ class TestPhysicalSpace(FrappeTestCase):
 		self.assertIn(apto.name, children)
 
 	def test_space_code_generation(self):
-		"""Test generación automática de código"""
+		"""Código generado automáticamente con formato <abbr>-<####>."""
 		space = frappe.get_doc(
 			{"doctype": "Physical Space", "space_name": "Área Común Piscina", "company": "Test Condominium"}
 		)
 		space.insert()
 
-		# Verificar que se generó código
 		self.assertTrue(space.space_code)
-		self.assertIn("AREACOMUN", space.space_code)
+		# Formato esperado: TC-0001, TC-0002, etc. (abbr de "Test Condominium" = TC)
+		self.assertRegex(space.space_code, r"^TC-\d{4}$")
 
 	def tearDown(self):
 		"""Limpiar datos de prueba"""

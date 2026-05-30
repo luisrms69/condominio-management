@@ -1,6 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "allow_rename": 0,
  "autoname": "field:space_code",
  "creation": "2025-07-07 00:00:00.000000",
  "default_view": "List",
@@ -51,6 +51,7 @@
    "fieldname": "space_code",
    "fieldtype": "Data",
    "label": "Código del Espacio",
+   "read_only": 1,
    "unique": 1
   },
   {
@@ -95,7 +96,8 @@
   {
    "fieldname": "space_level",
    "fieldtype": "Int",
-   "label": "Nivel",
+   "hidden": 1,
+   "label": "Nivel de Jerarquía",
    "read_only": 1
   },
   {
@@ -111,20 +113,26 @@
   {
    "fieldname": "building_reference",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Edificio",
-   "options": "Physical Space"
+   "options": "Physical Space",
+   "read_only": 1
   },
   {
    "fieldname": "floor_reference",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Piso",
-   "options": "Physical Space"
+   "options": "Physical Space",
+   "read_only": 1
   },
   {
    "fieldname": "zone_reference",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Zona",
-   "options": "Physical Space"
+   "options": "Physical Space",
+   "read_only": 1
   },
   {
    "fieldname": "dimensions_section",
@@ -189,7 +197,7 @@
  "issingle": 0,
  "istable": 0,
  "max_attachments": 0,
- "modified": "2025-07-07 00:00:00.000000",
+ "modified": "2026-05-30 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Physical Spaces",
  "name": "Physical Space",

@@ -14,9 +14,6 @@ def validate(doc, method):
 		# Validar categoría si está configurada
 		validate_category_requirements(doc)
 
-		# Validar referencias de ubicación
-		validate_location_references(doc)
-
 	except Exception as e:
 		frappe.log_error(f"Error en validación de Physical Space: {e!s}")
 		raise
@@ -109,22 +106,6 @@ def validate_category_hierarchy(doc, category):
 					f"La categoría '{category.category_name}' no puede ser hija de "
 					f"la categoría '{parent_doc.space_category}'"
 				)
-
-
-def validate_location_references(doc):
-	"""Validar referencias de ubicación física"""
-	# Validar que las referencias existen y están activas
-	references = [("building_reference", "Edificio"), ("floor_reference", "Piso"), ("zone_reference", "Zona")]
-
-	for field, label in references:
-		ref_value = getattr(doc, field, None)
-		if ref_value:
-			try:
-				ref_doc = frappe.get_doc("Physical Space", ref_value)
-				if not ref_doc.is_active:
-					frappe.throw(f"La referencia de {label} '{ref_value}' no está activa")
-			except frappe.DoesNotExistError:
-				frappe.throw(f"La referencia de {label} '{ref_value}' no existe")
 
 
 def validate_cost_center(doc):

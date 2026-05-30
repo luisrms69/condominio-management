@@ -1,85 +1,82 @@
 # CONTINUITY.md — condominium_management
 
-**Fecha:** 2026-05-29
-**Rama activa:** `feature/docs-new-workflow`
-**Tarea actual:** Ejecutando /ship commit — dos commits separados en progreso
+**Fecha:** 2026-05-30
+**Rama activa:** `fix/billing-cycle-field-references`
+**Tarea actual:** Commit de Physical Space fixes — financial_management rechazado y en pausa
 
 ---
 
 ## Recuperación rápida
 
 Estoy trabajando en:
-Cierre de la implementación de Property Declared Owner + limpieza de Property Registry.
-Dos commits listos para ejecutar, luego PR hacia main.
+Correcciones de Physical Space (space_code, space_level, referencias de jerarquía).
+El bloque financiero fue detenido por rechazo arquitectónico del diseño actual.
 
 Plan que estoy siguiendo:
-`docs_new/arquitectura/property_registry_ownership_mvp.md` — v1.1 ya actualizado.
+Auditoría histórica del app completada esta sesión. Ver decisiones vigentes abajo.
 
 Objetivo inmediato:
-Ejecutar commit 1 (Property Registry / Declared Owner) → commit 2 (Property Account) → PR.
+Hacer PR de los cambios de Physical Space. Luego decidir qué hacer con financial_management.
 
 Criterio de avance:
-Dos commits creados + git status limpio + PR abierto.
+PR abierto con solo cambios de Physical Spaces + financial_management sin tocar.
 
 ---
 
 ## Estado actual
 
 ### Ya cerrado
-- Space Category v1 + docs Physical Spaces commiteados (`b1f62e3`) ✅
-- Property Declared Owner implementado (rename completo desde Property Copropiedad) ✅
-- Property Registry limpio (23 campos obsoletos eliminados) ✅
-- Patches: `remove_property_registry_deprecated_fields` + `migrate_property_copropiedad_to_declared_owner` ✅
-- bench migrate limpio en test-condominium.localhost y condo-v16.dev ✅
-- Tests: 4/4 + 12/12 + 11/11 OK post-linter ✅
-- Validación GUI completada en condo-v16.dev ✅
+- PR #35: Property Registry limpio + Property Declared Owner ✅
+- Physical Space: space_code read_only, space_level hidden, building/floor/zone hidden, código consecutivo `<abbr>-####` ✅
+- Validación GUI Physical Space completada en condo-v16.dev ✅
 
 ### En progreso
-- /ship commit — preparando commit 1 y commit 2
+- Commit de Physical Space fixes (en curso)
 
 ### Pendiente inmediato
-1. Commit 1: `feat(companies): implement declared owners and clean property registry`
-2. Commit 2: `feat(financial): add billing relationship type to property account`
-3. PR hacia main
+1. PR de Physical Space fixes
+2. Decisión arquitectónica sobre financial_management (requiere documento de diseño aprobado)
+3. Limpiar rama: los archivos de financial_management modificados en esta rama deben revertirse o moverse
 
 ### No repetir
-- No hacer DROP TABLE tabProperty Copropiedad hasta validar PR mergeado
+- No commitear financial_management sin documento de arquitectura aprobado primero
+- No parchear financial_management con fieldnames sin resolver el diseño de Property Account
+- No DROP TABLE tabProperty Copropiedad sin autorización
 - No reactivar ISSUE #7 (hooks universales)
-- No agregar tower/floor/unit_number a Property Registry
 - No commitear one_offs/
-- No tocar Billing Cycle / Fee Structure (tienen deuda de ownership_percentage preexistente)
 
 ---
 
 ## Decisiones vigentes
-- Property Registry = expediente de unidad privativa. Dirección/compliance/seguros → Company.
-- `tabProperty Copropiedad` conservada como respaldo hasta PR mergeado — sin DROP todavía.
-- `total_copropiedades_percentage` sigue en BD como columna legacy; `current_owners_total_percentage` es la activa.
-- Tests usan `UnitTestCase` / `IntegrationTestCase` (Frappe 16) — no `FrappeTestCase` deprecado.
-- `billing_cycle.py:382` y `fee_structure.py:201` leen `ownership_percentage`/`area_sqm` inexistentes — deuda preexistente, fuera de alcance.
+- Financial Management rechazado arquitectónicamente. Property Account tiene current_balance manual (reqd=1), billing config por cuenta, sistema paralelo a ERPNext. No se toca hasta tener documento de rediseño.
+- Physical Space: NO es Tree DocType (decisión explícita — permite jerarquía libre). space_code = document name via make_autoname por company abbr.
+- building_reference / floor_reference / zone_reference: ocultos y read_only. No se auto-calculan en MVP. Decisión: calcular desde jerarquía cuando haya caso de uso real.
+- Fee Structure (financial): diseño correcto, conservar.
+- billing_cycle.py y fee_structure.py tienen referencias a campos inexistentes — deuda conocida, no tocar hasta rediseño.
 
 ---
 
 ## Archivos relevantes ahora
 
 ### Leer primero
-- `docs_new/arquitectura/property_registry_ownership_mvp.md` — decisiones v1.1
+- `docs_new/tecnico/deuda-tecnica.md` — deuda técnica registrada
+- `condominium_management/financial_management/` — modificaciones rechazadas pendientes de revertir
 
 ### Probablemente editar
-- `CONTINUITY.md` — post-PR
+- `CONTINUITY.md` — al iniciar próxima tarea
 
 ### No tocar
 - `hooks.py` líneas ~190-198 — ISSUE #7
-- `financial_management/doctype/billing_cycle/` y `fee_structure/`
-- Sites v15
+- `financial_management/doctype/billing_cycle/` y `fee_structure/` — deuda de fieldnames
+- `financial_management/doctype/property_account/` — diseño rechazado
 
 ---
 
 ## Riesgos / cuidados
-- `billing_cycle.py:382` y `fee_structure.py:201` fallarán cuando se active cálculo real de cuotas.
-- Space Category Capa 1: validación con usuario no-Administrator aún pendiente.
+- La rama tiene modificaciones de financial_management que NO deben ir a PR. Deben revertirse antes de abrir PR.
+- `tabProperty Copropiedad` en BD: conservar hasta validación post-PR.
 
 ---
 
 ## Información faltante
-- Número de PR (aún no creado)
+- Decisión: ¿se revierte financial_management en esta rama o se crea branch separado para el rediseño?
