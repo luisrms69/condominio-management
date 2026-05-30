@@ -98,14 +98,14 @@ def validate_ui_configuration(doc):
 def validate_category_type(doc):
 	"""Validar tipo de categoría"""
 	valid_types = [
-		"Estructura",
-		"Área Común",
-		"Área Privada",
-		"Instalaciones",
-		"Equipamiento",
-		"Seguridad",
-		"Mantenimiento",
-		"Servicios",
+		"Circulación y Acceso",
+		"Área Residencial",
+		"Amenidades",
+		"Área Técnica",
+		"Área Administrativa",
+		"Vialidad",
+		"Servicios Comunes",
+		"Uso Comercial",
 	]
 
 	if doc.category_type and doc.category_type not in valid_types:

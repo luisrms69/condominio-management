@@ -2,13 +2,10 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe.tests.utils import FrappeTestCase
-
-# REGLA #43B: Property Account tiene Customer field que triggea warehouse.py autoname error
-test_ignore = ["Customer", "Warehouse", "Sales Invoice", "Item"]
+from frappe.tests import UnitTestCase
 
 
-class TestPropertyAccountL1FieldValidation(FrappeTestCase):
+class TestPropertyAccountL1FieldValidation(UnitTestCase):
 	"""Layer 1: Field Validation Tests for Property Account DocType"""
 
 	def test_required_fields_validation(self):
@@ -25,6 +22,7 @@ class TestPropertyAccountL1FieldValidation(FrappeTestCase):
 			"account_name",
 			"property_registry",
 			"customer",
+			"billing_relationship_type",
 			"company",
 			"billing_frequency",
 			"account_status",
@@ -80,6 +78,22 @@ class TestPropertyAccountL1FieldValidation(FrappeTestCase):
 		for status in valid_account_statuses:
 			property_account.account_status = status
 			self.assertEqual(property_account.account_status, status)
+
+		# Test billing_relationship_type options
+		valid_relationship_types = [
+			"Propietario",
+			"Copropietario",
+			"Arrendatario",
+			"Persona Moral",
+			"Fideicomiso",
+			"Desarrollador",
+			"Sucesión / Herencia",
+			"Gobierno",
+			"Representante Legal",
+		]
+		for rel_type in valid_relationship_types:
+			property_account.billing_relationship_type = rel_type
+			self.assertEqual(property_account.billing_relationship_type, rel_type)
 
 	def test_unique_fields_validation(self):
 		"""Test that unique fields are properly validated"""
@@ -175,3 +189,26 @@ class TestPropertyAccountL1FieldValidation(FrappeTestCase):
 
 		property_account.total_paid = 500.00
 		self.assertEqual(property_account.total_paid, 500.00)
+
+	def test_billing_relationship_type_required(self):
+		"""Test negativo: Property Account sin billing_relationship_type debe fallar"""
+		property_account = frappe.new_doc("Property Account")
+		property_account.billing_relationship_type = None
+
+		with self.assertRaises(frappe.ValidationError) as context:
+			property_account.validate_billing_relationship_type()
+		self.assertIn("tipo de relación de cobro es obligatorio", str(context.exception))
+
+	def test_customer_group_not_restricted(self):
+		"""Confirmar que customer_group ya no es validado en Property Account"""
+		# validate_customer_link ya no debe mencionar customer_group ni valid_groups
+		import inspect
+
+		from condominium_management.financial_management.doctype.property_account.property_account import (
+			PropertyAccount,
+		)
+
+		source = inspect.getsource(PropertyAccount.validate_customer_link)
+		self.assertNotIn("valid_groups", source)
+		self.assertNotIn("Condóminos", source)
+		self.assertNotIn("Residentes", source)

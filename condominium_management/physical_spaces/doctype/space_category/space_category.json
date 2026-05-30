@@ -1,6 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "allow_rename": 0,
  "autoname": "field:category_name",
  "creation": "2025-07-07 00:00:00.000000",
  "default_view": "List",
@@ -70,7 +70,7 @@
    "fieldname": "category_type",
    "fieldtype": "Select",
    "label": "Tipo de Categoría",
-   "options": "Estructura\nÁrea Común\nÁrea Privada\nInstalaciones\nEquipamiento\nSeguridad\nMantenimiento\nServicios"
+   "options": "Circulación y Acceso\nÁrea Residencial\nAmenidades\nÁrea Técnica\nÁrea Administrativa\nVialidad\nServicios Comunes\nUso Comercial"
   },
   {
    "fieldname": "template_configuration_section",
@@ -168,7 +168,7 @@
  "issingle": 0,
  "istable": 0,
  "max_attachments": 0,
- "modified": "2025-07-07 00:00:00.000000",
+ "modified": "2026-05-27 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Physical Spaces",
  "name": "Space Category",
@@ -176,16 +176,13 @@
  "owner": "Administrator",
  "permissions": [
   {
-   "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
    "read": 1,
    "report": 1,
    "role": "System Manager",
-   "share": 1,
-   "write": 1
+   "share": 1
   }
  ],
  "quick_entry": 1,

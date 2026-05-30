@@ -361,6 +361,8 @@ fixtures = [
 	"Document Template Type",  # ✅ VÁLIDO - Cosmético (registros íntegros)
 	"Jurisdiction Level",  # ✅ VÁLIDO - Cosmético (4 registros íntegros)
 	"Compliance Requirement Type",  # ✅ VÁLIDO - Cosmético (5 registros íntegros)
+	# Physical Spaces Module Masters — catálogo controlado del app (no editar manualmente)
+	"Space Category",  # ✅ ENABLED - 51 categorías precargadas para condominios residencial y uso mixto
 	# Sistema de Roles custom del sistema (22 roles requeridos por DocType permissions)
 	{
 		"dt": "Role",

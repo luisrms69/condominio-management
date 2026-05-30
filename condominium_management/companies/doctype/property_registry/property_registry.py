@@ -19,9 +19,9 @@ class PropertyRegistry(Document):
 	def before_save(self):
 		"""Hook antes de guardar - validaciones"""
 		self.validate_property_fields()
-		self.validate_copropiedades()
-		self.calculate_copropiedades_total()
-		self.validate_financial_fields()
+		self.validate_declared_owners()
+		self.calculate_declared_owners_total()
+		self.calculate_current_owner_display()
 
 	def validate_property_fields(self):
 		"""Validar campos básicos de propiedad"""
@@ -39,79 +39,77 @@ class PropertyRegistry(Document):
 		if self.built_area_sqm and self.built_area_sqm <= 0:
 			frappe.throw(_("El área construida debe ser mayor a 0"))
 
-	def validate_copropiedades(self):
-		"""Validar configuración de copropiedades"""
-		if not self.has_copropiedades:
+		if self.indiviso_percentage is not None:
+			if self.indiviso_percentage <= 0 or self.indiviso_percentage > 100:
+				frappe.throw(_("El indiviso debe ser mayor a 0 y no puede exceder 100%"))
+
+	def validate_declared_owners(self):
+		"""Validar titulares declarados"""
+		if not self.declared_owners:
 			return
 
-		if not self.copropiedades_table:
-			frappe.throw(_("Debe agregar al menos una copropiedad"))
-
-		# Validar porcentajes individuales
-		for copropiedad in self.copropiedades_table:
-			if copropiedad.copropiedad_percentage <= 0:
-				frappe.throw(_("El porcentaje de copropiedad debe ser mayor a 0"))
-
-			if copropiedad.copropiedad_percentage > 100:
-				frappe.throw(_("El porcentaje de copropiedad no puede exceder 100%"))
-
-			# Validar formato de identificación
-			if not self.validate_owner_id(copropiedad.owner_id, copropiedad.owner_type):
-				frappe.throw(_("Formato de identificación inválido para {0}").format(copropiedad.owner_name))
-
-		# Validar que la suma de porcentajes sea 100%
-		total_percentage = sum(float(c.copropiedad_percentage) for c in self.copropiedades_table)
-		if abs(total_percentage - 100.0) > 0.01:  # Tolerancia para decimales
-			frappe.throw(
-				_("La suma de porcentajes de copropiedades debe ser exactamente 100%. Actual: {0}%").format(
-					total_percentage
+		for row in self.declared_owners:
+			if row.ownership_percentage <= 0:
+				frappe.throw(_("El porcentaje debe ser mayor a 0 para: {0}").format(row.owner_name))
+			if row.ownership_percentage > 100:
+				frappe.throw(_("El porcentaje no puede exceder 100% para: {0}").format(row.owner_name))
+			if row.start_date and row.end_date and row.end_date < row.start_date:
+				frappe.throw(
+					_("La fecha 'Titular Hasta' no puede ser anterior a 'Titular Desde' para: {0}").format(
+						row.owner_name
+					)
 				)
-			)
+			if row.owner_id:
+				self.validate_owner_id(row.owner_id, row.owner_type)
 
-		# Validar propietarios únicos
-		owner_ids = [c.owner_id for c in self.copropiedades_table]
-		if len(owner_ids) != len(set(owner_ids)):
-			frappe.throw(_("No puede haber propietarios duplicados en las copropiedades"))
+		current_owners = [r for r in self.declared_owners if r.is_current]
+		if current_owners:
+			total = sum(float(r.ownership_percentage) for r in current_owners)
+			if abs(total - 100.0) > 0.01:
+				frappe.throw(
+					_("Los titulares actuales deben sumar exactamente 100%. Suma actual: {0}%").format(
+						round(total, 2)
+					)
+				)
 
-	def calculate_copropiedades_total(self):
-		"""Calcular total de porcentajes de copropiedades"""
-		if self.has_copropiedades and self.copropiedades_table:
-			self.total_copropiedades_percentage = sum(
-				float(c.copropiedad_percentage) for c in self.copropiedades_table
-			)
+	def calculate_declared_owners_total(self):
+		"""Calcular total de porcentajes de titulares actuales"""
+		current = [r for r in self.declared_owners if r.is_current] if self.declared_owners else []
+		self.current_owners_total_percentage = sum(float(r.ownership_percentage) for r in current)
+
+	def calculate_current_owner_display(self):
+		"""Calcular campo informativo del titular actual"""
+		if not self.declared_owners:
+			self.current_owner_display = ""
+			return
+		current = [r for r in self.declared_owners if r.is_current]
+		if not current:
+			self.current_owner_display = ""
+		elif len(current) == 1:
+			self.current_owner_display = current[0].owner_name
 		else:
-			self.total_copropiedades_percentage = 0
-
-	def validate_financial_fields(self):
-		"""Validar campos financieros"""
-		if self.property_value and self.property_value < 0:
-			frappe.throw(_("El valor de la propiedad no puede ser negativo"))
-
-		if self.assessed_value and self.assessed_value < 0:
-			frappe.throw(_("El avalúo catastral no puede ser negativo"))
-
-		if self.monthly_tax and self.monthly_tax < 0:
-			frappe.throw(_("El impuesto mensual no puede ser negativo"))
-
-		if self.insurance_value and self.insurance_value < 0:
-			frappe.throw(_("El valor asegurado no puede ser negativo"))
-
-		# Validar vencimiento de seguro
-		if self.insurance_expiry:
-			from datetime import datetime
-
-			if self.insurance_expiry < datetime.now().date():
-				frappe.msgprint(_("La póliza de seguro está vencida"), alert=True)
+			self.current_owner_display = _("Copropiedad ({0})").format(len(current))
 
 	def validate_owner_id(self, owner_id, owner_type):
-		"""Validar formato de identificación según tipo"""
-		if owner_type == "Persona Natural":
-			# Validar cédula colombiana (básico)
-			return owner_id.isdigit() and len(owner_id) >= 6 and len(owner_id) <= 11
-		elif owner_type == "Persona Jurídica":
-			# Validar NIT colombiano (básico)
-			return len(owner_id) >= 9 and len(owner_id) <= 11
-		return False
+		"""Validar formato RFC/CURP mexicano — advertencia no bloqueante"""
+		if not owner_id:
+			return
+		owner_id_clean = owner_id.strip().upper()
+		rfc_moral = re.compile(r"^[A-ZÑ&]{3}\d{6}[A-Z\d]{3}$")
+		rfc_fisica = re.compile(r"^[A-ZÑ&]{4}\d{6}[A-Z\d]{3}$")
+		curp = re.compile(r"^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z\d]\d$")
+		if owner_type == "Persona Moral":
+			valid = bool(rfc_moral.match(owner_id_clean))
+		else:
+			valid = bool(rfc_fisica.match(owner_id_clean)) or bool(curp.match(owner_id_clean))
+		if not valid:
+			frappe.msgprint(
+				_("El identificador '{0}' no tiene el formato esperado de RFC o CURP mexicano").format(
+					owner_id
+				),
+				indicator="orange",
+				alert=True,
+			)
 
 	def generate_property_code(self):
 		"""Generar código único de propiedad"""
@@ -145,43 +143,21 @@ class PropertyRegistry(Document):
 		return code
 
 	def get_ownership_summary(self):
-		"""Obtener resumen de propiedad"""
-		if not self.has_copropiedades:
-			return "Propiedad única"
-
-		if not self.copropiedades_table:
-			return "Sin copropiedades definidas"
-
-		owners_count = len(self.copropiedades_table)
-		return f"Copropiedad - {owners_count} propietarios"
-
-	def get_compliance_status(self):
-		"""Obtener estado de cumplimiento"""
-		compliance_items = [
-			("Impuesto Predial", self.predial_tax_current),
-			("Valorización", self.valorization_current),
-			("Permisos", self.permits_status == "Vigente"),
-			("Licencia Ambiental", self.environmental_clearance == "Vigente"),
-			("Certificado Bomberos", self.fire_safety_certificate == "Vigente"),
-		]
-
-		compliant_count = sum(1 for _, status in compliance_items if status)
-		total_count = len(compliance_items)
-
-		if compliant_count == total_count:
-			return "Completo"
-		elif compliant_count >= total_count * 0.8:
-			return "Parcial"
-		else:
-			return "Deficiente"
+		if not self.declared_owners:
+			return "Sin titulares declarados"
+		current = [r for r in self.declared_owners if r.is_current]
+		if not current:
+			return "Sin titulares actuales"
+		if len(current) == 1:
+			return "Titular único"
+		return f"Copropiedad - {len(current)} titulares actuales"
 
 	def get_main_owner(self):
-		"""Obtener propietario principal (mayor porcentaje)"""
-		if not self.has_copropiedades or not self.copropiedades_table:
+		current = [r for r in self.declared_owners if r.is_current] if self.declared_owners else []
+		if not current:
 			return "N/A"
-
-		main_owner = max(self.copropiedades_table, key=lambda x: x.copropiedad_percentage)
-		return f"{main_owner.owner_name} ({main_owner.copropiedad_percentage}%)"
+		main_owner = max(current, key=lambda x: x.ownership_percentage)
+		return f"{main_owner.owner_name} ({main_owner.ownership_percentage}%)"
 
 	def before_rename(self, olddn, newdn, merge=False):
 		"""Prevenir renombrado si hay referencias"""

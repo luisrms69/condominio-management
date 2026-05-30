@@ -27,7 +27,7 @@ def validate_company_type_fields(doc):
 	if not doc.company_type:
 		return  # No hay tipo de empresa, no validar (permite empresas básicas)
 
-	if doc.company_type == "Condominio":
+	if doc.company_type == "CONDO":
 		# Validar campos requeridos para condominios
 		if hasattr(doc, "property_usage_type") and not doc.property_usage_type:
 			frappe.throw(_("El tipo de uso de propiedad es requerido para condominios"))
@@ -48,7 +48,7 @@ def validate_company_type_fields(doc):
 		if hasattr(doc, "floors_count") and doc.floors_count and doc.floors_count <= 0:
 			frappe.throw(_("El número de pisos debe ser mayor a 0"))
 
-	elif doc.company_type == "Administradora":
+	elif doc.company_type == "ADMIN":
 		# Validar campos específicos para administradoras
 		pass
 
@@ -107,10 +107,10 @@ def update_managed_properties_count(doc, method):
 	if not hasattr(doc, "company_type") or not doc.company_type:
 		return
 
-	if doc.company_type == "Administradora":
+	if doc.company_type == "ADMIN":
 		# Contar propiedades administradas por esta empresa
 		managed_count = frappe.db.count(
-			"Company", filters={"management_company": doc.name, "company_type": "Condominio"}
+			"Company", filters={"management_company": doc.name, "company_type": "CONDO"}
 		)
 
 		# Actualizar el campo sin disparar hooks para evitar recursión
@@ -125,7 +125,7 @@ def on_company_save(doc, method):
 	if (
 		hasattr(doc, "company_type")
 		and hasattr(doc, "management_company")
-		and doc.company_type == "Condominio"
+		and doc.company_type == "CONDO"
 		and doc.management_company
 	):
 		admin_company = frappe.get_doc("Company", doc.management_company)
@@ -138,9 +138,9 @@ def on_company_trash(doc, method):
 		return
 
 	# Si es administradora, verificar que no tenga propiedades administradas
-	if doc.company_type == "Administradora":
+	if doc.company_type == "ADMIN":
 		managed_count = frappe.db.count(
-			"Company", filters={"management_company": doc.name, "company_type": "Condominio"}
+			"Company", filters={"management_company": doc.name, "company_type": "CONDO"}
 		)
 
 		if managed_count > 0:
@@ -154,7 +154,7 @@ def on_company_trash(doc, method):
 	if (
 		hasattr(doc, "company_type")
 		and hasattr(doc, "management_company")
-		and doc.company_type == "Condominio"
+		and doc.company_type == "CONDO"
 		and doc.management_company
 	):
 		admin_company = frappe.get_doc("Company", doc.management_company)

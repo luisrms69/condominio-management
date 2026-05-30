@@ -20,10 +20,7 @@ def after_insert(doc, method):
 		if doc.get("company"):
 			company = frappe.get_doc("Company", doc.company)
 
-			if (
-				company.get("company_type") == "Administradora"
-				or "administradora" in company.company_name.lower()
-			):
+			if company.get("company_type") == "ADMIN" or "administradora" in company.company_name.lower():
 				# Buscar configuración de entidad para Company Account
 				entity_config = frappe.db.get_value(
 					"Entity Type Configuration", {"entity_doctype": "Company Account"}, "name"

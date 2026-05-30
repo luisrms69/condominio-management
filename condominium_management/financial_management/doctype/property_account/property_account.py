@@ -10,6 +10,10 @@ from frappe.utils import add_days, flt, get_datetime, getdate, now, nowdate
 class PropertyAccount(Document):
 	"""Cuenta de propiedad con integración ERPNext Customer"""
 
+	def validate(self):
+		"""Validaciones que corren en insert y update"""
+		self.validate_billing_relationship_type()
+
 	def before_insert(self):
 		"""Configuración inicial antes de insertar"""
 		self.validate_property_registry()
@@ -32,7 +36,7 @@ class PropertyAccount(Document):
 
 		# Verificar que la propiedad existe y está activa
 		property_doc = frappe.get_doc("Property Registry", self.property_registry)
-		if property_doc.status != "Activa":
+		if property_doc.property_status_type != "Activo":
 			frappe.throw(_("Solo se pueden crear cuentas para propiedades activas"))
 
 		# Verificar unicidad por propiedad
@@ -49,15 +53,13 @@ class PropertyAccount(Document):
 		if not self.customer:
 			frappe.throw(_("El cliente de ERPNext es obligatorio"))
 
-		# Verificar que el Customer existe
 		if not frappe.db.exists("Customer", self.customer):
 			frappe.throw(_("El cliente {0} no existe en ERPNext").format(self.customer))
 
-		# Verificar que el Customer pertenece al Customer Group correcto
-		customer_doc = frappe.get_doc("Customer", self.customer)
-		valid_groups = ["Condóminos", "Residentes"]
-		if customer_doc.customer_group not in valid_groups:
-			frappe.throw(_("El cliente debe pertenecer a los grupos: {0}").format(", ".join(valid_groups)))
+	def validate_billing_relationship_type(self):
+		"""Valida que el tipo de relación de cobro esté definido"""
+		if not self.billing_relationship_type:
+			frappe.throw(_("El tipo de relación de cobro es obligatorio"))
 
 	def validate_billing_configuration(self):
 		"""Valida la configuración de facturación"""
@@ -250,13 +252,13 @@ class PropertyAccount(Document):
 			self.account_name = f"CUENTA-{property_doc.property_number or property_doc.name}"
 
 	@frappe.whitelist()
-	def create_customer_if_not_exists(self, customer_name, customer_group="Condóminos"):
+	def create_customer_if_not_exists(self, customer_name, customer_group="Individual"):
 		"""
 		Crea un Customer en ERPNext si no existe
 
 		Args:
 			customer_name: Nombre del cliente
-			customer_group: Grupo del cliente (Condóminos/Residentes)
+			customer_group: Grupo del cliente (default: Individual)
 
 		Returns:
 			str: Nombre del Customer creado

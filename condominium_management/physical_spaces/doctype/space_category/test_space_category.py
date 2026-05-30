@@ -13,7 +13,7 @@ class TestSpaceCategory(FrappeTestCase):
 				"doctype": "Space Category",
 				"category_name": "Apartamento",
 				"description": "Unidad habitacional privada",
-				"category_type": "Área Privada",
+				"category_type": "Área Residencial",
 				"requires_dimensions": 1,
 				"requires_capacity": 1,
 			}
@@ -32,7 +32,7 @@ class TestSpaceCategory(FrappeTestCase):
 			{
 				"doctype": "Space Category",
 				"category_name": "Área Común Piscina",
-				"category_type": "Área Común",
+				"category_type": "Amenidades",
 			}
 		)
 		category.insert()
@@ -47,7 +47,7 @@ class TestSpaceCategory(FrappeTestCase):
 			{
 				"doctype": "Space Category",
 				"category_name": "Elevador",
-				"category_type": "Equipamiento",
+				"category_type": "Área Técnica",
 				"ps_template_code": "elevator_template_v1",
 				"auto_load_template": 1,
 			}
@@ -64,8 +64,8 @@ class TestSpaceCategory(FrappeTestCase):
 		category = frappe.get_doc(
 			{
 				"doctype": "Space Category",
-				"category_name": "Gimnasio",
-				"category_type": "Área Común",
+				"category_name": "_test_validaciones",
+				"category_type": "Amenidades",
 				"requires_components": 1,
 				"requires_dimensions": 1,
 				"requires_capacity": 1,
@@ -85,7 +85,7 @@ class TestSpaceCategory(FrappeTestCase):
 			{
 				"doctype": "Space Category",
 				"category_name": "Oficina Administración",
-				"category_type": "Servicios",
+				"category_type": "Servicios Comunes",
 				"icon_class": "fa fa-office",
 				"color_code": "#3498db",
 				"display_order": 10,
@@ -102,7 +102,7 @@ class TestSpaceCategory(FrappeTestCase):
 	def test_default_ui_configuration(self):
 		"""Test configuración de UI por defecto"""
 		category = frappe.get_doc(
-			{"doctype": "Space Category", "category_name": "Bodega", "category_type": "Servicios"}
+			{"doctype": "Space Category", "category_name": "Bodega", "category_type": "Servicios Comunes"}
 		)
 		category.insert()
 
@@ -115,14 +115,14 @@ class TestSpaceCategory(FrappeTestCase):
 	def test_category_types(self):
 		"""Test tipos de categorías válidos"""
 		valid_types = [
-			"Estructura",
-			"Área Común",
-			"Área Privada",
-			"Instalaciones",
-			"Equipamiento",
-			"Seguridad",
-			"Mantenimiento",
-			"Servicios",
+			"Circulación y Acceso",
+			"Área Residencial",
+			"Amenidades",
+			"Área Técnica",
+			"Área Administrativa",
+			"Vialidad",
+			"Servicios Comunes",
+			"Uso Comercial",
 		]
 
 		for category_type in valid_types:
@@ -150,7 +150,7 @@ class TestSpaceCategory(FrappeTestCase):
 			"Apartamento",
 			"Área Común Piscina",
 			"Elevador",
-			"Gimnasio",
+			"_test_validaciones",
 			"Oficina Administración",
 			"Bodega",
 		]
