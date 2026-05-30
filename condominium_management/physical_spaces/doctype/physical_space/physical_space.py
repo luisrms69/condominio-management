@@ -22,20 +22,12 @@ class PhysicalSpace(Document):
 		self.generate_component_inventory_codes()
 
 	def generate_space_code(self):
-		"""Generar código único del espacio si no existe"""
+		"""Generar código único del espacio usando series por company."""
 		if not self.space_code:
-			# Generar código basado en nombre y timestamp
-			import re
-			import unicodedata
+			from frappe.model.naming import make_autoname
 
-			# Normalizar texto removiendo acentos
-			normalized = unicodedata.normalize("NFD", self.space_name)
-			ascii_text = normalized.encode("ascii", "ignore").decode("ascii")
-
-			# Crear código base
-			base_code = re.sub(r"[^A-Za-z0-9]", "", ascii_text)[:10].upper()
-			timestamp = frappe.utils.cstr(frappe.utils.now_datetime().strftime("%m%d%H%M"))
-			self.space_code = f"{base_code}-{timestamp}"
+			abbr = frappe.db.get_value("Company", self.company, "abbr") or "ESP"
+			self.space_code = make_autoname(f"{abbr}-.####")
 
 	def validate_hierarchy(self):
 		"""Validaciones críticas para jerarquía híbrida"""
