@@ -188,3 +188,40 @@ que no refleja el estado actual del app:
 
 Archivar en `docs_new/archive/` con nota de reemplazo cuando los docs vigentes en
 `docs_new/` estén completos. No mover hasta tener el reemplazo escrito y validado.
+
+---
+
+## Committee Member — relación User ↔ Property Registry pendiente de arquitectura
+
+### Estado actual (2026-05-31)
+
+`Committee Member` vincula directamente `user` → `property_registry` como solución operativa temporal. El campo `property_registry` es seleccionable manualmente, filtrado por `company`.
+
+### Gap conocido
+
+No existe un vínculo formal entre un `User` de Frappe y su(s) unidad(es) en `Property Registry`. La arquitectura correcta requiere un módulo intermedio:
+
+```
+Property Registry
+  → Condominium Person Profile   ← módulo pendiente de implementar
+      → frappe_user (Link → User, opcional)
+      → person_category
+      → vigencia / estado
+  → Committee Member
+```
+
+### Por qué no se resuelve hoy
+
+- `Condominium People` no está implementado.
+- No se usa `Property Account` (módulo financiero congelado).
+- No se agrega `user` a `Property Declared Owner` como decisión definitiva.
+
+### Impacto actual
+
+- El admin asigna manualmente `property_registry` al crear un `Committee Member`.
+- No hay validación de que el usuario realmente sea titular de esa propiedad.
+- El selector de `user` filtra por rol `Condómino` como aproximación de elegibilidad.
+
+### Pendiente
+
+Cuando exista `Condominium People`, `Committee Member` debe migrar hacia validar elegibilidad contra `Condominium Person Profile`. La relación directa `Committee Member.property_registry` puede conservarse como snapshot o eliminarse según el diseño final.

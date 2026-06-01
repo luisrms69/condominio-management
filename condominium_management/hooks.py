@@ -90,7 +90,7 @@ app_include_locale = "translations"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {"Event": "public/js/event_committee.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -131,6 +131,10 @@ app_include_locale = "translations"
 
 # before_install = "condominium_management.install.before_install"
 after_install = "condominium_management.install.after_install"
+after_migrate = [
+	"condominium_management.committee_management.default_positions.setup_positions_for_all_condo_companies",
+	"condominium_management.committee_management.event_custom_fields.setup_event_committee_fields",
+]
 
 # Uninstallation
 # ------------
@@ -437,6 +441,24 @@ fixtures = [
 					"cb_financial_1",
 					"insurance_policy_number",
 					"insurance_expiry_date",
+				],
+			],
+		],
+	},
+	# Event Custom Fields — Committee Meeting POC
+	{
+		"dt": "Custom Field",
+		"filters": [
+			["dt", "=", "Event"],
+			[
+				"fieldname",
+				"in",
+				[
+					"condominium_meeting_type",
+					"committee_tab",
+					"committee_meeting_type",
+					"committee_agenda_section",
+					"committee_agenda_items",
 				],
 			],
 		],

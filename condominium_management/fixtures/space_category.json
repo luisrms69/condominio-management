@@ -1,5 +1,7 @@
 [
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "ACC",
   "category_name": "Acceso",
@@ -13,11 +15,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000001",
   "name": "Acceso",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "LBY",
   "category_name": "Lobby",
@@ -31,11 +38,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000002",
   "name": "Lobby",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "COR",
   "category_name": "Corredor",
@@ -49,11 +61,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000003",
   "name": "Corredor",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "AELV",
   "category_name": "Área de Elevadores",
@@ -67,11 +84,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000004",
   "name": "Área de Elevadores",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "ESC",
   "category_name": "Escalera",
@@ -85,11 +107,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000005",
   "name": "Escalera",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "AND",
   "category_name": "Andador",
@@ -103,11 +130,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000006",
   "name": "Andador",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "DPTO",
   "category_name": "Departamento",
@@ -121,11 +153,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000007",
   "name": "Departamento",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CASA",
   "category_name": "Casa",
@@ -139,11 +176,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000008",
   "name": "Casa",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CEST",
   "category_name": "Cajón de Estacionamiento",
@@ -157,11 +199,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000009",
   "name": "Cajón de Estacionamiento",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "BOD",
   "category_name": "Bodega Privada",
@@ -175,11 +222,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000010",
   "name": "Bodega Privada",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "TERP",
   "category_name": "Terraza Privada",
@@ -193,11 +245,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000011",
   "name": "Terraza Privada",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "ALB",
   "category_name": "Alberca",
@@ -211,11 +268,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000012",
   "name": "Alberca",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "GYM",
   "category_name": "Gimnasio",
@@ -229,11 +291,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000013",
   "name": "Gimnasio",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "SUM",
   "category_name": "Salón de Usos Múltiples",
@@ -247,11 +314,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000014",
   "name": "Salón de Usos Múltiples",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CAND",
   "category_name": "Cancha Deportiva",
@@ -265,11 +337,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000015",
   "name": "Cancha Deportiva",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "AJI",
   "category_name": "Área de Juegos Infantiles",
@@ -283,11 +360,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000016",
   "name": "Área de Juegos Infantiles",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "JARD",
   "category_name": "Jardín / Área Verde",
@@ -301,11 +383,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000017",
   "name": "Jardín / Área Verde",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "RTG",
   "category_name": "Roof Garden / Terraza Común",
@@ -319,11 +406,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000018",
   "name": "Roof Garden / Terraza Común",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "BBQ",
   "category_name": "Asador / Área de BBQ",
@@ -337,11 +429,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000019",
   "name": "Asador / Área de BBQ",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "SJU",
   "category_name": "Sala de Juntas",
@@ -355,11 +452,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000020",
   "name": "Sala de Juntas",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "COW",
   "category_name": "Coworking / Business Center",
@@ -373,11 +475,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000021",
   "name": "Coworking / Business Center",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "LUD",
   "category_name": "Ludoteca / Kids Club",
@@ -391,11 +498,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000022",
   "name": "Ludoteca / Kids Club",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CIN",
   "category_name": "Cine / Sala de Proyección",
@@ -409,11 +521,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000023",
   "name": "Cine / Sala de Proyección",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "LNG",
   "category_name": "Lounge",
@@ -427,11 +544,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000024",
   "name": "Lounge",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "SPA",
   "category_name": "Spa / Sauna",
@@ -445,11 +567,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000025",
   "name": "Spa / Sauna",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "SJUG",
   "category_name": "Sala de Juegos",
@@ -463,11 +590,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000026",
   "name": "Sala de Juegos",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "BIB",
   "category_name": "Biblioteca / Sala de Lectura",
@@ -481,11 +613,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000027",
   "name": "Biblioteca / Sala de Lectura",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CEVE",
   "category_name": "Cocina de Eventos",
@@ -499,11 +636,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000028",
   "name": "Cocina de Eventos",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "ZCAN",
   "category_name": "Zona Canina",
@@ -517,11 +659,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000029",
   "name": "Zona Canina",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "HUR",
   "category_name": "Huerto Urbano",
@@ -535,11 +682,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000030",
   "name": "Huerto Urbano",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CMQ",
   "category_name": "Cuarto de Máquinas",
@@ -553,11 +705,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000031",
   "name": "Cuarto de Máquinas",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CELC",
   "category_name": "Cuarto Eléctrico",
@@ -571,11 +728,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000032",
   "name": "Cuarto Eléctrico",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CHID",
   "category_name": "Cisterna / Cuarto Hidráulico",
@@ -589,11 +751,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000033",
   "name": "Cisterna / Cuarto Hidráulico",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CTEL",
   "category_name": "Cuarto de Telecomunicaciones",
@@ -607,11 +774,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000034",
   "name": "Cuarto de Telecomunicaciones",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CGAS",
   "category_name": "Cuarto de Gas",
@@ -625,11 +797,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000035",
   "name": "Cuarto de Gas",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "SMON",
   "category_name": "Sala de Monitoreo",
@@ -643,11 +820,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000036",
   "name": "Sala de Monitoreo",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "OADM",
   "category_name": "Oficina de Administración",
@@ -661,11 +843,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000037",
   "name": "Oficina de Administración",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "SCOM",
   "category_name": "Sala de Comité",
@@ -679,11 +866,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000038",
   "name": "Sala de Comité",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "ARCH",
   "category_name": "Archivo / Almacén de Documentos",
@@ -697,11 +889,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000039",
   "name": "Archivo / Almacén de Documentos",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CINT",
   "category_name": "Calle Interna",
@@ -715,11 +912,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000040",
   "name": "Calle Interna",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "RAMP",
   "category_name": "Rampa Vehicular",
@@ -733,11 +935,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000041",
   "name": "Rampa Vehicular",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "ZCD",
   "category_name": "Zona de Carga y Descarga",
@@ -751,11 +958,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000042",
   "name": "Zona de Carga y Descarga",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "EVIS",
   "category_name": "Estacionamiento de Visitas",
@@ -769,11 +981,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000043",
   "name": "Estacionamiento de Visitas",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CRES",
   "category_name": "Cuarto de Residuos / Basura",
@@ -787,11 +1004,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000044",
   "name": "Cuarto de Residuos / Basura",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "LAV",
   "category_name": "Lavandería Común",
@@ -805,11 +1027,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000045",
   "name": "Lavandería Común",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "PKT",
   "category_name": "Paquetería / Recepción",
@@ -823,11 +1050,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000046",
   "name": "Paquetería / Recepción",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "BCOM",
   "category_name": "Baño Común",
@@ -841,11 +1073,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000047",
   "name": "Baño Común",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "VEST",
   "category_name": "Vestidor Común",
@@ -859,11 +1096,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000048",
   "name": "Vestidor Común",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "CLIM",
   "category_name": "Cuarto de Limpieza",
@@ -877,11 +1119,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000049",
   "name": "Cuarto de Limpieza",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "SCHO",
   "category_name": "Sala de Choferes",
@@ -895,11 +1142,16 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000050",
   "name": "Sala de Choferes",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  },
  {
+  "allowed_child_categories": [],
+  "allowed_parent_categories": [],
   "auto_load_template": 0,
   "category_code": "LCOM",
   "category_name": "Local Comercial",
@@ -913,8 +1165,11 @@
   "is_active": 1,
   "modified": "2026-05-27 00:00:00.000051",
   "name": "Local Comercial",
+  "ps_template_code": null,
   "requires_capacity": 0,
   "requires_components": 0,
-  "requires_dimensions": 0
+  "requires_dimensions": 0,
+  "template_fields_config": null,
+  "template_version": "1.0"
  }
 ]
