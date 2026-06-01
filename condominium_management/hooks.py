@@ -200,6 +200,10 @@ doc_events = {
 	# 	"after_insert": "condominium_management.document_generation.hooks_handlers.auto_detection.on_document_insert",
 	# 	"on_update": "condominium_management.document_generation.hooks_handlers.auto_detection.on_document_update",
 	# },
+	# Committee Management — Assembly validation on native Event
+	"Event": {
+		"validate": "condominium_management.committee_management.event_hooks.validate_assembly",
+	},
 	"Master Template Registry": {
 		"on_update": "condominium_management.document_generation.hooks_handlers.template_propagation.on_template_update"
 	},
@@ -484,15 +488,39 @@ fixtures = [
 					"asm_status",
 					"asm_convener",
 					"asm_formal_col",
-					"asm_convocation_method",
+					"asm_notif_email",
+					"asm_notif_fisico",
+					"asm_notif_portal",
+					"asm_notif_publicacion",
+					"asm_notif_otro",
 					"asm_convocation_document",
 					"asm_execution_section",
 					"asm_opened_in_call",
 					"asm_actual_start",
 					"asm_actual_end",
+					"asm_agreements_section",
+					"asm_agreements_widget",
+					"asm_assembly_officers_section",
+					"asm_presiding_officer",
+					"asm_secretary",
+					"asm_col3",
+					"asm_quorum_declared_on",
+					"asm_formalization_section",
+					"asm_minutes_status",
+					"asm_minutes_document",
+					"asm_formal_col2",
+					"asm_requires_protocolization",
+					"asm_protocolization_notes",
+					"asm_convocation_published",
+					"asm_convocation_published_on",
 				],
 			],
 		],
+	},
+	# Convocatoria de Asamblea — Print Format
+	{
+		"dt": "Print Format",
+		"filters": [["name", "=", "Convocatoria Asamblea"]],
 	},
 ]
 

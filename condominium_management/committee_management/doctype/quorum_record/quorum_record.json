@@ -7,7 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "property_registry",
-  "owner_name",
+  "property_owner_name",
   "ownership_percentage",
   "column_break_4",
   "attendance_status",
@@ -27,19 +27,19 @@
    "reqd": 1
   },
   {
-   "fetch_from": "property_registry.owner_name",
-   "fieldname": "owner_name",
+   "fetch_from": "property_registry.current_owner_display",
+   "fieldname": "property_owner_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Nombre del Propietario",
+   "label": "Titular",
    "read_only": 1
   },
   {
-   "fetch_from": "property_registry.ownership_percentage",
+   "fetch_from": "property_registry.indiviso_percentage",
    "fieldname": "ownership_percentage",
    "fieldtype": "Percent",
    "in_list_view": 1,
-   "label": "Porcentaje de Propiedad",
+   "label": "Indiviso (%)",
    "read_only": 1
   },
   {

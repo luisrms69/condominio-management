@@ -191,6 +191,77 @@ Archivar en `docs_new/archive/` con nota de reemplazo cuando los docs vigentes e
 
 ---
 
+## Assembly — validaciones de fechas no implementadas (no-MVP)
+
+### Estado actual
+
+El hook `validate_assembly` en `committee_management/event_hooks.py` no valida
+consistencia de fechas/horarios. Los campos existen pero pueden cargarse con valores
+ilógicos sin recibir error.
+
+### Gap conocido
+
+Tres validaciones identificadas pero no implementadas por decisión de MVP:
+
+| Regla | Campos involucrados |
+|---|---|
+| Primera convocatoria debe ser antes que segunda | `asm_first_call < asm_second_call` |
+| Hora de inicio antes que hora de cierre | `asm_actual_start < asm_actual_end` |
+| Fecha de convocatoria antes que fecha de asamblea | `asm_convocation_date < starts_on` |
+
+### Pendiente
+
+Agregar función `_validate_dates(doc)` en `event_hooks.py` y llamarla desde
+`validate_assembly()` entre `_validate_asm_type_frozen` y `_validate_status_transition`.
+La estructura de la función ya está diseñada — ver conversación de 2026-06-01.
+
+No implementar sin confirmar comportamiento de Frappe con campos `Time` comparados
+via `frappe.utils.get_time()`.
+
+### Referencia
+
+`committee_management/event_hooks.py` — función `validate_assembly`
+
+---
+
+## Assembly — Voting System depende de `asm_status == "En Progreso"`
+
+### Estado actual (2026-06-01)
+
+El campo `asm_status` controla el ciclo de vida de la asamblea con flujo protegido
+en servidor (`event_hooks._STATUS_FLOW`). El módulo de Votaciones no existe todavía.
+
+### Dependencia arquitectónica
+
+Cuando se implemente el módulo Voting, las votaciones **solo pueden abrirse cuando
+`asm_status == "En Progreso"`**. Este es el gate que garantiza que las votaciones
+ocurren dentro de una asamblea formalmente instalada.
+
+El flujo con votaciones sería:
+
+```
+Planificada → Convocada → En Progreso → [votos se abren aquí] → Cerrada
+```
+
+- `En Progreso`: único estado donde se pueden crear y activar votaciones
+- `Cerrada`: votaciones existentes quedan read-only
+- `Cancelada`: votaciones deben cancelarse en cascada
+
+### Pendiente
+
+Al diseñar el módulo Voting:
+1. El DocType `Voting` debe tener campo `assembly` (Link → Event) y `assembly_status`
+   validado contra el Event referenciado
+2. `before_insert` en Voting debe verificar que `assembly.asm_convocation_published == 1`
+   y `assembly.asm_status == "En Progreso"`
+3. El snapshot de quórum de cierre debe incluir resultados de votaciones
+
+### Referencia
+
+`committee_management/event_hooks.py` — `_STATUS_FLOW` (líneas ~14-20)
+
+---
+
 ## Committee Member — relación User ↔ Property Registry pendiente de arquitectura
 
 ### Estado actual (2026-05-31)
