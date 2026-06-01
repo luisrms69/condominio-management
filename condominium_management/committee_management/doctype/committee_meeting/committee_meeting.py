@@ -105,6 +105,7 @@ class CommitteeMeeting(Document):
 				"description": f"[{self.meeting_title}]\n{subject}"
 				+ (f"\n\n{description}" if description else ""),
 				"owner": assigned_to or frappe.session.user,
+				"allocated_to": assigned_to or frappe.session.user,
 				"reference_type": "Committee Meeting",
 				"reference_name": self.name,
 				"date": due_date,

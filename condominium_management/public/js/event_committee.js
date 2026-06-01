@@ -3,7 +3,6 @@
 
 frappe.ui.form.on("Event", {
 	event_category: function (frm) {
-		// Limpiar tipo de reunión al cambiar categoría
 		if (frm.doc.event_category !== "Meeting") {
 			frm.set_value("condominium_meeting_type", "");
 		}
@@ -64,6 +63,7 @@ frappe.ui.form.on("Event", {
 										values.subject +
 										(values.description ? "\n\n" + values.description : ""),
 									owner: values.assigned_to || frappe.session.user,
+									allocated_to: values.assigned_to || frappe.session.user,
 									reference_type: "Event",
 									reference_name: frm.doc.name,
 									date: values.due_date || null,
@@ -76,6 +76,7 @@ frappe.ui.form.on("Event", {
 										message: __("Acuerdo creado: {0}", [r.message.name]),
 										indicator: "green",
 									});
+									load_agreements_widget(frm);
 								}
 							},
 						});
@@ -85,5 +86,81 @@ frappe.ui.form.on("Event", {
 				);
 			});
 		}
+
+		load_agreements_widget(frm);
 	},
 });
+
+function load_agreements_widget(frm) {
+	const wrapper = frm.fields_dict.committee_agreements_widget?.$wrapper;
+	if (!wrapper) return;
+
+	frappe.call({
+		method: "frappe.client.get_list",
+		args: {
+			doctype: "ToDo",
+			filters: { reference_type: "Event", reference_name: frm.doc.name },
+			fields: ["name", "description", "status", "date", "allocated_to"],
+			order_by: "creation desc",
+			limit: 50,
+		},
+		callback: function (r) {
+			const todos = r.message || [];
+			let html = "";
+
+			if (!todos.length) {
+				html =
+					'<p class="text-muted" style="padding:8px 0;">' +
+					__("Sin acuerdos registrados.") +
+					"</p>";
+			} else {
+				const colors = { Open: "orange", Closed: "green", Cancelled: "red" };
+				html =
+					'<table class="table table-bordered table-sm" style="margin-bottom:0;"><thead><tr>' +
+					"<th>" +
+					__("Acuerdo") +
+					"</th>" +
+					"<th style='width:130px'>" +
+					__("Asignado a") +
+					"</th>" +
+					"<th style='width:100px'>" +
+					__("Fecha límite") +
+					"</th>" +
+					"<th style='width:90px'>" +
+					__("Estado") +
+					"</th>" +
+					"</tr></thead><tbody>";
+
+				todos.forEach(function (t) {
+					const desc = (t.description || "").split("\n")[1] || t.description || "";
+					const color = colors[t.status] || "gray";
+					const date_str = t.date ? frappe.datetime.str_to_user(t.date) : "—";
+					html +=
+						"<tr>" +
+						'<td><a href="/app/todo/' +
+						t.name +
+						'" target="_blank">' +
+						frappe.utils.escape_html(desc.substring(0, 80)) +
+						(desc.length > 80 ? "…" : "") +
+						"</a></td>" +
+						"<td>" +
+						frappe.utils.escape_html(t.allocated_to || "—") +
+						"</td>" +
+						"<td>" +
+						date_str +
+						"</td>" +
+						'<td><span class="indicator-pill ' +
+						color +
+						'">' +
+						__(t.status) +
+						"</span></td>" +
+						"</tr>";
+				});
+
+				html += "</tbody></table>";
+			}
+
+			wrapper.html(html);
+		},
+	});
+}

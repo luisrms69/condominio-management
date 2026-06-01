@@ -459,6 +459,8 @@ fixtures = [
 					"committee_meeting_type",
 					"committee_agenda_section",
 					"committee_agenda_items",
+					"committee_agreements_section",
+					"committee_agreements_widget",
 				],
 			],
 		],

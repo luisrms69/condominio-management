@@ -52,6 +52,22 @@ CUSTOM_FIELDS = [
 		"insert_after": "committee_agenda_section",
 		"depends_on": COMMITTEE_DEPENDS,
 	},
+	{
+		"dt": "Event",
+		"fieldname": "committee_agreements_section",
+		"fieldtype": "Section Break",
+		"label": "Acuerdos",
+		"insert_after": "committee_agenda_items",
+		"depends_on": COMMITTEE_DEPENDS,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "committee_agreements_widget",
+		"fieldtype": "HTML",
+		"label": "Acuerdos",
+		"insert_after": "committee_agreements_section",
+		"depends_on": COMMITTEE_DEPENDS,
+	},
 ]
 
 
