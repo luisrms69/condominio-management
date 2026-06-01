@@ -6,3 +6,5 @@
 # Patches added in this section will be executed after doctypes are migrated
 condominium_management.patches.v0_0_1.remove_property_registry_deprecated_fields
 condominium_management.patches.v0_0_1.migrate_property_copropiedad_to_declared_owner
+condominium_management.patches.v0_0_1.migrate_committee_member_position
+condominium_management.patches.v0_0_1.setup_default_committee_positions

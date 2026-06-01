@@ -102,8 +102,8 @@ class TestAgreementTrackingCorrected(CommitteeTestBase):
 					"doctype": "Committee Member",
 					"user": "CTEST_committee@example.com",
 					"property_registry": cls.test_property_registry,
+					"company": frappe.db.get_value("Property Registry", cls.test_property_registry, "company") if cls.test_property_registry else None,
 					"full_name": "CTEST Agreement Member",
-					"role_in_committee": "Vocal",  # Use Vocal to avoid unique role conflicts
 					"start_date": nowdate(),
 					"is_active": 1,
 				}
