@@ -1,7 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
- "creation": "2025-07-10 10:00:00.000000",
+ "creation": "2026-05-31 00:00:00.000000",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -9,7 +8,7 @@
   "person_name",
   "person_type",
   "committee_member",
-  "column_break_3",
+  "column_break_1",
   "attendance_status"
  ],
  "fields": [
@@ -25,17 +24,17 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Tipo",
-   "options": "Miembro del Comité\nResidente\nAdministradora\nAsesor Externo\nInvitado\nOtro"
+   "options": "Committee Member\nResident\nAdministrator\nExternal Advisor\nGuest\nOther"
   },
   {
-   "depends_on": "eval:doc.person_type == 'Miembro del Comité'",
+   "depends_on": "eval:doc.person_type=='Committee Member'",
    "fieldname": "committee_member",
    "fieldtype": "Link",
    "label": "Miembro del Comité",
    "options": "Committee Member"
   },
   {
-   "fieldname": "column_break_3",
+   "fieldname": "column_break_1",
    "fieldtype": "Column Break"
   },
   {
@@ -43,21 +42,21 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Asistencia",
-   "options": "Presente\nAusente\nVirtual\nExcusado",
+   "options": "Present\nAbsent\nVirtual\nExcused",
    "reqd": 1
   }
  ],
- "index_web_pages_for_search": 1,
+ "index_web_pages_for_search": 0,
  "istable": 1,
  "links": [],
  "modified": "2026-05-31 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Committee Management",
- "name": "Meeting Attendee",
+ "name": "Event Committee Attendee",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 0
 }

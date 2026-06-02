@@ -90,7 +90,7 @@ app_include_locale = "translations"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {"Event": "public/js/event_committee.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -131,6 +131,10 @@ app_include_locale = "translations"
 
 # before_install = "condominium_management.install.before_install"
 after_install = "condominium_management.install.after_install"
+after_migrate = [
+	"condominium_management.committee_management.default_positions.setup_positions_for_all_condo_companies",
+	"condominium_management.committee_management.event_custom_fields.setup_event_committee_fields",
+]
 
 # Uninstallation
 # ------------
@@ -196,6 +200,10 @@ doc_events = {
 	# 	"after_insert": "condominium_management.document_generation.hooks_handlers.auto_detection.on_document_insert",
 	# 	"on_update": "condominium_management.document_generation.hooks_handlers.auto_detection.on_document_update",
 	# },
+	# Committee Management — Assembly validation on native Event
+	"Event": {
+		"validate": "condominium_management.committee_management.event_hooks.validate_assembly",
+	},
 	"Master Template Registry": {
 		"on_update": "condominium_management.document_generation.hooks_handlers.template_propagation.on_template_update"
 	},
@@ -440,6 +448,80 @@ fixtures = [
 				],
 			],
 		],
+	},
+	# Event Custom Fields — Committee Meeting POC
+	{
+		"dt": "Custom Field",
+		"filters": [
+			["dt", "=", "Event"],
+			[
+				"fieldname",
+				"in",
+				[
+					"condominium_meeting_type",
+					"committee_tab",
+					"committee_meeting_type",
+					"committee_agenda_section",
+					"committee_agenda_items",
+					"committee_agreements_section",
+					"committee_agreements_widget",
+					"assembly_tab",
+					"asm_type",
+					"asm_convocation_date",
+					"asm_col_break",
+					"asm_first_call",
+					"asm_second_call",
+					"asm_quorum_section",
+					"asm_quorum_first",
+					"asm_quorum_second",
+					"asm_quorum_col",
+					"asm_quorum_current",
+					"asm_quorum_reached",
+					"asm_agenda_section",
+					"asm_formal_agenda",
+					"asm_quorum_reg_section",
+					"asm_quorum_registration",
+					"asm_notes_section",
+					"asm_notes",
+					"asm_formal_section",
+					"asm_number",
+					"asm_status",
+					"asm_convener",
+					"asm_formal_col",
+					"asm_notif_email",
+					"asm_notif_fisico",
+					"asm_notif_portal",
+					"asm_notif_publicacion",
+					"asm_notif_otro",
+					"asm_convocation_document",
+					"asm_execution_section",
+					"asm_opened_in_call",
+					"asm_actual_start",
+					"asm_actual_end",
+					"asm_agreements_section",
+					"asm_agreements_widget",
+					"asm_assembly_officers_section",
+					"asm_presiding_officer",
+					"asm_secretary",
+					"asm_col3",
+					"asm_quorum_declared_on",
+					"asm_formalization_section",
+					"asm_minutes_status",
+					"asm_minutes_document",
+					"asm_formal_col2",
+					"asm_requires_protocolization",
+					"asm_protocolization_notes",
+					"asm_agreements_tasks_created",
+					"asm_convocation_published",
+					"asm_convocation_published_on",
+				],
+			],
+		],
+	},
+	# Convocatoria de Asamblea — Print Format
+	{
+		"dt": "Print Format",
+		"filters": [["name", "=", "Convocatoria Asamblea"]],
 	},
 ]
 

@@ -1,6 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "allow_rename": 0,
  "autoname": "format:CM-{YY}-{MM}-{###}",
  "creation": "2025-07-10 10:00:00.000000",
  "doctype": "DocType",
@@ -8,25 +8,15 @@
  "engine": "InnoDB",
  "field_order": [
   "basic_information_section",
+  "company",
   "user",
   "property_registry",
   "full_name",
-  "phone_emergency",
-  "email_secondary",
-  "column_break_7",
-  "role_in_committee",
-  "committee_position_weight",
+  "cb_basic",
+  "committee_position",
   "start_date",
   "end_date",
   "is_active",
-  "responsibilities_section",
-  "responsibilities",
-  "permissions_section",
-  "can_approve_expenses",
-  "expense_approval_limit",
-  "can_call_assembly",
-  "can_sign_documents",
-  "can_create_polls",
   "signature_section",
   "signature_image"
  ],
@@ -37,10 +27,18 @@
    "label": "Información Básica"
   },
   {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
    "fieldname": "user",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Usuario del Sistema",
+   "label": "Usuario",
    "options": "User",
    "reqd": 1
   },
@@ -49,8 +47,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Propiedad que Representa",
-   "options": "Property Registry",
-   "reqd": 1
+   "options": "Property Registry"
   },
   {
    "fetch_from": "user.full_name",
@@ -60,45 +57,28 @@
    "read_only": 1
   },
   {
-   "fieldname": "phone_emergency",
-   "fieldtype": "Phone",
-   "label": "Teléfono de Emergencia"
-  },
-  {
-   "fieldname": "email_secondary",
-   "fieldtype": "Data",
-   "label": "Email Alternativo"
-  },
-  {
-   "fieldname": "column_break_7",
+   "fieldname": "cb_basic",
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "role_in_committee",
-   "fieldtype": "Select",
+   "fieldname": "committee_position",
+   "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Cargo en el Comité",
-   "options": "Presidente\nSecretario\nTesorero\nVocal",
+   "label": "Cargo",
+   "options": "Committee Position",
    "reqd": 1
-  },
-  {
-   "default": "1",
-   "fieldname": "committee_position_weight",
-   "fieldtype": "Int",
-   "label": "Peso del Cargo (Jerarquía)",
-   "non_negative": 1
   },
   {
    "fieldname": "start_date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Fecha de Inicio",
+   "label": "Miembro Desde",
    "reqd": 1
   },
   {
    "fieldname": "end_date",
    "fieldtype": "Date",
-   "label": "Fecha de Finalización"
+   "label": "Miembro Hasta"
   },
   {
    "default": "1",
@@ -108,55 +88,9 @@
    "label": "Activo"
   },
   {
-   "fieldname": "responsibilities_section",
-   "fieldtype": "Section Break",
-   "label": "Responsabilidades"
-  },
-  {
-   "fieldname": "responsibilities",
-   "fieldtype": "Small Text",
-   "label": "Responsabilidades del Cargo"
-  },
-  {
-   "fieldname": "permissions_section",
-   "fieldtype": "Section Break",
-   "label": "Permisos Especiales"
-  },
-  {
-   "default": "0",
-   "fieldname": "can_approve_expenses",
-   "fieldtype": "Check",
-   "label": "Puede Aprobar Gastos"
-  },
-  {
-   "depends_on": "can_approve_expenses",
-   "fieldname": "expense_approval_limit",
-   "fieldtype": "Currency",
-   "label": "Límite de Aprobación de Gastos"
-  },
-  {
-   "default": "0",
-   "fieldname": "can_call_assembly",
-   "fieldtype": "Check",
-   "label": "Puede Convocar Asambleas"
-  },
-  {
-   "default": "0",
-   "fieldname": "can_sign_documents",
-   "fieldtype": "Check",
-   "label": "Puede Firmar Documentos"
-  },
-  {
-   "default": "0",
-   "fieldname": "can_create_polls",
-   "fieldtype": "Check",
-   "label": "Puede Crear Encuestas"
-  },
-  {
-   "depends_on": "can_sign_documents",
    "fieldname": "signature_section",
    "fieldtype": "Section Break",
-   "label": "Firma Digital"
+   "label": "Firma"
   },
   {
    "fieldname": "signature_image",
@@ -166,7 +100,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-10 10:00:00.000000",
+ "modified": "2026-05-30 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Committee Management",
  "name": "Committee Member",

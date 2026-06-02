@@ -22,10 +22,7 @@
   "attendees",
   "agenda_section",
   "agenda_items",
-  "follow_up_section",
-  "next_meeting_scheduled",
-  "pending_items_count",
-  "completion_rate",
+  "notes_section",
   "meeting_notes"
  ],
  "fields": [
@@ -100,7 +97,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Estado",
-   "options": "Planificada\nEn Progreso\nCompletada\nCancelada\nPospuesta"
+   "options": "Planificada\nTerminada"
   },
   {
    "fieldname": "attendees_section",
@@ -125,26 +122,9 @@
    "options": "Meeting Agenda Item"
   },
   {
-   "fieldname": "follow_up_section",
+   "fieldname": "notes_section",
    "fieldtype": "Section Break",
-   "label": "Seguimiento"
-  },
-  {
-   "fieldname": "next_meeting_scheduled",
-   "fieldtype": "Date",
-   "label": "Próxima Reunión Programada"
-  },
-  {
-   "fieldname": "pending_items_count",
-   "fieldtype": "Int",
-   "label": "Temas Pendientes",
-   "read_only": 1
-  },
-  {
-   "fieldname": "completion_rate",
-   "fieldtype": "Percent",
-   "label": "Tasa de Cumplimiento",
-   "read_only": 1
+   "label": "Notas"
   },
   {
    "fieldname": "meeting_notes",

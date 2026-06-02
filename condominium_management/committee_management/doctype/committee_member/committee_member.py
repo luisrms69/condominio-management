@@ -2,171 +2,98 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
-from frappe.utils import cint, nowdate
+from frappe.utils import nowdate
 
 
 class CommitteeMember(Document):
 	def validate(self):
-		self.validate_unique_role()
+		self.validate_required_fields()
+		self.set_default_start_date()
 		self.validate_dates()
-		self.set_default_permissions()
-		self.validate_property_registry()
-		self.set_committee_position_weight()
+		self.validate_company_consistency()
+		self.validate_no_duplicate_active_member()
 
-	def validate_unique_role(self):
-		"""Validate that certain roles are unique within the committee"""
-		unique_roles = ["Presidente", "Secretario", "Tesorero"]
+	def validate_required_fields(self):
+		if not self.company:
+			frappe.throw(_("El campo 'Condominio' es obligatorio."))
+		if not self.committee_position:
+			frappe.throw(_("El campo 'Cargo' es obligatorio."))
 
-		if self.role_in_committee in unique_roles:
-			existing = frappe.get_all(
-				"Committee Member",
-				filters={
-					"role_in_committee": self.role_in_committee,
-					"is_active": 1,
-					"name": ["!=", self.name],
-				},
-			)
-
-			if existing:
-				frappe.throw(
-					f"Ya existe un miembro activo con el cargo de {self.role_in_committee}. "
-					f"Solo puede haber un miembro activo por cargo único."
-				)
-
-	def validate_dates(self):
-		"""Validate start and end dates"""
-		if self.start_date and self.end_date:
-			if self.start_date >= self.end_date:
-				frappe.throw("La fecha de inicio debe ser anterior a la fecha de finalización")
-
-		# If no start date, set to today
+	def set_default_start_date(self):
 		if not self.start_date:
 			self.start_date = nowdate()
 
-	def set_default_permissions(self):
-		"""Set default permissions based on role"""
-		role_permissions = {
-			"Presidente": {
-				"can_approve_expenses": 1,
-				"can_call_assembly": 1,
-				"can_sign_documents": 1,
-				"can_create_polls": 1,
-			},
-			"Secretario": {"can_call_assembly": 1, "can_sign_documents": 1, "can_create_polls": 1},
-			"Tesorero": {"can_approve_expenses": 1, "can_sign_documents": 1, "can_create_polls": 1},
-			"Vocal": {"can_create_polls": 1},
-		}
+	def validate_dates(self):
+		if self.start_date and self.end_date:
+			if self.end_date < self.start_date:
+				frappe.throw(_("La fecha 'Miembro Hasta' no puede ser anterior a 'Miembro Desde'."))
 
-		if self.role_in_committee in role_permissions:
-			permissions = role_permissions[self.role_in_committee]
-			for perm, value in permissions.items():
-				if not getattr(self, perm, None):
-					setattr(self, perm, value)
-
-	def validate_property_registry(self):
-		"""Validate that the property registry exists and is active"""
+	def validate_company_consistency(self):
+		"""property_registry y committee_position deben pertenecer al mismo condominio."""
 		if self.property_registry:
-			property_doc = frappe.get_doc("Property Registry", self.property_registry)
-			if not property_doc.is_active:
+			pr_company = frappe.db.get_value("Property Registry", self.property_registry, "company")
+			if pr_company and pr_company != self.company:
 				frappe.throw(
-					f"La propiedad {self.property_registry} no está activa. "
-					f"Solo se pueden asignar propiedades activas a miembros del comité."
+					_("La propiedad '{0}' pertenece a '{1}', no a '{2}'.").format(
+						self.property_registry, pr_company, self.company
+					)
 				)
 
-	def set_committee_position_weight(self):
-		"""Set position weight based on role hierarchy"""
-		weight_map = {"Presidente": 4, "Secretario": 3, "Tesorero": 2, "Vocal": 1}
+		if self.committee_position:
+			pos_company = frappe.db.get_value("Committee Position", self.committee_position, "company")
+			if pos_company and pos_company != self.company:
+				frappe.throw(
+					_("El cargo '{0}' pertenece a '{1}', no a '{2}'.").format(
+						self.committee_position, pos_company, self.company
+					)
+				)
 
-		if self.role_in_committee in weight_map:
-			self.committee_position_weight = weight_map[self.role_in_committee]
-
-	def on_update(self):
-		"""Update user permissions when committee member is updated"""
-		self.update_user_permissions()
-
-	def update_user_permissions(self):
-		"""Update user permissions based on committee role"""
-		if not self.user:
+	def validate_no_duplicate_active_member(self):
+		"""Un usuario no puede ser miembro activo dos veces en el mismo condominio."""
+		if not self.user or not self.company or not self.is_active:
 			return
 
-		# Get or create user roles based on committee position
-		user_roles = self.get_user_roles_for_committee_position()
-
-		# Add roles to user
-		for role in user_roles:
-			if not frappe.db.exists("Has Role", {"parent": self.user, "role": role}):
-				frappe.get_doc(
-					{
-						"doctype": "Has Role",
-						"parent": self.user,
-						"parenttype": "User",
-						"parentfield": "roles",
-						"role": role,
-					}
-				).insert(ignore_permissions=True)
-
-	def get_user_roles_for_committee_position(self):
-		"""Get user roles based on committee position"""
-		role_map = {
-			"Presidente": ["Presidente del Comité"],
-			"Secretario": ["Secretario del Comité"],
-			"Tesorero": ["Tesorero del Comité"],
-			"Vocal": ["Miembro del Comité"],
-		}
-
-		base_roles = ["Miembro del Comité"]  # All committee members get this role
-		specific_roles = role_map.get(self.role_in_committee, [])
-
-		return base_roles + specific_roles
-
-	def before_cancel(self):
-		"""Clean up before canceling"""
-		self.remove_user_permissions()
-
-	def remove_user_permissions(self):
-		"""Remove user permissions when committee member is deactivated"""
-		if not self.user:
-			return
-
-		# Remove committee-specific roles
-		committee_roles = [
-			"Presidente del Comité",
-			"Secretario del Comité",
-			"Tesorero del Comité",
-			"Miembro del Comité",
-		]
-
-		for role in committee_roles:
-			role_doc = frappe.db.get_value("Has Role", {"parent": self.user, "role": role}, "name")
-			if role_doc:
-				frappe.delete_doc("Has Role", role_doc, ignore_permissions=True)
+		existing = frappe.db.exists(
+			"Committee Member",
+			{
+				"user": self.user,
+				"company": self.company,
+				"is_active": 1,
+				"name": ["!=", self.name or ""],
+			},
+		)
+		if existing:
+			frappe.throw(_("El usuario ya es miembro activo del comité en '{0}'.").format(self.company))
 
 	@staticmethod
-	def get_active_committee_members():
-		"""Get all active committee members"""
+	def get_active_committee_members(company=None):
+		filters = {"is_active": 1}
+		if company:
+			filters["company"] = company
 		return frappe.get_all(
 			"Committee Member",
-			filters={"is_active": 1},
-			fields=["name", "full_name", "role_in_committee", "committee_position_weight"],
-			order_by="committee_position_weight desc",
+			filters=filters,
+			fields=["name", "full_name", "committee_position", "company", "user"],
 		)
 
-	@staticmethod
-	def get_committee_member_by_role(role):
-		"""Get committee member by specific role"""
-		return frappe.get_value(
-			"Committee Member",
-			{"role_in_committee": role, "is_active": 1},
-			["name", "full_name", "user", "property_registry"],
-		)
 
-	def has_permission_to_approve_expense(self, amount):
-		"""Check if member can approve expense of given amount"""
-		if not self.can_approve_expenses:
-			return False
-
-		if not self.expense_approval_limit:
-			return True  # No limit means can approve any amount
-
-		return cint(amount) <= cint(self.expense_approval_limit)
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_condomino_users(doctype, txt, searchfield, start, page_len, filters):
+	"""Retorna usuarios con rol Condómino para el selector de Committee Member."""
+	return frappe.db.sql(
+		"""
+		SELECT DISTINCT u.name, u.full_name
+		FROM `tabUser` u
+		INNER JOIN `tabHas Role` hr ON hr.parent = u.name
+		WHERE hr.role = 'Condómino'
+		  AND u.enabled = 1
+		  AND u.name NOT IN ('Administrator', 'Guest')
+		  AND (u.name LIKE %(txt)s OR u.full_name LIKE %(txt)s)
+		ORDER BY u.full_name
+		LIMIT %(page_len)s OFFSET %(start)s
+		""",
+		{"txt": f"%{txt}%", "page_len": page_len, "start": start},
+	)

@@ -1,82 +1,89 @@
 # CONTINUITY.md — condominium_management
 
-**Fecha:** 2026-05-30
-**Rama activa:** `fix/billing-cycle-field-references`
-**Tarea actual:** Commit de Physical Space fixes — financial_management rechazado y en pausa
+**Fecha:** 2026-06-01
+**Rama activa:** `fix/committee-member-position-redesign`
+**Tarea actual:** PR #37 abierto — Committee Management MVP, pendiente de merge
 
 ---
 
 ## Recuperación rápida
 
 Estoy trabajando en:
-Correcciones de Physical Space (space_code, space_level, referencias de jerarquía).
-El bloque financiero fue detenido por rechazo arquitectónico del diseño actual.
+Módulo Committee Management. PR #37 abierto con Committee Position, Meeting y Assembly MVP.
 
 Plan que estoy siguiendo:
-Auditoría histórica del app completada esta sesión. Ver decisiones vigentes abajo.
+PR #37 → merge → nueva rama → Voting System (reescritura contra Event).
 
 Objetivo inmediato:
-Hacer PR de los cambios de Physical Space. Luego decidir qué hacer con financial_management.
+Merge del PR #37 o decisión de arquitectura para Voting System.
 
 Criterio de avance:
-PR abierto con solo cambios de Physical Spaces + financial_management sin tocar.
+PR #37 mergeado en main. Nueva rama abierta para Voting System.
 
 ---
 
 ## Estado actual
 
-### Ya cerrado
-- PR #35: Property Registry limpio + Property Declared Owner ✅
-- Physical Space: space_code read_only, space_level hidden, building/floor/zone hidden, código consecutivo `<abbr>-####` ✅
-- Validación GUI Physical Space completada en condo-v16.dev ✅
-
-### En progreso
-- Commit de Physical Space fixes (en curso)
+### Ya cerrado (en PR #37)
+- Committee Position: catálogo por company, after_migrate ✅
+- Committee Member: rediseñado con Committee Position ✅
+- Committee Meeting sobre Event nativo ✅
+- Assembly sobre Event nativo — ciclo completo ✅
+  - Publicar Convocatoria + congelamiento 3 capas
+  - event_hooks.py: validaciones completas
+  - Quorum snapshot
+  - Gate de acuerdos (asm_agreements_tasks_created)
+  - Print Format Convocatoria Asamblea
+- Tab Break visibility fix (frm.layout.tabs.toggle) ✅
+- frappe-conventions SKILL.md actualizado en frappe-infrastructure ✅
 
 ### Pendiente inmediato
-1. PR de Physical Space fixes
-2. Decisión arquitectónica sobre financial_management (requiere documento de diseño aprobado)
-3. Limpiar rama: los archivos de financial_management modificados en esta rama deben revertirse o moverse
+1. Merge PR #37
+2. Diagnóstico arquitectónico Voting System completado — ver análisis en sesión
+3. Decidir e implementar Voting System (nueva rama)
 
 ### No repetir
-- No commitear financial_management sin documento de arquitectura aprobado primero
-- No parchear financial_management con fieldnames sin resolver el diseño de Property Account
-- No DROP TABLE tabProperty Copropiedad sin autorización
-- No reactivar ISSUE #7 (hooks universales)
+- No usar frm.toggle_display para Tab Breaks — ver frappe-conventions SKILL.md
 - No commitear one_offs/
+- No commitear master_template_registry.json si solo cambió last_update
+- frappe-infrastructure path correcto: /home/erpnext/Developer/frappe-infrastructure/
+- Leer ~/.claude/CLAUDE.md completo al inicio de sesiones que toquen docs del ecosistema
 
 ---
 
 ## Decisiones vigentes
-- Financial Management rechazado arquitectónicamente. Property Account tiene current_balance manual (reqd=1), billing config por cuenta, sistema paralelo a ERPNext. No se toca hasta tener documento de rediseño.
-- Physical Space: NO es Tree DocType (decisión explícita — permite jerarquía libre). space_code = document name via make_autoname por company abbr.
-- building_reference / floor_reference / zone_reference: ocultos y read_only. No se auto-calculan en MVP. Decisión: calcular desde jerarquía cuando haya caso de uso real.
-- Fee Structure (financial): diseño correcto, conservar.
-- billing_cycle.py y fee_structure.py tienen referencias a campos inexistentes — deuda conocida, no tocar hasta rediseño.
+- Assembly vive sobre Event nativo — DocType Assembly Management congelado
+- asm_status gate: Planificada→Convocada→En Progreso→Cerrada (forward-only)
+- Voting System: reescribir assembly link de Assembly Management → Event
+- Quórum: solo por indiviso (MVP)
+- Agreement Tracking: abandonado, se usa Task nativo
+- Tab Break visibility: depends_on vacío + frm.layout.tabs[n].toggle()
 
 ---
 
 ## Archivos relevantes ahora
 
-### Leer primero
-- `docs_new/tecnico/deuda-tecnica.md` — deuda técnica registrada
-- `condominium_management/financial_management/` — modificaciones rechazadas pendientes de revertir
-
-### Probablemente editar
-- `CONTINUITY.md` — al iniciar próxima tarea
+### Leer primero (Voting System)
+- `committee_management/doctype/voting_system/voting_system.py` — controller a reescribir
+- `committee_management/doctype/voting_system/voting_system.json` — autoname roto
+- `committee_management/doctype/vote_record/vote_record.json` — owner_name → voter_name
+- `committee_management/event_hooks.py` — agregar gates de votación aquí
 
 ### No tocar
+- `financial_management/` — congelado
+- `assembly_management/` — congelado
 - `hooks.py` líneas ~190-198 — ISSUE #7
-- `financial_management/doctype/billing_cycle/` y `fee_structure/` — deuda de fieldnames
-- `financial_management/doctype/property_account/` — diseño rechazado
 
 ---
 
 ## Riesgos / cuidados
-- La rama tiene modificaciones de financial_management que NO deben ir a PR. Deben revertirse antes de abrir PR.
-- `tabProperty Copropiedad` en BD: conservar hasta validación post-PR.
+- Voting System.autoname usa assembly.assembly_number (Assembly Management) — ROTO
+- Vote Record tiene owner_name (campo reservado Frappe) — renombrar a voter_name
+- Poll Option no pertenece a Voting System — mover a Committee Poll
+- event_hooks.py sin tests unitarios — deuda documentada
 
 ---
 
 ## Información faltante
-- Decisión: ¿se revierte financial_management en esta rama o se crea branch separado para el rediseño?
+- Decisión final de arquitectura Voting System (en progreso)
+- Print Format Acta de Asamblea completa

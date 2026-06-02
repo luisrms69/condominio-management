@@ -99,22 +99,28 @@ class AssemblyManagement(Document):
 
 	def load_all_properties_to_quorum(self):
 		"""Load all active properties to quorum registration"""
+		filters = {"is_active": 1}
+		if self.company:
+			filters["company"] = self.company
+
 		properties = frappe.get_all(
 			"Property Registry",
-			filters={"is_active": 1},
-			fields=["name", "owner_name", "ownership_percentage"],
+			filters=filters,
+			fields=["name", "property_name", "current_owner_display", "indiviso_percentage"],
 		)
 
 		# Clear existing quorum records
 		self.quorum_registration = []
 
-		# Add all properties
+		# Add all properties as absent — snapshot de indiviso al momento de la asamblea
 		for prop in properties:
 			self.append(
 				"quorum_registration",
 				{
 					"property_registry": prop.name,
-					"attendance_status": "Ausente",  # Default to absent
+					"owner_name": prop.current_owner_display or prop.property_name,
+					"ownership_percentage": prop.indiviso_percentage or 0,
+					"attendance_status": "Ausente",
 				},
 			)
 
