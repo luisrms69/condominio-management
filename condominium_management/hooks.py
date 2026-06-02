@@ -511,6 +511,7 @@ fixtures = [
 					"asm_formal_col2",
 					"asm_requires_protocolization",
 					"asm_protocolization_notes",
+					"asm_agreements_tasks_created",
 					"asm_convocation_published",
 					"asm_convocation_published_on",
 				],

@@ -80,6 +80,7 @@ def validate_assembly(doc, method):
 
 	_validate_asm_type_frozen(doc, db_doc)
 	_validate_status_transition(doc, db_doc)
+	_validate_closure_agreements(doc, db_doc)
 	_sync_event_status(doc)
 	_validate_published_fields(doc, db_doc)
 
@@ -105,6 +106,21 @@ def _validate_status_transition(doc, db_doc):
 		frappe.throw(
 			f"Transición de estado no permitida: {old_status} → {new_status}",
 			title="Flujo de asamblea",
+		)
+
+
+def _validate_closure_agreements(doc, db_doc):
+	"""Require explicit confirmation before closing an assembly."""
+	old_status = db_doc.get("asm_status") or "Planificada"
+	new_status = doc.get("asm_status") or "Planificada"
+
+	if old_status == new_status or new_status != "Cerrada":
+		return  # Only fires on transition TO Cerrada
+
+	if not doc.get("asm_agreements_tasks_created"):
+		frappe.throw(
+			"No se puede cerrar la asamblea: marca 'Acuerdos convertidos en tareas' para confirmar.",
+			title="Confirmación requerida",
 		)
 
 

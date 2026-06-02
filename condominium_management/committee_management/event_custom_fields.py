@@ -23,11 +23,21 @@ CUSTOM_FIELDS = [
 		"fieldtype": "Select",
 		"label": "Tipo de Reunión",
 		"options": "Committee Meeting\nAssembly\nWork Meeting",
-		"insert_after": "event_participants",
+		"insert_after": "event_category",
 		"depends_on": MEETING_DEPENDS,
 		"read_only_depends_on": "eval:!doc.__islocal",
 	},
-	# ── Committee Meeting tab ──────────────────────────────────────────────────
+	# ── Committee Meeting tab ─────────────────────────────────────────────────
+	# depends_on is intentionally empty — visibility controlled 100% via JS toggle_meeting_tabs()
+	# Frappe v16 re-evaluates Tab Break depends_on AFTER refresh(), overriding frm.toggle_display.
+	{
+		"dt": "Event",
+		"fieldname": "committee_tab",
+		"fieldtype": "Tab Break",
+		"label": "Comité",
+		"insert_after": "links",
+		"depends_on": "",
+	},
 	{
 		"dt": "Event",
 		"fieldname": "committee_meeting_type",
@@ -71,13 +81,14 @@ CUSTOM_FIELDS = [
 		"depends_on": COMMITTEE_DEPENDS,
 	},
 	# ── Assembly tab ───────────────────────────────────────────────────────────
+	# depends_on intentionally empty — same reasoning as committee_tab above.
 	{
 		"dt": "Event",
 		"fieldname": "assembly_tab",
 		"fieldtype": "Tab Break",
 		"label": "Asamblea",
 		"insert_after": "committee_agreements_widget",
-		"depends_on": ASSEMBLY_DEPENDS,
+		"depends_on": "",
 	},
 	# ── 1. Tipo de Asamblea ────────────────────────────────────────────────────
 	{
@@ -347,13 +358,22 @@ CUSTOM_FIELDS = [
 		"insert_after": "asm_status",
 		"depends_on": ASSEMBLY_DEPENDS,
 	},
+	{
+		"dt": "Event",
+		"fieldname": "asm_agreements_tasks_created",
+		"fieldtype": "Check",
+		"label": "Acuerdos convertidos en tareas",
+		"insert_after": "asm_number",
+		"depends_on": ASSEMBLY_DEPENDS,
+		"default": "0",
+	},
 	# ── 7. Mesa de Asamblea ───────────────────────────────────────────────────
 	{
 		"dt": "Event",
 		"fieldname": "asm_assembly_officers_section",
 		"fieldtype": "Section Break",
 		"label": "Mesa de Asamblea",
-		"insert_after": "asm_number",
+		"insert_after": "asm_agreements_tasks_created",
 		"depends_on": ASSEMBLY_DEPENDS,
 	},
 	{
@@ -494,7 +514,7 @@ CUSTOM_FIELDS = [
 ]
 
 # Properties synced on existing Custom Fields
-_SYNC_PROPS = ("insert_after", "label", "read_only_depends_on", "hidden", "default")
+_SYNC_PROPS = ("insert_after", "label", "depends_on", "read_only_depends_on", "hidden", "default")
 
 
 def setup_event_committee_fields():

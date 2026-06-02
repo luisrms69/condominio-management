@@ -1,17 +1,46 @@
 // Copyright (c) 2025, Buzola and contributors
 // Committee Meeting + Assembly functionality on native Frappe Event
 
+// frm.toggle_display does NOT reach Tab.toggle() in Frappe v16 — they are different objects.
+// Tab.refresh() auto-hides only when ALL inner sections have .hide-control, which doesn't
+// happen for the first auto-generated section containing committee_meeting_type.
+// Direct fix: walk frm.layout.tabs and call tab.toggle() — the method that controls
+// both the nav link and the content pane (tab.js lines 72-78).
+function toggle_meeting_tabs(frm) {
+	const is_meeting = frm.doc.event_category === "Meeting";
+	const t = frm.doc.condominium_meeting_type;
+	const show_committee = is_meeting && t === "Committee Meeting";
+	const show_assembly = is_meeting && t === "Assembly";
+
+	if (!frm.layout || !frm.layout.tabs) return;
+
+	frm.layout.tabs.forEach(function (tab) {
+		if (!tab.df || !tab.df.fieldname) return;
+		if (tab.df.fieldname === "committee_tab") {
+			tab.toggle(show_committee);
+		} else if (tab.df.fieldname === "assembly_tab") {
+			tab.toggle(show_assembly);
+		}
+	});
+}
+
 frappe.ui.form.on("Event", {
+	onload_post_render: function (frm) {
+		toggle_meeting_tabs(frm);
+	},
+
 	event_category: function (frm) {
 		if (frm.doc.event_category !== "Meeting") {
 			frm.set_value("condominium_meeting_type", "");
 		}
+		toggle_meeting_tabs(frm);
 	},
 
 	condominium_meeting_type: function (frm) {
 		if (frm.doc.condominium_meeting_type !== "Committee Meeting") {
 			frm.set_value("committee_meeting_type", "");
 		}
+		toggle_meeting_tabs(frm);
 	},
 
 	// ── Assembly: snapshot quorum on close ────────────────────────────────────
@@ -23,6 +52,8 @@ frappe.ui.form.on("Event", {
 	},
 
 	refresh: function (frm) {
+		toggle_meeting_tabs(frm);
+
 		if (frm.is_new()) return;
 
 		// ── Assembly UI ─────────────────────────────────────────────────────────
