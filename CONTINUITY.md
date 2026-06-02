@@ -2,94 +2,88 @@
 
 **Fecha:** 2026-06-01
 **Rama activa:** `fix/committee-member-position-redesign`
-**Tarea actual:** Committee Management completo — Assembly lifecycle, Tab Bug fix, PR pendiente
+**Tarea actual:** PR #37 abierto — Committee Management MVP, pendiente de merge
 
 ---
 
 ## Recuperación rápida
 
 Estoy trabajando en:
-Rescate completo de Committee Management. Assembly lifecycle implementado y validado.
-Bug de Tab Break visibility resuelto vía frm.layout.tabs.toggle(). PR pendiente.
+Módulo Committee Management. PR #37 abierto con Committee Position, Meeting y Assembly MVP.
 
 Plan que estoy siguiendo:
-Validación GUI → commit → push → PR → decidir siguiente módulo.
+PR #37 → merge → nueva rama → Voting System (reescritura contra Event).
 
 Objetivo inmediato:
-Push + PR de fix/committee-member-position-redesign hacia main.
+Merge del PR #37 o decisión de arquitectura para Voting System.
 
 Criterio de avance:
-PR creado, CI verde, merge autorizado.
+PR #37 mergeado en main. Nueva rama abierta para Voting System.
 
 ---
 
 ## Estado actual
 
-### Ya cerrado
-- Committee Position + Committee Member rediseñado ✅
-- Committee Meeting + Assembly sobre Event nativo ✅
-- Convocatoria gate: Publicar Convocatoria button + congelamiento 3 capas ✅
-- event_hooks.py: validaciones servidor completas ✅
-- Tab Break visibility bug resuelto vía frm.layout.tabs.toggle() ✅
-  (frappe-conventions SKILL.md actualizado en frappe-infrastructure)
-- asm_agreements_tasks_created: gate incondicional antes de cerrar ✅
-- Assembly Agenda Opción B: discussion_summary + decisions_taken ✅
-- Print Format: Convocatoria Asamblea ✅
-- Commits: edecd37 (Assembly lifecycle) + commit pendiente (Tab fix + closure gate)
-
-### En progreso
-- Commit en curso (autorizado)
+### Ya cerrado (en PR #37)
+- Committee Position: catálogo por company, after_migrate ✅
+- Committee Member: rediseñado con Committee Position ✅
+- Committee Meeting sobre Event nativo ✅
+- Assembly sobre Event nativo — ciclo completo ✅
+  - Publicar Convocatoria + congelamiento 3 capas
+  - event_hooks.py: validaciones completas
+  - Quorum snapshot
+  - Gate de acuerdos (asm_agreements_tasks_created)
+  - Print Format Convocatoria Asamblea
+- Tab Break visibility fix (frm.layout.tabs.toggle) ✅
+- frappe-conventions SKILL.md actualizado en frappe-infrastructure ✅
 
 ### Pendiente inmediato
-1. Ejecutar commit (ya autorizado)
-2. Push → PR hacia main
-3. Decidir siguiente módulo: Voting System o Committee Poll
+1. Merge PR #37
+2. Diagnóstico arquitectónico Voting System completado — ver análisis en sesión
+3. Decidir e implementar Voting System (nueva rama)
 
 ### No repetir
-- No usar frm.toggle_display ni frm.set_df_property para Tab Breaks — ver frappe-conventions SKILL.md
-- No usar setTimeout para visibilidad de tabs
-- No crear docs en rutas no canónicas (docs/development/ es estructura vieja)
+- No usar frm.toggle_display para Tab Breaks — ver frappe-conventions SKILL.md
 - No commitear one_offs/
 - No commitear master_template_registry.json si solo cambió last_update
-- frappe-infrastructure está en /home/erpnext/Developer/frappe-infrastructure/ — NO en frappe-bench/apps/
+- frappe-infrastructure path correcto: /home/erpnext/Developer/frappe-infrastructure/
+- Leer ~/.claude/CLAUDE.md completo al inicio de sesiones que toquen docs del ecosistema
 
 ---
 
 ## Decisiones vigentes
-- Tab Break visibility: depends_on vacío + frm.layout.tabs.forEach(tab.toggle())
-- Assembly closure gate: siempre requerir asm_agreements_tasks_created antes de Cerrada
-- asm_status: forward-only (Planificada→Convocada→En Progreso→Cerrada)
-- Voting gate: asm_status=="En Progreso" — documentado en deuda-tecnica.md
+- Assembly vive sobre Event nativo — DocType Assembly Management congelado
+- asm_status gate: Planificada→Convocada→En Progreso→Cerrada (forward-only)
+- Voting System: reescribir assembly link de Assembly Management → Event
 - Quórum: solo por indiviso (MVP)
-- docs canónico: /home/erpnext/Developer/frappe-infrastructure/ (NO frappe-bench/apps/)
+- Agreement Tracking: abandonado, se usa Task nativo
+- Tab Break visibility: depends_on vacío + frm.layout.tabs[n].toggle()
 
 ---
 
 ## Archivos relevantes ahora
 
-### Leer primero
-- `committee_management/event_hooks.py` — validaciones completas del ciclo Assembly
-- `committee_management/event_custom_fields.py` — 56 custom fields sobre Event
-- `public/js/event_committee.js` — toggle_meeting_tabs + toggle() directo
-
-### Probablemente editar (siguiente PR)
-- Print Format Acta de Asamblea (solo existe Convocatoria)
-- `committee_management/event_hooks.py` — _validate_dates cuando sea MVP
+### Leer primero (Voting System)
+- `committee_management/doctype/voting_system/voting_system.py` — controller a reescribir
+- `committee_management/doctype/voting_system/voting_system.json` — autoname roto
+- `committee_management/doctype/vote_record/vote_record.json` — owner_name → voter_name
+- `committee_management/event_hooks.py` — agregar gates de votación aquí
 
 ### No tocar
 - `financial_management/` — congelado
+- `assembly_management/` — congelado
 - `hooks.py` líneas ~190-198 — ISSUE #7
-- `assembly_management/` viejo — congelado
 
 ---
 
 ## Riesgos / cuidados
-- Tab Break toggle debe llamarse desde onload_post_render + refresh + field handlers
-- master_template_registry.json: excluir de commits si solo cambió last_update
-- frappe-infrastructure path correcto: /home/erpnext/Developer/frappe-infrastructure/
+- Voting System.autoname usa assembly.assembly_number (Assembly Management) — ROTO
+- Vote Record tiene owner_name (campo reservado Frappe) — renombrar a voter_name
+- Poll Option no pertenece a Voting System — mover a Committee Poll
+- event_hooks.py sin tests unitarios — deuda documentada
 
 ---
 
 ## Información faltante
+- Decisión final de arquitectura Voting System (en progreso)
 - Print Format Acta de Asamblea completa
-- Tests unitarios para event_hooks.py
