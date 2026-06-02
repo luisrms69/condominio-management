@@ -55,18 +55,10 @@ class CommitteePoll(Document):
 				self.created_by = committee_member
 
 	def calculate_eligible_voters(self):
-		"""Calculate number of eligible voters based on target audience"""
 		if self.target_audience == "Solo Comité":
 			self.total_eligible_voters = frappe.db.count("Committee Member", {"is_active": 1})
-		elif self.target_audience == "Todos los Propietarios":
+		else:  # Todos los Propietarios
 			self.total_eligible_voters = frappe.db.count("Property Registry", {"is_active": 1})
-		elif self.target_audience == "Propietarios Residentes":
-			# TODO: Fix property_status field - column doesn't exist in Property Registry
-			# Fallback to all active properties for now
-			self.total_eligible_voters = frappe.db.count("Property Registry", {"is_active": 1})
-		else:  # Grupo Específico
-			# This would need custom logic based on specific criteria
-			self.total_eligible_voters = 0
 
 	def calculate_results(self):
 		"""Calculate poll results from responses"""
@@ -150,22 +142,14 @@ class CommitteePoll(Document):
 		return True
 
 	def is_eligible_respondent(self, respondent_type, respondent_id):
-		"""Check if respondent is eligible to vote in this poll"""
 		if self.target_audience == "Solo Comité":
 			return respondent_type == "Committee Member" and frappe.db.exists(
 				"Committee Member", {"name": respondent_id, "is_active": 1}
 			)
-		elif self.target_audience == "Todos los Propietarios":
+		else:  # Todos los Propietarios
 			return respondent_type == "Property Registry" and frappe.db.exists(
 				"Property Registry", {"name": respondent_id, "is_active": 1}
 			)
-		elif self.target_audience == "Propietarios Residentes":
-			return respondent_type == "Property Registry" and frappe.db.exists(
-				"Property Registry", {"name": respondent_id, "is_active": 1, "property_status": "Habitada"}
-			)
-		else:  # Grupo Específico
-			# Custom logic would go here
-			return False
 
 	def has_already_responded(self, respondent_type, respondent_id):
 		"""Check if respondent has already responded to this poll"""
@@ -328,11 +312,7 @@ class CommitteePoll(Document):
 		}
 
 	def on_update(self):
-		"""Hook method called after document update"""
-		# Recalculate results and update status if needed
-		self.calculate_results()
-
-		# Check if poll should be automatically closed
+		# Auto-close expired polls — persist via db_set so changes are saved
 		if self.end_date and getdate(self.end_date) < getdate(nowdate()) and self.status == "Abierta":
-			self.status = "Cerrada"
-			self.closed_date = now_datetime()
+			self.db_set("status", "Cerrada")
+			self.db_set("closed_date", now_datetime())

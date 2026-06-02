@@ -51,6 +51,55 @@ _FROZEN_AGENDA_FIELDS = [
 ]
 
 
+_CE_STATUS_FLOW = {
+	"Planeado": {"Publicado", "Cancelado"},
+	"Publicado": {"Finalizado", "Cancelado"},
+	"Finalizado": set(),
+	"Cancelado": set(),
+}
+
+
+def _validate_community_event(doc):
+	if doc.get("ce_registration_required"):
+		if not doc.get("ce_max_capacity") or doc.get("ce_max_capacity") <= 0:
+			frappe.throw(
+				"Se requiere capacidad máxima cuando el registro está activo.",
+				title="Configuración de registro",
+			)
+		if not doc.get("ce_rsvp_deadline"):
+			frappe.throw(
+				"Se requiere fecha límite de registro.",
+				title="Configuración de registro",
+			)
+		if doc.get("starts_on") and doc.get("ce_rsvp_deadline"):
+			from frappe.utils import getdate
+
+			if getdate(doc.ce_rsvp_deadline) >= getdate(doc.starts_on):
+				frappe.throw(
+					"La fecha límite de registro debe ser anterior a la fecha del evento.",
+					title="Configuración de registro",
+				)
+
+	if doc.is_new():
+		return
+
+	old_status = frappe.db.get_value("Event", doc.name, "ce_status") or "Planeado"
+	new_status = doc.get("ce_status") or "Planeado"
+
+	if old_status != new_status:
+		allowed = _CE_STATUS_FLOW.get(old_status, set())
+		if new_status not in allowed:
+			frappe.throw(
+				f"Transición de estado no permitida: {old_status} → {new_status}",
+				title="Estado del evento",
+			)
+
+	if new_status == "Finalizado":
+		doc.status = "Closed"
+	elif new_status == "Cancelado":
+		doc.status = "Cancelled"
+
+
 def _vals_equal(v1, v2):
 	"""Robust comparison that handles Decimal/float/int ORM type variations.
 
@@ -71,8 +120,15 @@ def _vals_equal(v1, v2):
 
 
 def validate_assembly(doc, method):
+	if doc.get("condominium_meeting_type") == "Community Event":
+		_validate_community_event(doc)
+		return
+
 	if doc.get("condominium_meeting_type") != "Assembly":
 		return
+
+	_validate_assembly_required_fields(doc)
+
 	if doc.is_new():
 		return
 
@@ -83,6 +139,26 @@ def validate_assembly(doc, method):
 	_validate_closure_agreements(doc, db_doc)
 	_sync_event_status(doc)
 	_validate_published_fields(doc, db_doc)
+
+
+_ASM_REQUIRED_FIELDS = {
+	"asm_type": "Tipo de Asamblea",
+	"asm_convocation_date": "Fecha de Convocatoria",
+	"asm_first_call": "Hora Primera Convocatoria",
+	"asm_second_call": "Hora Segunda Convocatoria",
+}
+
+
+def _validate_assembly_required_fields(doc):
+	"""Server-side mandatory check for Assembly minimum fields.
+	Complements mandatory_depends_on in custom field meta for defense-in-depth.
+	"""
+	missing = [label for field, label in _ASM_REQUIRED_FIELDS.items() if not doc.get(field)]
+	if missing:
+		frappe.throw(
+			"Campos obligatorios para la asamblea: " + ", ".join(missing),
+			title="Campos obligatorios",
+		)
 
 
 def _validate_asm_type_frozen(doc, db_doc):
