@@ -1,0 +1,92 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "field:item_name",
+ "creation": "2026-06-02 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "item_name",
+  "is_enabled",
+  "sort_order",
+  "column_break_1",
+  "applies_to_all",
+  "applies_to_types",
+  "requires_outdoor"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Descripción del check",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "is_enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Habilitado"
+  },
+  {
+   "fieldname": "sort_order",
+   "fieldtype": "Int",
+   "label": "Orden"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "applies_to_all",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Aplica a todos los tipos"
+  },
+  {
+   "depends_on": "eval:!doc.applies_to_all",
+   "fieldname": "applies_to_types",
+   "fieldtype": "Small Text",
+   "label": "Tipos de evento (separados por coma)",
+   "description": "Ej: Social,Infantil,Cultural"
+  },
+  {
+   "default": "0",
+   "fieldname": "requires_outdoor",
+   "fieldtype": "Check",
+   "label": "Solo si es al aire libre"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-06-02 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Committee Management",
+ "name": "Event Checklist Item",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Condominium Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Committee Member"
+  }
+ ],
+ "sort_field": "sort_order",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1
+}

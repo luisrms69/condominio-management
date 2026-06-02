@@ -9,18 +9,21 @@
 function toggle_meeting_tabs(frm) {
 	const is_meeting = frm.doc.event_category === "Meeting";
 	const t = frm.doc.condominium_meeting_type;
-	const show_committee = is_meeting && t === "Committee Meeting";
-	const show_assembly = is_meeting && t === "Assembly";
+	const show = {
+		committee_tab: is_meeting && t === "Committee Meeting",
+		assembly_tab: is_meeting && t === "Assembly",
+		community_event_tab: is_meeting && t === "Community Event",
+	};
 
 	if (!frm.layout || !frm.layout.tabs) return;
 
 	frm.layout.tabs.forEach(function (tab) {
 		if (!tab.df || !tab.df.fieldname) return;
-		if (tab.df.fieldname === "committee_tab") {
-			tab.toggle(show_committee);
-		} else if (tab.df.fieldname === "assembly_tab") {
-			tab.toggle(show_assembly);
-		}
+		if (!(tab.df.fieldname in show)) return;
+		const visible = show[tab.df.fieldname];
+		// Set df.hidden so any subsequent Tab.refresh() call also hides the tab
+		tab.df.hidden = visible ? 0 : 1;
+		tab.toggle(visible);
 	});
 }
 
@@ -43,6 +46,18 @@ frappe.ui.form.on("Event", {
 		toggle_meeting_tabs(frm);
 	},
 
+	ce_event_type: function (frm) {
+		if (frm.doc.condominium_meeting_type === "Community Event") {
+			populate_event_checklist(frm);
+		}
+	},
+
+	ce_outdoor_event: function (frm) {
+		if (frm.doc.condominium_meeting_type === "Community Event") {
+			populate_event_checklist(frm);
+		}
+	},
+
 	// ── Assembly: snapshot quorum on close ────────────────────────────────────
 	asm_status: function (frm) {
 		if (frm.doc.condominium_meeting_type !== "Assembly") return;
@@ -55,6 +70,48 @@ frappe.ui.form.on("Event", {
 		toggle_meeting_tabs(frm);
 
 		if (frm.is_new()) return;
+
+		// ── Community Event UI ──────────────────────────────────────────────────
+		if (frm.doc.condominium_meeting_type === "Community Event") {
+			const ce_status = frm.doc.ce_status;
+			const is_planning = !ce_status || ce_status === "Planeado";
+			const FROZEN_AFTER_PUBLISH = [
+				"ce_event_type",
+				"ce_target_audience",
+				"ce_registration_required",
+				"ce_max_capacity",
+				"ce_rsvp_deadline",
+				"ce_estimated_budget",
+				"ce_outdoor_event",
+			];
+
+			if (is_planning) {
+				frm.add_custom_button(__("Publicar Evento"), function () {
+					frappe.confirm(
+						__("¿Publicar el evento? Los datos de configuración quedarán fijos."),
+						function () {
+							frm.set_value("ce_status", "Publicado");
+							frm.save();
+						}
+					);
+				}).addClass("btn-primary");
+			} else {
+				FROZEN_AFTER_PUBLISH.forEach(function (f) {
+					frm.set_df_property(f, "read_only", 1);
+				});
+			}
+
+			if (ce_status === "Publicado") {
+				frm.add_custom_button(__("Finalizar Evento"), function () {
+					frappe.confirm(__("¿Marcar el evento como finalizado?"), function () {
+						frm.set_value("ce_status", "Finalizado");
+						frm.save();
+					});
+				});
+			}
+
+			return;
+		}
 
 		// ── Assembly UI ─────────────────────────────────────────────────────────
 		if (frm.doc.condominium_meeting_type === "Assembly") {
@@ -415,6 +472,68 @@ function load_agreements_widget(frm, widget_fieldname) {
 			}
 
 			wrapper.html(html);
+		},
+	});
+}
+
+// ── Community Event: auto-populate checklist ──────────────────────────────────
+function populate_event_checklist(frm) {
+	const event_type = frm.doc.ce_event_type;
+	const is_outdoor = !!frm.doc.ce_outdoor_event;
+	if (!event_type) return;
+
+	frappe.call({
+		method: "frappe.client.get_list",
+		args: {
+			doctype: "Event Checklist Item",
+			filters: { is_enabled: 1 },
+			fields: [
+				"name",
+				"item_name",
+				"applies_to_all",
+				"applies_to_types",
+				"requires_outdoor",
+				"sort_order",
+			],
+			order_by: "sort_order asc",
+			limit: 50,
+		},
+		callback: function (r) {
+			if (!r.message) return;
+
+			// Determine which items should be present
+			const relevant = r.message.filter(function (item) {
+				if (item.requires_outdoor && !is_outdoor) return false;
+				if (item.applies_to_all) return true;
+				const types = (item.applies_to_types || "")
+					.split(",")
+					.map((t) => t.trim())
+					.filter(Boolean);
+				return types.includes(event_type);
+			});
+			const relevant_names = new Set(relevant.map((i) => i.name));
+
+			// Preserve completion state of existing rows
+			const completion_map = {};
+			(frm.doc.ce_checklist || []).forEach(function (row) {
+				completion_map[row.checklist_item] = {
+					is_completed: row.is_completed,
+					notes: row.notes || "",
+				};
+			});
+
+			// Rebuild the table with only relevant items
+			frm.doc.ce_checklist = [];
+			relevant.forEach(function (item) {
+				const prev = completion_map[item.name] || {};
+				const row = frm.add_child("ce_checklist");
+				row.checklist_item = item.name;
+				row.item_name = item.item_name;
+				row.is_completed = prev.is_completed || 0;
+				row.notes = prev.notes || "";
+			});
+
+			frm.refresh_field("ce_checklist");
 		},
 	});
 }

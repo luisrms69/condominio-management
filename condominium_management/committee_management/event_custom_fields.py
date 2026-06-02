@@ -14,6 +14,9 @@ MEETING_DEPENDS = "eval:doc.event_category=='Meeting'"
 COMMITTEE_DEPENDS = "eval:doc.condominium_meeting_type=='Committee Meeting'"
 ASSEMBLY_DEPENDS = "eval:doc.condominium_meeting_type=='Assembly'"
 PUBLISHED_DEPENDS = "eval:doc.asm_convocation_published"
+CE_DEPENDS = "eval:doc.condominium_meeting_type=='Community Event'"
+CE_REG_DEPENDS = "eval:doc.condominium_meeting_type=='Community Event' && doc.ce_registration_required"
+CE_APPROVAL_DEPENDS = "eval:doc.condominium_meeting_type=='Community Event' && doc.ce_requires_approval"
 
 CUSTOM_FIELDS = [
 	# ── Meeting type selector (visible when event_category == Meeting) ─────────
@@ -22,14 +25,15 @@ CUSTOM_FIELDS = [
 		"fieldname": "condominium_meeting_type",
 		"fieldtype": "Select",
 		"label": "Tipo de Reunión",
-		"options": "Committee Meeting\nAssembly\nWork Meeting",
+		"options": "Committee Meeting\nAssembly\nCommunity Event\nWork Meeting",
 		"insert_after": "event_category",
 		"depends_on": MEETING_DEPENDS,
 		"read_only_depends_on": "eval:!doc.__islocal",
 	},
 	# ── Committee Meeting tab ─────────────────────────────────────────────────
-	# depends_on is intentionally empty — visibility controlled 100% via JS toggle_meeting_tabs()
-	# Frappe v16 re-evaluates Tab Break depends_on AFTER refresh(), overriding frm.toggle_display.
+	# depends_on intentionally empty — visibility via JS toggle_meeting_tabs().
+	# committee_header_section ensures all sections have depends_on so Tab.refresh()
+	# auto-hides the tab when no section is visible (fixes "tab always visible" bug).
 	{
 		"dt": "Event",
 		"fieldname": "committee_tab",
@@ -40,11 +44,18 @@ CUSTOM_FIELDS = [
 	},
 	{
 		"dt": "Event",
+		"fieldname": "committee_header_section",
+		"fieldtype": "Section Break",
+		"insert_after": "committee_tab",
+		"depends_on": COMMITTEE_DEPENDS,
+	},
+	{
+		"dt": "Event",
 		"fieldname": "committee_meeting_type",
 		"fieldtype": "Select",
 		"label": "Tipo de Sesión",
 		"options": "Ordinaria\nExtraordinaria\nEmergencia\nTrabajo",
-		"insert_after": "committee_tab",
+		"insert_after": "committee_header_section",
 		"depends_on": COMMITTEE_DEPENDS,
 	},
 	{
@@ -99,8 +110,9 @@ CUSTOM_FIELDS = [
 		"options": "Ordinaria\nExtraordinaria",
 		"insert_after": "assembly_tab",
 		"depends_on": ASSEMBLY_DEPENDS,
+		"mandatory_depends_on": ASSEMBLY_DEPENDS,
 		"read_only_depends_on": "eval:!doc.__islocal",
-		"reqd": 1,
+		"reqd": 0,
 	},
 	# ── 2. Convocatoria ────────────────────────────────────────────────────────
 	{
@@ -118,8 +130,9 @@ CUSTOM_FIELDS = [
 		"label": "Fecha de Convocatoria",
 		"insert_after": "asm_quorum_section",
 		"depends_on": ASSEMBLY_DEPENDS,
+		"mandatory_depends_on": ASSEMBLY_DEPENDS,
 		"read_only_depends_on": PUBLISHED_DEPENDS,
-		"reqd": 1,
+		"reqd": 0,
 	},
 	{
 		"dt": "Event",
@@ -145,8 +158,9 @@ CUSTOM_FIELDS = [
 		"label": "Hora Primera Convocatoria",
 		"insert_after": "asm_col_break",
 		"depends_on": ASSEMBLY_DEPENDS,
+		"mandatory_depends_on": ASSEMBLY_DEPENDS,
 		"read_only_depends_on": PUBLISHED_DEPENDS,
-		"reqd": 1,
+		"reqd": 0,
 	},
 	{
 		"dt": "Event",
@@ -155,8 +169,9 @@ CUSTOM_FIELDS = [
 		"label": "Hora Segunda Convocatoria",
 		"insert_after": "asm_first_call",
 		"depends_on": ASSEMBLY_DEPENDS,
+		"mandatory_depends_on": ASSEMBLY_DEPENDS,
 		"read_only_depends_on": PUBLISHED_DEPENDS,
-		"reqd": 1,
+		"reqd": 0,
 	},
 	{
 		"dt": "Event",
@@ -511,10 +526,200 @@ CUSTOM_FIELDS = [
 		"insert_after": "asm_agreements_section",
 		"depends_on": ASSEMBLY_DEPENDS,
 	},
+	# ── Community Event tab ────────────────────────────────────────────────────
+	# depends_on intentionally empty — visibility controlled 100% via JS toggle_meeting_tabs()
+	{
+		"dt": "Event",
+		"fieldname": "community_event_tab",
+		"fieldtype": "Tab Break",
+		"label": "Evento Comunitario",
+		"insert_after": "asm_agreements_widget",
+		"depends_on": "",
+	},
+	# ── 1. Configuración ──────────────────────────────────────────────────────
+	{
+		"dt": "Event",
+		"fieldname": "ce_config_section",
+		"fieldtype": "Section Break",
+		"label": "Configuración del Evento",
+		"insert_after": "community_event_tab",
+		"depends_on": CE_DEPENDS,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_event_type",
+		"fieldtype": "Select",
+		"label": "Tipo de Evento",
+		"options": "Social\nDeportivo\nCultural\nInfantil\nInformativo\nOtro",
+		"insert_after": "ce_config_section",
+		"depends_on": CE_DEPENDS,
+		"reqd": 1,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_target_audience",
+		"fieldtype": "Select",
+		"label": "Audiencia (informativo)",
+		"options": "Todos los Propietarios\nSolo Residentes\nComité\nGrupo específico",
+		"insert_after": "ce_event_type",
+		"depends_on": CE_DEPENDS,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_status",
+		"fieldtype": "Select",
+		"label": "Estado del Evento",
+		"options": "Planeado\nPublicado\nFinalizado\nCancelado",
+		"insert_after": "ce_target_audience",
+		"depends_on": CE_DEPENDS,
+		"default": "Planeado",
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_outdoor_event",
+		"fieldtype": "Check",
+		"label": "Evento al aire libre (verificar clima)",
+		"insert_after": "ce_status",
+		"depends_on": CE_DEPENDS,
+		"default": "0",
+	},
+	# ── 2. Registro y Capacidad ───────────────────────────────────────────────
+	{
+		"dt": "Event",
+		"fieldname": "ce_registration_section",
+		"fieldtype": "Section Break",
+		"label": "Registro y Capacidad",
+		"insert_after": "ce_outdoor_event",
+		"depends_on": CE_DEPENDS,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_registration_required",
+		"fieldtype": "Check",
+		"label": "Requiere Registro",
+		"insert_after": "ce_registration_section",
+		"depends_on": CE_DEPENDS,
+		"default": "0",
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_max_capacity",
+		"fieldtype": "Int",
+		"label": "Capacidad Máxima",
+		"insert_after": "ce_registration_required",
+		"depends_on": CE_REG_DEPENDS,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_rsvp_deadline",
+		"fieldtype": "Date",
+		"label": "Fecha Límite de Registro",
+		"insert_after": "ce_max_capacity",
+		"depends_on": CE_REG_DEPENDS,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_col1",
+		"fieldtype": "Column Break",
+		"insert_after": "ce_rsvp_deadline",
+		"depends_on": CE_DEPENDS,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_current_count",
+		"fieldtype": "Int",
+		"label": "Registrados",
+		"insert_after": "ce_col1",
+		"depends_on": CE_REG_DEPENDS,
+		"read_only": 1,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_available_capacity",
+		"fieldtype": "Int",
+		"label": "Capacidad Disponible",
+		"insert_after": "ce_current_count",
+		"depends_on": CE_REG_DEPENDS,
+		"read_only": 1,
+	},
+	# ── 3. Presupuesto ────────────────────────────────────────────────────────
+	{
+		"dt": "Event",
+		"fieldname": "ce_budget_section",
+		"fieldtype": "Section Break",
+		"label": "Presupuesto",
+		"insert_after": "ce_available_capacity",
+		"depends_on": CE_DEPENDS,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_estimated_budget",
+		"fieldtype": "Currency",
+		"label": "Presupuesto estimado (informativo)",
+		"insert_after": "ce_budget_section",
+		"depends_on": CE_DEPENDS,
+	},
+	# ── Aprobación — campos reemplazados por checklist, ahora ocultos ────────
+	{
+		"dt": "Event",
+		"fieldname": "ce_approval_section",
+		"fieldtype": "Section Break",
+		"label": "Aprobación",
+		"insert_after": "ce_estimated_budget",
+		"depends_on": CE_DEPENDS,
+		"hidden": 1,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_requires_approval",
+		"fieldtype": "Check",
+		"label": "Requiere Aprobación",
+		"insert_after": "ce_approval_section",
+		"depends_on": CE_DEPENDS,
+		"hidden": 1,
+		"default": "0",
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_approval_reference",
+		"fieldtype": "Data",
+		"label": "Referencia de Aprobación",
+		"insert_after": "ce_requires_approval",
+		"depends_on": CE_APPROVAL_DEPENDS,
+		"hidden": 1,
+	},
+	# ── 4. Lista de Verificación ──────────────────────────────────────────────
+	{
+		"dt": "Event",
+		"fieldname": "ce_checklist_section",
+		"fieldtype": "Section Break",
+		"label": "Lista de Verificación",
+		"insert_after": "ce_outdoor_event",
+		"depends_on": CE_DEPENDS,
+	},
+	{
+		"dt": "Event",
+		"fieldname": "ce_checklist",
+		"fieldtype": "Table",
+		"label": "Checklist",
+		"options": "Event Checklist Progress",
+		"insert_after": "ce_checklist_section",
+		"depends_on": CE_DEPENDS,
+	},
 ]
 
 # Properties synced on existing Custom Fields
-_SYNC_PROPS = ("insert_after", "label", "depends_on", "read_only_depends_on", "hidden", "default")
+_SYNC_PROPS = (
+	"insert_after",
+	"label",
+	"depends_on",
+	"mandatory_depends_on",
+	"options",
+	"read_only_depends_on",
+	"reqd",
+	"hidden",
+	"default",
+)
 
 
 def setup_event_committee_fields():

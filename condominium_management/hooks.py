@@ -90,7 +90,10 @@ app_include_locale = "translations"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {"Event": "public/js/event_committee.js"}
+doctype_js = {
+	"Event": "public/js/event_committee.js",
+	"Committee Poll": "committee_management/doctype/committee_poll/committee_poll.js",
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -134,6 +137,7 @@ after_install = "condominium_management.install.after_install"
 after_migrate = [
 	"condominium_management.committee_management.default_positions.setup_positions_for_all_condo_companies",
 	"condominium_management.committee_management.event_custom_fields.setup_event_committee_fields",
+	"condominium_management.committee_management.community_event_checklist.setup_event_checklist_items",
 ]
 
 # Uninstallation
@@ -514,6 +518,24 @@ fixtures = [
 					"asm_agreements_tasks_created",
 					"asm_convocation_published",
 					"asm_convocation_published_on",
+					"community_event_tab",
+					"committee_header_section",
+					"ce_config_section",
+					"ce_event_type",
+					"ce_target_audience",
+					"ce_status",
+					"ce_registration_section",
+					"ce_registration_required",
+					"ce_max_capacity",
+					"ce_rsvp_deadline",
+					"ce_col1",
+					"ce_current_count",
+					"ce_available_capacity",
+					"ce_budget_section",
+					"ce_estimated_budget",
+					"ce_outdoor_event",
+					"ce_checklist_section",
+					"ce_checklist",
 				],
 			],
 		],

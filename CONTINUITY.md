@@ -1,89 +1,96 @@
 # CONTINUITY.md — condominium_management
 
-**Fecha:** 2026-06-01
-**Rama activa:** `fix/committee-member-position-redesign`
-**Tarea actual:** PR #37 abierto — Committee Management MVP, pendiente de merge
+**Fecha:** 2026-06-02
+**Rama activa:** `feature/committee-poll-events-kpi`
+**Tarea actual:** Committee Management — Community Event implementado, pendiente PR + Committee KPI
 
 ---
 
 ## Recuperación rápida
 
 Estoy trabajando en:
-Módulo Committee Management. PR #37 abierto con Committee Position, Meeting y Assembly MVP.
+Cierre de Committee Management. Community Event implementado sobre Event nativo.
+Committee Poll y Voting System congelados (documentados en deuda-tecnica.md).
+Queda Committee KPI para completar el módulo.
 
 Plan que estoy siguiendo:
-PR #37 → merge → nueva rama → Voting System (reescritura contra Event).
+Community Event validado → commit → KPI → PR → siguiente módulo.
 
 Objetivo inmediato:
-Merge del PR #37 o decisión de arquitectura para Voting System.
+Decidir si implementar Committee KPI (parcial, muchas métricas dependen de Financial)
+o abrir PR con lo que está y pasar a Condominium People.
 
 Criterio de avance:
-PR #37 mergeado en main. Nueva rama abierta para Voting System.
+PR de feature/committee-poll-events-kpi mergeado. Nueva rama para siguiente bloque.
 
 ---
 
 ## Estado actual
 
-### Ya cerrado (en PR #37)
-- Committee Position: catálogo por company, after_migrate ✅
-- Committee Member: rediseñado con Committee Position ✅
-- Committee Meeting sobre Event nativo ✅
-- Assembly sobre Event nativo — ciclo completo ✅
-  - Publicar Convocatoria + congelamiento 3 capas
-  - event_hooks.py: validaciones completas
-  - Quorum snapshot
-  - Gate de acuerdos (asm_agreements_tasks_created)
-  - Print Format Convocatoria Asamblea
-- Tab Break visibility fix (frm.layout.tabs.toggle) ✅
-- frappe-conventions SKILL.md actualizado en frappe-infrastructure ✅
+### Ya cerrado (en este branch)
+- Community Event sobre Event nativo — ciclo completo validado ✅
+  - Tab Evento Comunitario, campos ce_*, status flow Planeado→Publicado→Finalizado
+  - Fix tab visibility: tab.df.hidden + Tab.refresh() fix definitivo
+  - mandatory_depends_on en Assembly fields (reqd:1 → mandatory_depends_on)
+  - Event Checklist Item DocType (catálogo idempotente, 6 items por defecto)
+  - Event Checklist Progress (child table con notes por fila)
+  - Checklist auto-pobla por tipo + outdoor, reconstruye al cambiar
+  - committee_header_section fix para auto-hide de Tab Comité
+- Committee Poll: limpiado (target_audience simplificado, on_update fijo, JS básico)
+- Committee Poll + Voting System: congelados, documentados en deuda-tecnica.md
+- test_event_mandatory_fields.py: tests de regresión para mandatory_depends_on
 
 ### Pendiente inmediato
-1. Merge PR #37
-2. Diagnóstico arquitectónico Voting System completado — ver análisis en sesión
-3. Decidir e implementar Voting System (nueva rama)
+1. Decidir: implementar Committee KPI parcial O pasar a Condominium People
+2. Export-fixtures (pendiente de autorización)
+3. PR hacia main
 
 ### No repetir
-- No usar frm.toggle_display para Tab Breaks — ver frappe-conventions SKILL.md
-- No commitear one_offs/
+- No usar reqd:1 en custom fields con depends_on — usar mandatory_depends_on
+- No usar frm.toggle_display para Tab Breaks — usar tab.df.hidden + tab.toggle()
+- No confundir frappe-infrastructure path: /home/erpnext/Developer/frappe-infrastructure/
 - No commitear master_template_registry.json si solo cambió last_update
-- frappe-infrastructure path correcto: /home/erpnext/Developer/frappe-infrastructure/
-- Leer ~/.claude/CLAUDE.md completo al inicio de sesiones que toquen docs del ecosistema
+- No push ni PR sin autorización independiente
 
 ---
 
 ## Decisiones vigentes
-- Assembly vive sobre Event nativo — DocType Assembly Management congelado
-- asm_status gate: Planificada→Convocada→En Progreso→Cerrada (forward-only)
-- Voting System: reescribir assembly link de Assembly Management → Event
-- Quórum: solo por indiviso (MVP)
-- Agreement Tracking: abandonado, se usa Task nativo
-- Tab Break visibility: depends_on vacío + frm.layout.tabs[n].toggle()
+- Community Event = Event nativo (mismo patrón que Assembly y Committee Meeting)
+- Committee Poll congelado hasta Condominium People (User ↔ Property Registry)
+- Voting System congelado hasta portal de autoservicio
+- Event Checklist Item: solo after_migrate idempotente, NUNCA fixtures (preserva is_enabled por instalación)
+- mandatory_depends_on es el mecanismo correcto para campos obligatorios condicionales en Frappe v16
+- tab.df.hidden debe setearse JUNTO con tab.toggle() para que Tab.refresh() respete el estado
 
 ---
 
 ## Archivos relevantes ahora
 
-### Leer primero (Voting System)
-- `committee_management/doctype/voting_system/voting_system.py` — controller a reescribir
-- `committee_management/doctype/voting_system/voting_system.json` — autoname roto
-- `committee_management/doctype/vote_record/vote_record.json` — owner_name → voter_name
-- `committee_management/event_hooks.py` — agregar gates de votación aquí
+### Leer primero
+- `committee_management/event_custom_fields.py` — todos los custom fields de Event
+- `committee_management/event_hooks.py` — validaciones completas
+- `public/js/event_committee.js` — toggle_meeting_tabs + checklist
+- `docs_new/tecnico/deuda-tecnica.md` — estado de modules congelados
+
+### Probablemente editar (si se hace KPI)
+- `committee_management/doctype/committee_kpi/committee_kpi.py`
 
 ### No tocar
 - `financial_management/` — congelado
-- `assembly_management/` — congelado
+- `assembly_management/` viejo — congelado
+- `community_event/` viejo — congelado (oculto en workspace)
 - `hooks.py` líneas ~190-198 — ISSUE #7
 
 ---
 
 ## Riesgos / cuidados
-- Voting System.autoname usa assembly.assembly_number (Assembly Management) — ROTO
-- Vote Record tiene owner_name (campo reservado Frappe) — renombrar a voter_name
-- Poll Option no pertenece a Voting System — mover a Committee Poll
-- event_hooks.py sin tests unitarios — deuda documentada
+- Committee KPI: 25+ métricas, muchas dependen de Financial Management (congelado)
+  Solo assembly_participation_rate y meeting_attendance_rate son calculables hoy
+- Export-fixtures pendiente antes del PR
+- Condominium People es el desbloqueador de Committee Poll, Voting, RSVP y portal
 
 ---
 
 ## Información faltante
-- Decisión final de arquitectura Voting System (en progreso)
-- Print Format Acta de Asamblea completa
+- Decisión: implementar KPI parcial vs saltar a Condominium People
+- Print Format Acta de Asamblea (solo existe Convocatoria)
