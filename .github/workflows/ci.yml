@@ -54,10 +54,10 @@ jobs:
           python-version: '3.14'
           cache: pip
 
-      - name: Setup Node 18
+      - name: Setup Node 24
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 24
 
       - name: Cache yarn
         uses: actions/cache@v4
