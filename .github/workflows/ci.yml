@@ -21,6 +21,8 @@ jobs:
     strategy:
       fail-fast: false
     name: Server
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
     services:
       redis-cache:
