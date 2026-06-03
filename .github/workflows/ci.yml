@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: condominium_management-${{ github.event.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+  checks: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    name: Server
+
+    services:
+      redis-cache:
+        image: redis:alpine
+        ports:
+          - 13000:6379
+      redis-queue:
+        image: redis:alpine
+        ports:
+          - 11000:6379
+      mariadb:
+        image: mariadb:10.6
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mariadb-admin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+          --health-start-period=30s
+
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Setup Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install MariaDB client
+        run: sudo apt-get update && sudo apt-get install -y mariadb-client
+
+      - name: Init bench (Frappe v16)
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: |
+            pip install frappe-bench
+            bench init \
+              --skip-redis-config-generation \
+              --skip-assets \
+              --python "$(which python)" \
+              --frappe-branch version-16 \
+              ~/frappe-bench
+            mariadb --host 127.0.0.1 --port 3306 -u root -proot \
+              -e "SET GLOBAL character_set_server = 'utf8mb4'"
+            mariadb --host 127.0.0.1 --port 3306 -u root -proot \
+              -e "SET GLOBAL collation_server = 'utf8mb4_unicode_ci'"
+
+      - name: Install apps and create test site
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 25
+          max_attempts: 3
+          command: |
+            cd ~/frappe-bench
+            bench get-app --branch version-16 erpnext
+            bench get-app condominium_management $GITHUB_WORKSPACE
+            bench setup requirements --dev
+            bench new-site \
+              --db-root-password root \
+              --admin-password admin \
+              test.localhost
+            bench --site test.localhost install-app erpnext
+            bench --site test.localhost install-app condominium_management
+            bench --site test.localhost migrate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable test mode
+        working-directory: ~/frappe-bench
+        run: |
+          bench --site test.localhost set-config allow_tests true
+          bench --site test.localhost set-config developer_mode true
+
+      - name: Tests — physical_spaces
+        working-directory: ~/frappe-bench
+        run: |
+          bench --site test.localhost run-tests \
+            --app condominium_management \
+            --module condominium_management.physical_spaces
+
+      - name: Tests — dashboard_consolidado
+        working-directory: ~/frappe-bench
+        run: |
+          bench --site test.localhost run-tests \
+            --app condominium_management \
+            --module condominium_management.dashboard_consolidado
+
+      - name: Tests — community_contributions
+        working-directory: ~/frappe-bench
+        run: |
+          bench --site test.localhost run-tests \
+            --app condominium_management \
+            --module condominium_management.community_contributions
+
+      - name: Tests — api_documentation_system
+        working-directory: ~/frappe-bench
+        run: |
+          bench --site test.localhost run-tests \
+            --app condominium_management \
+            --module condominium_management.api_documentation_system
