@@ -74,6 +74,11 @@ def setup_positions_for_all_condo_companies():
 	Solo añade cargos que no existen. No modifica ni elimina existentes.
 	Idempotente — seguro de llamar múltiples veces.
 	"""
+	# company_type is a custom field added via fixtures.
+	# On fresh installs, the column may not exist yet when after_migrate runs.
+	if not frappe.db.has_column("Company", "company_type"):
+		return
+
 	condo_companies = frappe.get_all(
 		"Company",
 		filters={"company_type": "CONDO"},
