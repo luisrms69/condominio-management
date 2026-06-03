@@ -107,34 +107,34 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Enable test mode
-        working-directory: ~/frappe-bench
+        working-directory: /home/runner/frappe-bench
         run: |
           bench --site test.localhost set-config allow_tests true
           bench --site test.localhost set-config developer_mode true
 
       - name: Tests — physical_spaces
-        working-directory: ~/frappe-bench
+        working-directory: /home/runner/frappe-bench
         run: |
           bench --site test.localhost run-tests \
             --app condominium_management \
             --module condominium_management.physical_spaces
 
       - name: Tests — dashboard_consolidado
-        working-directory: ~/frappe-bench
+        working-directory: /home/runner/frappe-bench
         run: |
           bench --site test.localhost run-tests \
             --app condominium_management \
             --module condominium_management.dashboard_consolidado
 
       - name: Tests — community_contributions
-        working-directory: ~/frappe-bench
+        working-directory: /home/runner/frappe-bench
         run: |
           bench --site test.localhost run-tests \
             --app condominium_management \
             --module condominium_management.community_contributions
 
       - name: Tests — api_documentation_system
-        working-directory: ~/frappe-bench
+        working-directory: /home/runner/frappe-bench
         run: |
           bench --site test.localhost run-tests \
             --app condominium_management \
