@@ -410,8 +410,11 @@ fixtures = [
 		],
 	},  # ✅ ENABLED (2026-05-21) - Bloqueante para v16 clean install
 	# Companies Module Custom Fields (Company DocType)
+	# prefix genera archivo separado (companies_custom_field.json) para evitar que
+	# la entrada de Event sobreescriba este archivo en export-fixtures.
 	{
 		"dt": "Custom Field",
+		"prefix": "companies",
 		"filters": [
 			["dt", "=", "Company"],
 			[

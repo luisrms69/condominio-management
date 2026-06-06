@@ -18,6 +18,12 @@ class TestPropertyRegistry(UnitTestCase):
 
 	def create_test_data(self):
 		"""Crear datos de prueba necesarios"""
+		# Crear Space Category si no existe (requisito de Physical Space)
+		if not frappe.db.exists("Space Category", "Test Unit"):
+			frappe.get_doc(
+				{"doctype": "Space Category", "category_name": "Test Unit", "is_active": 1}
+			).insert(ignore_permissions=True)
+
 		# Crear Company Type si no existe
 		if not frappe.db.exists("Company Type", "CONDO"):
 			company_type = frappe.get_doc(
@@ -79,13 +85,33 @@ class TestPropertyRegistry(UnitTestCase):
 				except Exception:
 					self.test_company_name = "Test Company"
 
+	def _get_or_create_test_space(self):
+		"""Crea o reutiliza un Physical Space de prueba para el test_company."""
+		space_name = f"Test Space - {self.test_company_name}"
+		if not frappe.db.exists(
+			"Physical Space", {"space_name": space_name, "company": self.test_company_name}
+		):
+			space = frappe.get_doc(
+				{
+					"doctype": "Physical Space",
+					"space_name": space_name,
+					"company": self.test_company_name,
+					"space_category": "Test Unit",
+				}
+			).insert(ignore_permissions=True)
+			return space.name
+		return frappe.db.get_value(
+			"Physical Space", {"space_name": space_name, "company": self.test_company_name}, "name"
+		)
+
 	def _base_doc(self, property_name, extra=None):
-		"""Devuelve dict base con todos los campos obligatorios."""
+		"""Devuelve dict base con todos los campos obligatorios incluyendo physical_space."""
 		doc = {
 			"doctype": "Property Registry",
 			"naming_series": "PROP-.YYYY.-",
 			"property_name": property_name,
 			"company": self.test_company_name,
+			"physical_space": self._get_or_create_test_space(),
 			"property_usage_type": "Residencial",
 			"acquisition_type": "Compra",
 			"property_status_type": "Activo",
@@ -359,8 +385,67 @@ class TestPropertyRegistry(UnitTestCase):
 		self.assertIn("Juan Pérez", main_owner)
 		self.assertIn("70.0%", main_owner)
 
+	def test_physical_space_required(self):
+		"""physical_space es obligatorio — sin él el documento no puede crearse."""
+		doc = frappe.get_doc(
+			{
+				"doctype": "Property Registry",
+				"naming_series": "PROP-.YYYY.-",
+				"property_name": "Test No Space",
+				"company": self.test_company_name,
+				# physical_space ausente deliberadamente
+				"property_usage_type": "Residencial",
+				"acquisition_type": "Compra",
+				"property_status_type": "Activo",
+				"registration_date": datetime.now().date(),
+				"indiviso_percentage": 1.5,
+			}
+		)
+		with self.assertRaises((frappe.ValidationError, frappe.exceptions.MandatoryError)):
+			doc.insert(ignore_permissions=True)
+
+	def test_physical_space_company_must_match(self):
+		"""El Physical Space debe pertenecer al mismo condominio que el registro."""
+		# Crear otra company y un espacio que le pertenezca
+		other_company = frappe.get_doc(
+			{
+				"doctype": "Company",
+				"company_name": "Test Other Condominio",
+				"abbr": "TOC",
+				"default_currency": "MXN",
+				"country": "Mexico",
+			}
+		)
+		try:
+			other_company.insert(ignore_permissions=True)
+		except frappe.DuplicateEntryError:
+			pass
+
+		other_space = frappe.get_doc(
+			{
+				"doctype": "Physical Space",
+				"space_name": "Test Space Other Company",
+				"company": "Test Other Condominio",
+				"space_category": "Test Unit",
+			}
+		)
+		try:
+			other_space.insert(ignore_permissions=True)
+			other_space_name = other_space.name
+		except frappe.DuplicateEntryError:
+			other_space_name = frappe.db.get_value(
+				"Physical Space",
+				{"space_name": "Test Space Other Company"},
+				"name",
+			)
+
+		doc = frappe.get_doc(self._base_doc("Test Cross Company Space", {"physical_space": other_space_name}))
+		with self.assertRaises(frappe.ValidationError):
+			doc.insert(ignore_permissions=True)
+
 	def tearDown(self):
 		"""Limpiar datos de prueba"""
 		frappe.db.delete("Property Registry", {"property_name": ["like", "Test%"]})
+		frappe.db.delete("Physical Space", {"space_name": ["like", "Test Space%"]})
 		frappe.db.delete("Company", {"company_name": ["like", "Test%"]})
 		frappe.db.commit()

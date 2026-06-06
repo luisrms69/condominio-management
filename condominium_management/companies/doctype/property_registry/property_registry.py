@@ -17,11 +17,25 @@ class PropertyRegistry(Document):
 		self.name = make_autoname(self.naming_series)
 
 	def before_save(self):
-		"""Hook antes de guardar - validaciones"""
+		self.validate_physical_space_company()
 		self.validate_property_fields()
 		self.validate_declared_owners()
 		self.calculate_declared_owners_total()
 		self.calculate_current_owner_display()
+
+	def validate_physical_space_company(self):
+		"""Verifica que el Physical Space pertenezca al mismo condominio que el registro."""
+		if not self.physical_space or not self.company:
+			return
+		space_company = frappe.db.get_value("Physical Space", self.physical_space, "company")
+		if space_company and space_company != self.company:
+			frappe.throw(
+				_(
+					"El espacio físico '{0}' pertenece al condominio '{1}', "
+					"pero este registro pertenece a '{2}'."
+				).format(self.physical_space, space_company, self.company),
+				title=_("Condominio inconsistente"),
+			)
 
 	def validate_property_fields(self):
 		"""Validar campos básicos de propiedad"""
