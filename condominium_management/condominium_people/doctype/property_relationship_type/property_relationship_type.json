@@ -1,0 +1,125 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "field:relationship_name",
+ "creation": "2026-06-05 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "relationship_name",
+  "is_active",
+  "column_break_1",
+  "notes",
+  "section_permissions",
+  "default_can_vote",
+  "default_can_respond_polls",
+  "default_can_rsvp_events",
+  "default_can_create_tickets",
+  "column_break_2",
+  "default_can_reserve_amenities",
+  "default_can_view_statement",
+  "default_can_receive_portal_communications"
+ ],
+ "fields": [
+  {
+   "fieldname": "relationship_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Tipo de Relación",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Activo"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notas"
+  },
+  {
+   "fieldname": "section_permissions",
+   "fieldtype": "Section Break",
+   "label": "Permisos por Defecto"
+  },
+  {
+   "default": "0",
+   "fieldname": "default_can_vote",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Puede votar en asamblea"
+  },
+  {
+   "default": "0",
+   "fieldname": "default_can_respond_polls",
+   "fieldtype": "Check",
+   "label": "Puede responder encuestas"
+  },
+  {
+   "default": "0",
+   "fieldname": "default_can_rsvp_events",
+   "fieldtype": "Check",
+   "label": "Puede hacer RSVP a eventos"
+  },
+  {
+   "default": "0",
+   "fieldname": "default_can_create_tickets",
+   "fieldtype": "Check",
+   "label": "Puede crear tickets"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "default_can_reserve_amenities",
+   "fieldtype": "Check",
+   "label": "Puede reservar amenidades"
+  },
+  {
+   "default": "0",
+   "fieldname": "default_can_view_statement",
+   "fieldtype": "Check",
+   "label": "Puede ver estado de cuenta (portal)"
+  },
+  {
+   "default": "0",
+   "fieldname": "default_can_receive_portal_communications",
+   "fieldtype": "Check",
+   "label": "Recibe comunicaciones por portal/app"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-06-05 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Condominium People",
+ "name": "Property Relationship Type",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "Condominium Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Property Administrator"
+  }
+ ],
+ "sort_field": "relationship_name",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1
+}
