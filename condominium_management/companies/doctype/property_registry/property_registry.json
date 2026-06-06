@@ -64,7 +64,8 @@
    "fieldname": "physical_space",
    "fieldtype": "Link",
    "label": "Espacio Físico / Ubicación Interna",
-   "options": "Physical Space"
+   "options": "Physical Space",
+   "reqd": 1
   },
   {
    "fieldname": "company",

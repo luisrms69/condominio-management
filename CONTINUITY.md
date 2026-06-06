@@ -1,96 +1,92 @@
 # CONTINUITY.md — condominium_management
 
-**Fecha:** 2026-06-02
-**Rama activa:** `feature/committee-poll-events-kpi`
-**Tarea actual:** Committee Management — Community Event implementado, pendiente PR + Committee KPI
+**Fecha:** 2026-06-06
+**Rama activa:** `feature/condominium-people-phase1`
+**Tarea actual:** Listo para Commit 2 — Condominium People Phase 1 (PUA + tests 14/14 OK)
 
 ---
 
 ## Recuperación rápida
 
 Estoy trabajando en:
-Cierre de Committee Management. Community Event implementado sobre Event nativo.
-Committee Poll y Voting System congelados (documentados en deuda-tecnica.md).
-Queda Committee KPI para completar el módulo.
+Commit 2 de la rama `feature/condominium-people-phase1`: módulo Condominium People Phase 1.
+Commit 1 ya está en la rama (fix Companies/Property Registry, `cb351e4`).
 
 Plan que estoy siguiendo:
-Community Event validado → commit → KPI → PR → siguiente módulo.
+- `working_docs/active/PLAN_companies_property_registry_alignment.md` (Fases 1+2A ✅)
+- `working_docs/active/ARCH_condominium-people-authorization.md` v4 (PUA)
 
 Objetivo inmediato:
-Decidir si implementar Committee KPI (parcial, muchas métricas dependen de Financial)
-o abrir PR con lo que está y pasar a Condominium People.
+Ejecutar Commit 2 con el mensaje aprobado → luego abrir PR.
 
 Criterio de avance:
-PR de feature/committee-poll-events-kpi mergeado. Nueva rama para siguiente bloque.
+Dos commits en la rama → PR hacia main.
 
 ---
 
 ## Estado actual
 
-### Ya cerrado (en este branch)
-- Community Event sobre Event nativo — ciclo completo validado ✅
-  - Tab Evento Comunitario, campos ce_*, status flow Planeado→Publicado→Finalizado
-  - Fix tab visibility: tab.df.hidden + Tab.refresh() fix definitivo
-  - mandatory_depends_on en Assembly fields (reqd:1 → mandatory_depends_on)
-  - Event Checklist Item DocType (catálogo idempotente, 6 items por defecto)
-  - Event Checklist Progress (child table con notes por fila)
-  - Checklist auto-pobla por tipo + outdoor, reconstruye al cambiar
-  - committee_header_section fix para auto-hide de Tab Comité
-- Committee Poll: limpiado (target_audience simplificado, on_update fijo, JS básico)
-- Committee Poll + Voting System: congelados, documentados en deuda-tecnica.md
-- test_event_mandatory_fields.py: tests de regresión para mandatory_depends_on
+### Ya cerrado (en rama, no mergeado)
+- **Commit 1** `cb351e4` — fix(companies): restore Company custom fields fixture and require physical_space
+  - `companies_custom_field.json` (27 campos Company)
+  - `custom_field.json` actualizado (74 Event)
+  - `physical_space: reqd: 1` en Property Registry
+  - `validate_physical_space_company()` en property_registry.py
+  - tests actualizados + test_install.py
+  - plan working_docs actualizado
+
+### Listo para Commit 2 (tests 14/14 OK en test-condominium.localhost)
+- `hooks.py` — `setup_property_relationship_types` en after_migrate
+- `modules.txt` — "Condominium People"
+- `condominium_people/` — módulo completo: Property Relationship Type + PUA + utils + setup
+- `test_property_user_authorization.py` — 14 tests, UnitTestCase, todos pasan
+- `working_docs/active/ARCH_condominium-people-authorization.md`
 
 ### Pendiente inmediato
-1. Decidir: implementar Committee KPI parcial O pasar a Condominium People
-2. Export-fixtures (pendiente de autorización)
-3. PR hacia main
+1. Ejecutar Commit 2 con mensaje aprobado
+2. Abrir PR hacia main
 
 ### No repetir
-- No usar reqd:1 en custom fields con depends_on — usar mandatory_depends_on
-- No usar frm.toggle_display para Tab Breaks — usar tab.df.hidden + tab.toggle()
-- No confundir frappe-infrastructure path: /home/erpnext/Developer/frappe-infrastructure/
+- No usar git commit directo — siempre /ship commit
+- No usar reqd:1 con depends_on en Custom Fields — usar mandatory_depends_on
 - No commitear master_template_registry.json si solo cambió last_update
-- No push ni PR sin autorización independiente
+- Frappe v16 export-fixtures sobreescribe cuando hay dos entradas para el mismo DocType — usar `prefix`
+- No hacer unique sobre physical_space aún — diferido (bodegas/cajones)
+- FrappeTestCase dispara generación de test records que falla en test-condominium.localhost — usar UnitTestCase
 
 ---
 
 ## Decisiones vigentes
-- Community Event = Event nativo (mismo patrón que Assembly y Committee Meeting)
-- Committee Poll congelado hasta Condominium People (User ↔ Property Registry)
-- Voting System congelado hasta portal de autoservicio
-- Event Checklist Item: solo after_migrate idempotente, NUNCA fixtures (preserva is_enabled por instalación)
-- mandatory_depends_on es el mecanismo correcto para campos obligatorios condicionales en Frappe v16
-- tab.df.hidden debe setearse JUNTO con tab.toggle() para que Tab.refresh() respete el estado
+- `physical_space: reqd: 1` activo en Property Registry
+- `unique` sobre `physical_space` DIFERIDO — análisis de unidades accesorias pendiente
+- Service Management Contract = Nivel 1/2 Domika↔Condominio (D2 cerrado)
+- Catálogos sin company = maestros HQ/globales (D3 cerrado)
+- Property Copropiedad = congelada/deprecated, no eliminar
+- PUA unicidad `user + property_registry` para MVP (D2)
+- PUA módulo propio `condominium_people` (D5)
+- User Permissions sync DIFERIDO a Fase 3 (portal) — los helpers funcionan sin ellas
+- Financial Management y Property Account: NO tocar (congelados)
+- Committee Poll, Voting System: bloqueados hasta que PUA esté mergeado
+- Fases 3/4 del plan Companies (permisos Physical Space, catálogos) = PR separado posterior
 
 ---
 
 ## Archivos relevantes ahora
 
 ### Leer primero
-- `committee_management/event_custom_fields.py` — todos los custom fields de Event
-- `committee_management/event_hooks.py` — validaciones completas
-- `public/js/event_committee.js` — toggle_meeting_tabs + checklist
-- `docs_new/tecnico/deuda-tecnica.md` — estado de modules congelados
+- `working_docs/active/PLAN_companies_property_registry_alignment.md`
+- `working_docs/active/ARCH_condominium-people-authorization.md`
 
-### Probablemente editar (si se hace KPI)
-- `committee_management/doctype/committee_kpi/committee_kpi.py`
+### Para el PR (después del Commit 2)
+- `condominium_people/utils.py` — helpers de autorización
+- `condominium_people/setup.py` — defaults idempotentes
 
 ### No tocar
 - `financial_management/` — congelado
-- `assembly_management/` viejo — congelado
-- `community_event/` viejo — congelado (oculto en workspace)
-- `hooks.py` líneas ~190-198 — ISSUE #7
+- `fixtures/master_template_registry.json` — solo revertir last_update si export lo toca
 
 ---
 
 ## Riesgos / cuidados
-- Committee KPI: 25+ métricas, muchas dependen de Financial Management (congelado)
-  Solo assembly_participation_rate y meeting_attendance_rate son calculables hoy
-- Export-fixtures pendiente antes del PR
-- Condominium People es el desbloqueador de Committee Poll, Voting, RSVP y portal
-
----
-
-## Información faltante
-- Decisión: implementar KPI parcial vs saltar a Condominium People
-- Print Format Acta de Asamblea (solo existe Convocatoria)
+- Fases 3/4 de Companies (permisos Physical Space, catálogos documentados) pendientes de PR separado
+- `working_docs/active/ARCH_*` incluido en Commit 2 — es parte del entregable de arquitectura

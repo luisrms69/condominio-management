@@ -138,6 +138,7 @@ after_migrate = [
 	"condominium_management.committee_management.default_positions.setup_positions_for_all_condo_companies",
 	"condominium_management.committee_management.event_custom_fields.setup_event_committee_fields",
 	"condominium_management.committee_management.community_event_checklist.setup_event_checklist_items",
+	"condominium_management.condominium_people.setup.setup_property_relationship_types",
 ]
 
 # Uninstallation
@@ -410,8 +411,11 @@ fixtures = [
 		],
 	},  # ✅ ENABLED (2026-05-21) - Bloqueante para v16 clean install
 	# Companies Module Custom Fields (Company DocType)
+	# prefix genera archivo separado (companies_custom_field.json) para evitar que
+	# la entrada de Event sobreescriba este archivo en export-fixtures.
 	{
 		"dt": "Custom Field",
+		"prefix": "companies",
 		"filters": [
 			["dt", "=", "Company"],
 			[
