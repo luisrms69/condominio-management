@@ -133,10 +133,11 @@ Sistema de administración de condominios sobre ERPNext. Gestiona propiedades, f
 
 ## Fixtures
 
-13 archivos en `condominium_management/fixtures/`, todos activos en `hooks.py`:
-- `custom_field.json` — 27 custom fields en Company
+14 archivos en `condominium_management/fixtures/`, todos activos en `hooks.py`:
+- `companies_custom_field.json` — 27 custom fields en Company (4 secciones: Condominio, Administración, Legal, Financiero)
+- `custom_field.json` — 74 custom fields en Event (Committee Meeting + Assembly + Community Event)
 - `role.json` — 22 roles custom
-- Catálogos: policy_category, contribution_category, compliance_requirement_type, document_template_type, jurisdiction_level, property_status_type, property_usage_type, acquisition_type, company_type, enforcement_level, entity_type_configuration, master_template_registry
+- Catálogos (HQ/globales y con extensión local posible): ver `hooks.py` § POLÍTICA DE CATÁLOGOS y `docs/adr/0002-catalog-hq-policy.md`
 
 **72 DocTypes sin fixtures** — instalación nueva queda sin datos de referencia para la mayoría de módulos.
 
@@ -180,6 +181,12 @@ Muchos L4 Type B son ficticios y no prueban funcionalidad real. Tests reales baj
 - [ ] Patch creado si hay cambios de esquema con datos
 - [ ] `bench --site condo-v16.dev migrate` limpio
 - [ ] Ver checklist global en `frappe-infrastructure/CONTRIBUTING.md`
+
+## Notas operativas para Claude
+
+- **Aislamiento multi-condominio:** User Permissions por Company están DIFERIDAS al PR del portal (Fase 3 de PUA). Los DocTypes operativos tienen `company` requerido, pero la restricción de visibilidad no está activa aún.
+- **Service Management Contract:** usa `client_condominium` (no `company`) — es intencional. Ver `docs/adr/0003-service-management-contract-level.md`.
+- **Catálogos:** ver `docs/adr/0002-catalog-hq-policy.md` para la política HQ vs extensión local.
 
 ---
 

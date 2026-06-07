@@ -150,6 +150,13 @@
    "read": 1,
    "write": 1,
    "create": 1
+  },
+  {
+   "role": "Property Administrator",
+   "permlevel": 0,
+   "read": 1,
+   "write": 1,
+   "create": 1
   }
  ]
 }

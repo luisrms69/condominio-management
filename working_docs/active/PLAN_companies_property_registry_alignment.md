@@ -381,12 +381,43 @@ Agregar comentario en `hooks.py` junto a cada fixture declarando su tipo. No mod
 
 ---
 
-## Próximas fases (no iniciadas)
+## Fase 3 — Completada (2026-06-06)
 
-- **Fase 3** — Permisos: Physical Space (agregar Property Administrator/Property Manager/Condominium Manager), Condominium Information (agregar Property Administrator)
-- **Fase 4** — Solo documentación de regla HQ/global en hooks.py
+**Physical Space** — permisos agregados en `physical_space.json`:
+- `Property Administrator`: R/W/C, sin delete
+- `Condominium Manager`: R/W/C, sin delete
+- `Property Manager`: R solamente
+
+**Condominium Information** — permisos agregados en `condominium_information.json`:
+- `Property Administrator`: R/W/C, sin delete
+
+**User Permissions automáticas:** DIFERIDAS al PR del portal condominial. Documentado en `CLAUDE.md` + `docs/adr/0003-*`.
+
+**Service Management Contract:** sin cambios de código. Decisión D2 documentada en `docs/adr/0003-service-management-contract-level.md`.
+
+---
+
+## Fase 4 — Completada (2026-06-06)
+
+**Catálogos HQ (Regla D3):**
+- `docs/adr/0002-catalog-hq-policy.md` — decisión permanente documentada
+- `hooks.py` § POLÍTICA DE CATÁLOGOS — comentarios inline
+- `mkdocs.yml` — sección ADR agregada al nav (ADR-0000 a ADR-0003)
+- `CLAUDE.md` — referencia breve, sin duplicar análisis
+
+---
+
+## Pendientes explícitos (fuera de este PR)
+
+| Pendiente | Bloqueante | PR esperado |
+|---|---|---|
+| User Permissions automáticas por Company | No (solo portal) | PR portal condominial (Fase 3 PUA) |
+| `unique` sobre `physical_space` | No | Requiere análisis bodegas/cajones primero |
+| Vínculo Unidad↔Customer (Property Account) | No | PR Financial Management (congelado) |
+| Committee Poll con validación PUA | No | Próximo PR |
+| Eliminar `Property Copropiedad` DocType | No | PR limpieza técnica |
 
 ---
 
 *Fin del plan.*
-*Estado: Fases 1 + 2A implementadas · No commitear sin autorización.*
+*Estado: Fases 1, 2A, 3 y 4 completadas · bench migrate pendiente · commit pendiente autorización.*

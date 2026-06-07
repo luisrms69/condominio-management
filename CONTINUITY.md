@@ -1,73 +1,61 @@
 # CONTINUITY.md — condominium_management
 
 **Fecha:** 2026-06-06
-**Rama activa:** `feature/condominium-people-phase1`
-**Tarea actual:** Listo para Commit 2 — Condominium People Phase 1 (PUA + tests 14/14 OK)
+**Rama activa:** `feature/companies-permissions-and-catalog-policy`
+**Tarea actual:** PR #41 abierto — esperando merge; bench update pendiente
 
 ---
 
 ## Recuperación rápida
 
 Estoy trabajando en:
-Commit 2 de la rama `feature/condominium-people-phase1`: módulo Condominium People Phase 1.
-Commit 1 ya está en la rama (fix Companies/Property Registry, `cb351e4`).
+PR #41 con Fases 3/4 del plan Companies/Property Registry (permisos + ADRs).
+El usuario va a correr `bench update` en el bench v16.
 
 Plan que estoy siguiendo:
-- `working_docs/active/PLAN_companies_property_registry_alignment.md` (Fases 1+2A ✅)
-- `working_docs/active/ARCH_condominium-people-authorization.md` v4 (PUA)
+`working_docs/active/PLAN_companies_property_registry_alignment.md` — Fases 1-4 completadas
 
 Objetivo inmediato:
-Ejecutar Commit 2 con el mensaje aprobado → luego abrir PR.
+Merge del PR #41 → sync-check post-merge → decidir siguiente trabajo (Committee Poll).
 
 Criterio de avance:
-Dos commits en la rama → PR hacia main.
+PR #41 mergeado a main → rama limpia.
 
 ---
 
 ## Estado actual
 
-### Ya cerrado (en rama, no mergeado)
-- **Commit 1** `cb351e4` — fix(companies): restore Company custom fields fixture and require physical_space
-  - `companies_custom_field.json` (27 campos Company)
-  - `custom_field.json` actualizado (74 Event)
-  - `physical_space: reqd: 1` en Property Registry
-  - `validate_physical_space_company()` en property_registry.py
-  - tests actualizados + test_install.py
-  - plan working_docs actualizado
+### Ya mergeado a main
+- PR #40 — Companies fixture fix + Condominium People Phase 1
 
-### Listo para Commit 2 (tests 14/14 OK en test-condominium.localhost)
-- `hooks.py` — `setup_property_relationship_types` en after_migrate
-- `modules.txt` — "Condominium People"
-- `condominium_people/` — módulo completo: Property Relationship Type + PUA + utils + setup
-- `test_property_user_authorization.py` — 14 tests, UnitTestCase, todos pasan
-- `working_docs/active/ARCH_condominium-people-authorization.md`
+### En progreso (PR #41 — abierto)
+- `physical_space.json` — +Property Administrator, +Condominium Manager, +Property Manager
+- `condominium_information.json` — +Property Administrator
+- `docs/adr/0002-catalog-hq-policy.md` — política catálogos HQ
+- `docs/adr/0003-service-management-contract-level.md` — SMC = Nivel 1/2
+- `mkdocs.yml` — sección ADR en nav
+- `hooks.py` — política catálogos inline
+- `PLAN_*.md` — Fases 3/4 cerradas
 
 ### Pendiente inmediato
-1. Ejecutar Commit 2 con mensaje aprobado
-2. Abrir PR hacia main
+1. Merge PR #41
+2. sync-check post-merge
+3. Decidir siguiente: Committee Poll con validación PUA
 
 ### No repetir
-- No usar git commit directo — siempre /ship commit
-- No usar reqd:1 con depends_on en Custom Fields — usar mandatory_depends_on
-- No commitear master_template_registry.json si solo cambió last_update
-- Frappe v16 export-fixtures sobreescribe cuando hay dos entradas para el mismo DocType — usar `prefix`
-- No hacer unique sobre physical_space aún — diferido (bodegas/cajones)
-- FrappeTestCase dispara generación de test records que falla en test-condominium.localhost — usar UnitTestCase
+- No poner análisis arquitectónicos en `CLAUDE.md` — van en `docs/adr/`
+- Antes de bench update: verificar que las apps tengan commits pendientes resueltos
+- FrappeTestCase dispara record generation — usar UnitTestCase en test site
 
 ---
 
 ## Decisiones vigentes
-- `physical_space: reqd: 1` activo en Property Registry
-- `unique` sobre `physical_space` DIFERIDO — análisis de unidades accesorias pendiente
-- Service Management Contract = Nivel 1/2 Domika↔Condominio (D2 cerrado)
-- Catálogos sin company = maestros HQ/globales (D3 cerrado)
-- Property Copropiedad = congelada/deprecated, no eliminar
-- PUA unicidad `user + property_registry` para MVP (D2)
-- PUA módulo propio `condominium_people` (D5)
-- User Permissions sync DIFERIDO a Fase 3 (portal) — los helpers funcionan sin ellas
-- Financial Management y Property Account: NO tocar (congelados)
-- Committee Poll, Voting System: bloqueados hasta que PUA esté mergeado
-- Fases 3/4 del plan Companies (permisos Physical Space, catálogos) = PR separado posterior
+- User Permissions por Company DIFERIDAS al PR del portal
+- `unique` sobre `physical_space` DIFERIDO (bodegas/cajones)
+- SMC = Nivel 1/2 → `docs/adr/0003`
+- Catálogos HQ policy → `docs/adr/0002`
+- Financial Management congelado
+- Committee Poll desbloqueado — siguiente PR
 
 ---
 
@@ -77,16 +65,12 @@ Dos commits en la rama → PR hacia main.
 - `working_docs/active/PLAN_companies_property_registry_alignment.md`
 - `working_docs/active/ARCH_condominium-people-authorization.md`
 
-### Para el PR (después del Commit 2)
-- `condominium_people/utils.py` — helpers de autorización
-- `condominium_people/setup.py` — defaults idempotentes
-
 ### No tocar
 - `financial_management/` — congelado
-- `fixtures/master_template_registry.json` — solo revertir last_update si export lo toca
+- `one_offs/` — nunca se commitean
 
 ---
 
 ## Riesgos / cuidados
-- Fases 3/4 de Companies (permisos Physical Space, catálogos documentados) pendientes de PR separado
-- `working_docs/active/ARCH_*` incluido en Commit 2 — es parte del entregable de arquitectura
+- `mkdocs build` bloqueado localmente por `mkdocs-redirects` no instalado — deuda preexistente, no de este PR
+- Tras bench update: verificar que `bench migrate` corra limpio en condo-v16.dev y test-condominium.localhost

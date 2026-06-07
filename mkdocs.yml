@@ -70,6 +70,11 @@ nav:
       - CI/CD: development/workflows/ci-cd.md
       - Troubleshooting: development/workflows/troubleshooting.md
       - Documentation Maintenance: development/workflows/documentation-maintenance.md
+  - Decisiones (ADR):
+    - ADR-0000 Estado pre-migración: adr/0000-estado-real-pre-migracion.md
+    - ADR-0001 Reconciliación branches: adr/0001-branch-reconciliation-before-v16.md
+    - ADR-0002 Política catálogos HQ: adr/0002-catalog-hq-policy.md
+    - ADR-0003 Service Management Contract: adr/0003-service-management-contract-level.md
   - Referencia:
     - README: reference/README.md
   - Changelog: changelog/CHANGELOG.md
