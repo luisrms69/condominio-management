@@ -341,9 +341,6 @@ fixtures = [
 		"filters": [["name", "in", ["Service Management Contract"]]],
 	},  # ✅ ENABLED (2026-05-21) - Filtro explícito. Registro 'User' excluido hasta decisión humana
 	#     sobre si es configuración funcional o artefacto de desarrollo.
-	"Company Type",  # ✅ ENABLED - Autoname normalizado (name == type_code)
-	"Acquisition Type",  # ✅ ENABLED - required_documents poblado via one-off script
-	"Policy Category",  # ✅ ENABLED - 15 categorías profesionales completas
 	# "User Type",                    # ❌ ELIMINADO (2025-10-26) - DocType legacy que hacía override incorrecto de Frappe core
 	#                                   # Sin implementación real (0 referencias código), conflicto arquitectónico (duplica Roles)
 	#                                   # DocType nativo Frappe restaurado. Ver commit para detalles completos.
@@ -367,15 +364,27 @@ fixtures = [
 	# ============================================================================
 	# HABILITADOS - Fixtures válidos listos para migrar (13/14)
 	# ============================================================================
-	# Companies Module Masters - Solo fixtures verificados como válidos
-	"Property Usage Type",  # ✅ VÁLIDO - Cosmético (5 registros íntegros: Residencial, Comercial, Mixto, Industrial, Oficinas)
-	"Property Status Type",  # ✅ VÁLIDO - Cosmético (6 registros íntegros: Activo, Inactivo, En Venta, En Arriendo, En Construcción, Abandonado)
-	"Enforcement Level",  # ✅ VÁLIDO - Cosmético (4 registros íntegros)
-	"Document Template Type",  # ✅ VÁLIDO - Cosmético (registros íntegros)
-	"Jurisdiction Level",  # ✅ VÁLIDO - Cosmético (4 registros íntegros)
-	"Compliance Requirement Type",  # ✅ VÁLIDO - Cosmético (5 registros íntegros)
-	# Physical Spaces Module Masters — catálogo controlado del app (no editar manualmente)
-	"Space Category",  # ✅ ENABLED - 51 categorías precargadas para condominios residencial y uso mixto
+	#
+	# POLÍTICA DE CATÁLOGOS — Regla D3 (aprobada 2026-06-06)
+	# -------------------------------------------------------
+	# Maestros HQ/globales: catálogos sin campo `company`. Se instalan via fixtures.
+	# Aplican a todos los condominios. No se modifican por condominio.
+	# Extensión local posible (marcada abajo): el condominio puede agregar registros
+	# propios, pero solo cuando sea explícitamente necesario y aprobado.
+	# Ver: working_docs/active/PLAN_companies_property_registry_alignment.md § FASE 4
+	#
+	# Companies Module Masters - Maestros HQ/globales
+	"Company Type",  # HQ — tipos de empresa (Condominio, Administradora, etc.)
+	"Acquisition Type",  # HQ — tipos de adquisición; required_documents poblado via one-off
+	"Property Usage Type",  # HQ — tipos de uso (Residencial, Comercial, Mixto, Industrial, Oficinas)
+	"Property Status Type",  # HQ — estados de propiedad (Activo, Inactivo, En Venta, etc.)
+	"Enforcement Level",  # HQ — niveles de enforcement
+	"Document Template Type",  # HQ — tipos de documento
+	"Jurisdiction Level",  # HQ — niveles jurisdiccionales
+	"Compliance Requirement Type",  # HQ — tipos de requisito legal
+	"Policy Category",  # HQ con extensión local posible — categorías de política; condominio puede agregar propias
+	# Physical Spaces Module Masters
+	"Space Category",  # HQ con extensión local posible — 51 categorías base; condominio puede ampliar
 	# Sistema de Roles custom del sistema (22 roles requeridos por DocType permissions)
 	{
 		"dt": "Role",
