@@ -2,24 +2,24 @@
 
 **Fecha:** 2026-06-06
 **Rama activa:** `feature/companies-permissions-and-catalog-policy`
-**Tarea actual:** Commit autorizado — Fases 3/4 Companies listas para commitear
+**Tarea actual:** PR #41 abierto — esperando merge; bench update pendiente
 
 ---
 
 ## Recuperación rápida
 
 Estoy trabajando en:
-PR de Fases 3/4 del plan Companies/Property Registry: permisos para Physical Space y
-Condominium Information + política de catálogos HQ documentada en ADRs.
+PR #41 con Fases 3/4 del plan Companies/Property Registry (permisos + ADRs).
+El usuario va a correr `bench update` en el bench v16.
 
 Plan que estoy siguiendo:
-`working_docs/active/PLAN_companies_property_registry_alignment.md` — Fases 3/4 completadas
+`working_docs/active/PLAN_companies_property_registry_alignment.md` — Fases 1-4 completadas
 
 Objetivo inmediato:
-Commit → push → PR → merge.
+Merge del PR #41 → sync-check post-merge → decidir siguiente trabajo (Committee Poll).
 
 Criterio de avance:
-Commit creado con el mensaje aprobado → PR abierto hacia main.
+PR #41 mergeado a main → rama limpia.
 
 ---
 
@@ -28,44 +28,49 @@ Commit creado con el mensaje aprobado → PR abierto hacia main.
 ### Ya mergeado a main
 - PR #40 — Companies fixture fix + Condominium People Phase 1
 
-### Listo para commit (rama actual)
-- `physical_space.json` — +Property Administrator (R/W/C), +Condominium Manager (R/W/C), +Property Manager (R)
-- `condominium_information.json` — +Property Administrator (R/W/C)
-- `hooks.py` — política catálogos HQ inline
-- `docs/adr/0002-catalog-hq-policy.md` — nuevo ADR
-- `docs/adr/0003-service-management-contract-level.md` — nuevo ADR
-- `mkdocs.yml` — sección ADR en nav (0000-0003 todos referenciados)
-- `CLAUDE.md` — reducido a notas operativas, refs a ADRs
-- `PLAN_companies_property_registry_alignment.md` — Fases 3/4 marcadas completas
+### En progreso (PR #41 — abierto)
+- `physical_space.json` — +Property Administrator, +Condominium Manager, +Property Manager
+- `condominium_information.json` — +Property Administrator
+- `docs/adr/0002-catalog-hq-policy.md` — política catálogos HQ
+- `docs/adr/0003-service-management-contract-level.md` — SMC = Nivel 1/2
+- `mkdocs.yml` — sección ADR en nav
+- `hooks.py` — política catálogos inline
+- `PLAN_*.md` — Fases 3/4 cerradas
 
 ### Pendiente inmediato
-1. Ejecutar commit con mensaje aprobado
-2. Push → PR
+1. Merge PR #41
+2. sync-check post-merge
+3. Decidir siguiente: Committee Poll con validación PUA
 
 ### No repetir
-- No poner análisis de decisiones en `CLAUDE.md` — van en `docs/adr/`
-- No duplicar en CLAUDE.md lo que ya está en ADRs o working_docs
-- El warning de `mkdocs-redirects` no instalado localmente es deuda preexistente
+- No poner análisis arquitectónicos en `CLAUDE.md` — van en `docs/adr/`
+- Antes de bench update: verificar que las apps tengan commits pendientes resueltos
+- FrappeTestCase dispara record generation — usar UnitTestCase en test site
 
 ---
 
 ## Decisiones vigentes
-- User Permissions por Company DIFERIDAS al PR del portal (Fase 3 PUA)
+- User Permissions por Company DIFERIDAS al PR del portal
 - `unique` sobre `physical_space` DIFERIDO (bodegas/cajones)
-- SMC = Nivel 1/2 Domika↔Condominio (docs/adr/0003)
-- Catálogos HQ policy (docs/adr/0002)
-- Financial Management, Property Account: congelados
-- Committee Poll: desbloqueado, siguiente PR
+- SMC = Nivel 1/2 → `docs/adr/0003`
+- Catálogos HQ policy → `docs/adr/0002`
+- Financial Management congelado
+- Committee Poll desbloqueado — siguiente PR
 
 ---
 
 ## Archivos relevantes ahora
 
-### Para este commit
-- `docs/adr/0002-catalog-hq-policy.md`
-- `docs/adr/0003-service-management-contract-level.md`
+### Leer primero
 - `working_docs/active/PLAN_companies_property_registry_alignment.md`
+- `working_docs/active/ARCH_condominium-people-authorization.md`
 
 ### No tocar
 - `financial_management/` — congelado
 - `one_offs/` — nunca se commitean
+
+---
+
+## Riesgos / cuidados
+- `mkdocs build` bloqueado localmente por `mkdocs-redirects` no instalado — deuda preexistente, no de este PR
+- Tras bench update: verificar que `bench migrate` corra limpio en condo-v16.dev y test-condominium.localhost
