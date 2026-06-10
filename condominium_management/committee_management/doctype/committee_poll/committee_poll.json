@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "poll_configuration_section",
+  "company",
   "poll_title",
   "poll_type",
   "poll_category",
@@ -37,6 +38,14 @@
    "fieldname": "poll_configuration_section",
    "fieldtype": "Section Break",
    "label": "Configuración de Encuesta"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "poll_title",

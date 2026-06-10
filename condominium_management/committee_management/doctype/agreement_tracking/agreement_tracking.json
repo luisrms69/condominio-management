@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "agreement_information_section",
+  "company",
   "source_type",
   "source_reference",
   "agreement_number",
@@ -34,6 +35,14 @@
    "fieldname": "agreement_information_section",
    "fieldtype": "Section Break",
    "label": "Información del Acuerdo"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "source_type",

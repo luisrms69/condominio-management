@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "period_information_section",
+  "company",
   "period_year",
   "period_month",
   "calculation_date",
@@ -56,6 +57,13 @@
    "fieldname": "period_information_section",
    "fieldtype": "Section Break",
    "label": "Información del Período"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company"
   },
   {
    "fieldname": "period_year",

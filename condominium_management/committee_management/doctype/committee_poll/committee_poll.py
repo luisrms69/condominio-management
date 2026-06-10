@@ -55,10 +55,15 @@ class CommitteePoll(Document):
 				self.created_by = committee_member
 
 	def calculate_eligible_voters(self):
+		filters_company = {"company": self.company} if self.company else {}
 		if self.target_audience == "Solo Comité":
-			self.total_eligible_voters = frappe.db.count("Committee Member", {"is_active": 1})
+			self.total_eligible_voters = frappe.db.count(
+				"Committee Member", {"is_active": 1, **filters_company}
+			)
 		else:  # Todos los Propietarios
-			self.total_eligible_voters = frappe.db.count("Property Registry", {"is_active": 1})
+			self.total_eligible_voters = frappe.db.count(
+				"Property Registry", {"is_active": 1, **filters_company}
+			)
 
 	def calculate_results(self):
 		"""Calculate poll results from responses"""
@@ -143,13 +148,15 @@ class CommitteePoll(Document):
 
 	def is_eligible_respondent(self, respondent_type, respondent_id):
 		if self.target_audience == "Solo Comité":
-			return respondent_type == "Committee Member" and frappe.db.exists(
-				"Committee Member", {"name": respondent_id, "is_active": 1}
-			)
+			filters = {"name": respondent_id, "is_active": 1}
+			if self.company:
+				filters["company"] = self.company
+			return respondent_type == "Committee Member" and frappe.db.exists("Committee Member", filters)
 		else:  # Todos los Propietarios
-			return respondent_type == "Property Registry" and frappe.db.exists(
-				"Property Registry", {"name": respondent_id, "is_active": 1}
-			)
+			filters = {"name": respondent_id, "is_active": 1}
+			if self.company:
+				filters["company"] = self.company
+			return respondent_type == "Property Registry" and frappe.db.exists("Property Registry", filters)
 
 	def has_already_responded(self, respondent_type, respondent_id):
 		"""Check if respondent has already responded to this poll"""

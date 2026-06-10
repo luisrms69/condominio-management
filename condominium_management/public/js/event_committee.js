@@ -1,6 +1,11 @@
 // Copyright (c) 2025, Buzola and contributors
 // Committee Meeting + Assembly functionality on native Frappe Event
 
+// DEPRECATED 2026-06-08 — Event ya no es entidad condominial.
+// Este archivo fue desconectado de doctype_js en hooks.py.
+// Assembly Management y Community Event son los DocTypes canónicos.
+// No agregar lógica aquí.
+
 // frm.toggle_display does NOT reach Tab.toggle() in Frappe v16 — they are different objects.
 // Tab.refresh() auto-hides only when ALL inner sections have .hide-control, which doesn't
 // happen for the first auto-generated section containing committee_meeting_type.

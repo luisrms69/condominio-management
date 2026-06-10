@@ -1,6 +1,12 @@
 # Copyright (c) 2025, Buzola and contributors
 # For license information, please see license.txt
 
+# DEPRECATED 2026-06-08 — Event ya no es entidad de asamblea ni de evento comunitario condominial.
+# Assembly Management es la entidad canónica de asamblea.
+# Community Event es la entidad canónica de eventos comunitarios.
+# Este archivo se conserva como referencia histórica. No agregar lógica aquí.
+# La entrada doc_events["Event"] fue eliminada de hooks.py en la misma fecha.
+
 """
 Server-side validation for condominium Assembly events.
 

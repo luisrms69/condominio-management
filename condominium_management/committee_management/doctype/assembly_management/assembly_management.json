@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "convocation_section",
+  "company",
   "assembly_type",
   "assembly_number",
   "convocation_date",
@@ -35,6 +36,14 @@
    "fieldname": "convocation_section",
    "fieldtype": "Section Break",
    "label": "Información de Convocatoria"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "assembly_type",

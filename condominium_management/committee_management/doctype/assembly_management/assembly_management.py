@@ -47,14 +47,14 @@ class AssemblyManagement(Document):
 		if not self.assembly_number:
 			year = get_datetime(self.assembly_date).year if self.assembly_date else nowdate()[:4]
 
-			# Get count of assemblies for this year
-			count = frappe.db.count(
-				"Assembly Management",
-				filters={
-					"assembly_date": ["between", [f"{year}-01-01", f"{year}-12-31"]],
-					"name": ["!=", self.name],
-				},
-			)
+			filters = {
+				"assembly_date": ["between", [f"{year}-01-01", f"{year}-12-31"]],
+				"name": ["!=", self.name],
+			}
+			if self.company:
+				filters["company"] = self.company
+
+			count = frappe.db.count("Assembly Management", filters=filters)
 
 			assembly_number = f"{self.assembly_type[:3].upper()}-{year}-{str(count + 1).zfill(3)}"
 			self.assembly_number = assembly_number
@@ -214,6 +214,7 @@ class AssemblyManagement(Document):
 					agreement = frappe.get_doc(
 						{
 							"doctype": "Agreement Tracking",
+							"company": self.company,
 							"source_type": "Asamblea",
 							"source_reference": self.name,
 							"agreement_text": f"Acuerdo aprobado en asamblea: {agenda_item.agenda_topic}\n\n{agenda_item.topic_description or ''}",
@@ -268,23 +269,36 @@ class AssemblyManagement(Document):
 		}
 
 	@staticmethod
-	def get_upcoming_assemblies(limit=5):
+	def get_upcoming_assemblies(limit=5, company=None):
 		"""Get upcoming assemblies"""
+		filters = {"assembly_date": [">=", now_datetime()], "status": ["in", ["Planificada", "Convocada"]]}
+		if company:
+			filters["company"] = company
 		return frappe.get_all(
 			"Assembly Management",
-			filters={"assembly_date": [">=", now_datetime()], "status": ["in", ["Planificada", "Convocada"]]},
-			fields=["name", "assembly_type", "assembly_number", "assembly_date", "status"],
+			filters=filters,
+			fields=["name", "assembly_type", "assembly_number", "assembly_date", "status", "company"],
 			order_by="assembly_date asc",
 			limit=limit,
 		)
 
 	@staticmethod
-	def get_assembly_history(limit=10):
+	def get_assembly_history(limit=10, company=None):
 		"""Get assembly history"""
+		filters = {"docstatus": 1}
+		if company:
+			filters["company"] = company
 		return frappe.get_all(
 			"Assembly Management",
-			filters={"docstatus": 1},
-			fields=["name", "assembly_type", "assembly_number", "assembly_date", "current_quorum_percentage"],
+			filters=filters,
+			fields=[
+				"name",
+				"assembly_type",
+				"assembly_number",
+				"assembly_date",
+				"current_quorum_percentage",
+				"company",
+			],
 			order_by="assembly_date desc",
 			limit=limit,
 		)

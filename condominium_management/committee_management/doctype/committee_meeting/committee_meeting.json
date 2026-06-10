@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "basic_information_section",
+  "company",
   "meeting_title",
   "meeting_date",
   "meeting_type",
@@ -30,6 +31,14 @@
    "fieldname": "basic_information_section",
    "fieldtype": "Section Break",
    "label": "Información Básica"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "meeting_title",

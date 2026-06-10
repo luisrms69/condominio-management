@@ -91,7 +91,7 @@ app_include_locale = "translations"
 
 # include js in doctype views
 doctype_js = {
-	"Event": "public/js/event_committee.js",
+	# "Event": "public/js/event_committee.js",  # DEPRECATED 2026-06-08 — Event ya no es entidad condominial
 	"Committee Poll": "committee_management/doctype/committee_poll/committee_poll.js",
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -205,10 +205,11 @@ doc_events = {
 	# 	"after_insert": "condominium_management.document_generation.hooks_handlers.auto_detection.on_document_insert",
 	# 	"on_update": "condominium_management.document_generation.hooks_handlers.auto_detection.on_document_update",
 	# },
-	# Committee Management — Assembly validation on native Event
-	"Event": {
-		"validate": "condominium_management.committee_management.event_hooks.validate_assembly",
-	},
+	# DEPRECATED 2026-06-08 — Event ya no es entidad condominial.
+	# Assembly Management y Community Event son los DocTypes canónicos.
+	# "Event": {
+	# 	"validate": "condominium_management.committee_management.event_hooks.validate_assembly",
+	# },
 	"Master Template Registry": {
 		"on_update": "condominium_management.document_generation.hooks_handlers.template_propagation.on_template_update"
 	},

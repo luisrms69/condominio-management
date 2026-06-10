@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "event_information_section",
+  "company",
   "event_name",
   "event_type",
   "event_date",
@@ -52,6 +53,14 @@
    "fieldname": "event_information_section",
    "fieldtype": "Section Break",
    "label": "Información del Evento"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "event_name",

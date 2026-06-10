@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "voting_configuration_section",
+  "company",
   "assembly",
   "motion_number",
   "motion_title",
@@ -38,6 +39,14 @@
    "fieldname": "voting_configuration_section",
    "fieldtype": "Section Break",
    "label": "Configuración de Votación"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Condominio",
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "assembly",
